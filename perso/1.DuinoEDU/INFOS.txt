@@ -1,0 +1,11 @@
+INFOS :
+
+Exemples ARDUBLOCK
+	> libraries > Choisir un dossier > examples_Ardublock > ... (géré par DuinoEDU.com)
+
+
+Exemple ARDUINO 
+	> libraries > Choisir un dossier > examples > ... (géré par Arduino.cc)
+
+
+

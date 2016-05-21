@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="128 128 128" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="loop" id="454">
+<Location>
+<X>20</X>
+<Y>128</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="431" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Faire" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="serial_print" id="431">
+<Location>
+<X>119</X>
+<Y>136</Y>
+</Location>
+<BeforeBlockId>454</BeforeBlockId>
+<AfterBlockId>435</AfterBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="434" connector-kind="socket" connector-type="string" init-type="string" label="message2" position-type="single"/>
+<BlockConnector con-block-id="433" connector-kind="socket" connector-type="boolean" init-type="boolean" label="nouvelle ligne" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="serial_print" id="435">
+<Location>
+<X>119</X>
+<Y>244</Y>
+</Location>
+<BeforeBlockId>431</BeforeBlockId>
+<AfterBlockId>439</AfterBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="436" connector-kind="socket" connector-type="string" init-type="string" label="message2" position-type="single"/>
+<BlockConnector con-block-id="438" connector-kind="socket" connector-type="boolean" init-type="boolean" label="nouvelle ligne" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="serial_print" id="439">
+<Location>
+<X>119</X>
+<Y>352</Y>
+</Location>
+<BeforeBlockId>435</BeforeBlockId>
+<AfterBlockId>443</AfterBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="440" connector-kind="socket" connector-type="string" init-type="string" label="message2" position-type="single"/>
+<BlockConnector con-block-id="442" connector-kind="socket" connector-type="boolean" init-type="boolean" label="nouvelle ligne" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="delay" id="443">
+<Location>
+<X>119</X>
+<Y>460</Y>
+</Location>
+<BeforeBlockId>439</BeforeBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="444" connector-kind="socket" connector-type="number" init-type="number" label="Millisecondes" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="444">
+<Label>1000</Label>
+<Location>
+<X>311</X>
+<Y>463</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="443" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="true" id="442">
+<Location>
+<X>401</X>
+<Y>433</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="439" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="glue_sn" id="440">
+<Location>
+<X>401</X>
+<Y>355</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="439" connector-kind="plug" connector-type="string" init-type="string" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="441" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_RTC_Second" id="441">
+<Location>
+<X>471</X>
+<Y>355</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="440" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="false" id="438">
+<Location>
+<X>401</X>
+<Y>325</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="435" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="glue_sn" id="436">
+<Location>
+<X>401</X>
+<Y>247</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="435" connector-kind="plug" connector-type="string" init-type="string" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="437" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_RTC_Minute" id="437">
+<Location>
+<X>471</X>
+<Y>247</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="436" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="false" id="433">
+<Location>
+<X>401</X>
+<Y>217</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="431" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="glue_sn" id="434">
+<Location>
+<X>401</X>
+<Y>139</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="431" connector-kind="plug" connector-type="string" init-type="string" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="427" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_RTC_Hour" id="427">
+<Location>
+<X>471</X>
+<Y>139</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="434" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

@@ -1,0 +1,47 @@
+#######################################
+# Syntax Coloring Map For Mouse
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+brancher	LITERAL1
+branch	KEYWORD2
+AnalogicAccelerometer	KEYWORD2
+
+lire	LITERAL1
+read	KEYWORD2
+
+lireX	LITERAL1
+readX	KEYWORD2
+
+lireY	LITERAL1
+readY	KEYWORD2
+
+mouse_init	KEYWORD2
+mouse_write	KEYWORD2
+mouse_read	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+Mouse	KEYWORD3
+maSouris	LITERAL10
+souris	LITERAL10
+mouse	LITERAL10	
+
+
+
+

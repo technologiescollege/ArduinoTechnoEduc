@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map Servo
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Servo	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+branch	KEYWORD2
+attach	KEYWORD2
+detach	KEYWORD2
+write	KEYWORD2
+read	KEYWORD2
+attached	KEYWORD2
+writeMicroseconds	KEYWORD2
+readMicroseconds	KEYWORD2
+writeRotation	KEYWORD2
+writeSpeed	KEYWORD2
+reverseRotation	KEYWORD2
+
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+brancher	LITERAL1
+ecrire	LITERAL1
+ecrireAngle	LITERAL1	
+ecrireRotation	LITERAL1
+ecrireVitesse	LITERAL1
+reglerDecalage	LITERAL1
+writeOffset	LITERAL1
+inverserRotation	LITERAL1

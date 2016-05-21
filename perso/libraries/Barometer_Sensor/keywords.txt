@@ -1,0 +1,83 @@
+#######################################
+# Syntax Coloring Map For Mouse
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+brancher	LITERAL1
+branch	KEYWORD2
+
+lireCode	LITERAL1
+readCode	KEYWORD2
+
+ecrireCode	LITERAL1
+writeCode	KEYWORD2
+
+effacerCode	LITERAL1
+clearCodes	KEYWORD2
+
+testerCode	LITERAL1
+codeTestOk	KEYWORD2
+codeIsPresent	KEYWORD2
+	
+ecrireTypeMemoire	LITERAL1
+setMemType	KEYWORD2
+
+activerSerialInfos	LITERAL1
+serialInfosOn	KEYWORD2
+
+desactiverSerialInfos	LITERAL1
+serialInfosOff	KEYWORD2
+
+
+setLang	KEYWORD2
+
+
+#######################################
+# Objets
+#######################################
+
+Barometer	KEYWORD3
+Barometer.h	KEYWORD3
+monBarometre	LITERAL10
+
+brancher	LITERAL1
+lireTemperature		LITERAL1
+lirePression	LITERAL1
+lireAltitude	LITERAL1
+
+branch	KEYWORD2
+getTemperature	KEYWORD2
+getPressure	KEYWORD2
+getAltitude	KEYWORD2
+
+#######################################
+# Langage EDU
+#######################################
+
+faire	LITERAL10
+initialisation	LITERAL1
+boucle	LITERAL1
+
+portSerie	LITERAL1
+
+lectureEtat	LITERAL1
+
+utiliser	LITERAL10
+
+
+
+chaine	LITERAL1
+nombre	LITERAL1	
+grandNombre	LITERAL1
+
+si	LITERAL1
+sinon	LITERAL1
+
+

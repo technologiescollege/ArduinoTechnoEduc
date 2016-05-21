@@ -1,0 +1,33 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+brancher	LITERAL1
+branch	LITERAL1
+definirFichierCourant	LITERAL1
+setCurentFile	LITERAL1
+definirSeparateur	LITERAL1
+setSpacer	LITERAL1
+ecrire	LITERAL1
+write	LITERAL1
+espace	LITERAL1
+space	LITERAL1
+tabulation	LITERAL1
+nouvelleLigne	LITERAL1
+newLine	LITERAL1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+brancher	LITERAL1
+
+	

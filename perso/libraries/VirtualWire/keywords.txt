@@ -1,0 +1,27 @@
+#######################################
+# EDU : ajout coloration 
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+VirtualWire	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+brancherEmetteur	KEYWORD2
+brancherRecepteur	KEYWORD2	
+
+emettreTexte	KEYWORD2
+emettreNombre	KEYWORD2	
+
+recevoirTexte	KEYWORD2
+recevoirNombre	KEYWORD2		
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

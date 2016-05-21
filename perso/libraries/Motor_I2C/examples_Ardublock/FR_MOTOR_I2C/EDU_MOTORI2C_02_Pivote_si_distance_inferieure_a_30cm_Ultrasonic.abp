@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="160 160 160" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="delay" id="581">
+<Location>
+<X>571</X>
+<Y>425</Y>
+</Location>
+<BeforeBlockId>573</BeforeBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="582" connector-kind="socket" connector-type="number" init-type="number" label="Millisecondes" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="582">
+<Label>300</Label>
+<Location>
+<X>869</X>
+<Y>428</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="581" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="delay" id="579">
+<Location>
+<X>572</X>
+<Y>303</Y>
+</Location>
+<BeforeBlockId>264</BeforeBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="580" connector-kind="socket" connector-type="number" init-type="number" label="Millisecondes" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="580">
+<Label>300</Label>
+<Location>
+<X>870</X>
+<Y>306</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="579" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="program" id="263">
+<Location>
+<X>39</X>
+<Y>88</Y>
+</Location>
+<Sockets num-sockets="2">
+<BlockConnector connector-kind="socket" connector-type="cmd" init-type="cmd" label="Programme d'installation (setup)" position-type="single"/>
+<BlockConnector con-block-id="569" connector-kind="socket" connector-type="cmd" init-type="cmd" label="loop" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="ifelse" id="569">
+<Location>
+<X>345</X>
+<Y>131</Y>
+</Location>
+<BeforeBlockId>263</BeforeBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="568" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Teste" position-type="single"/>
+<BlockConnector con-block-id="264" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Alors exécute ..." position-type="single"/>
+<BlockConnector con-block-id="573" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Sinon éxécute" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_Driver_I2C_Pivoter" id="573">
+<Location>
+<X>571</X>
+<Y>345</Y>
+</Location>
+<BeforeBlockId>569</BeforeBlockId>
+<AfterBlockId>581</AfterBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="574" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_right" id="574">
+<Location>
+<X>753</X>
+<Y>348</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="573" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_Driver_I2C_Back" id="264">
+<Location>
+<X>572</X>
+<Y>223</Y>
+</Location>
+<BeforeBlockId>569</BeforeBlockId>
+<AfterBlockId>579</AfterBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="265" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_straight" id="265">
+<Location>
+<X>754</X>
+<Y>226</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="264" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="greater" id="568">
+<Location>
+<X>575</X>
+<Y>134</Y>
+</Location>
+<Comment>
+<Text>Si la distance est supérieur à 30cm, on avance</Text>
+<Location>
+<X>990</X>
+<Y>99</Y>
+</Location>
+<BoxSize>
+<Width>150</Width>
+<Height>100</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="569" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="mirror"/>
+</Plug>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="577" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="bottom"/>
+<BlockConnector con-block-id="570" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="bottom"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="570">
+<Label>30</Label>
+<Location>
+<X>883</X>
+<Y>137</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="568" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_Ultrasonic" id="577">
+<Location>
+<X>585</X>
+<Y>137</Y>
+</Location>
+<Comment>
+<Text>Mesure la distance en cm</Text>
+<Location>
+<X>516</X>
+<Y>49</Y>
+</Location>
+<BoxSize>
+<Width>285</Width>
+<Height>49</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="568" connector-kind="plug" connector-type="number" init-type="number" label="code" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="578" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="578">
+<Label>6</Label>
+<Location>
+<X>775</X>
+<Y>137</Y>
+</Location>
+<Comment>
+<Text>Le capteur est branché sur le connecteur 6</Text>
+<Location>
+<X>808</X>
+<Y>22</Y>
+</Location>
+<BoxSize>
+<Width>158</Width>
+<Height>84</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="577" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

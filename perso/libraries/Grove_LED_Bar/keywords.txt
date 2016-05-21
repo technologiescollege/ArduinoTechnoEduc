@@ -1,0 +1,12 @@
+LED_Bar	KEYWORD1
+
+
+ledIndexBit	KEYWORD2
+setLevel	KEYWORD2
+setSingleLed	KEYWORD2
+afficher	KEYWORD2
+allumerTout	KEYWORD2
+effacerTout	KEYWORD2
+effacer	KEYWORD2
+eteindreLed	KEYWORD2
+allumerLed	KEYWORD2

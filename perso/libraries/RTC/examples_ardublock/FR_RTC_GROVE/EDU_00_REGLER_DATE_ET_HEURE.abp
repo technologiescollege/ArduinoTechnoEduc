@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="128 128 128" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="DuinoEDU_RTC_Mem" id="871">
+<Location>
+<X>162</X>
+<Y>193</Y>
+</Location>
+<Comment>
+<Text>Règle date et heure</Text>
+<Location>
+<X>211</X>
+<Y>127</Y>
+</Location>
+<BoxSize>
+<Width>211</Width>
+<Height>37</Height>
+</BoxSize>
+</Comment>
+<BeforeBlockId>454</BeforeBlockId>
+<Sockets num-sockets="6">
+<BlockConnector con-block-id="872" connector-kind="socket" connector-type="number" init-type="number" label="Jour" position-type="single"/>
+<BlockConnector con-block-id="873" connector-kind="socket" connector-type="number" init-type="number" label="Mois" position-type="single"/>
+<BlockConnector con-block-id="874" connector-kind="socket" connector-type="number" init-type="number" label="Année" position-type="single"/>
+<BlockConnector con-block-id="875" connector-kind="socket" connector-type="number" init-type="number" label="Heure" position-type="single"/>
+<BlockConnector con-block-id="876" connector-kind="socket" connector-type="number" init-type="number" label="Minute" position-type="single"/>
+<BlockConnector con-block-id="877" connector-kind="socket" connector-type="number" init-type="number" label="Seconde" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="877">
+<Label>0</Label>
+<Location>
+<X>340</X>
+<Y>316</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="871" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="876">
+<Label>45</Label>
+<Location>
+<X>340</X>
+<Y>292</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="871" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="875">
+<Label>18</Label>
+<Location>
+<X>340</X>
+<Y>268</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="871" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="874">
+<Label>2015</Label>
+<Location>
+<X>340</X>
+<Y>244</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="871" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="873">
+<Label>2</Label>
+<Location>
+<X>340</X>
+<Y>220</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="871" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="872">
+<Label>18</Label>
+<Location>
+<X>340</X>
+<Y>196</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="871" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="loop" id="454">
+<Location>
+<X>63</X>
+<Y>185</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="871" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Faire" position-type="single"/>
+</Sockets>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

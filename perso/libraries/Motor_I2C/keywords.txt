@@ -1,0 +1,39 @@
+#######################################
+# Syntax Coloring Map For MotorI2C 
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+MotorI2C	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+branch	KEYWORD2
+writeSpeed	KEYWORD2
+speed	KEYWORD2
+setSpeed	KEYWORD2
+forward	KEYWORD2
+back	KEYWORD2
+rotate	KEYWORD2
+stop	KEYWORD2
+
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+brancher	LITERAL1
+ecrireVitesse	LITERAL1
+ecrireVitesseMoteurA	LITERAL1
+ecrireVitesseMoteurB	LITERAL1
+reglerVitess	LITERAL1
+vitesse	LITERAL1
+avancer	LITERAL1
+reculer	LITERAL1
+pivoter	LITERAL1
+stopper	LITERAL1

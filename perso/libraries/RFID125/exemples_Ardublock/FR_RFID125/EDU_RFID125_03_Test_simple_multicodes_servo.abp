@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="160 160 160" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="DuinoEDU_Rfid_Test" id="558">
+<Location>
+<X>553</X>
+<Y>180</Y>
+</Location>
+<Comment>
+<Text>Comparaison du code à la liste des codes</Text>
+<Location>
+<X>870</X>
+<Y>95</Y>
+</Location>
+<BoxSize>
+<Width>367</Width>
+<Height>46</Height>
+</BoxSize>
+<Collapsed/>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="274" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="559" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="560" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="553" connector-kind="socket" connector-type="string" init-type="string" label="Code" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_Rfid_Read" id="553">
+<Location>
+<X>771</X>
+<Y>228</Y>
+</Location>
+<Comment>
+<Text>Lecture du badge présenté au lecteur RFID</Text>
+<Location>
+<X>947</X>
+<Y>148</Y>
+</Location>
+<BoxSize>
+<Width>302</Width>
+<Height>64</Height>
+</BoxSize>
+<Collapsed/>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="558" connector-kind="plug" connector-type="string" init-type="string" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="554" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="555" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="555">
+<Label>5</Label>
+<Location>
+<X>989</X>
+<Y>252</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="553" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="554">
+<Label>4</Label>
+<Location>
+<X>989</X>
+<Y>228</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="553" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="560">
+<Label>3</Label>
+<Location>
+<X>771</X>
+<Y>204</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="558" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="559">
+<Label>2</Label>
+<Location>
+<X>771</X>
+<Y>180</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="558" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="subroutine" id="548">
+<Label>Fermeture</Label>
+<Location>
+<X>630</X>
+<Y>628</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="550" connector-kind="socket" connector-type="cmd" init-type="cmd" label="commands" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="servo_default" id="550">
+<Label>Servo: Default</Label>
+<Location>
+<X>785</X>
+<Y>636</Y>
+</Location>
+<BeforeBlockId>548</BeforeBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="551" connector-kind="socket" connector-type="number-list" init-type="number-list" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="552" connector-kind="socket" connector-type="number" init-type="number" label="Angle" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="552">
+<Label>120</Label>
+<Location>
+<X>1037</X>
+<Y>663</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="550" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number-single" id="551">
+<Label>3</Label>
+<Location>
+<X>1037</X>
+<Y>639</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="550" connector-kind="plug" connector-type="number-list" init-type="number-list" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="subroutine" id="542">
+<Label>Ouverture</Label>
+<Location>
+<X>18</X>
+<Y>628</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="544" connector-kind="socket" connector-type="cmd" init-type="cmd" label="commands" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="servo_default" id="544">
+<Location>
+<X>173</X>
+<Y>636</Y>
+</Location>
+<Comment>
+<Text>Ouverture porte</Text>
+<Location>
+<X>436</X>
+<Y>554</Y>
+</Location>
+<BoxSize>
+<Width>182</Width>
+<Height>43</Height>
+</BoxSize>
+<Collapsed/>
+</Comment>
+<BeforeBlockId>542</BeforeBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="545" connector-kind="socket" connector-type="number-list" init-type="number-list" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="546" connector-kind="socket" connector-type="number" init-type="number" label="Angle" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="546">
+<Label>30</Label>
+<Location>
+<X>429</X>
+<Y>663</Y>
+</Location>
+<Comment>
+<Text>Angle</Text>
+<Location>
+<X>542</X>
+<Y>581</Y>
+</Location>
+<BoxSize>
+<Width>88</Width>
+<Height>39</Height>
+</BoxSize>
+<Collapsed/>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="544" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number-single" id="545">
+<Label>3</Label>
+<Location>
+<X>429</X>
+<Y>639</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="544" connector-kind="plug" connector-type="number-list" init-type="number-list" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="subroutine-ref" id="549">
+<Label>Fermeture</Label>
+<Location>
+<X>549</X>
+<Y>522</Y>
+</Location>
+<BeforeBlockId>278</BeforeBlockId>
+</Block>
+<Block genus-name="subroutine-ref" id="547">
+<Label>Ouverture</Label>
+<Location>
+<X>550</X>
+<Y>409</Y>
+</Location>
+<Comment>
+<Text>Appelle le sous-programme de même nom
+Pas d'espace pour le nom du sous-programme !
+Pas de "-"</Text>
+<Location>
+<X>877</X>
+<Y>390</Y>
+</Location>
+<BoxSize>
+<Width>445</Width>
+<Height>68</Height>
+</BoxSize>
+<Collapsed/>
+</Comment>
+<BeforeBlockId>275</BeforeBlockId>
+</Block>
+<Block genus-name="program" id="261">
+<Location>
+<X>17</X>
+<Y>57</Y>
+</Location>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="263" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Programme d'installation (setup)" position-type="single"/>
+<BlockConnector con-block-id="274" connector-kind="socket" connector-type="cmd" init-type="cmd" label="loop" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="ifelse" id="274">
+<Location>
+<X>323</X>
+<Y>177</Y>
+</Location>
+<BeforeBlockId>261</BeforeBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="558" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Teste" position-type="single"/>
+<BlockConnector con-block-id="275" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Alors exécute ..." position-type="single"/>
+<BlockConnector con-block-id="278" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Sinon éxécute" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="seeed_led" id="278">
+<Location>
+<X>549</X>
+<Y>446</Y>
+</Location>
+<BeforeBlockId>274</BeforeBlockId>
+<AfterBlockId>549</AfterBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="279" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="280" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Statut" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="digital-off" id="280">
+<Location>
+<X>727</X>
+<Y>473</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="278" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="279">
+<Label>8</Label>
+<Location>
+<X>727</X>
+<Y>449</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="278" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="seeed_led" id="275">
+<Location>
+<X>550</X>
+<Y>333</Y>
+</Location>
+<BeforeBlockId>274</BeforeBlockId>
+<AfterBlockId>547</AfterBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="276" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="277" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Statut" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="digital-on" id="277">
+<Location>
+<X>728</X>
+<Y>360</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="275" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="276">
+<Label>8</Label>
+<Location>
+<X>728</X>
+<Y>336</Y>
+</Location>
+<Comment>
+<Text>La LED est branchée sur 8</Text>
+<Location>
+<X>885</X>
+<Y>330</Y>
+</Location>
+<BoxSize>
+<Width>245</Width>
+<Height>42</Height>
+</BoxSize>
+<Collapsed/>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="275" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_Rfid_Write" id="263">
+<Location>
+<X>324</X>
+<Y>65</Y>
+</Location>
+<BeforeBlockId>261</BeforeBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="264" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="265" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="266" connector-kind="socket" connector-type="poly" init-type="poly" label="Code" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="char" id="266">
+<Label>10267514 10274131 07388281</Label>
+<Location>
+<X>592</X>
+<Y>116</Y>
+</Location>
+<Comment>
+<Text>LISTE DES CODES :
+Placer les codes avec 8 caractères séparés par un espace.</Text>
+<Location>
+<X>665</X>
+<Y>14</Y>
+</Location>
+<BoxSize>
+<Width>325</Width>
+<Height>76</Height>
+</BoxSize>
+<Collapsed/>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="263" connector-kind="plug" connector-type="poly" init-type="poly" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="265">
+<Label>5</Label>
+<Location>
+<X>592</X>
+<Y>92</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="263" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="264">
+<Label>4</Label>
+<Location>
+<X>592</X>
+<Y>68</Y>
+</Location>
+<Comment>
+<Text>Le lecteur RFID est branché sur 4 et 5
+(= une seule prise Grove)</Text>
+<Location>
+<X>675</X>
+<Y>14</Y>
+</Location>
+<BoxSize>
+<Width>338</Width>
+<Height>62</Height>
+</BoxSize>
+<Collapsed/>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="263" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

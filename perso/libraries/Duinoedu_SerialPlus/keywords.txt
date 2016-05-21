@@ -1,0 +1,44 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+branch	KEYWORD2
+begin	KEYWORD2
+print	KEYWORD2
+readNbr	KEYWORD2
+send	KEYWORD2
+receiveNbr	KEYWORD2
+minInterval	KEYWORD2
+SoftwareSerial	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+brancher	LITERAL1
+Duinoedu_SerialPlus	LITERAL1
+inventorRecevoir1Octet	LITERAL1
+inventorRecevoir2Octet	LITERAL1
+SERIALPLUS_MEMORISER	LITERAL1
+SERIALPLUS_MEMORISER_200_MS	LITERAL1
+SERIALPLUS_MEMORISER_2000_MS	LITERAL1
+SERIALPLUS_NE_PAS_MEMORISER	LITERAL1
+
+variable1Octet	LITERAL1
+variable2Octet	LITERAL1
+variableTexte	LITERAL1
+
+recevoir1Octet	LITERAL1
+recevoir2Octet	LITERAL1
+recevoirTexte	LITERAL1
+
+
+	

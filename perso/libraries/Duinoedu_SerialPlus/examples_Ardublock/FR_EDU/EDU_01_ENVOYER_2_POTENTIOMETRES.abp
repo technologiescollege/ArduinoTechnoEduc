@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="128 128 128" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="loop" id="470">
+<Location>
+<X>63</X>
+<Y>157</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="471" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Faire" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="Serialplus_send_variable_number" id="471">
+<Location>
+<X>162</X>
+<Y>165</Y>
+</Location>
+<BeforeBlockId>470</BeforeBlockId>
+<AfterBlockId>478</AfterBlockId>
+<Sockets num-sockets="4">
+<BlockConnector con-block-id="484" connector-kind="socket" connector-type="number" init-type="number" label="Valeur" position-type="single"/>
+<BlockConnector con-block-id="473" connector-kind="socket" connector-type="number" init-type="number" label="Canal" position-type="single"/>
+<BlockConnector con-block-id="474" connector-kind="socket" connector-type="string" init-type="string" label="" position-type="single"/>
+<BlockConnector con-block-id="475" connector-kind="socket" connector-type="number" init-type="number" label="intervalle" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="Serialplus_send_variable_number" id="478">
+<Location>
+<X>162</X>
+<Y>319</Y>
+</Location>
+<BeforeBlockId>471</BeforeBlockId>
+<Sockets num-sockets="4">
+<BlockConnector con-block-id="486" connector-kind="socket" connector-type="number" init-type="number" label="Valeur" position-type="single"/>
+<BlockConnector con-block-id="481" connector-kind="socket" connector-type="number" init-type="number" label="Canal" position-type="single"/>
+<BlockConnector con-block-id="482" connector-kind="socket" connector-type="string" init-type="string" label="" position-type="single"/>
+<BlockConnector con-block-id="483" connector-kind="socket" connector-type="number" init-type="number" label="intervalle" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="483">
+<Label>100</Label>
+<Location>
+<X>294</X>
+<Y>446</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="478" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="message" id="482">
+<Label>Serial</Label>
+<Location>
+<X>294</X>
+<Y>422</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="478" connector-kind="plug" connector-type="string" init-type="string" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector connector-kind="socket" connector-type="string" init-type="string" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="481">
+<Label>22</Label>
+<Location>
+<X>294</X>
+<Y>398</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="478" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="seeed_angle_sensor" id="486">
+<Location>
+<X>294</X>
+<Y>322</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="478" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="487" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_A1" id="487">
+<Location>
+<X>562</X>
+<Y>322</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="486" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="475">
+<Label>100</Label>
+<Location>
+<X>294</X>
+<Y>292</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="471" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="message" id="474">
+<Label>Serial</Label>
+<Location>
+<X>294</X>
+<Y>268</Y>
+</Location>
+<Comment>
+<Text>Serial(=UART)si UNO
+Serial,Serial1,Serial2 ou Serial3 si MEGA</Text>
+<Location>
+<X>401</X>
+<Y>254</Y>
+</Location>
+<BoxSize>
+<Width>373</Width>
+<Height>58</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="471" connector-kind="plug" connector-type="string" init-type="string" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector connector-kind="socket" connector-type="string" init-type="string" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="473">
+<Label>21</Label>
+<Location>
+<X>294</X>
+<Y>244</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="471" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="seeed_angle_sensor" id="484">
+<Location>
+<X>294</X>
+<Y>168</Y>
+</Location>
+<Comment>
+<Text>Symbolise le 1er capteur
+Il écrit sur le canal 21</Text>
+<Location>
+<X>641</X>
+<Y>156</Y>
+</Location>
+<BoxSize>
+<Width>134</Width>
+<Height>94</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="471" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="485" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_A0" id="485">
+<Location>
+<X>576</X>
+<Y>168</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="484" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

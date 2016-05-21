@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="128 128 128" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="delay" id="423">
+<Location>
+<X>435</X>
+<Y>341</Y>
+</Location>
+<BeforeBlockId>417</BeforeBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="424" connector-kind="socket" connector-type="number" init-type="number" label="Millisecondes" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="424">
+<Label>100</Label>
+<Location>
+<X>627</X>
+<Y>344</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="423" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_shildbot_Stop" id="422">
+<Location>
+<X>434</X>
+<Y>383</Y>
+</Location>
+<BeforeBlockId>419</BeforeBlockId>
+</Block>
+<Block genus-name="DuinoEDU_shildbot_Read" id="420">
+<Location>
+<X>438</X>
+<Y>136</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="419" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="421" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_S3" id="421">
+<Location>
+<X>670</X>
+<Y>136</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="420" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_shildbot_Forward" id="417">
+<Location>
+<X>435</X>
+<Y>241</Y>
+</Location>
+<BeforeBlockId>419</BeforeBlockId>
+<AfterBlockId>423</AfterBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="418" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_straight" id="418">
+<Location>
+<X>659</X>
+<Y>244</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="417" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="ifelse" id="419">
+<Location>
+<X>236</X>
+<Y>133</Y>
+</Location>
+<BeforeBlockId>416</BeforeBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="420" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Teste" position-type="single"/>
+<BlockConnector con-block-id="417" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Alors exécute ..." position-type="single"/>
+<BlockConnector con-block-id="422" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Sinon éxécute" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="loop" id="416">
+<Location>
+<X>137</X>
+<Y>125</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="419" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Faire" position-type="single"/>
+</Sockets>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

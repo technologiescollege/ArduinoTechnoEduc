@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="128 128 128" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="DuinoEDU_neopixel_show" id="729">
+<Location>
+<X>319</X>
+<Y>480</Y>
+</Location>
+<Comment>
+<Text>Active l'affichage</Text>
+<Location>
+<X>660</X>
+<Y>526</Y>
+</Location>
+<BoxSize>
+<Width>248</Width>
+<Height>51</Height>
+</BoxSize>
+</Comment>
+<BeforeBlockId>384</BeforeBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="730" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="730">
+<Label>8</Label>
+<Location>
+<X>549</X>
+<Y>483</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="729" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="program" id="341">
+<Location>
+<X>13</X>
+<Y>232</Y>
+</Location>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="342" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Programme d'installation (setup)" position-type="single"/>
+<BlockConnector con-block-id="384" connector-kind="socket" connector-type="cmd" init-type="cmd" label="loop" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_neopixel_pixel_colorGRB" id="384">
+<Location>
+<X>319</X>
+<Y>354</Y>
+</Location>
+<BeforeBlockId>341</BeforeBlockId>
+<AfterBlockId>729</AfterBlockId>
+<Sockets num-sockets="5">
+<BlockConnector con-block-id="385" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="386" connector-kind="socket" connector-type="number" init-type="number" label="Pixel Nb" position-type="single"/>
+<BlockConnector con-block-id="387" connector-kind="socket" connector-type="number" init-type="number" label="Rouge" position-type="single"/>
+<BlockConnector con-block-id="388" connector-kind="socket" connector-type="number" init-type="number" label="Vert" position-type="single"/>
+<BlockConnector con-block-id="389" connector-kind="socket" connector-type="number" init-type="number" label="Bleu" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="389">
+<Label>1000</Label>
+<Location>
+<X>603</X>
+<Y>453</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="384" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="388">
+<Label>1000</Label>
+<Location>
+<X>603</X>
+<Y>429</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="384" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="387">
+<Label>1000</Label>
+<Location>
+<X>603</X>
+<Y>405</Y>
+</Location>
+<Comment>
+<Text>Quantité de rouge
+(0~1000)</Text>
+<Location>
+<X>750</X>
+<Y>370</Y>
+</Location>
+<BoxSize>
+<Width>298</Width>
+<Height>52</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="384" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="386">
+<Label>0</Label>
+<Location>
+<X>603</X>
+<Y>381</Y>
+</Location>
+<Comment>
+<Text>N° du pixel à préparer (0=1er)</Text>
+<Location>
+<X>736</X>
+<Y>321</Y>
+</Location>
+<BoxSize>
+<Width>300</Width>
+<Height>44</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="384" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="385">
+<Label>8</Label>
+<Location>
+<X>603</X>
+<Y>357</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="384" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_neopixel_init" id="342">
+<Location>
+<X>320</X>
+<Y>240</Y>
+</Location>
+<Comment>
+<Text>Initialise le ruban</Text>
+<Location>
+<X>309</X>
+<Y>50</Y>
+</Location>
+<BoxSize>
+<Width>224</Width>
+<Height>38</Height>
+</BoxSize>
+</Comment>
+<BeforeBlockId>341</BeforeBlockId>
+<Sockets num-sockets="4">
+<BlockConnector con-block-id="343" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="344" connector-kind="socket" connector-type="number" init-type="number" label="Nb Led" position-type="single"/>
+<BlockConnector con-block-id="345" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+<BlockConnector con-block-id="346" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="ada_neopixel_NEO_GRB" id="346">
+<Location>
+<X>530</X>
+<Y>315</Y>
+</Location>
+<Comment>
+<Text>A changer si l'ordre des couleurs ne correspond pas</Text>
+<Location>
+<X>726</X>
+<Y>249</Y>
+</Location>
+<BoxSize>
+<Width>299</Width>
+<Height>69</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="342" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="ada_neopixel_NEO_KHZ800" id="345">
+<Location>
+<X>530</X>
+<Y>291</Y>
+</Location>
+<Comment>
+<Text>Technologie du ruban
+(Grove : 800 généralement)</Text>
+<Location>
+<X>713</X>
+<Y>184</Y>
+</Location>
+<BoxSize>
+<Width>263</Width>
+<Height>61</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="342" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="344">
+<Label>60</Label>
+<Location>
+<X>530</X>
+<Y>267</Y>
+</Location>
+<Comment>
+<Text>Nombre de LEDs à piloter
+(généralement 30 ou 60)</Text>
+<Location>
+<X>667</X>
+<Y>113</Y>
+</Location>
+<BoxSize>
+<Width>244</Width>
+<Height>64</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="342" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="343">
+<Label>8</Label>
+<Location>
+<X>530</X>
+<Y>243</Y>
+</Location>
+<Comment>
+<Text>Prise sur laquelle est branché le ruban
+D8 ou autre</Text>
+<Location>
+<X>540</X>
+<Y>23</Y>
+</Location>
+<BoxSize>
+<Width>213</Width>
+<Height>86</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="342" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

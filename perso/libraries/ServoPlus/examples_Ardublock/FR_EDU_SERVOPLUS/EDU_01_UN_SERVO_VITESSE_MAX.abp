@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="128 128 128" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="DuinoEDU_Servo_Plus" id="412">
+<Location>
+<X>162</X>
+<Y>276</Y>
+</Location>
+<BeforeBlockId>416</BeforeBlockId>
+<AfterBlockId>418</AfterBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="413" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="414" connector-kind="socket" connector-type="number" init-type="number" label="Angle" position-type="single"/>
+<BlockConnector con-block-id="415" connector-kind="socket" connector-type="number" init-type="number" label="Vitesse" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="delay" id="418">
+<Location>
+<X>162</X>
+<Y>386</Y>
+</Location>
+<BeforeBlockId>412</BeforeBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="419" connector-kind="socket" connector-type="number" init-type="number" label="Millisecondes" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="419">
+<Label>1000</Label>
+<Location>
+<X>354</X>
+<Y>389</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="418" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="415">
+<Label>1000</Label>
+<Location>
+<X>398</X>
+<Y>327</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="412" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="414">
+<Label>135</Label>
+<Location>
+<X>398</X>
+<Y>303</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="412" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_D2" id="413">
+<Location>
+<X>398</X>
+<Y>279</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="412" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="delay" id="416">
+<Location>
+<X>162</X>
+<Y>246</Y>
+</Location>
+<BeforeBlockId>408</BeforeBlockId>
+<AfterBlockId>412</AfterBlockId>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="417" connector-kind="socket" connector-type="number" init-type="number" label="Millisecondes" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="417">
+<Label>500</Label>
+<Location>
+<X>354</X>
+<Y>249</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="416" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="loop" id="407">
+<Location>
+<X>63</X>
+<Y>128</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="408" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Faire" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_Servo_Plus" id="408">
+<Location>
+<X>162</X>
+<Y>136</Y>
+</Location>
+<BeforeBlockId>407</BeforeBlockId>
+<AfterBlockId>416</AfterBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="409" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="410" connector-kind="socket" connector-type="number" init-type="number" label="Angle" position-type="single"/>
+<BlockConnector con-block-id="411" connector-kind="socket" connector-type="number" init-type="number" label="Vitesse" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="number" id="411">
+<Label>1000</Label>
+<Location>
+<X>398</X>
+<Y>187</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="408" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="410">
+<Label>45</Label>
+<Location>
+<X>398</X>
+<Y>163</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="408" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_D2" id="409">
+<Location>
+<X>398</X>
+<Y>139</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="408" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>
