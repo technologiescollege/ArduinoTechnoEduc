@@ -1,0 +1,16 @@
+1.3	2009-04-01
+	Fixed a compatibility problem with ATMEGA328 of the new arduino
+	Now use SIGNAL(TIMER1_COMPA_vect) instead of ISR(SIG_OUTPUT_COMPARE1A)
+	as discussed in
+	http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1237714550/11
+	and reported by Jaime Castro.
+
+1.2	2009-03-30
+	Fixed a problem that prevented compiling with arduino-0015
+	Reported by Jaime Castro
+
+1.1	2008-06-24
+	Now can compile for atmega8
+	Reported by creatrope
+
+1.0	Original release
