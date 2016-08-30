@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   MeEncoderNew
  * \brief   Driver for Me Encoder New module.
  * @file    MeEncoderNew.cpp
  * @author  MakeBlock
  * @version V1.0.0
- * @date    2015/11/10
+ * @date    2016/03/18
  * @brief   Driver for Me Encoder New module.
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -26,36 +26,38 @@
  *
  * \par Method List:
  *
- *    1. void MeEncoderNew::begin();
- *    2. void MeEncoderNew::reset();
- *    3. void MeEncoderNew::move(long angle, int speed);
- *    4. void MeEncoderNew::moveTo(long angle, int speed);
- *    5. void MeEncoderNew::runTurns(int turns, int speed);
- *    6. void MeEncoderNew::runSpeed(int speed);
- *    7. void MeEncoderNew::runSpeedAndTime(int speed, float time);
- *    8. int MeEncoderNew::getCurrentSpeed();
- *    9. long MeEncoderNew::getCurrentPosition();
- *    10. void MeEncoderNew::moveTo(long angle);
- *    11. void MeEncoderNew::movetoSpeed(long angle,int speed);
- *    12. void MeEncoderNew::setHold(uint8_t hold);
- *    13. void MeEncoderNew::setPID(float p,float i,float d,float s);
- *    14. void MeEncoderNew::setMaxPower(int8_t maxPower);
- *    15. int8_t MeEncoderNew::getPower();
- *    16. void MeEncoderNew::getPID(float * p,float * i,float * d,float * s);
- *    17. float MeEncoderNew::getRatio();
+ *    1. void MeEncoderNew::begin(void);
+ *    2. void MeEncoderNew::move(long angle, float speed, float lock_state);
+ *    3. void MeEncoderNew::moveTo(long angle, float speed,float lock_state);
+ *    4. void MeEncoderNew::runSpeed(int speed);
+ *    5. void MeEncoderNew::runTurns(long turns, float speed,float lock_state);
+ *    6. void MeEncoderNew::reset(void);
+ *    7. void MeEncoderNew::setSpeedPID(float p,float i,float d);
+ *    8. void MeEncoderNew::setPosPID(float p,float i,float d);
+ *    9. void MeEncoderNew::setMode(uint8_t mode);
+ *    10. void MeEncoderNew::setPWM(int pwm);
+ *    11. void MeEncoderNew::setCurrentPosition(long pulse_counter)
+ *    12. long MeEncoderNew::getCurrentPosition();
+ *    13. void MeEncoderNew::getSpeedPID(float * p,float * i,float * d);
+ *    14. void MeEncoderNew::getPosPID(float * p,float * i,float * d);
+ *    15. float MeEncoderNew::getCurrentSpeed(void);
+ *    16. void MeEncoderNew::sendCmd(void);
+ *    17. float MeEncoderNew::getRatio(void);
  *    18. void MeEncoderNew::setRatio(float r);
- *    19. int MeEncoderNew::getPulse();
+ *    19. int MeEncoderNew::getPulse(void);
  *    20. void MeEncoderNew::setPulse(int p);
  *    21. void MeEncoderNew::setDevid(int devid);
- *    22. void MeEncoderNew::setMode(uint8_t mode);
- *    23. void MeEncoderNew::setPWM(int pwm);
+ *    22. void MeEncoderNew::runSpeedAndTime(float speed, float time, float lock_state);
+ *    23. boolean MeEncoderNew::isTarPosReached(void);
  *
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
- * forfish         2015/11/10     1.0.0            Add description
+ * Mark Yan        2016/03/18     1.0.0            build the new
  * </pre>
  *
+ * @example EncoderMotorChangeI2CDevID.ino
+ * @example EncoderMotorTestIsTarPosReached.ino
  * @example EncoderMotorTestMoveTo.ino
  * @example EncoderMotorTestRunSpeed.ino
  * @example EncoderMotorTestRunSpeedAndTime.ino
@@ -66,33 +68,35 @@
 #define HOLD 0x40
 #define SYNC 0x80
 // move state and function
-#define CMD_RESET 0x00
-#define CMD_MOVE_TO 0x01
-#define CMD_BREAK 0x02
-#define CMD_MOVE_SPD 0x03
-#define CMD_MOVE_TO_SPD 0x04
+#define CMD_RESET         0x00
+#define CMD_MOVE_TO       0x01
+#define CMD_MOVE          0x02
+#define CMD_MOVE_SPD      0x03
+#define CMD_STOP          0x05
+
 // config function
-#define CMD_SET_PID 0x10
-#define CMD_SET_HOLD 0x11
-#define CMD_SET_POWER 0x12
-#define CMD_SET_MODE 0x13
-#define CMD_SET_PWM 0x14
-#define CMD_SET_RATIO 0x15
-#define CMD_SET_PULSE 0x16
-#define CMD_SET_DEVID 0x17
+#define CMD_SET_SPEED_PID 0x10
+#define CMD_SET_POS_PID   0x11
+#define CMD_SET_CUR_POS   0x12
+#define CMD_SET_MODE      0x13
+#define CMD_SET_PWM       0x14
+#define CMD_SET_RATIO     0x15
+#define CMD_SET_PULSE     0x16
+#define CMD_SET_DEVID     0x17
 // get motor status
-#define CMD_GET_PID 0x20
-#define CMD_GET_POWER 0x21
-#define CMD_GET_POS 0x22
-#define CMD_GET_SPEED 0x23
-#define CMD_GET_RATIO 0x24
-#define CMD_GET_PULSE 0x25
+#define CMD_GET_SPEED_PID       0x20
+#define CMD_GET_POS_PID         0x21
+#define CMD_GET_POS             0x23
+#define CMD_GET_SPEED           0x24
+#define CMD_GET_RATIO           0x25
+#define CMD_GET_PULSE           0x26
+#define CMD_GET_LOCK_STATE      0x27
 
 /**
  * Alternate Constructor which can call your own function to map the Encoder Motor New to arduino port,
  * you can set any slot for the Encoder Motor New device. 
  * \param[in]
- *   port - RJ25 port from PORT_1 to M2
+ *   port - RJ25 port from PORT_1 to PORT_10
  * \param[in]
  *   slot - SLOT1 or SLOT2
  */
@@ -120,7 +124,7 @@ MeEncoderNew::MeEncoderNew(uint8_t slot)
  * \param[in]
  *   None
  */
-MeEncoderNew::MeEncoderNew()
+MeEncoderNew::MeEncoderNew(void)
 {
   address = 0x09;
 }
@@ -139,7 +143,7 @@ MeEncoderNew::MeEncoderNew()
  * \par Others
  *    None
  */
-void MeEncoderNew::begin()
+void MeEncoderNew::begin(void)
 {
   Wire.begin();
 }
@@ -153,6 +157,8 @@ void MeEncoderNew::begin()
  *    angle - The angle move of Motor New.
  * \param[in]
  *    speed - The speed move of Motor New.
+ * \param[in]
+ *    lock_state - The lock state of Motor.
  * \par Output
  *    None
  * \par Return
@@ -160,13 +166,15 @@ void MeEncoderNew::begin()
  * \par Others
  *    None
  */
-void MeEncoderNew::move(long angle, int speed)
+void MeEncoderNew::move(long angle, float speed, float lock_state)
 {
   cmdBuf[0] = _slot;
-  cmdBuf[1] = CMD_MOVE_TO;
-  memcpy(cmdBuf + 2, &angle, 4);
-  memcpy(cmdBuf + 6,&speed,2);
+  cmdBuf[1] = CMD_MOVE;
+  memcpy(cmdBuf + 2, &lock_state, 4);
+  memcpy(cmdBuf + 6, &angle, 4);
+  memcpy(cmdBuf + 10,&speed,4);
   sendCmd();
+  delay(2);
 }
 
 /**
@@ -178,29 +186,8 @@ void MeEncoderNew::move(long angle, int speed)
  *    angle - The angle move of Motor New.
  * \param[in]
  *    speed - The speed move of Motor New.
- * \par Output
- *    None
- * \par Return
- *    None
- * \par Others
- *    None
- */
-void MeEncoderNew::moveTo(long angle, int speed)
-{
-  cmdBuf[0] = _slot;
-  cmdBuf[1] = CMD_MOVE_TO;
-  memcpy(cmdBuf + 2, &angle, 4);
-  memcpy(cmdBuf + 6,&speed,2);
-  sendCmd();
-}
-
-/**
- * \par Function
- *    moveTo
- * \par Description
- *    Motor New move to the aim.
  * \param[in]
- *    angle - The angle move of Motor New.
+ *    lock_state - The lock state of Motor.
  * \par Output
  *    None
  * \par Return
@@ -208,12 +195,15 @@ void MeEncoderNew::moveTo(long angle, int speed)
  * \par Others
  *    None
  */
-void MeEncoderNew::moveTo(long angle)
+void MeEncoderNew::moveTo(long angle, float speed,float lock_state)
 {
   cmdBuf[0] = _slot;
   cmdBuf[1] = CMD_MOVE_TO;
-  memcpy(cmdBuf + 2, &angle, 4);
+  memcpy(cmdBuf + 2, &lock_state, 4);
+  memcpy(cmdBuf + 6, &angle, 4);
+  memcpy(cmdBuf + 10,&speed,4);
   sendCmd();
+  delay(2);
 }
 
 /**
@@ -223,6 +213,8 @@ void MeEncoderNew::moveTo(long angle)
  *    The speed of Motor's movement.
  * \param[in]
  *    speed - The speed move of Motor.
+ * \param[in]
+ *    lock_state - The lock state of Motor.
  * \par Output
  *    None
  * \par Return
@@ -230,43 +222,14 @@ void MeEncoderNew::moveTo(long angle)
  * \par Others
  *    None
  */
-void MeEncoderNew::runSpeed(int speed)
+void MeEncoderNew::runSpeed(float speed,float lock_state)
 {
   cmdBuf[0] = _slot;
   cmdBuf[1] = CMD_MOVE_SPD;
-  memcpy(cmdBuf+2,&speed,2);
+  memcpy(cmdBuf + 2, &lock_state, 4);
+  memcpy(cmdBuf + 6, &speed, 4);
   sendCmd();
-}
-
-/**
- * \par Function
- *    runSpeedAndTime
- * \par Description
- *    The speed and time of Motor's movement.
- * \param[in]
- *    speed - The speed move of Motor.
- * \param[in]
- *    time - The time move of Motor.
- * \par Output
- *    None
- * \par Return
- *    None
- * \par Others
- *    None
- */
-void MeEncoderNew::runSpeedAndTime(int speed, float time)
-{
-  if(_lastTime == 0)
-  {
-     _lastTime = millis();
-	 runSpeed(speed);
-  }
-
-  if(millis() - _lastTime > (1000*time))
-  {
-    _lastTime = 0;
-    runSpeed(0);
-  }
+  delay(2);
 }
 
 /**
@@ -278,6 +241,8 @@ void MeEncoderNew::runSpeedAndTime(int speed, float time)
  *    turns - The turns move of Motor.
  * \param[in]
  *    speed - The speed move of Motor.
+ * \param[in]
+ *    lock_state - The lock state of Motor.
  * \par Output
  *    None
  * \par Return
@@ -285,56 +250,9 @@ void MeEncoderNew::runSpeedAndTime(int speed, float time)
  * \par Others
  *    None
  */
-void MeEncoderNew::runTurns(int turns, int speed)
+void MeEncoderNew::runTurns(long turns, float speed,float lock_state)
 {
-    return move(turns * 360, speed);
-}
-
-/**
- * \par Function
- *    movetoSpeed
- * \par Description
- *    Motor move to the set speed.
- * \param[in]
- *    angle - The angle move of Motor.
- * \param[in]
- *    speed - The speed move of Motor.
- * \par Output
- *    None
- * \par Return
- *    None
- * \par Others
- *    None
- */
-void MeEncoderNew::movetoSpeed(long angle,int speed)
-{
-  cmdBuf[0] = _slot;
-  cmdBuf[1] = CMD_MOVE_TO_SPD;
-  memcpy(cmdBuf + 2, &angle, 4);
-  memcpy(cmdBuf + 6,&speed,2);
-  sendCmd();
-}
-
-/**
- * \par Function
- *    setHold
- * \par Description
- *    Hold the state of Motor.
- * \param[in]
- *    hold - The time of Motor hold.
- * \par Output
- *    None
- * \par Return
- *    None
- * \par Others
- *    None
- */
-void MeEncoderNew::setHold(uint8_t hold)
-{
-  cmdBuf[0] = _slot;
-  cmdBuf[1] = CMD_SET_HOLD;
-  cmdBuf[2] = hold;
-  sendCmd();
+  return move(turns * 360, speed,lock_state);
 }
 
 /**
@@ -349,26 +267,25 @@ void MeEncoderNew::setHold(uint8_t hold)
  * \par Others
  *    None
  */
-void MeEncoderNew::reset()
+void MeEncoderNew::reset(void)
 {
   cmdBuf[0] = _slot;
   cmdBuf[1] = CMD_RESET;
   sendCmd();
+  delay(2);
 }
 
 /**
  * \par Function
- *    setPID
+ *    setSpeedPID
  * \par Description
- *    Set PID for Motor.
+ *    Set speed PID for Motor.
  * \param[in]
  *    p - P means Proportion.
  * \param[in]
  *    i - I means Integration.
  * \param[in]
  *    d - D means Differentiation.
- * \param[in]
- *    s - S means slot of Motor.
  * \par Output
  *    None
  * \par Return
@@ -376,24 +293,27 @@ void MeEncoderNew::reset()
  * \par Others
  *    None
  */
-void MeEncoderNew::setPID(float p,float i,float d,float s)
+void MeEncoderNew::setSpeedPID(float p,float i,float d)
 {
   cmdBuf[0] = _slot;
-  cmdBuf[1] = CMD_SET_PID;
+  cmdBuf[1] = CMD_SET_SPEED_PID;
   memcpy(&cmdBuf[2],&p,4);
   memcpy(&cmdBuf[6],&i,4);
   memcpy(&cmdBuf[10],&d,4);
-  memcpy(&cmdBuf[14],&s,4);
   sendCmd();
 }
 
 /**
  * \par Function
- *    setMaxPower
+ *    setPosPID
  * \par Description
- *    Set the max power to Motor.
+ *    Set pos PID for Motor.
  * \param[in]
- *    maxPower - The size of power.
+ *    p - P means Proportion.
+ * \param[in]
+ *    i - I means Integration.
+ * \param[in]
+ *    d - D means Differentiation.
  * \par Output
  *    None
  * \par Return
@@ -401,11 +321,13 @@ void MeEncoderNew::setPID(float p,float i,float d,float s)
  * \par Others
  *    None
  */
-void MeEncoderNew::setMaxPower(int8_t maxPower)
+void MeEncoderNew::setPosPID(float p,float i,float d)
 {
   cmdBuf[0] = _slot;
-  cmdBuf[1] = CMD_SET_POWER;
-  cmdBuf[2] = maxPower;
+  cmdBuf[1] = CMD_SET_POS_PID;
+  memcpy(&cmdBuf[2],&p,4);
+  memcpy(&cmdBuf[6],&i,4);
+  memcpy(&cmdBuf[10],&d,4);
   sendCmd();
 }
 
@@ -429,6 +351,7 @@ void MeEncoderNew::setMode(uint8_t mode)
   cmdBuf[1] = CMD_SET_MODE;
   cmdBuf[2] = mode;
   sendCmd();
+  delay(2);
 }
 
 /**
@@ -451,6 +374,30 @@ void MeEncoderNew::setPWM(int pwm)
   cmdBuf[1] = CMD_SET_PWM;
   memcpy(cmdBuf+2,&pwm,2);
   sendCmd();
+  delay(2);
+}
+
+/**
+ * \par Function
+ *    setCurrentPosition
+ * \par Description
+ *    Set current position of Motor.
+ * \param[in]
+ *    pulse_counter - The count value of current encoder
+ * \par Output
+ *    None
+ * \par Return
+ *    None
+ * \par Others
+ *    None
+ */
+void MeEncoderNew::setCurrentPosition(long pulse_counter)
+{
+  cmdBuf[0] = _slot;
+  cmdBuf[1] = CMD_SET_CUR_POS;
+  memcpy(cmdBuf+2,&pulse_counter,4);
+  sendCmd();
+  delay(2);
 }
 
 /**
@@ -463,11 +410,11 @@ void MeEncoderNew::setPWM(int pwm)
  * \par Output
  *    None
  * \par Return
- *    None
+ *    Motor encoder pulse count value.
  * \par Others
  *    None
  */
-long MeEncoderNew::getCurrentPosition()
+long MeEncoderNew::getCurrentPosition(void)
 {
   long pos;
   char buf[8];
@@ -486,7 +433,7 @@ long MeEncoderNew::getCurrentPosition()
 
 /**
  * \par Function
- *    getPID
+ *    getSpeedPID
  * \par Description
  *    Get PID from Motor.
  * \param[in]
@@ -495,8 +442,6 @@ long MeEncoderNew::getCurrentPosition()
  *    i - I means Integration.
  * \param[in]
  *    d - D means Differentiation.
- * \param[in]
- *    s - S means slot of Motor.
  * \par Output
  *    None
  * \par Return
@@ -504,36 +449,80 @@ long MeEncoderNew::getCurrentPosition()
  * \par Others
  *    None
  */
-void MeEncoderNew::getPID(float * p,float * i,float * d,float * s)
+void MeEncoderNew::getSpeedPID(float * p,float * i,float * d)
 {
   char buf[8];
 
   Wire.beginTransmission(address); 
   Wire.write(_slot);       
-  Wire.write(CMD_GET_PID);             
+  Wire.write(CMD_GET_SPEED_PID);             
   Wire.endTransmission(0);
-  Wire.requestFrom(address,(uint8_t)16);  
+  Wire.requestFrom(address,(uint8_t)12);  
 
   for(int i=0;i<4;i++)   
   { 
     buf[i] = Wire.read(); 
   }
   *p = *(float*)buf;
+
   for(int i=0;i<4;i++)   
   { 
     buf[i] = Wire.read(); 
   }
   *i = *(float*)buf;
-    for(int i=0;i<4;i++)   
+
+  for(int i=0;i<4;i++)   
   { 
     buf[i] = Wire.read(); 
   }
   *d = *(float*)buf;
-    for(int i=0;i<4;i++)   
+}
+
+/**
+ * \par Function
+ *    getPosPID
+ * \par Description
+ *    Get PID from Motor.
+ * \param[in]
+ *    p - P means Proportion.
+ * \param[in]
+ *    i - I means Integration.
+ * \param[in]
+ *    d - D means Differentiation.
+ * \par Output
+ *    None
+ * \par Return
+ *    None
+ * \par Others
+ *    None
+ */
+void MeEncoderNew::getPosPID(float * p,float * i,float * d)
+{
+  char buf[8];
+
+  Wire.beginTransmission(address); 
+  Wire.write(_slot);       
+  Wire.write(CMD_GET_POS_PID);             
+  Wire.endTransmission(0);
+  Wire.requestFrom(address,(uint8_t)12);  
+
+  for(int i=0;i<4;i++)   
   { 
     buf[i] = Wire.read(); 
   }
-  *s = *(float*)buf;
+  *p = *(float*)buf;
+
+  for(int i=0;i<4;i++)   
+  { 
+    buf[i] = Wire.read(); 
+  }
+  *i = *(float*)buf;
+
+  for(int i=0;i<4;i++)   
+  { 
+    buf[i] = Wire.read(); 
+  }
+  *d = *(float*)buf;
 }
 
 /**
@@ -546,49 +535,25 @@ void MeEncoderNew::getPID(float * p,float * i,float * d,float * s)
  * \par Output
  *    None
  * \par Return
- *    None
+ *    The speed of encoder motor(The unit is rpm)
  * \par Others
  *    None
  */
-int MeEncoderNew::getCurrentSpeed()
+float MeEncoderNew::getCurrentSpeed(void)
 {
   char buf[8];
-  int speed;
+  float speed;
   Wire.beginTransmission(address); 
   Wire.write(_slot);      
   Wire.write(CMD_GET_SPEED);             
   Wire.endTransmission(0);
-  Wire.requestFrom(address,(uint8_t)2);   
-  for(int i=0;i<2;i++)   
+  Wire.requestFrom(address,(uint8_t)4);   
+  for(int i=0;i<4;i++)   
   { 
     buf[i] = Wire.read(); 
   }
-  speed = *(int*)buf;
+  speed = *(float*)buf;
   return speed;
-}
-
-/**
- * \par Function
- *    getPower
- * \par Description
- *    The current power of Motor's movement.
- * \param[in]
- *    None
- * \par Output
- *    None
- * \par Return
- *    Return the size of power.
- * \par Others
- *    None
- */
-int8_t MeEncoderNew::getPower()
-{
-  Wire.beginTransmission(address); 
-  Wire.write(_slot);       
-  Wire.write(CMD_GET_POWER);              
-  Wire.endTransmission(0);
-  Wire.requestFrom(address,(uint8_t)1);   
-  return (int8_t)Wire.read();
 }
 
 /**
@@ -605,7 +570,7 @@ int8_t MeEncoderNew::getPower()
  * \par Others
  *    None
  */
-void MeEncoderNew::sendCmd()
+void MeEncoderNew::sendCmd(void)
 {
   Wire.beginTransmission(address); 
   for(int i=0;i<18;i++)
@@ -627,7 +592,7 @@ void MeEncoderNew::sendCmd()
  * \par Others
  *    None
  */
-float MeEncoderNew::getRatio()
+float MeEncoderNew::getRatio(void)
 { 
   char buf[8];
   float ratio;
@@ -650,7 +615,7 @@ float MeEncoderNew::getRatio()
  * \par Description
  *    Set the ratio to Motor.
  * \param[in]
- *    None
+ *    ratio - the ratio of Motor
  * \par Output
  *    None
  * \par Return
@@ -680,7 +645,7 @@ void MeEncoderNew::setRatio(float ratio)
  * \par Others
  *    None
  */
-int MeEncoderNew::getPulse()
+int MeEncoderNew::getPulse(void)
 { 
   char buf[8];
   int pulse;
@@ -703,7 +668,7 @@ int MeEncoderNew::getPulse()
  * \par Description
  *    Set the pulse to Motor.
  * \param[in]
- *    None
+ *    pulse - the line number of Motor
  * \par Output
  *    None
  * \par Return
@@ -725,7 +690,7 @@ void MeEncoderNew::setPulse(int pulse)
  * \par Description
  *    Set the devid to Motor.
  * \param[in]
- *    None
+ *    devid - the I2C adress
  * \par Output
  *    None
  * \par Return
@@ -733,10 +698,75 @@ void MeEncoderNew::setPulse(int pulse)
  * \par Others
  *    None
  */
-void MeEncoderNew::setDevid(int devid)
+void MeEncoderNew::setDevid(uint8_t devid)
 {
   cmdBuf[0] = _slot;
   cmdBuf[1] = CMD_SET_DEVID;
-  memcpy(cmdBuf+2,&devid,2);
+  cmdBuf[2] = devid;
   sendCmd();
+}
+
+/**
+ * \par Function
+ *    runSpeedAndTime
+ * \par Description
+ *    The speed and time of Motor's movement.
+ * \param[in]
+ *    speed - The speed move of Motor.
+ * \param[in]
+ *    time - The time move of Motor.
+ * \param[in]
+ *    lock_state - The lock state of Motor.
+ * \par Output
+ *    None
+ * \par Return
+ *    None
+ * \par Others
+ *    None
+ */
+void MeEncoderNew::runSpeedAndTime(float speed, float time, float lock_state)
+{
+  if(_lastTime == 0)
+  {
+    _lastTime = millis();
+    runSpeed(speed,lock_state);
+  }
+
+  if(millis() - _lastTime > (1000 * time))
+  {
+    _lastTime = 0;
+    runSpeed(0,lock_state);
+  }
+}
+
+/**
+ * \par Function
+ *    isTarPosReached
+ * \par Description
+ *    Check whether the target position has been reached
+ * \param[in]
+ *    None
+ * \par Output
+ *    None
+ * \par Return
+ *    true - The target position reaches
+ *    false - Does not reach the target position
+ * \par Others
+ *    None
+ */
+boolean MeEncoderNew::isTarPosReached(void)
+{
+  uint8_t buf[8];
+  boolean lock_state;
+  Wire.beginTransmission(address); 
+  Wire.write(_slot);      
+  Wire.write(CMD_GET_LOCK_STATE);             
+  Wire.endTransmission(0);
+  Wire.requestFrom(address,(uint8_t)2);
+  for(int i=0;i<2;i++)   
+  { 
+    buf[i] = Wire.read(); 
+  }
+  lock_state = *(boolean*)buf;
+  return lock_state;
 }

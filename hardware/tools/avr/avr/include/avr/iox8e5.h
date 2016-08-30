@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -263,6 +263,12 @@ typedef enum SLEEP_SMODE_enum
 } SLEEP_SMODE_t;
 
 
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
+#define SLEEP_MODE_EXT_STANDBY (0x07<<1)
 /*
 --------------------------------------------------------------------------
 OSC - Oscillator
@@ -895,7 +901,7 @@ typedef struct NVM_struct
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t reserved_0x0E;
     register8_t STATUS;  /* Status */
-    register8_t LOCKBITS;  /* Lock Bits */
+    register8_t LOCK_BITS;  /* Lock Bits (Changed from LOCKBITS to avoid avr-libc collision) */
 } NVM_t;
 
 /* NVM Command */
@@ -2613,7 +2619,7 @@ FUSE - Fuses and Lockbits
 /* Lock Bits */
 typedef struct NVM_LOCKBITS_struct
 {
-    register8_t LOCKBITS;  /* Lock Bits */
+    register8_t LOCK_BITS;  /* Lock Bits (Changed from LOCKBITS to avoid avr-libc collision) */
 } NVM_LOCKBITS_t;
 
 
@@ -7583,7 +7589,7 @@ IO Module Instances. Mapped to memory.
 #define USER_SIGNATURES_END       (USER_SIGNATURES_START + USER_SIGNATURES_SIZE - 1)
 
 #define PROD_SIGNATURES_START     (0x0000)
-#define PROD_SIGNATURES_SIZE      (52)
+#define PROD_SIGNATURES_SIZE      (54)
 #define PROD_SIGNATURES_PAGE_SIZE (128)
 #define PROD_SIGNATURES_END       (PROD_SIGNATURES_START + PROD_SIGNATURES_SIZE - 1)
 
@@ -7658,6 +7664,35 @@ IO Module Instances. Mapped to memory.
 #define SIGNATURE_0 0x1E
 #define SIGNATURE_1 0x93
 #define SIGNATURE_2 0x41
+
+/* ========== Power Reduction Condition Definitions ========== */
+
+/* PR.PRGEN */
+#define __AVR_HAVE_PRGEN	(PR_XCL_bm|PR_RTC_bm|PR_EVSYS_bm|PR_EDMA_bm)
+#define __AVR_HAVE_PRGEN_XCL
+#define __AVR_HAVE_PRGEN_RTC
+#define __AVR_HAVE_PRGEN_EVSYS
+#define __AVR_HAVE_PRGEN_EDMA
+
+/* PR.PRPA */
+#define __AVR_HAVE_PRPA	(PR_DAC_bm|PR_ADC_bm|PR_AC_bm)
+#define __AVR_HAVE_PRPA_DAC
+#define __AVR_HAVE_PRPA_ADC
+#define __AVR_HAVE_PRPA_AC
+
+/* PR.PRPC */
+#define __AVR_HAVE_PRPC	(PR_TWI_bm|PR_USART0_bm|PR_SPI_bm|PR_HIRES_bm|PR_TC5_bm|PR_TC4_bm)
+#define __AVR_HAVE_PRPC_TWI
+#define __AVR_HAVE_PRPC_USART0
+#define __AVR_HAVE_PRPC_SPI
+#define __AVR_HAVE_PRPC_HIRES
+#define __AVR_HAVE_PRPC_TC5
+#define __AVR_HAVE_PRPC_TC4
+
+/* PR.PRPD */
+#define __AVR_HAVE_PRPD	(PR_USART0_bm|PR_TC5_bm)
+#define __AVR_HAVE_PRPD_USART0
+#define __AVR_HAVE_PRPD_TC5
 
 
 #endif /* #ifdef _AVR_ATXMEGA8E5_H_INCLUDED */

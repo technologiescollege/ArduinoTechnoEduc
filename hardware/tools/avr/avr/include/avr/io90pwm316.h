@@ -434,13 +434,24 @@
 /* Power Reduction Register */
 #define PRR     _SFR_MEM8(0x64)
 #define PRADC   0   /* Power Reduction ADC */
-#define PRUSART0 1   /* Power Reduction USART0 */
+#define PRUSART0 1  /* Power Reduction USART0 */
+#define PRUSART PRUSART0 /* Define to maintain backward-compatibility */
 #define PRSPI   2   /* Power Reduction Serial Peripheral Interface */
 #define PRTIM0  3   /* Power Reduction Timer/Counter0 */
 #define PRTIM1  4   /* Power Reduction Timer/Counter1 */
 #define PRPSC0  5   /* Power Reduction PSC0 */
 #define PRPSC1  6   /* Power Reduction PSC1 */
 #define PRPSC2  7   /* Power Reduction PSC2 */
+
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSART0)|(1<<PRSPI)|(1<<PRTIM0)|(1<<PRTIM1)|(1<<PRPSC0)|(1<<PRPSC1)|(1<<PRPSC2))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSART0
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRPSC0
+#define __AVR_HAVE_PRR_PRPSC1
+#define __AVR_HAVE_PRR_PRPSC2
 
 /* Oscillator Calibration Value */
 #define OSCCAL  _SFR_MEM8(0x66)
@@ -690,6 +701,10 @@
 
 /* PSC1 Interrupt Mask Register */
 #define PIM1    _SFR_MEM8(0xA3)
+#define PEOPE1  0 /* PSC1 End of Cycle Interrupt Enable */
+#define PEVE1A  3 /* PSC1 External Event A Interrupt Enable */
+#define PEVE1B  4 /* PSC1 External Event B Interrupt Enable */
+#define PSEIE1  5 /* PSC1 Synchro Error Interrupt Enable */
 
 /* PSC2 Interrupt Flag Register */
 #define PIFR2   _SFR_MEM8(0xA4)
@@ -1249,5 +1264,9 @@
 #define SIGNATURE_1 0x94
 #define SIGNATURE_2 0x83
 
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
 
 #endif /* _AVR_IO90PWM316_H_ */

@@ -676,8 +676,8 @@
 #define TIMER1_OVF_vect      _VECTOR(8)  /* Timer/Counter1 Overflow */
 #define TIMER0_OVF_vect_num  9
 #define TIMER0_OVF_vect      _VECTOR(9)  /* Timer/Counter0 Overflow */
-#define SPISTC_vect_num  10
-#define SPISTC_vect      _VECTOR(10)  /* Serial Transfer Complete */
+#define SPI_STC_vect_num  10
+#define SPI_STC_vect      _VECTOR(10)  /* Serial Transfer Complete */
 
 /* The following vectors use an inconsistent (to the ATmega16 etc.)
    naming scheme.  The inconsistent names are preserved here for softwares
@@ -911,6 +911,13 @@
 #define SS_PORT  PORTB
 #define SS_PIN   PINB
 #define SS_BIT   4
+
+#define SLEEP_MODE_IDLE (0x00<<4)
+#define SLEEP_MODE_ADC (0x01<<4)
+#define SLEEP_MODE_PWR_DOWN (0x02<<4)
+#define SLEEP_MODE_PWR_SAVE (0x03<<4)
+#define SLEEP_MODE_STANDBY (0x0A<<4)
+#define SLEEP_MODE_EXT_STANDBY (0x0B<<4)
 
 #endif /* _AVR_ATmega16A_H_ */
 

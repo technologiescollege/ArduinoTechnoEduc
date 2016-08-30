@@ -6,10 +6,11 @@
  * This is the library provided by makeblock. \n
  * It provides drivers for all makeblock RJ25 jack interface modules. \n
  *
- * The latest version of this documentation can be downloaded from \n
- * http://learn.makeblock.cc/
+ * The latest version of this documentation can see from here \n
+ * http://learn.makeblock.cc/Makeblock-library-for-Arduino/index.html
  *
- * Package can be download from http://learn.makeblock.cc/
+ * Package can be download from https://codeload.github.com/Makeblock-official/Makeblock-Libraries/zip/master \n
+ * If you are familiar with git, you also can clone it from https://github.com/Makeblock-official/Makeblock-Libraries
  *
  * \par Installation
  *
@@ -25,7 +26,7 @@
  *
  * \par Copyright
  *
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -39,26 +40,30 @@
  * \par History:
  * <pre>
  * Author           Time           Version          Descr
- * Mark Yan         2015/07/24     1.0.0            Rebuild the old lib.
- * Rafael Lee       2015/09/02     1.0.0            Added some comments and macros.
- * Lawrence         2015/09/09     1.0.0            Include some Arduino's official headfiles which path specified.
+ * Mark Yan         2015/07/24     3.0.0            Rebuild the old lib.
+ * Rafael Lee       2015/09/02     3.1.0            Added some comments and macros.
+ * Lawrence         2015/09/09     3.2.0            Include some Arduino's official headfiles which path specified.
+ * Mark Yan         2015/11/02     3.2.1            fix bug on MACOS.
+ * Mark Yan         2016/01/21     3.2.2            fix some library bugs.
+ * Mark Yan         2016/05/17     3.2.3            add support for MegaPi and Auriga Board.
+ * Mark Yan         2016/07/27     3.2.4            fix some JIRA issue, add PID motion for Megapi/Auriga on board encoder motor
  * </pre>
  *
- * \author  Mark Yan (myan@makeblock.com) DO NOT CONTACT THE AUTHOR DIRECTLY: USE THE LISTS
+ * \author  Mark Yan (myan@makeblock.com)
  */
 
 
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \brief   Configuration file of library.
  * \file    Meconfig.h
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/09/01
+ * @version V1.0.4
+ * @date    2015/11/03
  * @brief   Configuration file of library.
  * \par Copyright
  *
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -77,8 +82,10 @@
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * Mark Yan         2015/07/24         1.0.0            Rebuild the old lib.
- * Rafael Lee       2015/09/02         1.0.0            Added some comments and macros. Fixed some bug and add some methods.
- * Lawrence         2015/09/09         1.0.0            Include some Arduino's official headfiles which path specified.
+ * Rafael Lee       2015/09/02         1.0.1            Added some comments and macros. Fixed some bug and add some methods.
+ * Lawrence         2015/09/09         1.0.2            Include some Arduino's official headfiles which path specified.
+ * Mark Yan         2015/11/02         1.0.3            fix bug on MACOS.
+ * Mark Yan         2015/11/03         1.0.4            fix Segmentation symbols error for file path.
  * </pre>
  */
 

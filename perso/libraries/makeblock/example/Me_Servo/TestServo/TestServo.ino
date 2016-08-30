@@ -1,5 +1,5 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * @file    Knob.ino
  * @author  MakeBlock
  * @version V1.0.0
@@ -17,7 +17,6 @@
  * </pre>
  */
 #include "MeOrion.h"
-#include <Servo.h>
 
 //Parts required:Me RJ25 Adapter and two servo 	
 //Me RJ25 Adapter SLOT1 connect servo1,SLOT2 connect servo2,

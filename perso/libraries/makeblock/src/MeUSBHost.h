@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   MeUSBHost
  * \brief   Driver for Me USB Host module.
  * @file    MeUSBHost.h
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/11/09
+ * @version V1.0.1
+ * @date    2016/01/20
  * @brief   Header for MeUSBHost.cpp module
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -36,6 +36,7 @@
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * forfish         2015/11/10     1.0.0            Add description
+ * Mark Yan        2016/01/20     1.0.1            Support hardware serial automatic Identification
  * </pre>
  *
  * @example TestUSBHsot.ino
@@ -43,11 +44,13 @@
 
 #ifndef MeUSBHost_H
 #define MeUSBHost_H
+
 #include <Arduino.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "MeConfig.h"
 #include "MePort.h"
+#include "MeSerial.h"
 #define USB2_0 1
 #define USB1_0 0
 
@@ -373,7 +376,7 @@ public:
  */
   MeUSBHost();
 
-  //MeUSBHost(uint8_t s1, uint8_t s2);
+  MeUSBHost(uint8_t s1, uint8_t s2);
 
 /**
  *  Alternate Constructor which can call your own function to map the USB Host to arduino port, \n
@@ -464,7 +467,7 @@ public:
   uint8_t host_recv();
 
 private:
-  SoftwareSerial *HSerial;
+  MeSerial *HSerial;
   int16_t stallCount;
   int8_t usbtype;
 

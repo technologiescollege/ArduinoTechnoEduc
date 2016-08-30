@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -143,6 +143,14 @@
 #define INT1    1
 
 #define GPIOR0  _SFR_IO8(0x1E)
+#define GPIOR00 0
+#define GPIOR01 1
+#define GPIOR02 2
+#define GPIOR03 3
+#define GPIOR04 4
+#define GPIOR05 5
+#define GPIOR06 6
+#define GPIOR07 7
 
 #define EECR    _SFR_IO8(0x1F)
 #define EERE    0
@@ -153,6 +161,14 @@
 #define EEPM1   5
 
 #define EEDR    _SFR_IO8(0x20)
+#define EEDR0   0
+#define EEDR1   1
+#define EEDR2   2
+#define EEDR3   3
+#define EEDR4   4
+#define EEDR5   5
+#define EEDR6   6
+#define EEDR7   7
 
 /* Combine EEARL and EEARH */
 #define EEAR    _SFR_IO16(0x21)
@@ -180,14 +196,46 @@
 #define FOC0A   7
 
 #define TCNT0   _SFR_IO8(0x27)
+#define TCNT00  0
+#define TCNT01  1
+#define TCNT02  2
+#define TCNT03  3
+#define TCNT04  4
+#define TCNT05  5
+#define TCNT06  6
+#define TCNT07  7
 
 #define OCR0A   _SFR_IO8(0x28)
+#define OCR00   0
+#define OCR01   1
+#define OCR02   2
+#define OCR03   3
+#define OCR04   4
+#define OCR05   5
+#define OCR06   6
+#define OCR07   7
 
 /* Reserved [0x29] */
 
 #define GPIOR1  _SFR_IO8(0x2A)
+#define GPIOR10 0
+#define GPIOR11 1
+#define GPIOR12 2
+#define GPIOR13 3
+#define GPIOR14 4
+#define GPIOR15 5
+#define GPIOR16 6
+#define GPIOR17 7
 
 #define GPIOR2  _SFR_IO8(0x2B)
+#define GPIOR20 0
+#define GPIOR21 1
+#define GPIOR22 2
+#define GPIOR23 3
+#define GPIOR24 4
+#define GPIOR25 5
+#define GPIOR26 6
+#define GPIOR27 7
 
 #define SPCR    _SFR_IO8(0x2C)
 #define SPR0    0
@@ -205,6 +253,14 @@
 #define SPIF    7
 
 #define SPDR    _SFR_IO8(0x2E)
+#define SPDR0   0
+#define SPDR1   1
+#define SPDR2   2
+#define SPDR3   3
+#define SPDR4   4
+#define SPDR5   5
+#define SPDR6   6
+#define SPDR7   7
 
 /* Reserved [0x2F] */
 
@@ -218,17 +274,15 @@
 #define ACIRS   6
 #define ACD     7
 
-#define OSCCAL  _SFR_IO8(0x31)
-#define OSCCAL0 0
-#define OSCCAL1 1
-#define OSCCAL2 2
-#define OSCCAL3 3
-#define OSCCAL4 4
-#define OSCCAL5 5
-#define OSCCAL6 6
-#define OSCCAL7 7
-
 #define DWDR    _SFR_IO8(0x31)
+#define DWDR0   0
+#define DWDR1   1
+#define DWDR2   2
+#define DWDR3   3
+#define DWDR4   4
+#define DWDR5   5
+#define DWDR6   6
+#define DWDR7   7
 
 /* Reserved [0x32] */
 
@@ -307,7 +361,27 @@
 #define PRSPI   4
 #define PRLIN   5
 
-/* Reserved [0x65..0x67] */
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSI)|(1<<PRTIM0)|(1<<PRTIM1)|(1<<PRSPI)|(1<<PRLIN))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSI
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRLIN
+
+/* Reserved [0x65] */
+
+#define OSCCAL  _SFR_MEM8(0x66)
+#define OSCCAL0 0
+#define OSCCAL1 1
+#define OSCCAL2 2
+#define OSCCAL3 3
+#define OSCCAL4 4
+#define OSCCAL5 5
+#define OSCCAL6 6
+#define OSCCAL7 7
+
+/* Reserved [0x67] */
 
 #define PCICR   _SFR_MEM8(0x68)
 #define PCIE0   0
@@ -411,9 +485,9 @@
 #define ADC7D   7
 
 #define DIDR1   _SFR_MEM8(0x7F)
-#define ADC8D   0
-#define ADC9D   1
-#define ADC10D  2
+#define ADC8D   4
+#define ADC9D   5
+#define ADC10D  6
 
 #define TCCR1A  _SFR_MEM8(0x80)
 #define WGM10   0
@@ -503,8 +577,24 @@
 #define USISIF  7
 
 #define USIDR   _SFR_MEM8(0xBA)
+#define USIDR0  0
+#define USIDR1  1
+#define USIDR2  2
+#define USIDR3  3
+#define USIDR4  4
+#define USIDR5  5
+#define USIDR6  6
+#define USIDR7  7
 
 #define USIBR   _SFR_MEM8(0xBB)
+#define USIBR0  0
+#define USIBR1  1
+#define USIBR2  2
+#define USIBR3  3
+#define USIBR4  4
+#define USIBR5  5
+#define USIBR6  6
+#define USIBR7  7
 
 #define USIPP   _SFR_MEM8(0xBC)
 #define USIPOS  0
@@ -616,6 +706,13 @@
 
 
 
+/* Values and associated defines */
+
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+
 /* Interrupt vectors */
 /* Vector 0 is the reset vector */
 /* External Interrupt Request 0 */
@@ -686,11 +783,11 @@
 #define ANA_COMP_vect            _VECTOR(17)
 #define ANA_COMP_vect_num        17
 
-/* USI Start */
+/* USI Start Condition Detection */
 #define USI_START_vect            _VECTOR(18)
 #define USI_START_vect_num        18
 
-/* USI Overflow */
+/* USI Counter Overflow */
 #define USI_OVF_vect            _VECTOR(19)
 #define USI_OVF_vect_num        19
 
@@ -725,6 +822,8 @@
 #define FUSE_SUT_CKSEL5  (unsigned char)~_BV(5)
 #define FUSE_CKOUT       (unsigned char)~_BV(6)
 #define FUSE_CKDIV8      (unsigned char)~_BV(7)
+#define LFUSE_DEFAULT    (FUSE_SUT_CKSEL0 & FUSE_SUT_CKSEL2 & FUSE_SUT_CKSEL3 & FUSE_SUT_CKSEL4 & FUSE_CKDIV8)
+
 
 /* High Fuse Byte */
 #define FUSE_BODLEVEL0   (unsigned char)~_BV(0)
@@ -735,9 +834,13 @@
 #define FUSE_SPIEN       (unsigned char)~_BV(5)
 #define FUSE_DWEN        (unsigned char)~_BV(6)
 #define FUSE_RSTDISBL    (unsigned char)~_BV(7)
+#define HFUSE_DEFAULT    (FUSE_SPIEN)
+
 
 /* Extended Fuse Byte */
 #define FUSE_SELFPRGEN   (unsigned char)~_BV(0)
+#define EFUSE_DEFAULT    (0xFF)
+
 
 
 /* Lock Bits */

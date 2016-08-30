@@ -1,5 +1,5 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   MeBuzzer
  * \brief   Driver for Me Buzzer module.
  * @file    MeBuzzer.cpp
@@ -9,7 +9,7 @@
  * @brief   Driver for Me Buzzer module.
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -43,6 +43,7 @@
  * @example MbotBuzzerTest2.ino
  */
 #include "MeBuzzer.h"
+#include <avr/wdt.h>
 
 uint8_t buzzer_pin;
 
@@ -150,6 +151,7 @@ void MeBuzzer::tone(int pin, uint16_t frequency, uint32_t duration)
     delayMicroseconds(pulse);
     digitalWrite(buzzer_pin, LOW);
     delayMicroseconds(pulse);
+    wdt_reset();
   }
 }
 
@@ -180,6 +182,7 @@ void MeBuzzer::tone(uint16_t frequency, uint32_t duration)
     delayMicroseconds(pulse);
     digitalWrite(buzzer_pin, LOW);
     delayMicroseconds(pulse);
+    wdt_reset();
   }
 }
 

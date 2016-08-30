@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   MeLEDMatrix
  * \brief   Driver for Me LED Matrix module.
  * @file    MeLEDMatrix.h
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/11/09
+ * @version V1.0.3
+ * @date    2016/01/29
  * @brief   Header for MeLEDMatrix.cpp module
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -21,8 +21,7 @@
  * distributed. See http://www.gnu.org/copyleft/gpl.html
  *
  * \par Description
- * This file is a drive for Me Bluetooth device, The bluetooth inherited the 
- * MeSerial class from SoftwareSerial.
+ * This file is a drive for Me LED Matrix device
  *
  * \par Method List:
  *
@@ -31,15 +30,20 @@
  *    3.    void MeLEDMatrix::setColorIndex(bool Color_Number);
  *    4.    void MeLEDMatrix::drawBitmap(int8_t x, int8_t y, uint8_t Bitmap_Width, uint8_t *Bitmap);
  *    5.    void MeLEDMatrix::drawStr(int16_t X_position, int8_t Y_position, const char *str);
- *    6.    void MeLEDMatrix::showClock(uint8_t hour, uint8_t minute, bool point_flag)
- *    7.    void MeLEDMatrix::reset(uint8_t port);
+ *    6.    void MeLEDMatrix::showClock(uint8_t hour, uint8_t minute, bool point_flag);
+ *    7.    void MeLEDMatrix::showNum(float value,uint8_t digits);
+ *    8.    void MeLEDMatrix::reset(uint8_t port);
  *
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * forfish         2015/11/09     1.0.0            Add description
+ * Mark Yan        2016/01/19     1.0.1            Add some new symbol
+ * Mark Yan        2016/01/27     1.0.2            Add digital printing
+ * Mark Yan        2016/01/29     1.0.3            Fix issue when show integer number
  * </pre>
  *
+ * @example Me_LEDMatrixTest.ino
  */
  
 #ifndef _ME_LED_MATRIX_H_
@@ -207,7 +211,7 @@ public:
  * \par Function
  *    showClock
  * \par Description
- *    Show the clock of LED Matrix.
+ *    Show the clock on LED Matrix.
  * \param[in]
  *    hour - The part of hour in clock.
  * \param[in]
@@ -222,7 +226,25 @@ public:
  *    None
  */
   void showClock(uint8_t hour, uint8_t minute, bool = PointOn);
-  
+
+/**
+ * \par Function
+ *    showNum
+ * \par Description
+ *    Show the number on LED Matrix.
+ * \param[in]
+ *    value - The float data need show.
+ * \param[in]
+ *    digits - Number of digits to display.
+ * \par Output
+ *    None
+ * \Return
+ *    None.
+ * \par Others
+ *    None
+ */
+  void showNum(float value,uint8_t = 3);
+
 /**
  * \par Function
  *    reset

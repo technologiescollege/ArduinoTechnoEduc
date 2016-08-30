@@ -1,1 +1,1 @@
-1.6.9 TechnoEduc
+TechnoEduc 1.6.10

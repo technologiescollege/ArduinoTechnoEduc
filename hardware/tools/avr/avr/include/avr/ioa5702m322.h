@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,13 +57,34 @@
 #define PRT4    3
 #define PRT5    4
 #define PRLFR   5
-#define PRCI    6
+#define PRLFTP  6
+#define PRLFPH  7
+
+#define __AVR_HAVE_PRR1	((1<<PRT1)|(1<<PRT2)|(1<<PRT3)|(1<<PRT4)|(1<<PRT5)|(1<<PRLFR)|(1<<PRLFTP)|(1<<PRLFPH))
+#define __AVR_HAVE_PRR1_PRT1
+#define __AVR_HAVE_PRR1_PRT2
+#define __AVR_HAVE_PRR1_PRT3
+#define __AVR_HAVE_PRR1_PRT4
+#define __AVR_HAVE_PRR1_PRT5
+#define __AVR_HAVE_PRR1_PRLFR
+#define __AVR_HAVE_PRR1_PRLFTP
+#define __AVR_HAVE_PRR1_PRLFPH
 
 #define PRR2    _SFR_IO8(0x02)
+#define PRSPI2  0
+#define PRTWI2  1
 #define PRSF    2
 #define PRDF    3
 #define PRTM    6
 #define PRSSM   7
+
+#define __AVR_HAVE_PRR2	((1<<PRSPI2)|(1<<PRTWI2)|(1<<PRSF)|(1<<PRDF)|(1<<PRTM)|(1<<PRSSM))
+#define __AVR_HAVE_PRR2_PRSPI2
+#define __AVR_HAVE_PRR2_PRTWI2
+#define __AVR_HAVE_PRR2_PRSF
+#define __AVR_HAVE_PRR2_PRDF
+#define __AVR_HAVE_PRR2_PRTM
+#define __AVR_HAVE_PRR2_PRSSM
 
 #define PINB    _SFR_IO8(0x03)
 #define PINB7   7
@@ -77,13 +98,29 @@
 
 #define DDRB    _SFR_IO8(0x04)
 #define DDRB7   7
+// Inserted "DDB7" from "DDRB7" due to compatibility
+#define DDB7    7
 #define DDRB6   6
+// Inserted "DDB6" from "DDRB6" due to compatibility
+#define DDB6    6
 #define DDRB5   5
+// Inserted "DDB5" from "DDRB5" due to compatibility
+#define DDB5    5
 #define DDRB4   4
+// Inserted "DDB4" from "DDRB4" due to compatibility
+#define DDB4    4
 #define DDRB3   3
+// Inserted "DDB3" from "DDRB3" due to compatibility
+#define DDB3    3
 #define DDRB2   2
+// Inserted "DDB2" from "DDRB2" due to compatibility
+#define DDB2    2
 #define DDRB1   1
+// Inserted "DDB1" from "DDRB1" due to compatibility
+#define DDB1    1
 #define DDRB0   0
+// Inserted "DDB0" from "DDRB0" due to compatibility
+#define DDB0    0
 
 #define PORTB   _SFR_IO8(0x05)
 #define PORTB7  7
@@ -102,8 +139,14 @@
 
 #define DDRC    _SFR_IO8(0x07)
 #define DDRC2   2
+// Inserted "DDC2" from "DDRC2" due to compatibility
+#define DDC2    2
 #define DDRC1   1
+// Inserted "DDC1" from "DDRC1" due to compatibility
+#define DDC1    1
 #define DDRC0   0
+// Inserted "DDC0" from "DDRC0" due to compatibility
+#define DDC0    0
 
 #define PORTC   _SFR_IO8(0x08)
 #define PORTC2  2
@@ -122,13 +165,29 @@
 
 #define DDRD    _SFR_IO8(0x0A)
 #define DDRD7   7
+// Inserted "DDD7" from "DDRD7" due to compatibility
+#define DDD7    7
 #define DDRD6   6
+// Inserted "DDD6" from "DDRD6" due to compatibility
+#define DDD6    6
 #define DDRD5   5
+// Inserted "DDD5" from "DDRD5" due to compatibility
+#define DDD5    5
 #define DDRD4   4
+// Inserted "DDD4" from "DDRD4" due to compatibility
+#define DDD4    4
 #define DDRD3   3
+// Inserted "DDD3" from "DDRD3" due to compatibility
+#define DDD3    3
 #define DDRD2   2
+// Inserted "DDD2" from "DDRD2" due to compatibility
+#define DDD2    2
 #define DDRD1   1
+// Inserted "DDD1" from "DDRD1" due to compatibility
+#define DDD1    1
 #define DDRD0   0
+// Inserted "DDD0" from "DDRD0" due to compatibility
+#define DDD0    0
 
 #define PORTD   _SFR_IO8(0x0B)
 #define PORTD7  7
@@ -156,13 +215,14 @@
 #define TPBERF  3
 
 #define MCUCR   _SFR_IO8(0x0E)
-#define IVCE    0
-#define IVSEL   1
+#define IVL0    0
+#define IVL1    1
 #define SPIIO   2
 #define ENPS    3
 #define PUD     4
 #define TRCCE   5
 #define TRCEN   6
+#define IVSEL   7
 
 #define FSCR    _SFR_IO8(0x0F)
 #define TXMOD   0
@@ -212,36 +272,58 @@
 #define T4TOS   6
 #define T4ENA   7
 
-#define T1IFR   _SFR_IO8(0x15)
-#define T1OFF   0
-#define T1COF   1
+#define LTCMR   _SFR_IO8(0x15)
+#define LTPS0   0
+#define LTPS1   1
+#define LTPS2   2
+#define LTCRM   3
+#define LTCIM   4
+#define LTCM    5
+#define LTSM    6
+#define LTENA   7
 
-#define T2IFR   _SFR_IO8(0x16)
-#define T2OFF   0
-#define T2COF   1
+#define EECR2   _SFR_IO8(0x16)
+#define EEBRE   0
+#define E2CIM   1
+#define E2AVF   5
+#define E2FF    6
+#define E2CF    7
 
-#define T3IFR   _SFR_IO8(0x17)
-#define T3OFF   0
-#define T3COF   1
-#define T3ICF   2
+#define PHTCR   _SFR_IO8(0x17)
+#define FRFIFO  5
+#define CPM     6
+#define CSM     7
 
-#define T4IFR   _SFR_IO8(0x18)
-#define T4OFF   0
-#define T4COF   1
-#define T4ICF   2
+#define LDFFL   _SFR_IO8(0x18)
+#define LDFFL0  0
+#define LDFFL1  1
+#define LDFFL2  2
+#define LDFFL3  3
+#define LDFFL4  4
+#define LDFFL5  5
+#define LDFCLR  7
 
-#define T5IFR   _SFR_IO8(0x19)
-#define T5OFF   0
-#define T5COF   1
+#define LDFD    _SFR_IO8(0x19)
 
 #define PRR0    _SFR_IO8(0x1A)
 #define PRSPI   0
+#define PRLFRS  1
 #define PRTXDC  2
 #define PRCRC   3
 #define PRVM    4
 #define PRCO    5
 #define PRCU    6
-#define PRTWI   7
+#define PRTWI1  7
+
+#define __AVR_HAVE_PRR0	((1<<PRSPI)|(1<<PRLFRS)|(1<<PRTXDC)|(1<<PRCRC)|(1<<PRVM)|(1<<PRCO)|(1<<PRCU)|(1<<PRTWI1))
+#define __AVR_HAVE_PRR0_PRSPI
+#define __AVR_HAVE_PRR0_PRLFRS
+#define __AVR_HAVE_PRR0_PRTXDC
+#define __AVR_HAVE_PRR0_PRCRC
+#define __AVR_HAVE_PRR0_PRVM
+#define __AVR_HAVE_PRR0_PRCO
+#define __AVR_HAVE_PRR0_PRCU
+#define __AVR_HAVE_PRR0_PRTWI1
 
 #define PHFR    _SFR_IO8(0x1B)
 #define CRCEF   0
@@ -313,18 +395,20 @@
 #define INTF0   0
 #define INTF1   1
 
-#define CRCDIR  _SFR_IO8(0x29)
+#define LDFCKSW _SFR_IO8(0x29)
+#define LDFSCSW 0
+#define LDFSCKS 1
 
-#define VMSR    _SFR_IO8(0x2A)
+#define VMSCR   _SFR_IO8(0x2A)
 #define VMF     0
+#define VMDIH   1
 
 #define MCUSR   _SFR_IO8(0x2B)
 #define PORF    0
 #define EXTRF   1
-#define BODRF   2
 #define WDRF    3
+#define DWRF    4
 #define TPRF    5
-#define DVCCRF  6
 
 #define SPCR    _SFR_IO8(0x2C)
 #define SPR0    0
@@ -355,9 +439,10 @@
 #define LFRRT1  7
 
 #define LFCR1   _SFR_IO8(0x30)
-#define LFFM0   0
-#define LFFM1   1
-#define ARMDE   2
+#define RSST0   0
+#define RSST1   1
+#define LFFM1   2
+#define ARMDE   3
 #define FLLEN   4
 #define ADTHEN  5
 #define LFPEEN  6
@@ -374,7 +459,10 @@
 #define SELFPRGEN 0
 #define PGERS   1
 #define PGWRT   2
-#define BLBSET  3
+#define FLSEL0  3
+#define FLSEL1  4
+#define FLSEL2  5
+#define RWWSB   6
 #define SPMIE   7
 
 #define SMCR    _SFR_IO8(0x38)
@@ -401,6 +489,11 @@
 #define LFRCTEN 0
 #define LFRCPCEN 1
 #define LFRCPM  2
+#define LFTON   3
+#define LFTS0   4
+#define LFTS1   5
+#define LFTS2   6
+#define LFSBEN  7
 
 /* Reserved [0x3C] */
 
@@ -442,7 +535,9 @@
 
 #define FFREQ2H _SFR_MEM8(0x69)
 
-/* Reserved [0x6A] */
+#define BBTE2   _SFR_MEM8(0x6A)
+#define TDEPO   0
+#define DITDIS  1
 
 #define EICRA   _SFR_MEM8(0x6B)
 #define ISC00   0
@@ -615,26 +710,168 @@
 #define T5OIM   0
 #define T5CIM   1
 
-#define GTCCR   _SFR_MEM8(0x90)
-#define PSR10   0
-#define TSM     7
+#define LFCALR1 _SFR_MEM8(0x90)
+#define LFSTC0  0
+#define LFSTC1  1
+#define LFSTC2  2
+#define ICOMPRT0 3
+#define ICOMPRT1 4
+#define SEL150M0 5
+#define SEL150M1 6
+#define SEL150M2 7
 
-/* Reserved [0x91..0xC2] */
+#define LFCALR2 _SFR_MEM8(0x91)
+#define LFSTRES0 0
+#define LFSTRES1 1
+#define LFSTRES2 2
+#define LFSTRES3 3
+#define LFSTRES4 4
+#define LFSTRES5 5
+#define LFSRM   6
+#define TIKOMPD 7
 
-#define CLKOD   _SFR_MEM8(0xC3)
+#define LFCALR3 _SFR_MEM8(0x92)
+#define TCGAIN10 0
+#define TCGAIN11 1
+#define TCGAIN12 2
+#define TCGAIN13 3
+#define TCGAIN14 4
+#define TCGAIN15 5
+#define TCGAIN16 6
+#define TCGAIN17 7
 
-#define CLKOCR  _SFR_MEM8(0xC4)
-#define CLKOS0  0
-#define CLKOS1  1
-#define CLKOEN  2
+#define LFCALR4 _SFR_MEM8(0x93)
+#define TCGAIN20 0
+#define TCGAIN21 1
+#define TCGAIN22 2
+#define TCGAIN23 3
+#define TCGAIN24 4
+#define TCGAIN25 5
+#define TCGAIN26 6
+#define TCGAIN27 7
 
-/* Reserved [0xC5] */
+#define LFCALR5 _SFR_MEM8(0x94)
+#define TCGAIN30 0
+#define TCGAIN31 1
+#define TCGAIN32 2
+#define TCGAIN34 4
+#define TCGAIN35 5
+#define TCGAIN36 6
+#define TCGAIN37 7
+
+#define LFCALR6 _SFR_MEM8(0x95)
+#define TCGAIN40 0
+#define TCGAIN41 1
+#define TCGAIN42 2
+#define TCGAIN43 3
+#define TCGAIN44 4
+
+#define LFCALR7 _SFR_MEM8(0x96)
+
+#define LFCALR8 _SFR_MEM8(0x97)
+
+#define LFCALR9 _SFR_MEM8(0x98)
+
+#define LFCALR10 _SFR_MEM8(0x99)
+
+#define LFCALR11 _SFR_MEM8(0x9A)
+
+#define LFCALR12 _SFR_MEM8(0x9B)
+
+#define LFCALR13 _SFR_MEM8(0x9C)
+
+#define LFCALR14 _SFR_MEM8(0x9D)
+
+#define LFCALR15 _SFR_MEM8(0x9E)
+
+#define LFCALR16 _SFR_MEM8(0x9F)
+
+#define LFCALR17 _SFR_MEM8(0xA0)
+
+#define LFCALR18 _SFR_MEM8(0xA1)
+
+#define LFCALR19 _SFR_MEM8(0xA2)
+
+#define LFCALR20 _SFR_MEM8(0xA3)
+
+#define LFCALR21 _SFR_MEM8(0xA4)
+
+#define LFCALR22 _SFR_MEM8(0xA5)
+
+#define LFCALR23 _SFR_MEM8(0xA6)
+
+#define LFCALR24 _SFR_MEM8(0xA7)
+
+#define LFCALR25 _SFR_MEM8(0xA8)
+
+#define LFCALR26 _SFR_MEM8(0xA9)
+
+#define LFCALR27 _SFR_MEM8(0xAA)
+
+#define LFCALR28 _SFR_MEM8(0xAB)
+
+#define LFCALR29 _SFR_MEM8(0xAC)
+
+#define LFCALR30 _SFR_MEM8(0xAD)
+
+#define LFCALR31 _SFR_MEM8(0xAE)
+
+#define LFCALR32 _SFR_MEM8(0xAF)
+
+#define LFCALR33 _SFR_MEM8(0xB0)
+
+#define LFCALR34 _SFR_MEM8(0xB1)
+
+#define LFCALR35 _SFR_MEM8(0xB2)
+
+#define LFCALR36 _SFR_MEM8(0xB3)
+
+#define LFCALR37 _SFR_MEM8(0xB4)
+
+#define LFCALR38 _SFR_MEM8(0xB5)
+
+#define LFCALR39 _SFR_MEM8(0xB6)
+
+#define LFCALR40 _SFR_MEM8(0xB7)
+
+#define LFCALR41 _SFR_MEM8(0xB8)
+
+#define LFCALR42 _SFR_MEM8(0xB9)
+
+#define LFCALR43 _SFR_MEM8(0xBA)
+
+#define LFCALR44 _SFR_MEM8(0xBB)
+
+#define LFCALR45 _SFR_MEM8(0xBC)
+
+#define LFCALR46 _SFR_MEM8(0xBD)
+
+#define LFCALR47 _SFR_MEM8(0xBE)
+
+#define LFCALR48 _SFR_MEM8(0xBF)
+
+#define LFCALR49 _SFR_MEM8(0xC0)
+
+#define LFCALR50 _SFR_MEM8(0xC1)
+
+#define LFCALR51 _SFR_MEM8(0xC2)
+
+#define LFCALR52 _SFR_MEM8(0xC3)
+
+#define LFCALR53 _SFR_MEM8(0xC4)
+
+#define XFUSE   _SFR_MEM8(0xC5)
 
 #define MRCCAL  _SFR_MEM8(0xC6)
 
 #define FRCCAL  _SFR_MEM8(0xC7)
 
-/* Reserved [0xC8] */
+#define RCTCAL  _SFR_MEM8(0xC8)
+#define FRCTC   0
+#define MRCTC0  1
+#define MRCTC1  2
+#define MRCTC2  3
+#define DI_MRCBG 4
 
 #define CMSR    _SFR_MEM8(0xC9)
 #define ECF     0
@@ -655,19 +892,49 @@
 #define AVDIC   3
 #define AVEN    4
 #define DVHEN   5
+#define VMRESM  6
+#define VMEMEN  7
 
-/* Reserved [0xCD..0xD1] */
+#define SUPCA1  _SFR_MEM8(0xCD)
+#define PV22    2
+#define PVDIC   3
+#define PVCAL0  4
+#define PVCAL1  5
+#define PVCAL2  6
+#define PVCAL3  7
+
+#define SUPCA2  _SFR_MEM8(0xCE)
+#define BGCAL0  0
+#define BGCAL1  1
+#define BGCAL2  2
+#define BGCAL3  3
+
+#define SUPCA3  _SFR_MEM8(0xCF)
+#define ACAL0   0
+#define ACAL1   1
+#define ACAL2   2
+#define ACAL3   3
+#define ACAL4   4
+#define ACAL5   5
+#define ACAL6   6
+#define ACAL7   7
+
+#define SUPCA4  _SFR_MEM8(0xD0)
+#define ICONST0 0
+#define ICONST1 1
+#define ICONST2 2
+#define ICONST3 3
+#define ICONST4 4
+#define ICONST5 5
+
+#define CALRDY  _SFR_MEM8(0xD1)
 
 #define DFS     _SFR_MEM8(0xD2)
 #define DFFLRF  0
 #define DFUFL   1
 #define DFOFL   2
 
-/* Combine DFTLL and DFTLH */
-#define DFTL    _SFR_MEM16(0xD3)
-
-#define DFTLL   _SFR_MEM8(0xD3)
-#define DFTLH   _SFR_MEM8(0xD4)
+/* Reserved [0xD3..0xD4] */
 
 #define DFL     _SFR_MEM8(0xD5)
 #define DFFLS0  0
@@ -734,7 +1001,9 @@
 #define SSMPVE  4
 #define SSMTAE  5
 
-/* Reserved [0xE3] */
+#define GTCCR   _SFR_MEM8(0xE3)
+#define PSR10   0
+#define TSM     7
 
 #define SSMFBR  _SFR_MEM8(0xE4)
 #define SSMPLDT 5
@@ -771,7 +1040,12 @@
 #define SSMSTA4 4
 #define SSMSTA5 5
 
-/* Reserved [0xEB] */
+#define VXMCTRL _SFR_MEM8(0xEB)
+#define VX_SEL0 0
+#define VX_SEL1 1
+#define EN_VX   2
+#define EN_VX_OUT 3
+#define EN_VX_IN 4
 
 #define MSMCR1  _SFR_MEM8(0xEC)
 #define MSMSM00 0
@@ -813,7 +1087,26 @@
 #define MSMSM72 6
 #define MSMSM73 7
 
-/* Reserved [0xF0..0xFB] */
+/* Reserved [0xF0..0xF6] */
+
+#define SP2CR   _SFR_MEM8(0xF7)
+#define SP2R0   0
+#define SP2R1   1
+#define CPHA2   2
+#define CPOL2   3
+#define MSTR2   4
+#define DORD2   5
+#define SP2E    6
+#define SP2IE   7
+
+#define SP2DR   _SFR_MEM8(0xF8)
+
+#define SP2SR   _SFR_MEM8(0xF9)
+#define SPI22X  0
+#define WCOL2   6
+#define SP2IF   7
+
+/* Reserved [0xFA..0xFB] */
 
 /* Combine TRCIDL and TRCIDH */
 #define TRCID   _SFR_MEM16(0xFC)
@@ -842,7 +1135,7 @@
 #define PLPEN   4
 #define CPBIA   6
 
-/* Reserved [0x103] */
+#define FELNA   _SFR_MEM8(0x103)
 
 #define FEAT    _SFR_MEM8(0x104)
 #define ANTN0   0
@@ -914,7 +1207,44 @@
 #define LVLC2   2
 #define LVLC3   3
 
-/* Reserved [0x10E..0x11F] */
+#define FEBIA   _SFR_MEM8(0x10E)
+
+/* Reserved [0x10F..0x114] */
+
+#define CLKOD   _SFR_MEM8(0x115)
+
+#define CLKOCR  _SFR_MEM8(0x116)
+#define CLKOS0  0
+#define CLKOS1  1
+#define CLKOEN  2
+
+/* Reserved [0x117..0x11B] */
+
+#define FETE1   _SFR_MEM8(0x11C)
+#define ADCT    0
+#define XTOT    1
+#define LNLT    2
+#define LNHT    3
+#define PATE    4
+#define AMPT    5
+#define VCOT    6
+#define ANTN    7
+
+#define FETE2   _SFR_MEM8(0x11D)
+#define RCCT    0
+#define PPFT    1
+#define LFT     2
+#define CPT     3
+#define PFDT    4
+#define DADCT   5
+#define PRET    6
+#define SWALT   7
+
+#define FETE3   _SFR_MEM8(0x11E)
+#define BIOUT   0
+#define RMPTST  1
+
+#define FETD    _SFR_MEM8(0x11F)
 
 #define TMFSM   _SFR_MEM8(0x120)
 #define TMSSM0  0
@@ -982,7 +1312,130 @@
 #define TMSCS   3
 #define TMCIM   4
 
-/* Reserved [0x12F..0x144] */
+/* Reserved [0x12F] */
+
+#define LFDSR1  _SFR_MEM8(0x130)
+#define LOTHA0  0
+#define LOTHA1  1
+#define HITHA0  2
+#define HITHA1  3
+#define CTTHA0  4
+#define CTTHA1  5
+
+#define LFDSR2  _SFR_MEM8(0x131)
+#define LOTHB0  0
+#define LOTHB1  1
+#define HITHB0  2
+#define HITHB1  3
+#define CTTHB0  4
+#define CTTHB1  5
+
+#define LFDSR3  _SFR_MEM8(0x132)
+#define PBDTH0  0
+#define PBDTH1  1
+#define QCTH0   3
+#define QCTH1   4
+#define QCTH2   5
+
+#define LFDSR4  _SFR_MEM8(0x133)
+#define SDTHA0  0
+#define SDTHA1  1
+#define SDTHA2  2
+#define SCTHA0  3
+#define SCTHA1  4
+#define SCTHA2  5
+#define SRSTC0  6
+#define SRSTC1  7
+
+#define LFDSR5  _SFR_MEM8(0x134)
+#define SDTHB0  0
+#define SDTHB1  1
+#define SDTHB2  2
+#define SCTHB0  3
+#define SCTHB1  4
+#define SCTHB2  5
+#define SSUTA   6
+#define SSUTB   7
+
+#define LFDSR6  _SFR_MEM8(0x135)
+#define TODU0   0
+#define TODU1   1
+#define TODU2   2
+#define TODS0   3
+#define TODS1   4
+#define TODS2   5
+
+#define LFDSR7  _SFR_MEM8(0x136)
+#define PBSP0   0
+#define PBSP1   1
+#define PBG0    2
+#define PBG1    3
+#define MDSP0   4
+#define MDSP1   5
+#define MDG0    6
+#define MDG1    7
+
+#define LFDSR8  _SFR_MEM8(0x137)
+#define CLD0    0
+#define CLD1    1
+#define CLD2    2
+#define LGFE    3
+#define ASWTH0  4
+#define ASWTH1  5
+#define ASWTH2  6
+
+#define LFDSR9  _SFR_MEM8(0x138)
+#define STW0    0
+#define STW1    1
+#define STW2    2
+#define STW3    3
+#define STW4    4
+
+#define LFDSR10 _SFR_MEM8(0x139)
+#define FCL0    0
+#define FCL1    1
+#define FCL2    2
+#define FCL3    3
+#define FCL4    4
+#define FCL5    5
+#define STBTH0  6
+#define STBTH1  7
+
+#define LFDSR11 _SFR_MEM8(0x13A)
+#define TINITA0 0
+#define TINITA1 1
+#define TINITA2 2
+#define TINITA3 3
+#define TINITB0 4
+#define TINITB1 5
+#define TINITB2 6
+#define TINITB3 7
+
+#define EEPR1   _SFR_MEM8(0x13B)
+#define EEPS4WD 0
+#define EEPS4RD 1
+#define EEPS5WD 2
+#define EEPS5RD 3
+#define EEPS6WD 4
+#define EEPS6RD 5
+#define EEPS7WD 6
+#define EEPS7RD 7
+
+#define EEPR2   _SFR_MEM8(0x13C)
+#define EEPS8WD 0
+#define EEPS8RD 1
+#define EEPS9WD 2
+#define EEPS9RD 3
+#define EEPS10WD 4
+#define EEPS10RD 5
+#define EEPS11WD 6
+#define EEPS11RD 7
+
+#define EEPR3   _SFR_MEM8(0x13D)
+#define EEPS12WD 0
+#define EEPS12RD 1
+
+/* Reserved [0x13E..0x144] */
 
 #define CRCCR   _SFR_MEM8(0x145)
 #define CRCRS   0
@@ -993,15 +1446,15 @@
 
 /* Reserved [0x147..0x150] */
 
-#define LFDSRR  _SFR_MEM8(0x151)
-#define SRCDT0  0
-#define SRCDT1  1
-#define SRCDT2  2
-#define SRCDT3  3
-#define SRCDT4  4
-#define SRCDT5  5
-#define SRCDT6  6
-#define SRCDT7  7
+#define LFSRCTM _SFR_MEM8(0x151)
+#define LFSRCT1 0
+#define LFSRCT2 1
+#define LFSRCT3 2
+#define LFSRCT4 3
+#define LFSRCT5 4
+#define LFSRCT6 5
+#define LFSRCT7 6
+#define LFSRCT8 7
 
 #define DBCR    _SFR_MEM8(0x152)
 #define DBMD    0
@@ -1045,13 +1498,16 @@
 #define TIL2    6
 #define STIE    7
 
-#define EECR2   _SFR_MEM8(0x159)
-#define EEBRE   0
-#define E2CIM   1
-#define E2FF    6
-#define E2CF    7
+#define T2IFR   _SFR_MEM8(0x159)
+#define T2OFF   0
+#define T2COF   1
 
-/* Reserved [0x15A] */
+#define PGMST   _SFR_MEM8(0x15A)
+#define PGMSYN0 0
+#define PGMSYN1 1
+#define PGMSYN2 2
+#define PGMSYN3 3
+#define PGMSYN4 4
 
 #define EEST    _SFR_MEM8(0x15B)
 #define EESYN0  0
@@ -1059,13 +1515,10 @@
 #define EESYN2  2
 #define EESYN3  3
 
-/* Reserved [0x15C..0x15F] */
+#define LFSRCTL _SFR_MEM8(0x15C)
+#define LFSRCT0 0
 
-#define LFRSFR  _SFR_MEM8(0x160)
-#define LFRSMF  0
-#define LFRSTO1 1
-#define LFRSTO2 2
-#define LFRSTO3 3
+/* Reserved [0x15D..0x160] */
 
 #define PCIFR   _SFR_MEM8(0x161)
 #define PCIF0   0
@@ -1206,17 +1659,50 @@
 #define TPMD1   5
 #define TPMD2   6
 
-#define LFRSMR  _SFR_MEM8(0x174)
-#define LFRSM0  0
-#define LFRSM1  1
-#define LFRSM2  2
-#define LFRSM3  3
-#define LFRSCM  4
-#define LFRSFD  5
-#define LFRSD0  6
-#define LFRSD1  7
+/* Reserved [0x174] */
 
-/* Reserved [0x175..0x17E] */
+#define TPCALR1 _SFR_MEM8(0x175)
+#define TPBG_IREF0 0
+#define TPBG_IREF1 1
+#define TPBG_IREF2 2
+#define TPBG_IREF3 3
+#define TPBG_IREF4 4
+#define TPBG_IREF5 5
+
+#define TPCALR2 _SFR_MEM8(0x176)
+#define TPBG_UREF0 0
+#define TPBG_UREF1 1
+#define TPBG_UREF2 2
+#define TPBG_UREF3 3
+#define TPBG_UREF4 4
+#define TPBG_UREF5 5
+#define TPBG_UREF6 6
+
+#define TPCALR3 _SFR_MEM8(0x177)
+#define LFVCC_TPCAL0 0
+#define LFVCC_TPCAL1 1
+#define LFVCC_TPCAL2 2
+#define TPORTH0 3
+#define TPORTH1 4
+
+#define TPCALR4 _SFR_MEM8(0x178)
+#define TPINIT_CAL0 0
+#define TPINIT_CAL1 1
+#define TPINIT_CAL2 2
+#define COMPVC_CAL0 3
+#define COMPVC_CAL1 4
+
+#define TPCALR5 _SFR_MEM8(0x179)
+
+#define TPCALR6 _SFR_MEM8(0x17A)
+
+#define TPCALR7 _SFR_MEM8(0x17B)
+
+#define TPCALR8 _SFR_MEM8(0x17C)
+
+#define TPCALR9 _SFR_MEM8(0x17D)
+
+#define TPCALR10 _SFR_MEM8(0x17E)
 
 #define AESDPR  _SFR_MEM8(0x17F)
 
@@ -1232,45 +1718,18 @@
 
 #define GPIOR6  _SFR_MEM8(0x185)
 
-#define PHBCRR  _SFR_MEM8(0x186)
-#define PHBCR0  0
-#define PHBCR1  1
-#define PHBCR2  2
-#define PHBCR3  3
-#define PHBCR4  4
-#define PHBCR5  5
-#define PHBCR6  6
-#define PHBCR7  7
+#define GPIOR7  _SFR_MEM8(0x186)
 
-#define LFRSCR  _SFR_MEM8(0x187)
-#define LFRSA0  0
-#define LFRSA1  1
-#define LFRSA2  2
-#define LFRSMS  3
-#define LFRSIM  4
-#define LFRSRS  5
+#define GPIOR8  _SFR_MEM8(0x187)
 
-/* Combine LFRSC1L and LFRSC1H */
-#define LFRSC1  _SFR_MEM16(0x188)
+#define PHBCRR  _SFR_MEM8(0x188)
 
-#define LFRSC1L _SFR_MEM8(0x188)
-#define LFRSC1H _SFR_MEM8(0x189)
-
-/* Combine LFRSC2L and LFRSC2H */
-#define LFRSC2  _SFR_MEM16(0x18A)
-
-#define LFRSC2L _SFR_MEM8(0x18A)
-#define LFRSC2H _SFR_MEM8(0x18B)
-
-/* Combine LFRSC3L and LFRSC3H */
-#define LFRSC3  _SFR_MEM16(0x18C)
-
-#define LFRSC3L _SFR_MEM8(0x18C)
-#define LFRSC3H _SFR_MEM8(0x18D)
+/* Reserved [0x189..0x18D] */
 
 #define LFCPR   _SFR_MEM8(0x18E)
 #define LFCALP  0
 #define LFCALRY 1
+#define TPCD    6
 #define LFCPCE  7
 
 #define LFIMR   _SFR_MEM8(0x18F)
@@ -1278,121 +1737,25 @@
 #define LFDEIM  1
 #define LFEOIM  2
 
-#define PHID00  _SFR_MEM8(0x190)
-#define ID000   0
-#define ID001   1
-#define ID002   2
-#define ID003   3
-#define ID004   4
-#define ID005   5
-#define ID006   6
-#define ID007   7
-
-#define PHID01  _SFR_MEM8(0x191)
-#define ID010   0
-#define ID011   1
-#define ID012   2
-#define ID013   3
-#define ID014   4
-#define ID015   5
-#define ID016   6
-#define ID017   7
-
-#define PHID02  _SFR_MEM8(0x192)
-#define ID020   0
-#define ID021   1
-#define ID022   2
-#define ID023   3
-#define ID024   4
-#define ID025   5
-#define ID026   6
-#define ID027   7
-
-#define PHID03  _SFR_MEM8(0x193)
-#define ID030   0
-#define ID031   1
-#define ID032   2
-#define ID033   3
-#define ID034   4
-#define ID035   5
-#define ID036   6
-#define ID037   7
+#define PHID0   _SFR_MEM16(0x190)
 
 #define PHID0L  _SFR_MEM8(0x194)
-#define ID0FS0  0
-#define ID0FS1  1
-#define ID0FS2  2
-#define ID0FS3  3
-#define ID0FS4  4
-#define ID0FS5  5
 
-#define PHID10  _SFR_MEM8(0x195)
-#define ID100   0
-#define ID101   1
-#define ID102   2
-#define ID103   3
-#define ID104   4
-#define ID105   5
-#define ID106   6
-#define ID107   7
-
-#define PHID11  _SFR_MEM8(0x196)
-#define ID110   0
-#define ID111   1
-#define ID112   2
-#define ID113   3
-#define ID114   4
-#define ID115   5
-#define ID116   6
-#define ID117   7
-
-#define PHID12  _SFR_MEM8(0x197)
-#define ID120   0
-#define ID121   1
-#define ID122   2
-#define ID123   3
-#define ID124   4
-#define ID125   5
-#define ID126   6
-#define ID127   7
-
-#define PHID13  _SFR_MEM8(0x198)
-#define ID130   0
-#define ID131   1
-#define ID132   2
-#define ID133   3
-#define ID134   4
-#define ID135   5
-#define ID136   6
-#define ID137   7
+#define PHID1   _SFR_MEM16(0x195)
 
 #define PHID1L  _SFR_MEM8(0x199)
-#define ID1FS0  0
-#define ID1FS1  1
-#define ID1FS2  2
-#define ID1FS3  3
-#define ID1FS4  4
-#define ID1FS5  5
 
 #define PHIDFR  _SFR_MEM8(0x19A)
-#define RDFS0   0
-#define RDFS1   1
-#define RDFS2   2
-#define RDFS3   3
-#define RDFS4   4
-#define RDFS5   5
-#define RDFS6   6
-#define RDFS7   7
 
-#define LFSYSY0 _SFR_MEM8(0x19B)
-
-#define LFSYSY1 _SFR_MEM8(0x19C)
-
-#define LFSYSY2 _SFR_MEM8(0x19D)
-
-#define LFSYSY3 _SFR_MEM8(0x19E)
+#define LFSYSY  _SFR_MEM16(0x19B)
 
 #define LFSYLE  _SFR_MEM8(0x19F)
+#define LFSYLE0 0
+#define LFSYLE1 1
+#define LFSYLE2 2
+#define LFSYLE3 3
+#define LFSYLE4 4
+#define LFSYLE5 5
 
 #define LFSTOP  _SFR_MEM8(0x1A0)
 #define LFSTSY0 0
@@ -1403,41 +1766,19 @@
 #define LFSTL1  5
 #define LFSTL2  6
 
-#define PHTCOR  _SFR_MEM8(0x1A1)
+#define LTCOR   _SFR_MEM8(0x1A1)
 
-#define PHTCMR  _SFR_MEM8(0x1A2)
-#define PHPS0   0
-#define PHPS1   1
-#define PHPS2   2
-#define PHCRM   3
-#define PHCIM   4
-#define PHRES   5
-#define PHSM    6
-#define PHTE    7
+#define T1IFR   _SFR_MEM8(0x1A2)
+#define T1OFF   0
+#define T1COF   1
 
 /* Reserved [0x1A3] */
 
 #define PHTBLR  _SFR_MEM8(0x1A4)
-#define PHTBL0  0
-#define PHTBL1  1
-#define PHTBL2  2
-#define PHTBL3  3
-#define PHTBL4  4
-#define PHTBL5  5
-#define PHTBL6  6
-#define PHTBL7  7
 
 #define PHDFR   _SFR_MEM8(0x1A5)
-#define PHDF0   0
-#define PHDF1   1
-#define PHDF2   2
-#define PHDF3   3
-#define PHDF4   4
-#define PHDF5   5
-#define PHDF6   6
-#define PHDF7   7
 
-#define PHTEMR  _SFR_MEM8(0x1A6)
+#define LTEMR   _SFR_MEM8(0x1A6)
 #define ID0EM   0
 #define ID1EM   1
 #define IDFEM   2
@@ -1445,7 +1786,7 @@
 #define TBLEM   4
 #define FLEM    5
 #define EOFEM   6
-#define PHCOF   7
+#define LTCOF   7
 
 #define LFQC3   _SFR_MEM8(0x1A7)
 #define LFQS30  0
@@ -1477,53 +1818,293 @@
 #define LFCS12  6
 #define LFCS13  7
 
-/* Reserved [0x1AA..0x1D0] */
+#define TW2BR   _SFR_MEM8(0x1AA)
 
-#define PHFS    _SFR_MEM8(0x1D1)
-#define FLRF    0
-#define FUFL    1
-#define FOFL    2
+#define TW2CR   _SFR_MEM8(0x1AB)
+#define TW2IE   0
+#define TW2EN   2
+#define TW2WC   3
+#define TW2STO  4
+#define TW2STA  5
+#define TW2EA   6
+#define TW2INT  7
 
-#define PHFL    _SFR_MEM8(0x1D2)
-#define FLS0    0
-#define FLS1    1
-#define FLS2    2
-#define FLS3    3
-#define FLS4    4
-#define FLS5    5
-#define PHCLR   7
+#define TW2SR   _SFR_MEM8(0x1AC)
+#define TW2PS0  0
+#define TW2PS1  1
+#define TW2S0   3
+#define TW2S1   4
+#define TW2S2   5
+#define TW2S3   6
+#define TW2S4   7
 
-#define PHFWP   _SFR_MEM8(0x1D3)
-#define FWP0    0
-#define FWP1    1
-#define FWP2    2
-#define FWP3    3
-#define FWP4    4
-#define FWP5    5
+#define TW2DR   _SFR_MEM8(0x1AD)
 
-#define PHFRP   _SFR_MEM8(0x1D4)
-#define FRP0    0
-#define FRP1    1
-#define FRP2    2
-#define FRP3    3
-#define FRP4    4
-#define FRP5    5
+#define TW2AR   _SFR_MEM8(0x1AE)
+#define TW2GCE  0
+#define TW2A0   1
+#define TW2A1   2
+#define TW2A2   3
+#define TW2A3   4
+#define TW2A4   5
+#define TW2A5   6
+#define TW2A6   7
 
-#define PHFD    _SFR_MEM8(0x1D5)
+#define TW2AMR  _SFR_MEM8(0x1AF)
+#define TW2AM0  1
+#define TW2AM1  2
+#define TW2AM2  3
+#define TW2AM3  4
+#define TW2AM4  5
+#define TW2AM5  6
+#define TW2AM6  7
 
-#define PHFI    _SFR_MEM8(0x1D6)
-#define FLIM    0
-#define ERIM    1
+#define RSCR    _SFR_MEM8(0x1B0)
+#define RSSDEN  0
+#define RSOS    1
+#define RSEOR   2
+#define RSOFM   3
+#define RSMODE0 4
+#define RSMODE1 5
+#define RSRES   7
 
-#define PHFC    _SFR_MEM8(0x1D7)
-#define FLC0    0
-#define FLC1    1
-#define FLC2    2
-#define FLC3    3
-#define FLC4    4
-#define FLC5    5
-#define FFMSB   6
-#define DRA     7
+#define RSSR    _SFR_MEM8(0x1B1)
+#define RSRDY   0
+#define RSSVLD  1
+
+#define RSMS1R  _SFR_MEM8(0x1B2)
+#define RSCH1E  0
+#define RSCH2E  1
+#define RSCH3E  2
+#define RSINTM  3
+#define RSSTIM  4
+#define RSCMS   5
+#define RSSSV   6
+#define RSSCAL  7
+
+#define RSMS2R  _SFR_MEM8(0x1B3)
+#define RSSADR0 0
+#define RSSADR1 1
+#define RSSADR2 2
+#define RSSADR3 3
+#define RSAVGS0 4
+#define RSAVGS1 5
+#define RSAVGS2 6
+#define RSAVGS3 7
+
+#define RSFR    _SFR_MEM8(0x1B4)
+#define RSOOR1  0
+#define RSOOR2  1
+#define RSOOR3  2
+#define RSOFF   3
+#define RSAOOR1 5
+#define RSAOOR2 6
+#define RSAOOR3 7
+
+/* Reserved [0x1B5] */
+
+#define RSCALIB _SFR_MEM8(0x1B6)
+#define RSCALIB0 0
+#define RSCALIB1 1
+#define RSCALIB2 2
+#define RSCALIB3 3
+#define RSCALIB4 4
+#define RSCALIB5 5
+#define RSCALIB6 6
+#define RSCALIB7 7
+
+#define RSDLYR  _SFR_MEM8(0x1B7)
+#define RSTRD0  0
+#define RSTRD1  1
+#define RSTRD2  2
+#define RSTRD3  3
+#define RSTRD4  4
+#define RSTRD5  5
+#define RSRD0   6
+#define RSRD1   7
+
+#define RSRES1L _SFR_MEM8(0x1B8)
+#define RSRES1L0 0
+#define RSRES1L1 1
+#define RSRES1L2 2
+#define RSRES1L3 3
+#define RSRES1L4 4
+#define RSRES1L5 5
+#define RSRES1L6 6
+#define RSRES1L7 7
+
+#define RSRES1H _SFR_MEM8(0x1B9)
+#define RSRES1H0 0
+#define RSRES1H1 1
+#define RSRES1H2 2
+#define RSRES1H3 3
+#define RSRES1H4 4
+#define RSRES1H5 5
+#define RSRES1H6 6
+#define RSRES1H7 7
+
+#define RSRES2L _SFR_MEM8(0x1BA)
+#define RSRES2L0 0
+#define RSRES2L1 1
+#define RSRES2L2 2
+#define RSRES2L3 3
+#define RSRES2L4 4
+#define RSRES2L5 5
+#define RSRES2L6 6
+#define RSRES2L7 7
+
+#define RSRES2H _SFR_MEM8(0x1BB)
+#define RSRES2H0 0
+#define RSRES2H1 1
+#define RSRES2H2 2
+#define RSRES2H3 3
+#define RSRES2H4 4
+#define RSRES2H5 5
+#define RSRES2H6 6
+#define RSRES2H7 7
+
+#define RSRES3L _SFR_MEM8(0x1BC)
+#define RSRES3L0 0
+#define RSRES3L1 1
+#define RSRES3L2 2
+#define RSRES3L3 3
+#define RSRES3L4 4
+#define RSRES3L5 5
+#define RSRES3L6 6
+#define RSRES3L7 7
+
+#define RSRES3H _SFR_MEM8(0x1BD)
+#define RSRES3H0 0
+#define RSRES3H1 1
+#define RSRES3H2 2
+#define RSRES3H3 3
+#define RSRES3H4 4
+#define RSRES3H5 5
+#define RSRES3H6 6
+#define RSRES3H7 7
+
+#define RSRES4L _SFR_MEM8(0x1BE)
+#define RSRES4L0 0
+#define RSRES4L1 1
+#define RSRES4L2 2
+#define RSRES4L3 3
+#define RSRES4L4 4
+#define RSRES4L5 5
+#define RSRES4L6 6
+#define RSRES4L7 7
+
+#define RSRES4H _SFR_MEM8(0x1BF)
+#define RSRES4H0 0
+#define RSRES4H1 1
+#define RSRES4H2 2
+#define RSRES4H3 3
+#define RSRES4H4 4
+#define RSRES4H5 5
+#define RSRES4H6 6
+#define RSRES4H7 7
+
+#define RSSRCR  _SFR_MEM8(0x1C0)
+#define SRCMODE0 0
+#define SRCMODE1 1
+#define SRCMIN0 2
+#define SRCMIN1 3
+#define SRCCLR  4
+#define SRCSTEP0 6
+#define SRCSTEP1 7
+
+#define SD12RR  _SFR_MEM8(0x1C1)
+#define SD12RR0 0
+#define SD12RR1 1
+#define SD12RR2 2
+#define SD12RR3 3
+#define SD12RR4 4
+#define SD12RR5 5
+#define SD12RR6 6
+#define SD12RR7 7
+
+#define SD13RR  _SFR_MEM8(0x1C2)
+#define SD13RR0 0
+#define SD13RR1 1
+#define SD13RR2 2
+#define SD13RR3 3
+#define SD13RR4 4
+#define SD13RR5 5
+#define SD13RR6 6
+#define SD13RR7 7
+
+#define SD23RR  _SFR_MEM8(0x1C3)
+#define SD23RR0 0
+#define SD23RR1 1
+#define SD23RR2 2
+#define SD23RR3 3
+#define SD23RR4 4
+#define SD23RR5 5
+#define SD23RR6 6
+#define SD23RR7 7
+
+#define SD360R  _SFR_MEM8(0x1C4)
+#define SD360R0 0
+#define SD360R1 1
+#define SD360R2 2
+#define SD360R3 3
+#define SD360R4 4
+#define SD360R5 5
+#define SD360R6 6
+#define SD360R7 7
+
+#define RSDBGR  _SFR_MEM8(0x1C5)
+#define RSSANA  0
+#define RSINFM  2
+#define RSFPD   3
+#define RSHOME  4
+#define RSDBGS0 5
+#define RSDBGS1 6
+#define RSDBGEN 7
+
+/* Reserved [0x1C6..0x1D0] */
+
+#define LDFS    _SFR_MEM8(0x1D1)
+#define LDFFLR  0
+#define LDFUF   1
+#define LDFOF   2
+
+#define T4IFR   _SFR_MEM8(0x1D2)
+#define T4OFF   0
+#define T4COF   1
+#define T4ICF   2
+
+#define LDFWP   _SFR_MEM8(0x1D3)
+#define LDFWP0  0
+#define LDFWP1  1
+#define LDFWP2  2
+#define LDFWP3  3
+#define LDFWP4  4
+#define LDFWP5  5
+
+#define LDFRP   _SFR_MEM8(0x1D4)
+#define LDFRP0  0
+#define LDFRP1  1
+#define LDFRP2  2
+#define LDFRP3  3
+#define LDFRP4  4
+#define LDFRP5  5
+
+#define T5IFR   _SFR_MEM8(0x1D5)
+#define T5OFF   0
+#define T5COF   1
+
+#define LDFIM   _SFR_MEM8(0x1D6)
+#define LDFFLIM 0
+#define LDFEIM  1
+
+#define LDFC    _SFR_MEM8(0x1D7)
+#define LDFFLC0 0
+#define LDFFLC1 1
+#define LDFFLC2 2
+#define LDFFLC3 3
+#define LDFFLC4 4
+#define LDFFLC5 5
+#define LDFMSB  6
 
 #define PHIMR   _SFR_MEM8(0x1D8)
 #define PHTBLIM 1
@@ -1534,17 +2115,13 @@
 
 #define PHCRCR  _SFR_MEM8(0x1D9)
 #define CRCFR   2
-#define CRCMSB  3
 #define CRCSE0  4
 #define CRCSE1  5
-#define STREN   6
 #define CRCEN   7
 
-/* Combine PHCSTL and PHCSTH */
-#define PHCST   _SFR_MEM16(0x1DA)
+#define PHCST   _SFR_MEM8(0x1DA)
 
-#define PHCSTL  _SFR_MEM8(0x1DA)
-#define PHCSTH  _SFR_MEM8(0x1DB)
+/* Reserved [0x1DB] */
 
 /* Combine PHCRPL and PHCRPH */
 #define PHCRP   _SFR_MEM16(0x1DC)
@@ -1552,20 +2129,16 @@
 #define PHCRPL  _SFR_MEM8(0x1DC)
 #define PHCRPH  _SFR_MEM8(0x1DD)
 
-/* Combine PHCSRL and PHCSRH */
-#define PHCSR   _SFR_MEM16(0x1DE)
+#define PHCSR   _SFR_MEM8(0x1DE)
 
-#define PHCSRL  _SFR_MEM8(0x1DE)
-#define PHCSRH  _SFR_MEM8(0x1DF)
+/* Reserved [0x1DF] */
 
-#define PHCKSR  _SFR_MEM8(0x1E0)
-#define FIFO_SW 0
+#define CRCDIR  _SFR_MEM8(0x1E0)
 
-#define PHCKCR  _SFR_MEM8(0x1E1)
-#define FIFSCSW 0
-#define FRFIFO  5
-#define CPM     6
-#define CSM     7
+#define T3IFR   _SFR_MEM8(0x1E1)
+#define T3OFF   0
+#define T3COF   1
+#define T3ICF   2
 
 /* Reserved [0x1E2] */
 
@@ -1599,48 +2172,57 @@
 #define VMPS1   6
 #define VMRS    7
 
-/* Reserved [0x1E7..0x1E8] */
+#define DBONDR  _SFR_MEM8(0x1E7)
+#define BBESD   0
+#define AGND_BB 1
+#define ISO_GND 2
+#define AGND_LF 3
+#define BTEST4  4
+#define BTEST5  5
+#define BTEST6  6
 
-#define TWBR    _SFR_MEM8(0x1E9)
+#define CALRDYLF _SFR_MEM8(0x1E8)
 
-#define TWCR    _SFR_MEM8(0x1EA)
-#define TWIE    0
-#define TWEN    2
-#define TWWC    3
-#define TWSTO   4
-#define TWSTA   5
-#define TWEA    6
-#define TWINT   7
+#define TW1BR   _SFR_MEM8(0x1E9)
 
-#define TWSR    _SFR_MEM8(0x1EB)
-#define TWPS0   0
-#define TWPS1   1
-#define TWS0    3
-#define TWS1    4
-#define TWS2    5
-#define TWS3    6
-#define TWS4    7
+#define TW1CR   _SFR_MEM8(0x1EA)
+#define TW1IE   0
+#define TW1EN   2
+#define TW1WC   3
+#define TW1STO  4
+#define TW1STA  5
+#define TW1EA   6
+#define TW1INT  7
 
-#define TWDR    _SFR_MEM8(0x1EC)
+#define TW1SR   _SFR_MEM8(0x1EB)
+#define TW1PS0  0
+#define TW1PS1  1
+#define TW1S0   3
+#define TW1S1   4
+#define TW1S2   5
+#define TW1S3   6
+#define TW1S4   7
 
-#define TWAR    _SFR_MEM8(0x1ED)
-#define TWGCE   0
-#define TWA0    1
-#define TWA1    2
-#define TWA2    3
-#define TWA3    4
-#define TWA4    5
-#define TWA5    6
-#define TWA6    7
+#define TW1DR   _SFR_MEM8(0x1EC)
 
-#define TWAMR   _SFR_MEM8(0x1EE)
-#define TWAM0   1
-#define TWAM1   2
-#define TWAM2   3
-#define TWAM3   4
-#define TWAM4   5
-#define TWAM5   6
-#define TWAM6   7
+#define TW1AR   _SFR_MEM8(0x1ED)
+#define TW1GCE  0
+#define TW1A0   1
+#define TW1A1   2
+#define TW1A2   3
+#define TW1A3   4
+#define TW1A4   5
+#define TW1A5   6
+#define TW1A6   7
+
+#define TW1AMR  _SFR_MEM8(0x1EE)
+#define TW1AM0  1
+#define TW1AM1  2
+#define TW1AM2  3
+#define TW1AM3  4
+#define TW1AM4  5
+#define TW1AM5  6
+#define TW1AM6  7
 
 #define PDSCR   _SFR_MEM8(0x1EF)
 #define PDSC0   0
@@ -1648,6 +2230,9 @@
 #define PDSC2   2
 #define PDSC3   3
 #define PDSC4   4
+#define STBTEST 5
+#define RSSISEL 6
+#define ATBSEL  7
 
 #define TMOCR   _SFR_MEM8(0x1F0)
 #define TO1PIS0 0
@@ -1660,6 +2245,98 @@
 #define TO4PIS1 7
 
 #define SRCCAL  _SFR_MEM8(0x1F1)
+#define SRCCAL1 0
+#define SRCCAL2 1
+#define SRCCAL3 2
+#define SRCCAL4 3
+#define SRCCAL5 4
+#define SRCCAL6 5
+#define SRCCAL7 6
+#define SRCCAL8 7
+
+#define SRCTCAL _SFR_MEM8(0x1F2)
+#define SRCTC0  0
+#define SRCTC1  1
+#define SRCTC2  2
+#define SRCS0   3
+#define SRCS1   4
+#define DIS_SRC 6
+#define HOLD_SRC 7
+
+#define SUPCA5  _SFR_MEM8(0x1F3)
+#define IPTAT0  0
+#define IPTAT1  1
+#define IPTAT2  2
+#define IPTAT3  3
+#define IPTAT4  4
+#define IPTAT5  5
+
+#define SUPCA6  _SFR_MEM8(0x1F4)
+#define VBGTR0  0
+#define VBGTR1  1
+#define VBGTR2  2
+#define VBGTR3  3
+#define VBGTR4  4
+#define VBGTR5  5
+#define VBGTR6  6
+#define VBGTR7  7
+
+#define SUPCA7  _SFR_MEM8(0x1F5)
+#define VCCCAL0 0
+#define VCCCAL1 1
+#define VCCCAL2 2
+#define LFVCCBD0 3
+#define LFVCCBD1 4
+#define LFVCCBD2 5
+
+#define SUPCA8  _SFR_MEM8(0x1F6)
+#define VSWBD0  0
+#define VSWBD1  1
+#define VSWBD2  2
+#define DVCCBD0 3
+#define DVCCBD1 4
+#define DVCCBD2 5
+
+#define SUPCA9  _SFR_MEM8(0x1F7)
+#define VMEM0   0
+#define VMEM1   1
+#define VMEM2   2
+#define VMEM3   3
+#define VMEM4   4
+#define VMEM5   5
+#define VMEM6   6
+#define VMEM7   7
+
+#define SUPCA10 _SFR_MEM8(0x1F8)
+
+#define TPCALR11 _SFR_MEM8(0x1F9)
+#define MTBTR0  0
+#define MTBTR1  1
+#define ENDVBD  2
+#define ENLFBD  3
+#define ENVSWBD 4
+#define TPCALR115 5
+#define TPCALR116 6
+#define TPCALR117 7
+
+#define TPCALR12 _SFR_MEM8(0x1FA)
+#define TPDMOD  0
+#define TPCALR121 1
+#define TPCALR122 2
+#define TPCALR123 3
+#define TPCALR124 4
+#define TPCALR125 5
+#define TPCALR126 6
+#define TPCALR127 7
+
+#define TPCALR13 _SFR_MEM8(0x1FB)
+
+/* Reserved [0x1FC..0x1FD] */
+
+#define PMTER   _SFR_MEM8(0x1FE)
+
+#define SRCCALL _SFR_MEM8(0x1FF)
+#define SRCCAL0 0
 
 
 
@@ -1829,13 +2506,13 @@
 #define LFRSCO_vect            _VECTOR(41)
 #define LFRSCO_vect_num        41
 
-/* Protocol Handler FIFO Fill Level Reached Interrupt */
-#define PHFFLR_vect            _VECTOR(42)
-#define PHFFLR_vect_num        42
+/* LF Data FIFO Fill Level Reached Interrupt */
+#define LDFFLR_vect            _VECTOR(42)
+#define LDFFLR_vect_num        42
 
-/* Protocol Handler FIFO Overflow or Underflow Error Interrupt */
-#define PHFOUE_vect            _VECTOR(43)
-#define PHFOUE_vect_num        43
+/* LF Data FIFO Overflow or Underflow Error Interrupt */
+#define LDFOUE_vect            _VECTOR(43)
+#define LDFOUE_vect_num        43
 
 /* External input Clock monitoring Interrupt */
 #define EXCM_vect            _VECTOR(44)
@@ -1853,25 +2530,33 @@
 #define SPMR_vect            _VECTOR(47)
 #define SPMR_vect_num        47
 
-/* TWI Interrupt */
-#define TWI_vect            _VECTOR(48)
-#define TWI_vect_num        48
+/* TWI1 Interrupt */
+#define TWI1_vect            _VECTOR(48)
+#define TWI1_vect_num        48
 
-#define _VECTORS_SIZE 196
+/* SPI2 Interrupt */
+#define SPI2_vect            _VECTOR(49)
+#define SPI2_vect_num        49
+
+/* TWI2 Interrupt */
+#define TWI2_vect            _VECTOR(50)
+#define TWI2_vect_num        50
+
+#define _VECTORS_SIZE 204
 
 
 /* Constants */
 
-#define SPM_PAGESIZE 32
-#define FLASHSTART   0x0000
+#define SPM_PAGESIZE 64
+#define FLASHSTART   0x8000
 #define FLASHEND     0xFFFF
 #define RAMSTART     0x0200
 #define RAMSIZE      1024
 #define RAMEND       0x05FF
 #define E2START     0
-#define E2SIZE      2304
+#define E2SIZE      2176
 #define E2PAGESIZE  16
-#define E2END       0x08FF
+#define E2END       0x087F
 #define XRAMEND      RAMEND
 
 
@@ -1880,14 +2565,17 @@
 #define FUSE_MEMORY_SIZE 1
 
 /* Fuse Byte */
-#define FUSE_CKDIV8 (unsigned char)~_BV(128)
-#define FUSE_DWEN (unsigned char)~_BV(64)
-#define FUSE_SPIEN (unsigned char)~_BV(32)
-#define FUSE_WDTON (unsigned char)~_BV(16)
-#define FUSE_EESAVE (unsigned char)~_BV(8)
-#define FUSE_BOOTRST (unsigned char)~_BV(4)
-#define FUSE_EEACC (unsigned char)~_BV(2)
-#define FUSE_EXTCLKEN (unsigned char)~_BV(1)
+#define FUSE_PCEE1       (unsigned char)~_BV(0)
+#define FUSE_EEACC       (unsigned char)~_BV(1)
+#define FUSE_BOOTRST     (unsigned char)~_BV(2)
+#define FUSE_EESAVE      (unsigned char)~_BV(3)
+#define FUSE_WDTON       (unsigned char)~_BV(4)
+#define FUSE_SPIEN       (unsigned char)~_BV(5)
+#define FUSE_DWEN        (unsigned char)~_BV(6)
+#define FUSE_CKDIV8      (unsigned char)~_BV(7)
+#define LFUSE_DEFAULT    (FUSE_SPIEN)
+
+
 
 /* Lock Bits */
 #define __LOCK_BITS_EXIST

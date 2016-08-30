@@ -1,9 +1,9 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * @file    EncoderMotorTestRunSpeedAndTime.ino
  * @author  MakeBlock
  * @version V1.0.0
- * @date    2015/09/07
+ * @date    2015/11/19
  * @brief   Description: this file is sample code for Encoder Motor  device.
  *
  * Function List:
@@ -32,6 +32,6 @@ void setup()
 
 void loop()
 {
-  motor2.runSpeedAndTime(100,5);
-  delay(2000);
+  motor2.runSpeedAndTime(200,5);
+  motor2.runSpeedAndTime(-100,5);
 }

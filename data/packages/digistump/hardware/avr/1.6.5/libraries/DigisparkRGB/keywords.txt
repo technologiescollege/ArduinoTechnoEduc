@@ -1,3 +1,0 @@
-DigisparkRGBBegin	KEYWORD2
-DigisparkRGB	KEYWORD2
-DigisparkRGBDelay	KEYWORD2

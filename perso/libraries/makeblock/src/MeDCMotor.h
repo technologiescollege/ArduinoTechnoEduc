@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class MeDCMotor
  * \brief   Driver for Me DC motor device.
  * @file    MeDCMotor.h
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/09/09
+ * @version V1.0.1
+ * @date    2016/04/07
  * @brief   Header for MeDCMotor.cpp module
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -28,11 +28,14 @@
  *    1. void MeDCMotor::setpin(uint8_t dir_pin,uint8_t pwm_pin)
  *    2. void MeDCMotor::run(int16_t speed)
  *    3. void MeDCMotor::stop(void)
+ *    4. void MeDCMotor::reset(uint8_t port)
+ *    5. void MeDCMotor::reset(uint8_t port, uint8_t slot)
  *
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * Mark Yan         2015/09/09     1.0.0            Rebuild the old lib.
+ * Mark Yan         2016/04/07     1.0.1            fix motor reset issue.
  * </pre>
  *
  */
@@ -106,6 +109,40 @@ public:
 
 /**
  * \par Function
+ *   reset
+ * \par Description
+ *   Reset the DC motor available PIN by its RJ25 port.
+ * \param[in]
+ *   port - RJ25 port from PORT_1 to M2
+ * \par Output
+ *   None
+ * \return
+ *   None
+ * \par Others
+ *   None
+ */
+  void reset(uint8_t port);
+
+/**
+ * \par Function
+ *   reset
+ * \par Description
+ *   Reset the DC motor available PIN by its RJ25 port and slot.
+ * \param[in]
+ *   port - RJ25 port from PORT_1 to M2
+ * \param[in]
+ *   slot - SLOT1 or SLOT2
+ * \par Output
+ *   None
+ * \return
+ *   None
+ * \par Others
+ *   None
+ */
+  void reset(uint8_t port, uint8_t slot);
+
+/**
+ * \par Function
  *   run
  * \par Description
  *   Control the motor forward or reverse
@@ -136,6 +173,7 @@ public:
 private:
   volatile uint8_t dc_dir_pin;
   volatile uint8_t dc_pwm_pin;
+  int16_t  last_speed;
 };
 #endif
 

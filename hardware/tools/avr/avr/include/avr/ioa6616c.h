@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -361,6 +361,14 @@
 #define PRSPI   4
 #define PRLIN   5
 
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSI)|(1<<PRTIM0)|(1<<PRTIM1)|(1<<PRSPI)|(1<<PRLIN))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSI
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRLIN
+
 /* Reserved [0x65] */
 
 #define OSCCAL  _SFR_MEM8(0x66)
@@ -485,9 +493,9 @@
 #define ADC7D   7
 
 #define DIDR1   _SFR_MEM8(0x7F)
-#define ADC8D   0
-#define ADC9D   1
-#define ADC10D  2
+#define ADC8D   4
+#define ADC9D   5
+#define ADC10D  6
 
 #define TCCR1A  _SFR_MEM8(0x80)
 #define WGM10   0
@@ -706,6 +714,13 @@
 
 
 
+/* Values and associated defines */
+
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+
 /* Interrupt vectors */
 /* Vector 0 is the reset vector */
 /* External Interrupt Request 0 */
@@ -776,11 +791,11 @@
 #define ANA_COMP_vect            _VECTOR(17)
 #define ANA_COMP_vect_num        17
 
-/* USI Start */
+/* USI Start Condition Detection */
 #define USI_START_vect            _VECTOR(18)
 #define USI_START_vect_num        18
 
-/* USI Overflow */
+/* USI Counter Overflow */
 #define USI_OVF_vect            _VECTOR(19)
 #define USI_OVF_vect_num        19
 
@@ -815,6 +830,8 @@
 #define FUSE_SUT_CKSEL5  (unsigned char)~_BV(5)
 #define FUSE_CKOUT       (unsigned char)~_BV(6)
 #define FUSE_CKDIV8      (unsigned char)~_BV(7)
+#define LFUSE_DEFAULT    (FUSE_SUT_CKSEL0 & FUSE_SUT_CKSEL2 & FUSE_SUT_CKSEL3 & FUSE_SUT_CKSEL4 & FUSE_CKDIV8)
+
 
 /* High Fuse Byte */
 #define FUSE_BODLEVEL0   (unsigned char)~_BV(0)
@@ -825,9 +842,13 @@
 #define FUSE_SPIEN       (unsigned char)~_BV(5)
 #define FUSE_DWEN        (unsigned char)~_BV(6)
 #define FUSE_RSTDISBL    (unsigned char)~_BV(7)
+#define HFUSE_DEFAULT    (FUSE_SPIEN)
+
 
 /* Extended Fuse Byte */
 #define FUSE_SELFPRGEN   (unsigned char)~_BV(0)
+#define EFUSE_DEFAULT    (0xFF)
+
 
 
 /* Lock Bits */

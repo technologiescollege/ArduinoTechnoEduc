@@ -297,7 +297,7 @@ must be defined for the mega48.
 #define MCUCR   _SFR_IO8 (0x35)
 /* MCUCR */
 #define PUD     4
-#if defined (__AVR_ATmega88__) || defined (__AVR_ATmega168__) 
+#if defined (__AVR_ATmega88__) || defined (__AVR_ATmega168__)  || defined (__AVR_ATmega48A__) || defined(__AVR_ATmega48PA__)
 #define IVSEL   1
 #define IVCE    0
 #endif
@@ -349,6 +349,15 @@ must be defined for the mega48.
 #define PRSPI    2
 #define PRUSART0 1
 #define PRADC    0
+
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSART0)|(1<<PRSPI)|(1<<PRTIM1)|(1<<PRTIM0)|(1<<PRTIM2)|(1<<PRTWI))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSART0
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTIM2
+#define __AVR_HAVE_PRR_PRTWI
 
 #define OSCCAL  _SFR_MEM8 (0x66)
 

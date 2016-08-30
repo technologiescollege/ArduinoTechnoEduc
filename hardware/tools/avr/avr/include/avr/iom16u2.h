@@ -404,9 +404,18 @@
 #define PRTIM1 3
 #define PRTIM0 5
 
+#define __AVR_HAVE_PRR0	((1<<PRSPI)|(1<<PRTIM1)|(1<<PRTIM0))
+#define __AVR_HAVE_PRR0_PRSPI
+#define __AVR_HAVE_PRR0_PRTIM1
+#define __AVR_HAVE_PRR0_PRTIM0
+
 #define PRR1 _SFR_MEM8(0x65)
 #define PRUSART1 0
 #define PRUSB 7
+
+#define __AVR_HAVE_PRR1	((1<<PRUSART1)|(1<<PRUSB))
+#define __AVR_HAVE_PRR1_PRUSART1
+#define __AVR_HAVE_PRR1_PRUSB
 
 #define OSCCAL _SFR_MEM8(0x66)
 #define CAL0 0
@@ -981,6 +990,11 @@
 #define SIGNATURE_2 0x89
 
 
-/* Device Pin Definitions */
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
+#define SLEEP_MODE_EXT_STANDBY (0x07<<1)
+
 #endif /* _AVR_ATmega16U2_H_ */
 

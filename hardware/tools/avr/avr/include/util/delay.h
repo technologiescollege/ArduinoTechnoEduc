@@ -35,9 +35,11 @@
 #ifndef _UTIL_DELAY_H_
 #define _UTIL_DELAY_H_ 1
 
-#ifndef __HAS_DELAY_CYCLES
-#define __HAS_DELAY_CYCLES 1
-#endif
+#ifndef __DOXYGEN__
+#  ifndef __HAS_DELAY_CYCLES
+#    define __HAS_DELAY_CYCLES 1
+#  endif
+#endif  /* __DOXYGEN__ */
 
 #include <inttypes.h>
 #include <util/delay_basic.h>
@@ -81,13 +83,28 @@
 */
 
 #if !defined(__DOXYGEN__)
-static inline void _delay_us(double __us) __attribute__((always_inline));
-static inline void _delay_ms(double __ms) __attribute__((always_inline));
+static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
 #endif
 
 #ifndef F_CPU
 /* prevent compiler error by supplying a default */
 # warning "F_CPU not defined for <util/delay.h>"
+/** \ingroup util_delay
+    \def F_CPU
+    \brief CPU frequency in Hz
+
+    The macro F_CPU specifies the CPU frequency to be considered by
+    the delay macros.  This macro is normally supplied by the
+    environment (e.g. from within a project header, or the project's
+    Makefile).  The value 1 MHz here is only provided as a "vanilla"
+    fallback if no such user-provided definition could be found.
+
+    In terms of the delay functions, the CPU frequency can be given as
+    a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+    However, the macros in <util/setbaud.h> require it to be an
+    integer value.
+ */
 # define F_CPU 1000000UL
 #endif
 
@@ -117,31 +134,38 @@ static inline void _delay_ms(double __ms) __attribute__((always_inline));
    delays up to 6.5535 seconds (independent from CPU frequency).  The
    user will not be informed about decreased resolution.
 
-   If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+   If the avr-gcc toolchain has __builtin_avr_delay_cycles()
    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
    values greater than the maximal possible delay, overflows results in
    no delay i.e., 0ms.
 
-   Conversion of __us into clock cycles may not always result in integer.
-   By default, the clock cycles rounded up to next integer. This ensures that
-   the user gets atleast __us microseconds of delay.
+   Conversion of \c __ms into clock cycles may not always result in
+   integer.  By default, the clock cycles rounded up to next
+   integer. This ensures that the user gets at least \c __ms
+   microseconds of delay.
 
-   Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
-   to round down and round to closest integer.
+   Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+   \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+   algorithm can be made to round down, or round to closest integer,
+   respectively.
 
-   Note: The new implementation of _delay_ms(double __ms) with 
-    __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
-   User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
-   Also, the backward compatible
-   algorithm will be chosen if the code is compiled in a <em>freestanding
-   environment</em> (GCC option \c -ffreestanding), as the math functions
-   required for rounding are not available to the compiler then.
+   \note
+
+   The implementation of _delay_ms() based on
+   __builtin_avr_delay_cycles() is not backward compatible with older
+   implementations.  In order to get functionality backward compatible
+   with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+   must be defined before including this header file. Also, the
+   backward compatible algorithm will be chosen if the code is
+   compiled in a <em>freestanding environment</em> (GCC option
+   \c -ffreestanding), as the math functions required for rounding are
+   not available to the compiler then.
 
  */
 void
 _delay_ms(double __ms)
 {
-	double __tmp ; 
+	double __tmp ;
 #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
   __STDC_HOSTED__
@@ -199,31 +223,38 @@ _delay_ms(double __ms)
    _delay_us() will automatically call _delay_ms() instead.  The user
    will not be informed about this case.
 
-   If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+   If the avr-gcc toolchain has __builtin_avr_delay_cycles()
    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
    values greater than the maximal possible delay, overflow results in
    no delay i.e., 0us.
-  
-   Conversion of __us into clock cycles may not always result in integer.
-   By default, the clock cycles rounded up to next integer. This ensures that
-   the user gets atleast __us microseconds of delay.
 
-   Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
-   to round down and round to closest integer.
- 
-   Note: The new implementation of _delay_us(double __us) with 
-    __builtin_avr_delay_cycles(unsigned long) support is not backward compatible.
-   User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
-   Also, the backward compatible
-   algorithm will be chosen if the code is compiled in a <em>freestanding
-   environment</em> (GCC option \c -ffreestanding), as the math functions
-   required for rounding are not available to the compiler then.
+   Conversion of \c __us into clock cycles may not always result in
+   integer.  By default, the clock cycles rounded up to next
+   integer. This ensures that the user gets at least \c __us
+   microseconds of delay.
+
+   Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+   \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+   algorithm can be made to round down, or round to closest integer,
+   respectively.
+
+   \note
+
+   The implementation of _delay_ms() based on
+   __builtin_avr_delay_cycles() is not backward compatible with older
+   implementations.  In order to get functionality backward compatible
+   with previous versions, the macro \c __DELAY_BACKWARD_COMPATIBLE__
+   must be defined before including this header file. Also, the
+   backward compatible algorithm will be chosen if the code is
+   compiled in a <em>freestanding environment</em> (GCC option
+   \c -ffreestanding), as the math functions required for rounding are
+   not available to the compiler then.
 
  */
 void
 _delay_us(double __us)
 {
-	double __tmp ; 
+	double __tmp ;
 #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
   __STDC_HOSTED__
@@ -246,7 +277,7 @@ _delay_us(double __us)
 
 #else
 	uint8_t __ticks;
-	double __tmp2 ; 
+	double __tmp2 ;
 	__tmp = ((F_CPU) / 3e6) * __us;
 	__tmp2 = ((F_CPU) / 4e6) * __us;
 	if (__tmp < 1.0)

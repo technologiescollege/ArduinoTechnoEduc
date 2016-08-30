@@ -375,6 +375,13 @@
 #define PRTIM0 5
 #define PRTWI 7
 
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRSPI)|(1<<PRTIM1)|(1<<PRTIM0)|(1<<PRTWI))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTWI
+
 #define OSCCAL _SFR_MEM8(0x66)
 #define CAL0 0
 #define CAL1 1
@@ -791,5 +798,9 @@
 #define SIGNATURE_1 0x93
 #define SIGNATURE_2 0x11
 
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
 
 #endif /* _AVR_IOTN88_H_ */

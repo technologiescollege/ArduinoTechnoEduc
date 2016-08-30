@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   MeEncoderNew
  * \brief   Driver for Me Encoder New module.
  * @file    MeEncoderNew.h
  * @author  MakeBlock
  * @version V1.0.0
- * @date    2015/11/10
+ * @date    2016/03/18
  * @brief   Header for MeEncoderNew.cpp module
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -26,37 +26,36 @@
  *
  * \par Method List:
  *
- *    1. void MeEncoderNew::begin();
- *    2. void MeEncoderNew::reset();
- *    3. void MeEncoderNew::move(long angle, int speed);
- *    4. void MeEncoderNew::moveTo(long angle, int speed);
- *    5. void MeEncoderNew::runTurns(int turns, int speed);
- *    6. void MeEncoderNew::runSpeed(int speed);
- *    7. void MeEncoderNew::runSpeedAndTime(int speed, float time);
- *    8. int MeEncoderNew::getCurrentSpeed();
- *    9. long MeEncoderNew::getCurrentPosition();
- *    10. void MeEncoderNew::moveTo(long angle);
- *    11. void MeEncoderNew::movetoSpeed(long angle,int speed);
- *    12. void MeEncoderNew::setHold(uint8_t hold);
- *    13. void MeEncoderNew::setPID(float p,float i,float d,float s);
- *    14. void MeEncoderNew::setMaxPower(int8_t maxPower);
- *    15. int8_t MeEncoderNew::getPower();
- *    16. void MeEncoderNew::getPID(float * p,float * i,float * d,float * s);
- *    17. float MeEncoderNew::getRatio();
+ *    1. void MeEncoderNew::begin(void);
+ *    2. void MeEncoderNew::move(long angle, float speed, float lock_state);
+ *    3. void MeEncoderNew::moveTo(long angle, float speed,float lock_state);
+ *    4. void MeEncoderNew::runSpeed(int speed);
+ *    5. void MeEncoderNew::runTurns(long turns, float speed,float lock_state);
+ *    6. void MeEncoderNew::reset(void);
+ *    7. void MeEncoderNew::setSpeedPID(float p,float i,float d);
+ *    8. void MeEncoderNew::setPosPID(float p,float i,float d);
+ *    9. void MeEncoderNew::setMode(uint8_t mode);
+ *    10. void MeEncoderNew::setPWM(int pwm);
+ *    11. void MeEncoderNew::setCurrentPosition(long pulse_counter)
+ *    12. long MeEncoderNew::getCurrentPosition();
+ *    13. void MeEncoderNew::getSpeedPID(float * p,float * i,float * d);
+ *    14. void MeEncoderNew::getPosPID(float * p,float * i,float * d);
+ *    15. float MeEncoderNew::getCurrentSpeed(void);
+ *    16. void MeEncoderNew::sendCmd(void);
+ *    17. float MeEncoderNew::getRatio(void);
  *    18. void MeEncoderNew::setRatio(float r);
- *    19. int MeEncoderNew::getPulse();
+ *    19. int MeEncoderNew::getPulse(void);
  *    20. void MeEncoderNew::setPulse(int p);
  *    21. void MeEncoderNew::setDevid(int devid);
- *    22. void MeEncoderNew::setMode(uint8_t mode);
- *    23. void MeEncoderNew::setPWM(int pwm);
+ *    22. void MeEncoderNew::runSpeedAndTime(float speed, float time, float lock_state);
+ *    23. boolean MeEncoderNew::isTarPosReached(void);
  *
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
- * forfish         2015/11/10     1.0.0            Add description
+ * Mark Yan        2016/03/18     1.0.0            build the new
  * </pre>
  *
- * @example EncoderMotorTestRunSpeedAndTime.ino
  */
 
 #ifndef ME_LEGOENCODER_H
@@ -109,7 +108,7 @@ public:
  * Alternate Constructor which can call your own function to map the Encoder Motor New to arduino port,
  * you can set any slot for the Encoder Motor New device. 
  * \param[in]
- *   port - RJ25 port from PORT_1 to M2
+ *   port - RJ25 port from PORT_1 to PORT_10
  * \param[in]
  *   slot - SLOT1 or SLOT2
  */
@@ -129,7 +128,7 @@ public:
  * \param[in]
  *   None
  */
-  MeEncoderNew();
+  MeEncoderNew(void);
 
 /**
  * \par Function
@@ -145,7 +144,7 @@ public:
  * \par Others
  *    None
  */
-  void begin();
+  void begin(void);
 
 /**
  * \par Function
@@ -159,7 +158,7 @@ public:
  * \par Others
  *    None
  */
-  void reset();
+  void reset(void);
 
 /**
  * \par Function
@@ -170,6 +169,8 @@ public:
  *    angle - The angle move of Motor New.
  * \param[in]
  *    speed - The speed move of Motor New.
+ * \param[in]
+ *    lock_state - The lock state of Motor.
  * \par Output
  *    None
  * \par Return
@@ -177,7 +178,7 @@ public:
  * \par Others
  *    None
  */
-  void move(long angle, int speed);
+  void move(long angle, float speed = 220, float lock_state = 1);
 
 /**
  * \par Function
@@ -188,6 +189,8 @@ public:
  *    angle - The angle move of Motor New.
  * \param[in]
  *    speed - The speed move of Motor New.
+ * \param[in]
+ *    lock_state - The lock state of Motor.
  * \par Output
  *    None
  * \par Return
@@ -195,7 +198,7 @@ public:
  * \par Others
  *    None
  */
-  void moveTo(long angle, int speed);
+  void moveTo(long angle, float speed = 220, float lock_state = 1);
 
 /**
  * \par Function
@@ -206,6 +209,8 @@ public:
  *    turns - The turns move of Motor.
  * \param[in]
  *    speed - The speed move of Motor.
+ * \param[in]
+ *    lock_state - The lock state of Motor.
  * \par Output
  *    None
  * \par Return
@@ -213,7 +218,7 @@ public:
  * \par Others
  *    None
  */
-  void runTurns(int turns, int speed);
+  void runTurns(long turns, float speed = 220,float lock_state = 1);
 
 /**
  * \par Function
@@ -229,25 +234,7 @@ public:
  * \par Others
  *    None
  */
-  void runSpeed(int speed);
-
-/**
- * \par Function
- *    runSpeedAndTime
- * \par Description
- *    The speed and time of Motor's movement.
- * \param[in]
- *    speed - The speed move of Motor.
- * \param[in]
- *    time - The time move of Motor.
- * \par Output
- *    None
- * \par Return
- *    None
- * \par Others
- *    None
- */
-  void runSpeedAndTime(int speed, float time);
+  void runSpeed(float speed,float lock_state = 1);
 
 /**
  * \par Function
@@ -259,11 +246,27 @@ public:
  * \par Output
  *    None
  * \par Return
+ *    The speed of encoder motor(The unit is rpm)
+ * \par Others
+ *    None
+ */
+  float getCurrentSpeed(void);
+
+/**
+ * \par Function
+ *    setCurrentPosition
+ * \par Description
+ *    Set current position of Motor.
+ * \param[in]
+ *    pulse_counter - The count value of current encoder
+ * \par Output
+ *    None
+ * \par Return
  *    None
  * \par Others
  *    None
  */
-  int getCurrentSpeed();
+  void setCurrentPosition(long pulse_counter);
 
 /**
  * \par Function
@@ -275,75 +278,23 @@ public:
  * \par Output
  *    None
  * \par Return
- *    None
+ *    Motor encoder pulse count value.
  * \par Others
  *    None
  */
-  long getCurrentPosition();
+  long getCurrentPosition(void);
 
 /**
  * \par Function
- *    moveTo
+ *    setSpeedPID
  * \par Description
- *    Motor New move to the aim.
- * \param[in]
- *    angle - The angle move of Motor New.
- * \par Output
- *    None
- * \par Return
- *    None
- * \par Others
- *    None
- */
-  void moveTo(long angle);
-
-/**
- * \par Function
- *    movetoSpeed
- * \par Description
- *    Motor move to the set speed.
- * \param[in]
- *    angle - The angle move of Motor.
- * \param[in]
- *    speed - The speed move of Motor.
- * \par Output
- *    None
- * \par Return
- *    None
- * \par Others
- *    None
- */
-  void movetoSpeed(long angle,int speed);
-
-/**
- * \par Function
- *    setHold
- * \par Description
- *    Hold the state of Motor.
- * \param[in]
- *    hold - The time of Motor hold.
- * \par Output
- *    None
- * \par Return
- *    None
- * \par Others
- *    None
- */
-  void setHold(uint8_t hold);
-
-/**
- * \par Function
- *    setPID
- * \par Description
- *    Set PID for Motor.
+ *    Set speed PID for Motor.
  * \param[in]
  *    p - P means Proportion.
  * \param[in]
  *    i - I means Integration.
  * \param[in]
  *    d - D means Differentiation.
- * \param[in]
- *    s - S means slot of Motor.
  * \par Output
  *    None
  * \par Return
@@ -351,15 +302,19 @@ public:
  * \par Others
  *    None
  */
-  void setPID(float p,float i,float d,float s);
+  void setSpeedPID(float p,float i,float d);
 
-/**
+  /**
  * \par Function
- *    setMaxPower
+ *    setPosPID
  * \par Description
- *    Set the max power to Motor.
+ *    Set pos PID for Motor.
  * \param[in]
- *    maxPower - The size of power.
+ *    p - P means Proportion.
+ * \param[in]
+ *    i - I means Integration.
+ * \param[in]
+ *    d - D means Differentiation.
  * \par Output
  *    None
  * \par Return
@@ -367,27 +322,31 @@ public:
  * \par Others
  *    None
  */
-  void setMaxPower(int8_t maxPower);
+  void setPosPID(float p,float i,float d);
 
 /**
  * \par Function
- *    getPower
+ *    getSpeedPID
  * \par Description
- *    The current power of Motor's movement.
+ *    Get Speed PID from Motor.
  * \param[in]
- *    None
+ *    p - P means Proportion.
+ * \param[in]
+ *    i - I means Integration.
+ * \param[in]
+ *    d - D means Differentiation.
  * \par Output
  *    None
  * \par Return
- *    Return the size of power.
+ *    None
  * \par Others
  *    None
  */
-  int8_t getPower();
+  void getSpeedPID(float * p,float * i,float * d);
 
 /**
  * \par Function
- *    getPID
+ *    getPosPID
  * \par Description
  *    Get PID from Motor.
  * \param[in]
@@ -396,8 +355,6 @@ public:
  *    i - I means Integration.
  * \param[in]
  *    d - D means Differentiation.
- * \param[in]
- *    s - S means slot of Motor.
  * \par Output
  *    None
  * \par Return
@@ -405,7 +362,7 @@ public:
  * \par Others
  *    None
  */
-  void getPID(float * p,float * i,float * d,float * s);
+  void getPosPID(float * p,float * i,float * d);
 
 /**
  * \par Function
@@ -421,7 +378,7 @@ public:
  * \par Others
  *    None
  */
-  float getRatio();
+  float getRatio(void);
 
 /**
  * \par Function
@@ -429,7 +386,7 @@ public:
  * \par Description
  *    Set the ratio to Motor.
  * \param[in]
- *    None
+ *    ratio - the ratio of Motor
  * \par Output
  *    None
  * \par Return
@@ -453,7 +410,7 @@ public:
  * \par Others
  *    None
  */
-  int getPulse();
+  int getPulse(void);
 
 /**
  * \par Function
@@ -461,7 +418,7 @@ public:
  * \par Description
  *    Set the pulse to Motor.
  * \param[in]
- *    None
+ *    pulse - the line number of Motor
  * \par Output
  *    None
  * \par Return
@@ -477,7 +434,7 @@ public:
  * \par Description
  *    Set the devid to Motor.
  * \param[in]
- *    None
+ *    devid - the I2C adress
  * \par Output
  *    None
  * \par Return
@@ -485,7 +442,7 @@ public:
  * \par Others
  *    None
  */
-  void setDevid(int devid);
+  void setDevid(uint8_t devid);
 
 /**
  * \par Function
@@ -519,6 +476,43 @@ public:
  */
   void setPWM(int pwm);
 
+/**
+ * \par Function
+ *    runSpeedAndTime
+ * \par Description
+ *    The speed and time of Motor's movement.
+ * \param[in]
+ *    speed - The speed move of Motor.
+ * \param[in]
+ *    time - The time move of Motor.
+ * \param[in]
+ *    lock_state - The lock state of Motor.
+ * \par Output
+ *    None
+ * \par Return
+ *    None
+ * \par Others
+ *    None
+ */
+  void runSpeedAndTime(float speed, float time, float lock_state = 1);
+  
+/**
+ * \par Function
+ *    isTarPosReached
+ * \par Description
+ *    Check whether the target position has been reached
+ * \param[in]
+ *    None
+ * \par Output
+ *    None
+ * \par Return
+ *    true - The target position reaches
+ *    false - Does not reach the target position
+ * \par Others
+ *    None
+ */
+  boolean isTarPosReached(void);
+
 private:
 /**
  * \par Function
@@ -534,7 +528,7 @@ private:
  * \par Others
  *    None
  */
-  void sendCmd();
+  void sendCmd(void);
 
   uint8_t _slot; 
   uint8_t address;

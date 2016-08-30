@@ -1,0 +1,28 @@
+#
+# Syntax coloring for Bluetooth library
+#
+
+# Datatypes (Classes)
+BT	KEYWORD3
+Bluetooth	KEYWORD1
+
+# Methods and functions
+begin	KEYWORD2
+available	KEYWORD2
+read	KEYWORD2
+write	KEYWORD2
+clearBuffer	KEYWORD2
+connect	KEYWORD2
+disconnect	KEYWORD2
+setName	KEYWORD2
+setPass	KEYWORD2
+setMode	KEYWORD2
+command	KEYWORD2
+search	KEYWORD2
+findBaud	KEYWORD2
+setBaud	KEYWORD2
+
+# Constants
+MASTER	LITERAL1
+SLAVE	LITERAL1
+verbose	LITERAL1

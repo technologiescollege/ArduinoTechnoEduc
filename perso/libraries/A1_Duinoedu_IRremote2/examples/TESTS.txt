@@ -1,0 +1,17 @@
+
+EDU----------
+EDU_00_PRINCIPE => compile
+EDU_Reception_code_telecommande => PB => Modif => Compile
+EDU_TEST_DIRECT_D_UNE_TOUCHE => compile
+IRrecord
+
+AUTRES-------
+IRrecord => Compile
+IRrecvDemo => compile
+IRrecvDump => compile
+IRrelay.ino => compile
+IRsendDemo => compile
+IRtest => ne compile pas
+IRtest2 => compile
+JVCPanasonicSendDemo => compile
+

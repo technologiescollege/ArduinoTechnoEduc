@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   MeEncoderMotor
  * \brief   Driver for Encoder Motor module.
  * @file    MeEncoderMotor.cpp
  * @author  MakeBlock
- * @version V1.0.0
+ * @version V1.0.1
  * @date    2015/11/09
  * @brief   Driver for Encoder Motor module
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -39,7 +39,8 @@
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
- * forfish         2015/11/09     1.0.0            Add description
+ * Mark Yan        2015/11/03     1.0.0            Fix minor errors on format
+ * forfish         2015/11/09     1.0.1            Add description
  * </pre>
  *
  * @example EncoderMotorTestMoveTo.ino
@@ -310,7 +311,6 @@ boolean MeEncoderMotor::move(float angle, float speed)
   request(w, r, 18, 10);
   encoderParser.pushStr(r, 10);
   encoderParser.run();
-
   uint8_t ack[2] = {0};
   encoderParser.getData(ack, 2);
   return ack[1];
@@ -533,3 +533,4 @@ void MeEncoderMotor::request(byte *writeData, byte *readData, int wlen, int rlen
     index++;
   }
 }
+

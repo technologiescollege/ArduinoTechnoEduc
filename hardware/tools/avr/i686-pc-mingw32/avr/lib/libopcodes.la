@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/c/jenkins/workspace/toolchain-avr-windows/objdir/i686-pc-mingw32/avr/lib'
+libdir='/c/jenkins/workspace/avr-gcc/label/winxp-32-mingw/objdir/i686-pc-mingw32/avr/lib'

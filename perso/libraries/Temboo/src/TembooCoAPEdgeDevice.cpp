@@ -41,6 +41,7 @@ const char HTTP_CODE_PREFIX[] = "HTTP_CODE\x0A\x1F";
 const char HTTP_CODE_SUFFIX[] = "\x0A\x1E";
 const char TembooCoAPClient::URI_PATH[] = "exec";
 const char TIME_URI_PATH[] = "time";
+static char HEADER_TIME[] = "x-temboo-time:";
 
 uint16_t TembooCoAPChoreo::s_nextRequestId = 0;
 
@@ -54,8 +55,8 @@ TembooCoAPClient::TembooCoAPClient(TembooCoAPIPStack& ipStack, IPAddress gateway
     m_blockSize(MAX_BLOCK_SIZE),
     m_lastError(NO_ERROR),
     m_dataLen(0),
-    m_respLen(0),
     m_txIndex(0),
+    m_respLen(0),
     m_txByteCount(0),
     m_respHttpCode(0) {
     
@@ -551,7 +552,6 @@ bool TembooCoAPClient::moreBlocksToSend() {
 
 TembooCoAPClient::Result TembooCoAPClient::sendChoreoRequest() {
     uint16_t payloadLength = 0;
-    int16_t blockNum = 0;
     
     generateToken();
     
@@ -828,7 +828,7 @@ int TembooCoAPChoreo::run(uint16_t timeoutSecs) {
             
             //Unauthroized, need to update the time
             if (httpCode == 401 && i == 0) {
-                find("x-temboo-time:");
+                find(HEADER_TIME);
                 TembooCoAPSession::setTime((unsigned long)this->parseInt());
             } else {
                 TEMBOO_TRACE("DBG: ");
@@ -922,7 +922,7 @@ int TembooCoAPChoreo::read() {
 }
 
 
-size_t TembooCoAPChoreo::write(uint8_t data) {
+size_t TembooCoAPChoreo::write(uint8_t __attribute__ ((unused)) data) {
     return 0;
 }
 

@@ -1,15 +1,14 @@
 /*************************************************************************
-* File Name          : orion_firmware.ino
-* Author             : Ander
-* Updated            : Ander
-* Version            : V1.10101
-* Date               : 03/06/2014
+* File Name          : BlueTooth_Ultrasonic.ino
+* Author             : Ander, Mark Yan
+* Updated            : Ander, Mark Yan
+* Version            : V01.01.106
+* Date               : 07/06/2016
 * Description        : Firmware for Makeblock Electronic modules with Scratch.  
 * License            : CC-BY-SA 3.0
-* Copyright (C) 2013 - 2014 Maker Works Technology Co., Ltd. All right reserved.
+* Copyright (C) 2013 - 2016 Maker Works Technology Co., Ltd. All right reserved.
 * http://www.makeblock.cc/
 **************************************************************************/
-#include <Servo.h>
 #include <Wire.h>
 #include <SoftwareSerial.h>
 #include <Arduino.h>
@@ -64,7 +63,7 @@ MeModule modules[12];
 #if defined(__AVR_ATmega1280__)|| defined(__AVR_ATmega2560__)
   int analogs[16]={A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15};
 #endif
-String mVersion = "10.01.001";
+String mVersion = "01.01.106";
 boolean isAvailable = false;
 boolean isBluetooth = false;
 
@@ -135,6 +134,7 @@ int randnum = 0;
 boolean leftflag;
 boolean rightflag;
 int starter_mode = 0;
+uint8_t command_index = 0;
 
 void Forward()
 {
@@ -248,6 +248,9 @@ void setup(){
   leftflag=false;
   rightflag=false;
   randomSeed(analogRead(0));
+  Stop();
+  Serial.print("Version: ");
+  Serial.println(mVersion);
 }
 void loop(){
   currentTime = millis()/1000.0-lastTime;
@@ -347,12 +350,15 @@ ff 55 len idx action device port  slot  data a
 void parseData(){
   isStart = false;
   int idx = readBuffer(3);
+  command_index = (uint8_t)idx;
   int action = readBuffer(4);
   int device = readBuffer(5);
   switch(action){
     case GET:{
-        writeHead();
-        writeSerial(idx);
+        if(device != ULTRASONIC_SENSOR){
+          writeHead();
+          writeSerial(idx);
+        }
         readSensor(device);
         writeEnd();
      }
@@ -433,6 +439,13 @@ float readFloat(int idx){
   val.byteVal[3] = readBuffer(idx+3);
   return val.floatVal;
 }
+long readLong(int idx){
+  val.byteVal[0] = readBuffer(idx);
+  val.byteVal[1] = readBuffer(idx+1);
+  val.byteVal[2] = readBuffer(idx+2);
+  val.byteVal[3] = readBuffer(idx+3);
+  return val.longVal;
+}
 void runModule(int device){
   //0xff 0x55 0x6 0x0 0x1 0xa 0x9 0x0 0x0 0xa
   int port = readBuffer(6);
@@ -455,7 +468,7 @@ void runModule(int device){
     break;
     case STEPPER:{
      int maxSpeed = readShort(7);
-     int distance = readShort(9);
+     long distance = readLong(9);
      if(port==PORT_1){
       steppers[0] = MeStepper(PORT_1);
       steppers[0].moveTo(distance);
@@ -507,10 +520,10 @@ void runModule(int device){
      pin = slot==1?mePort[port].s1:mePort[port].s2;
      int v = readBuffer(8);
      Servo sv = servos[searchServoPin(pin)];
-     if(v>=0&&v<=180){
-       if(port>0){
-         sv.attach(pin);
-       }else{
+     if(v >= 0 && v <= 180)
+     {
+       if(!sv.attached())
+       {
          sv.attach(pin);
        }
        sv.write(v);
@@ -570,9 +583,13 @@ void runModule(int device){
    break;
    case SERVO_PIN:{
      int v = readBuffer(7);
-     if(v>=0&&v<=180){
-       Servo sv = servos[searchServoPin(pin)];
-       sv.attach(pin);
+     Servo sv = servos[searchServoPin(pin)]; 
+     if(v >= 0 && v <= 180)
+     {
+       if(!sv.attached())
+       {
+         sv.attach(pin);
+       }
        sv.write(v);
      }
    }
@@ -611,6 +628,8 @@ void readSensor(int device){
        us.reset(port);
      }
      value = us.distanceCm();
+     writeHead();
+     writeSerial(command_index);
      sendFloat(value);
    }
    break;
@@ -669,10 +688,10 @@ void readSensor(int device){
      }
      if(slot==1){
        pinMode(generalDevice.pin1(),INPUT_PULLUP);
-       value = generalDevice.dRead1();
+       value = !generalDevice.dRead1();
      }else{
        pinMode(generalDevice.pin2(),INPUT_PULLUP);
-       value = generalDevice.dRead2();
+       value = !generalDevice.dRead2();
      }
      sendFloat(value);  
    }

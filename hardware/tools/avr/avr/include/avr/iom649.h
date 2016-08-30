@@ -426,6 +426,13 @@
 #define PRTIM1      3
 #define PRLCD       4
 
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSART0)|(1<<PRSPI)|(1<<PRTIM1)|(1<<PRLCD))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSART0
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRLCD
+
 /* Reserved [0x65] */
 
 #define OSCCAL  _SFR_MEM8(0x66)
@@ -1045,5 +1052,10 @@
 
 
 
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
 
 #endif /* _AVR_IOM649_H_ */

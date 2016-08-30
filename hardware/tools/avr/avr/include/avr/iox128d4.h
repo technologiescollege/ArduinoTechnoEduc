@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -257,6 +257,12 @@ typedef enum SLEEP_SMODE_enum
 } SLEEP_SMODE_t;
 
 
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
+#define SLEEP_MODE_EXT_STANDBY (0x07<<1)
 /*
 --------------------------------------------------------------------------
 OSC - Oscillator
@@ -763,7 +769,7 @@ typedef struct NVM_struct
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t reserved_0x0E;
     register8_t STATUS;  /* Status */
-    register8_t LOCKBITS;  /* Lock Bits */
+    register8_t LOCK_BITS;  /* Lock Bits (Changed from LOCKBITS to avoid avr-libc collision) */
 } NVM_t;
 
 /* NVM Command */
@@ -1301,7 +1307,7 @@ typedef enum TWI_SLAVE_CMD_enum
 
 /*
 --------------------------------------------------------------------------
-PORT - I/O Port Configuration
+PORT - Port Configuration
 --------------------------------------------------------------------------
 */
 
@@ -1322,7 +1328,7 @@ typedef struct PORT_struct
     register8_t INT1MASK;  /* Port Interrupt 1 Mask */
     register8_t INTFLAGS;  /* Interrupt Flag Register */
     register8_t reserved_0x0D;
-    register8_t REMAP;  /* I/O Port Pin Remap Register */
+    register8_t REMAP;  /* Pin Remap Register (available for PORTC to PORTF only) */
     register8_t reserved_0x0F;
     register8_t PIN0CTRL;  /* Pin 0 Control Register */
     register8_t PIN1CTRL;  /* Pin 1 Control Register */
@@ -2087,7 +2093,7 @@ LOCKBIT - Fuses and Lockbits
 /* Lock Bits */
 typedef struct NVM_LOCKBITS_struct
 {
-    register8_t LOCKBITS;  /* Lock Bits */
+    register8_t LOCK_BITS;  /* Lock Bits (Changed from LOCKBITS to avoid avr-libc collision) */
 } NVM_LOCKBITS_t;
 
 /* Boot lock bits - boot setcion */
@@ -4118,7 +4124,14 @@ IO Module Instances. Mapped to memory.
 #define TWI_EDIEN_bm  0x01  /* External Driver Interface Enable bit mask. */
 #define TWI_EDIEN_bp  0  /* External Driver Interface Enable bit position. */
 
-/* PORT - I/O Port Configuration */
+/* PORT - Port Configuration */
+/* VPORT.INTFLAGS  bit masks and bit positions */
+/* VPORT_INT1IF  Predefined. */
+/* VPORT_INT1IF  Predefined. */
+
+/* VPORT_INT0IF  Predefined. */
+/* VPORT_INT0IF  Predefined. */
+
 /* PORT.INTCTRL  bit masks and bit positions */
 #define PORT_INT1LVL_gm  0x0C  /* Port Interrupt 1 Level group mask. */
 #define PORT_INT1LVL_gp  2  /* Port Interrupt 1 Level group position. */
@@ -4142,11 +4155,11 @@ IO Module Instances. Mapped to memory.
 #define PORT_INT0IF_bp  0  /* Port Interrupt 0 Flag bit position. */
 
 /* PORT.REMAP  bit masks and bit positions */
-#define PORT_SPI_bm  0x20  /* SPI bit mask. */
-#define PORT_SPI_bp  5  /* SPI bit position. */
+#define PORT_SPI_bm  0x20  /* SPI Remap bit mask. */
+#define PORT_SPI_bp  5  /* SPI Remap bit position. */
 
-#define PORT_USART0_bm  0x10  /* USART0 bit mask. */
-#define PORT_USART0_bp  4  /* USART0 bit position. */
+#define PORT_USART0_bm  0x10  /* USART0 Remap bit mask. */
+#define PORT_USART0_bp  4  /* USART0 Remap bit position. */
 
 #define PORT_TC0D_bm  0x08  /* Timer/Counter 0 Output Compare D bit mask. */
 #define PORT_TC0D_bp  3  /* Timer/Counter 0 Output Compare D bit position. */
@@ -5505,6 +5518,44 @@ IO Module Instances. Mapped to memory.
 #define SIGNATURE_0 0x1E
 #define SIGNATURE_1 0x97
 #define SIGNATURE_2 0x47
+
+/* ========== Power Reduction Condition Definitions ========== */
+
+/* PR.PRGEN */
+#define __AVR_HAVE_PRGEN	(PR_RTC_bm|PR_EVSYS_bm)
+#define __AVR_HAVE_PRGEN_RTC
+#define __AVR_HAVE_PRGEN_EVSYS
+
+/* PR.PRPA */
+#define __AVR_HAVE_PRPA	(PR_ADC_bm|PR_AC_bm)
+#define __AVR_HAVE_PRPA_ADC
+#define __AVR_HAVE_PRPA_AC
+
+/* PR.PRPC */
+#define __AVR_HAVE_PRPC	(PR_TWI_bm|PR_USART0_bm|PR_SPI_bm|PR_HIRES_bm|PR_TC1_bm|PR_TC0_bm)
+#define __AVR_HAVE_PRPC_TWI
+#define __AVR_HAVE_PRPC_USART0
+#define __AVR_HAVE_PRPC_SPI
+#define __AVR_HAVE_PRPC_HIRES
+#define __AVR_HAVE_PRPC_TC1
+#define __AVR_HAVE_PRPC_TC0
+
+/* PR.PRPD */
+#define __AVR_HAVE_PRPD	(PR_USART0_bm|PR_SPI_bm|PR_TC0_bm)
+#define __AVR_HAVE_PRPD_USART0
+#define __AVR_HAVE_PRPD_SPI
+#define __AVR_HAVE_PRPD_TC0
+
+/* PR.PRPE */
+#define __AVR_HAVE_PRPE	(PR_TWI_bm|PR_USART0_bm|PR_TC0_bm)
+#define __AVR_HAVE_PRPE_TWI
+#define __AVR_HAVE_PRPE_USART0
+#define __AVR_HAVE_PRPE_TC0
+
+/* PR.PRPF */
+#define __AVR_HAVE_PRPF	(PR_USART0_bm|PR_TC0_bm)
+#define __AVR_HAVE_PRPF_USART0
+#define __AVR_HAVE_PRPF_TC0
 
 
 #endif /* #ifdef _AVR_ATXMEGA128D4_H_INCLUDED */

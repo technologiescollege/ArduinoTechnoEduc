@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="128 128 128" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="DuinoEDU_Led" id="414">
+<Location>
+<X>368</X>
+<Y>372</Y>
+</Location>
+<BeforeBlockId>410</BeforeBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="415" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="416" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Statut" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="digital-on" id="416">
+<Location>
+<X>532</X>
+<Y>399</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="414" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_D4" id="415">
+<Location>
+<X>532</X>
+<Y>375</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="414" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_Led" id="411">
+<Location>
+<X>369</X>
+<Y>260</Y>
+</Location>
+<BeforeBlockId>410</BeforeBlockId>
+<Sockets num-sockets="2">
+<BlockConnector con-block-id="412" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="413" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Statut" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="digital-on" id="413">
+<Location>
+<X>533</X>
+<Y>287</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="411" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_D4" id="412">
+<Location>
+<X>533</X>
+<Y>263</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="411" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="char" id="408">
+<Label>POWER</Label>
+<Location>
+<X>604</X>
+<Y>189</Y>
+</Location>
+<Comment>
+<Text>Teste la touche POWER (ON/OFF)</Text>
+<Location>
+<X>693</X>
+<Y>114</Y>
+</Location>
+<BoxSize>
+<Width>174</Width>
+<Height>60</Height>
+</BoxSize>
+</Comment>
+<Plug>
+<BlockConnector con-block-id="406" connector-kind="plug" connector-type="poly" init-type="poly" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="loop" id="405">
+<Location>
+<X>71</X>
+<Y>154</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="410" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Faire" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="ifelse" id="410">
+<Location>
+<X>170</X>
+<Y>162</Y>
+</Location>
+<BeforeBlockId>405</BeforeBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="406" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Teste" position-type="single"/>
+<BlockConnector con-block-id="411" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Alors exécute ..." position-type="single"/>
+<BlockConnector con-block-id="414" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Sinon éxécute" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_infrared_compare" id="406">
+<Location>
+<X>372</X>
+<Y>165</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="410" connector-kind="plug" connector-type="boolean" init-type="boolean" label="code" position-type="single"/>
+</Plug>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="407" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="408" connector-kind="socket" connector-type="poly" init-type="poly" label="==" position-type="single"/>
+<BlockConnector con-block-id="409" connector-kind="socket" connector-type="number" init-type="number" label="" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_IRREMOTE_MEMORISER_TOUCHE" id="409">
+<Location>
+<X>604</X>
+<Y>213</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="406" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_D2" id="407">
+<Location>
+<X>604</X>
+<Y>165</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="406" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

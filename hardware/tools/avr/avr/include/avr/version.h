@@ -55,7 +55,7 @@
 
 /** \ingroup avr_version
     String literal representation of the current library version. */
-#define __AVR_LIBC_VERSION_STRING__ "1.8.0svn"
+#define __AVR_LIBC_VERSION_STRING__ "2.0.0"
 
 /** \ingroup avr_version
     Numerical representation of the current library version.
@@ -65,23 +65,23 @@
     added.  It is intented to provide a monotonically increasing
     numerical value that can easily be used in numerical checks.
  */
-#define __AVR_LIBC_VERSION__        10800UL
+#define __AVR_LIBC_VERSION__        20000UL
 
 /** \ingroup avr_version
     String literal representation of the release date. */
-#define __AVR_LIBC_DATE_STRING__    "20111229"
+#define __AVR_LIBC_DATE_STRING__    "20150208"
 
 /** \ingroup avr_version
     Numerical representation of the release date. */
-#define __AVR_LIBC_DATE_            20111229UL
+#define __AVR_LIBC_DATE_            20150208UL
 
 /** \ingroup avr_version
     Library major version number. */
-#define __AVR_LIBC_MAJOR__          1
+#define __AVR_LIBC_MAJOR__          2
 
 /** \ingroup avr_version
     Library minor version number. */
-#define __AVR_LIBC_MINOR__          8
+#define __AVR_LIBC_MINOR__          0
 
 /** \ingroup avr_version
     Library revision number. */

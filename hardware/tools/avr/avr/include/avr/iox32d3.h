@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -241,6 +241,12 @@ typedef enum SLEEP_SMODE_enum
 } SLEEP_SMODE_t;
 
 
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
+#define SLEEP_MODE_EXT_STANDBY (0x07<<1)
 /*
 --------------------------------------------------------------------------
 OSC - Oscillator
@@ -637,21 +643,21 @@ typedef struct NVM_struct
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t reserved_0x0E;
     register8_t STATUS;  /* Status */
-    register8_t LOCKBITS;  /* Lock Bits */
+    register8_t LOCK_BITS;  /* Lock Bits (Changed from LOCKBITS to avoid avr-libc collision) */
 } NVM_t;
 
 
 /* Lock Bits */
 typedef struct NVM_LOCKBITS_struct
 {
-    register8_t LOCKBITS;  /* Lock Bits */
+    register8_t LOCK_BITS;  /* Lock Bits (Changed from LOCKBITS to avoid avr-libc collision) */
 } NVM_LOCKBITS_t;
 
 
 /* Fuses */
 typedef struct NVM_FUSES_struct
 {
-    register8_t FUSEBYTE0;  /* User ID */
+    register8_t reserved_0x00;
     register8_t FUSEBYTE1;  /* Watchdog Configuration */
     register8_t FUSEBYTE2;  /* Reset Configuration */
     register8_t reserved_0x03;
@@ -1365,7 +1371,7 @@ typedef struct PORT_struct
     register8_t INT1MASK;  /* Port Interrupt 1 Mask */
     register8_t INTFLAGS;  /* Interrupt Flag Register */
     register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
+    register8_t REMAP;  /* Pin Remap Register (available for PORTC to PORTF only) */
     register8_t reserved_0x0F;
     register8_t PIN0CTRL;  /* Pin 0 Control Register */
     register8_t PIN1CTRL;  /* Pin 1 Control Register */
@@ -2026,7 +2032,6 @@ IO Module Instances. Mapped to memory.
 #define GPIO_GPIO3  _SFR_MEM8(0x0003)
 
 /* NVM_FUSES - Fuses */
-#define FUSE_FUSEBYTE0  _SFR_MEM8(0x0000)
 #define FUSE_FUSEBYTE1  _SFR_MEM8(0x0001)
 #define FUSE_FUSEBYTE2  _SFR_MEM8(0x0002)
 #define FUSE_FUSEBYTE4  _SFR_MEM8(0x0004)
@@ -2287,6 +2292,7 @@ IO Module Instances. Mapped to memory.
 #define PORTA_INT0MASK  _SFR_MEM8(0x060A)
 #define PORTA_INT1MASK  _SFR_MEM8(0x060B)
 #define PORTA_INTFLAGS  _SFR_MEM8(0x060C)
+#define PORTA_REMAP  _SFR_MEM8(0x060E)
 #define PORTA_PIN0CTRL  _SFR_MEM8(0x0610)
 #define PORTA_PIN1CTRL  _SFR_MEM8(0x0611)
 #define PORTA_PIN2CTRL  _SFR_MEM8(0x0612)
@@ -2310,6 +2316,7 @@ IO Module Instances. Mapped to memory.
 #define PORTB_INT0MASK  _SFR_MEM8(0x062A)
 #define PORTB_INT1MASK  _SFR_MEM8(0x062B)
 #define PORTB_INTFLAGS  _SFR_MEM8(0x062C)
+#define PORTB_REMAP  _SFR_MEM8(0x062E)
 #define PORTB_PIN0CTRL  _SFR_MEM8(0x0630)
 #define PORTB_PIN1CTRL  _SFR_MEM8(0x0631)
 #define PORTB_PIN2CTRL  _SFR_MEM8(0x0632)
@@ -2333,6 +2340,7 @@ IO Module Instances. Mapped to memory.
 #define PORTC_INT0MASK  _SFR_MEM8(0x064A)
 #define PORTC_INT1MASK  _SFR_MEM8(0x064B)
 #define PORTC_INTFLAGS  _SFR_MEM8(0x064C)
+#define PORTC_REMAP  _SFR_MEM8(0x064E)
 #define PORTC_PIN0CTRL  _SFR_MEM8(0x0650)
 #define PORTC_PIN1CTRL  _SFR_MEM8(0x0651)
 #define PORTC_PIN2CTRL  _SFR_MEM8(0x0652)
@@ -2356,6 +2364,7 @@ IO Module Instances. Mapped to memory.
 #define PORTD_INT0MASK  _SFR_MEM8(0x066A)
 #define PORTD_INT1MASK  _SFR_MEM8(0x066B)
 #define PORTD_INTFLAGS  _SFR_MEM8(0x066C)
+#define PORTD_REMAP  _SFR_MEM8(0x066E)
 #define PORTD_PIN0CTRL  _SFR_MEM8(0x0670)
 #define PORTD_PIN1CTRL  _SFR_MEM8(0x0671)
 #define PORTD_PIN2CTRL  _SFR_MEM8(0x0672)
@@ -2379,6 +2388,7 @@ IO Module Instances. Mapped to memory.
 #define PORTE_INT0MASK  _SFR_MEM8(0x068A)
 #define PORTE_INT1MASK  _SFR_MEM8(0x068B)
 #define PORTE_INTFLAGS  _SFR_MEM8(0x068C)
+#define PORTE_REMAP  _SFR_MEM8(0x068E)
 #define PORTE_PIN0CTRL  _SFR_MEM8(0x0690)
 #define PORTE_PIN1CTRL  _SFR_MEM8(0x0691)
 #define PORTE_PIN2CTRL  _SFR_MEM8(0x0692)
@@ -2402,6 +2412,7 @@ IO Module Instances. Mapped to memory.
 #define PORTF_INT0MASK  _SFR_MEM8(0x06AA)
 #define PORTF_INT1MASK  _SFR_MEM8(0x06AB)
 #define PORTF_INTFLAGS  _SFR_MEM8(0x06AC)
+#define PORTF_REMAP  _SFR_MEM8(0x06AE)
 #define PORTF_PIN0CTRL  _SFR_MEM8(0x06B0)
 #define PORTF_PIN1CTRL  _SFR_MEM8(0x06B1)
 #define PORTF_PIN2CTRL  _SFR_MEM8(0x06B2)
@@ -2425,6 +2436,7 @@ IO Module Instances. Mapped to memory.
 #define PORTR_INT0MASK  _SFR_MEM8(0x07EA)
 #define PORTR_INT1MASK  _SFR_MEM8(0x07EB)
 #define PORTR_INTFLAGS  _SFR_MEM8(0x07EC)
+#define PORTR_REMAP  _SFR_MEM8(0x07EE)
 #define PORTR_PIN0CTRL  _SFR_MEM8(0x07F0)
 #define PORTR_PIN1CTRL  _SFR_MEM8(0x07F1)
 #define PORTR_PIN2CTRL  _SFR_MEM8(0x07F2)
@@ -3325,26 +3337,6 @@ IO Module Instances. Mapped to memory.
 #define NVM_LOCKBITS_LB1_bm  (1<<1)  /* Lock Bits bit 1 mask. */
 #define NVM_LOCKBITS_LB1_bp  1  /* Lock Bits bit 1 position. */
 
-/* NVM_FUSES.FUSEBYTE0  bit masks and bit positions */
-#define NVM_FUSES_USERID_gm  0xFF  /* User ID group mask. */
-#define NVM_FUSES_USERID_gp  0  /* User ID group position. */
-#define NVM_FUSES_USERID0_bm  (1<<0)  /* User ID bit 0 mask. */
-#define NVM_FUSES_USERID0_bp  0  /* User ID bit 0 position. */
-#define NVM_FUSES_USERID1_bm  (1<<1)  /* User ID bit 1 mask. */
-#define NVM_FUSES_USERID1_bp  1  /* User ID bit 1 position. */
-#define NVM_FUSES_USERID2_bm  (1<<2)  /* User ID bit 2 mask. */
-#define NVM_FUSES_USERID2_bp  2  /* User ID bit 2 position. */
-#define NVM_FUSES_USERID3_bm  (1<<3)  /* User ID bit 3 mask. */
-#define NVM_FUSES_USERID3_bp  3  /* User ID bit 3 position. */
-#define NVM_FUSES_USERID4_bm  (1<<4)  /* User ID bit 4 mask. */
-#define NVM_FUSES_USERID4_bp  4  /* User ID bit 4 position. */
-#define NVM_FUSES_USERID5_bm  (1<<5)  /* User ID bit 5 mask. */
-#define NVM_FUSES_USERID5_bp  5  /* User ID bit 5 position. */
-#define NVM_FUSES_USERID6_bm  (1<<6)  /* User ID bit 6 mask. */
-#define NVM_FUSES_USERID6_bp  6  /* User ID bit 6 position. */
-#define NVM_FUSES_USERID7_bm  (1<<7)  /* User ID bit 7 mask. */
-#define NVM_FUSES_USERID7_bp  7  /* User ID bit 7 position. */
-
 /* NVM_FUSES.FUSEBYTE1  bit masks and bit positions */
 #define NVM_FUSES_WDWP_gm  0xF0  /* Watchdog Window Timeout Period group mask. */
 #define NVM_FUSES_WDWP_gp  4  /* Watchdog Window Timeout Period group position. */
@@ -4012,6 +4004,25 @@ IO Module Instances. Mapped to memory.
 
 #define PORT_INT0IF_bm  0x01  /* Port Interrupt 0 Flag bit mask. */
 #define PORT_INT0IF_bp  0  /* Port Interrupt 0 Flag bit position. */
+
+/* PORT.REMAP  bit masks and bit positions */
+#define PORT_SPI_bm  0x20  /* SPI Remap bit mask. */
+#define PORT_SPI_bp  5  /* SPI Remap bit position. */
+
+#define PORT_USART0_bm  0x10  /* USART0 Remap bit mask. */
+#define PORT_USART0_bp  4  /* USART0 Remap bit position. */
+
+#define PORT_TC0D_bm  0x08  /* Timer/Counter 0 Output Compare D bit mask. */
+#define PORT_TC0D_bp  3  /* Timer/Counter 0 Output Compare D bit position. */
+
+#define PORT_TC0C_bm  0x04  /* Timer/Counter 0 Output Compare C bit mask. */
+#define PORT_TC0C_bp  2  /* Timer/Counter 0 Output Compare C bit position. */
+
+#define PORT_TC0B_bm  0x02  /* Timer/Counter 0 Output Compare B bit mask. */
+#define PORT_TC0B_bp  1  /* Timer/Counter 0 Output Compare B bit position. */
+
+#define PORT_TC0A_bm  0x01  /* Timer/Counter 0 Output Compare A bit mask. */
+#define PORT_TC0A_bp  0  /* Timer/Counter 0 Output Compare A bit position. */
 
 /* PORT.PIN0CTRL  bit masks and bit positions */
 #define PORT_SRLEN_bm  0x80  /* Slew Rate Enable bit mask. */
@@ -5001,16 +5012,7 @@ IO Module Instances. Mapped to memory.
 /* ========== Fuses ========== */
 #define FUSE_MEMORY_SIZE 6
 
-/* Fuse Byte 0 */
-#define FUSE_USERID0  (unsigned char)~_BV(0)  /* User ID Bit 0 */
-#define FUSE_USERID1  (unsigned char)~_BV(1)  /* User ID Bit 1 */
-#define FUSE_USERID2  (unsigned char)~_BV(2)  /* User ID Bit 2 */
-#define FUSE_USERID3  (unsigned char)~_BV(3)  /* User ID Bit 3 */
-#define FUSE_USERID4  (unsigned char)~_BV(4)  /* User ID Bit 4 */
-#define FUSE_USERID5  (unsigned char)~_BV(5)  /* User ID Bit 5 */
-#define FUSE_USERID6  (unsigned char)~_BV(6)  /* User ID Bit 6 */
-#define FUSE_USERID7  (unsigned char)~_BV(7)  /* User ID Bit 7 */
-#define FUSE0_DEFAULT  (0xFF)
+/* Fuse Byte 0 Reserved */
 
 /* Fuse Byte 1 */
 #define FUSE_WDP0  (unsigned char)~_BV(0)  /* Watchdog Timeout Period Bit 0 */
@@ -5059,6 +5061,44 @@ IO Module Instances. Mapped to memory.
 #define SIGNATURE_0 0x1E
 #define SIGNATURE_1 0x95
 #define SIGNATURE_2 0x4A
+
+/* ========== Power Reduction Condition Definitions ========== */
+
+/* PR.PRGEN */
+#define __AVR_HAVE_PRGEN	(PR_RTC_bm|PR_EVSYS_bm)
+#define __AVR_HAVE_PRGEN_RTC
+#define __AVR_HAVE_PRGEN_EVSYS
+
+/* PR.PRPA */
+#define __AVR_HAVE_PRPA	(PR_ADC_bm|PR_AC_bm)
+#define __AVR_HAVE_PRPA_ADC
+#define __AVR_HAVE_PRPA_AC
+
+/* PR.PRPC */
+#define __AVR_HAVE_PRPC	(PR_TWI_bm|PR_USART0_bm|PR_SPI_bm|PR_HIRES_bm|PR_TC1_bm|PR_TC0_bm)
+#define __AVR_HAVE_PRPC_TWI
+#define __AVR_HAVE_PRPC_USART0
+#define __AVR_HAVE_PRPC_SPI
+#define __AVR_HAVE_PRPC_HIRES
+#define __AVR_HAVE_PRPC_TC1
+#define __AVR_HAVE_PRPC_TC0
+
+/* PR.PRPD */
+#define __AVR_HAVE_PRPD	(PR_USART0_bm|PR_SPI_bm|PR_TC0_bm)
+#define __AVR_HAVE_PRPD_USART0
+#define __AVR_HAVE_PRPD_SPI
+#define __AVR_HAVE_PRPD_TC0
+
+/* PR.PRPE */
+#define __AVR_HAVE_PRPE	(PR_TWI_bm|PR_USART0_bm|PR_TC0_bm)
+#define __AVR_HAVE_PRPE_TWI
+#define __AVR_HAVE_PRPE_USART0
+#define __AVR_HAVE_PRPE_TC0
+
+/* PR.PRPF */
+#define __AVR_HAVE_PRPF	(PR_USART0_bm|PR_TC0_bm)
+#define __AVR_HAVE_PRPF_USART0
+#define __AVR_HAVE_PRPF_TC0
 
 
 #endif /* #ifdef _AVR_ATXMEGA32D3_H_INCLUDED */

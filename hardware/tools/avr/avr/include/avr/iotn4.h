@@ -269,6 +269,10 @@
 #define PRTIM0 0
 #define PRADC 1
 
+#define __AVR_HAVE_PRR	((1<<PRTIM0)|(1<<PRADC))
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRADC
+
 #define CLKPSR _SFR_IO8(0x36)
 #define CLKPS0 0
 #define CLKPS1 1
@@ -463,6 +467,11 @@
 #define PB3_PORT  PORTRESET
 #define PB3_PIN   PINRESET
 #define PB3_BIT   RESET
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_STANDBY (0x04<<1)
 
 #endif /* _AVR_ATtiny4_H_ */
 

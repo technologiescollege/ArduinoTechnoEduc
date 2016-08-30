@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class MeStepper
  * \brief   Driver for Me Stepper device.
  * @file    MeStepper.cpp
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/11/11
+ * @version V1.0.3
+ * @date    2016/01/20
  * @brief   Driver for Stepper device.
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -21,8 +21,7 @@
  * distributed. See http://www.gnu.org/copyleft/gpl.html
  *
  * \par Description
- * This file is a drive for Me Stepper device, It supports Me Stepper
- * 18B20 provided by the MakeBlock.
+ * This file is a drive for Me Stepper device.
  *
  * \par Method List:
  *
@@ -48,7 +47,10 @@
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
- * forfish         2015/11/11     1.0.0            Add description.
+ * Mark Yan        2015/10/09     1.0.0            Bulid the new
+ * Mark Yan        2015/10/29     1.0.1            Fix minor errors in format
+ * forfish         2015/11/11     1.0.2            Add description.
+ * Mark Yan        2016/01/20     1.0.3            Fix minor errors in comment.
  * </pre>
  */
 
@@ -110,7 +112,7 @@ void MeStepper::setpin(uint8_t dir_data, uint8_t step_data)
 {
   _dir_data = dir_data;
   _step_data = step_data;
-  pinMode(_dir_data, INPUT);
+  pinMode(_dir_data, OUTPUT);
   pinMode(_step_data, OUTPUT);
 #ifdef ME_PORT_DEFINED
   s1 = _dir_data;

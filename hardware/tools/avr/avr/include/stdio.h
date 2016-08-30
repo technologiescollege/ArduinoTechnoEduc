@@ -44,9 +44,11 @@
 #include <inttypes.h>
 #include <stdarg.h>
 
+#ifndef __DOXYGEN__
 #define __need_NULL
 #define __need_size_t
 #include <stddef.h>
+#endif	/* !__DOXYGEN__ */
 
 /** \file */
 /** \defgroup avr_stdio <stdio.h>: Standard IO facilities
@@ -272,7 +274,7 @@ struct __file {
    \c FILE is the opaque structure that is passed around between the
    various standard IO functions.
 */
-#define FILE	struct __file
+typedef struct __file FILE;
 
 /**
    Stream that will be used as an input stream by the simplified
@@ -941,12 +943,36 @@ static __inline__ int fflush(FILE *stream __attribute__((unused)))
 }
 #endif
 
+#ifndef __DOXYGEN__
+/* only mentioned for libstdc++ support, not implemented in library */
+#define BUFSIZ 1024
+#define _IONBF 0
+__extension__ typedef long long fpos_t;
+extern int fgetpos(FILE *stream, fpos_t *pos);
+extern FILE *fopen(const char *path, const char *mode);
+extern FILE *freopen(const char *path, const char *mode, FILE *stream);
+extern FILE *fdopen(int, const char *);
+extern int fseek(FILE *stream, long offset, int whence);
+extern int fsetpos(FILE *stream, fpos_t *pos);
+extern long ftell(FILE *stream);
+extern int fileno(FILE *);
+extern void perror(const char *s);
+extern int remove(const char *pathname);
+extern int rename(const char *oldpath, const char *newpath);
+extern void rewind(FILE *stream);
+extern void setbuf(FILE *stream, char *buf);
+extern int setvbuf(FILE *stream, char *buf, int mode, size_t size);
+extern FILE *tmpfile(void);
+extern char *tmpnam (char *s);
+#endif	/* !__DOXYGEN__ */
+
 #ifdef __cplusplus
 }
 #endif
 
 /*@}*/
 
+#ifndef __DOXYGEN__
 /*
  * The following constants are currently not used by avr-libc's
  * stdio subsystem.  They are defined here since the gcc build
@@ -955,6 +981,8 @@ static __inline__ int fflush(FILE *stream __attribute__((unused)))
 #define SEEK_SET 0
 #define SEEK_CUR 1
 #define SEEK_END 2
+
+#endif
 
 #endif /* __ASSEMBLER */
 

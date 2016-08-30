@@ -1,5 +1,5 @@
 /*
-  Firmata.cpp - Firmata library v2.5.2 - 2016-2-15
+  Firmata.cpp - Firmata library v2.5.3 - 2016-06-18
   Copyright (c) 2006-2008 Hans-Christoph Steiner.  All rights reserved.
   Copyright (C) 2009-2016 Jeff Hoefs.  All rights reserved.
 
@@ -33,8 +33,8 @@ extern "C" {
  */
 void FirmataClass::sendValueAsTwo7bitBytes(int value)
 {
-  FirmataStream->write(value & B01111111); // LSB
-  FirmataStream->write(value >> 7 & B01111111); // MSB
+  FirmataStream->write(value & 0x7F); // LSB
+  FirmataStream->write(value >> 7 & 0x7F); // MSB
 }
 
 /**

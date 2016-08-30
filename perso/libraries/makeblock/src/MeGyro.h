@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   MeGyro
  * \brief   Driver for MeGyro module.
  * @file    MeGyro.h
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/09/01
+ * @version V1.0.3
+ * @date    2016/03/09
  * @brief   Header for MeGyro.cpp module.
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -29,15 +29,21 @@
  *    1. void MeGyro::setpin(uint8_t AD0, uint8_t INT)
  *    2. void MeGyro::begin(void)
  *    3. void MeGyro::update(void)
- *    4. double MeGyro::getAngleX(void)
- *    5. double MeGyro::getAngleY(void)
- *    6. double MeGyro::getAngleZ(void)
+ *    4. void MeGyro::fast_update(void)
+ *    5. uint8_t MeGyro::getDevAddr(void)
+ *    6. double MeGyro::getAngleX(void)
+ *    7. double MeGyro::getAngleY(void)
+ *    8. double MeGyro::getAngleZ(void)
+ *    9. double MeGyro::getGyroX(void)
+ *    10. double MeGyro::getGyroY(void)
  *
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  *  Lawrence         2015/09/02          1.0.0         rebuild the old lib.
- *  Lawrence         2015/09/10          1.0.0         Added some comments and macros.
+ *  Lawrence         2015/09/10          1.0.1         Added some comments and macros.
+ *  Mark Yan         2016/03/09          1.0.2         Add function fast_update.
+ *  Mark Yan         2016/03/09          1.0.3         Add function getGyroX and getGyroY.
  * </pre>
  *
  */
@@ -151,7 +157,7 @@ public:
  * \par Others
  *   You can check the MPU6050 datasheet for the registor address.
  */
-  void begin(void);
+  void begin();
 
 /**
  * \par Function
@@ -173,7 +179,41 @@ public:
 
 /**
  * \par Function
- *   getHeadingX
+ *   fast_update
+ * \par Description
+ *   Fast update some calculated angle values to the variable.
+ * \param[in]
+ *   None
+ * \par Output
+ *   None
+ * \return
+ *   None
+ * \par Others
+ *   The angle values are calculated by complementary filter.
+ *   The time constant of filter is set to 0.5 second, but period dt is not a constant, 
+ *   so the filter coefficient will be calculated dynamically.
+ */
+  void fast_update(void);
+
+/**
+ * \par Function
+ *   getDevAddr
+ * \par Description
+ *   Get the device address of Gyro.
+ * \param[in]
+ *   None
+ * \par Output
+ *   None
+ * \return
+ *   The device address of Gyro
+ * \par Others
+ *   None
+ */
+  uint8_t getDevAddr(void);
+
+/**
+ * \par Function
+ *   getAngleX
  * \par Description
  *   Get the angle value of X-axis.
  * \param[in]
@@ -189,7 +229,7 @@ public:
 
 /**
  * \par Function
- *   getHeadingY
+ *   getAngleY
  * \par Description
  *   Get the angle value of Y-axis.
  * \param[in]
@@ -205,7 +245,7 @@ public:
 
 /**
  * \par Function
- *   getHeadingZ
+ *   getAngleZ
  * \par Description
  *   Get the angle value of Z-axis.
  * \param[in]
@@ -221,7 +261,39 @@ public:
 
 /**
  * \par Function
- *   getHeadingZ
+ *   getGyroX
+ * \par Description
+ *   Get the data of gyroXrate.
+ * \param[in]
+ *   None
+ * \par Output
+ *   None
+ * \return
+ *   The data of gyroXrate
+ * \par Others
+ *   None
+ */
+  double getGyroX(void);
+
+/**
+ * \par Function
+ *   getGyroY
+ * \par Description
+ *   Get the data of gyroYrate.
+ * \param[in]
+ *   None
+ * \par Output
+ *   None
+ * \return
+ *   The data of gyroYrate
+ * \par Others
+ *   None
+ */
+  double getGyroY(void);
+
+/**
+ * \par Function
+ *   getAngle
  * \par Description
  *   Get the angle value of setting axis.
  * \param[in]

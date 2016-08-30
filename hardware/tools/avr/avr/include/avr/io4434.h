@@ -580,5 +580,9 @@
 #define SIGNATURE_1 0x93
 #define SIGNATURE_2 0x03
 
+#define SLEEP_MODE_IDLE         0
+#define SLEEP_MODE_ADC          _BV(SM0)
+#define SLEEP_MODE_PWR_DOWN     _BV(SM1)
+#define SLEEP_MODE_PWR_SAVE     (_BV(SM0) | _BV(SM1))
 
 #endif /* _AVR_IO4434_H_ */

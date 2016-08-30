@@ -492,8 +492,19 @@
 #define PRTIM1  4   /* Power Reduction Timer/Counter1 */
 #define PRTIM0  3   /* Power Reduction Timer/Counter0 */
 #define PRSPI   2   /* Power Reduction Serial Peripheral Interface */
-#define PRUSART0 1   /* Power Reduction USART */
+#define PRUSART0 1  /* Power Reduction USART */
+#define PRUSART PRUSART0 /* Define to maintain backward-compatibility */
 #define PRADC   0   /* Power Reduction ADC */
+
+#define __AVR_HAVE_PRR ((1<<PRADC)|(1<<PRUSART0)|(1<<PRSPI)|(1<<PRTIM0)|(1<<PRTIM1)|(1<<PRPSC0)|(1<<PRPSC1)|(1<<PRPSC2))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSART0
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRPSC0
+#define __AVR_HAVE_PRR_PRPSC1
+#define __AVR_HAVE_PRR_PRPSC2
 
 /* Oscillator Calibration Value */
 #define OSCCAL  _SFR_MEM8(0x66)
@@ -1396,5 +1407,9 @@
 #define __BOOT_LOCK_BITS_0_EXIST
 #define __BOOT_LOCK_BITS_1_EXIST 
 
+#define SLEEP_MODE_IDLE         (0)
+#define SLEEP_MODE_ADC          _BV(SM0)
+#define SLEEP_MODE_PWR_DOWN     _BV(SM1)
+#define SLEEP_MODE_STANDBY      (_BV(SM1) | _BV(SM2))
 
 #endif /* _AVR_IO90PWMX_H_ */

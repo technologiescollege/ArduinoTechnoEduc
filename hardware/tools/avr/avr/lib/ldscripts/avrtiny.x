@@ -1,15 +1,24 @@
 /* Default linker script, for normal executables */
+/* Copyright (C) 2014-2015 Free Software Foundation, Inc.
+   Copying and distribution of this script, with or without modification,
+   are permitted in any medium without royalty provided the copyright
+   notice and this notice are preserved.  */
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:100)
+__TEXT_REGION_LENGTH__ = DEFINED(__TEXT_REGION_LENGTH__) ? __TEXT_REGION_LENGTH__ : 4K;
+__DATA_REGION_LENGTH__ = DEFINED(__DATA_REGION_LENGTH__) ? __DATA_REGION_LENGTH__ : 0x100;
+__FUSE_REGION_LENGTH__ = DEFINED(__FUSE_REGION_LENGTH__) ? __FUSE_REGION_LENGTH__ : 2;
+__LOCK_REGION_LENGTH__ = DEFINED(__LOCK_REGION_LENGTH__) ? __LOCK_REGION_LENGTH__ : 2;
+__SIGNATURE_REGION_LENGTH__ = DEFINED(__SIGNATURE_REGION_LENGTH__) ? __SIGNATURE_REGION_LENGTH__ : 4;
 MEMORY
 {
-  text   (rx)   : ORIGIN = 0x0, LENGTH = 4K
-  data   (rw!x) : ORIGIN = 0x0800040, LENGTH = 0x100
+  text   (rx)   : ORIGIN = 0x0, LENGTH = __TEXT_REGION_LENGTH__
+  data   (rw!x) : ORIGIN = 0x0800040, LENGTH = __DATA_REGION_LENGTH__
   /* Provide offsets for config, lock and signature to match
      production file format. Ignore offsets in datasheet.  */
-  config    (rw!x) : ORIGIN = 0x820000, LENGTH = 2
-  lock      (rw!x) : ORIGIN = 0x830000, LENGTH = 2
-  signature (rw!x) : ORIGIN = 0x840000, LENGTH = 4
+  config    (rw!x) : ORIGIN = 0x820000, LENGTH = __FUSE_REGION_LENGTH__
+  lock      (rw!x) : ORIGIN = 0x830000, LENGTH = __LOCK_REGION_LENGTH__
+  signature (rw!x) : ORIGIN = 0x840000, LENGTH = __SIGNATURE_REGION_LENGTH__
 }
 SECTIONS
 {
@@ -71,29 +80,32 @@ SECTIONS
   .rel.plt       : { *(.rel.plt)		}
   .rela.plt      : { *(.rela.plt)	}
   /* Internal text space or external memory.  */
-  .text   :  AT (0x0)
+  .text   :
   {
     *(.vectors)
     KEEP(*(.vectors))
     /* For data that needs to reside in the lower 64k of progmem.  */
-    *(.progmem.gcc*)
+     *(.progmem.gcc*)
     /* PR 13812: Placing the trampolines here gives a better chance
        that they will be in range of the code that uses them.  */
     . = ALIGN(2);
      __trampolines_start = . ;
     /* The jump trampolines for the 16-bit limited relocs will reside here.  */
     *(.trampolines)
-    *(.trampolines*)
+     *(.trampolines*)
      __trampolines_end = . ;
-    *(.progmem*)
+    /* avr-libc expects these data to reside in lower 64K. */
+     *libprintf_flt.a:*(.progmem.data)
+     *libc.a:*(.progmem.data)
+     *(.progmem*)
     . = ALIGN(2);
     /* For future tablejump instruction arrays for 3 byte pc devices.
        We don't relax jump/call instructions within these sections.  */
     *(.jumptables)
-    *(.jumptables*)
+     *(.jumptables*)
     /* For code that needs to reside in the lower 128k progmem.  */
     *(.lowtext)
-    *(.lowtext*)
+     *(.lowtext*)
      __ctors_start = . ;
      *(.ctors)
      __ctors_end = . ;
@@ -126,7 +138,7 @@ SECTIONS
     KEEP (*(.init9))
     *(.text)
     . = ALIGN(2);
-    *(.text.*)
+     *(.text.*)
     . = ALIGN(2);
     *(.fini9)  /* _exit() starts here.  */
     KEEP (*(.fini9))
@@ -154,10 +166,9 @@ SECTIONS
   {
      PROVIDE (__data_start = .) ;
     *(.data)
-    KEEP (*(.data))
-    *(.data*)
+     *(.data*)
     *(.rodata)  /* We need to include .rodata here if gcc is used */
-    *(.rodata*) /* with -fdata-sections.  */
+     *(.rodata*) /* with -fdata-sections.  */
     *(.gnu.linkonce.d*)
     . = ALIGN(2);
      _edata = . ;
@@ -167,14 +178,14 @@ SECTIONS
   {
      PROVIDE (__bss_start = .) ;
     *(.bss)
-    *(.bss*)
+     *(.bss*)
     *(COMMON)
      PROVIDE (__bss_end = .) ;
   }  > data
    __data_load_start = LOADADDR(.data);
    __data_load_end = __data_load_start + SIZEOF(.data);
   /* Global data not cleared after reset.  */
-  .noinit  :
+  .noinit  ADDR(.bss) + SIZEOF (.bss)   :  AT (ADDR (.noinit))
   {
      PROVIDE (__noinit_start = .) ;
     *(.noinit*)
@@ -202,6 +213,7 @@ SECTIONS
   .stab.index 0 : { *(.stab.index) }
   .stab.indexstr 0 : { *(.stab.indexstr) }
   .comment 0 : { *(.comment) }
+  .note.gnu.build-id : { *(.note.gnu.build-id) }
   /* DWARF debug sections.
      Symbols in the DWARF debugging sections are relative to the beginning
      of the section so we begin them at 0.  */
@@ -215,11 +227,21 @@ SECTIONS
   .debug_aranges  0 : { *(.debug_aranges) }
   .debug_pubnames 0 : { *(.debug_pubnames) }
   /* DWARF 2 */
-  .debug_info     0 : { *(.debug_info) *(.gnu.linkonce.wi.*) }
+  .debug_info     0 : { *(.debug_info .gnu.linkonce.wi.*) }
   .debug_abbrev   0 : { *(.debug_abbrev) }
-  .debug_line     0 : { *(.debug_line) }
+  .debug_line     0 : { *(.debug_line .debug_line.* .debug_line_end ) }
   .debug_frame    0 : { *(.debug_frame) }
   .debug_str      0 : { *(.debug_str) }
   .debug_loc      0 : { *(.debug_loc) }
   .debug_macinfo  0 : { *(.debug_macinfo) }
+  /* SGI/MIPS DWARF 2 extensions */
+  .debug_weaknames 0 : { *(.debug_weaknames) }
+  .debug_funcnames 0 : { *(.debug_funcnames) }
+  .debug_typenames 0 : { *(.debug_typenames) }
+  .debug_varnames  0 : { *(.debug_varnames) }
+  /* DWARF 3 */
+  .debug_pubtypes 0 : { *(.debug_pubtypes) }
+  .debug_ranges   0 : { *(.debug_ranges) }
+  /* DWARF Extension.  */
+  .debug_macro    0 : { *(.debug_macro) }
 }

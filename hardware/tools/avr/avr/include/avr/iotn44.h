@@ -86,5 +86,9 @@
 #define SIGNATURE_1 0x92
 #define SIGNATURE_2 0x07
 
+#define SLEEP_MODE_IDLE (0x00<<3)
+#define SLEEP_MODE_ADC (0x01<<3)
+#define SLEEP_MODE_PWR_DOWN (0x02<<3)
+#define SLEEP_MODE_STANDBY (0x03<<3)
 
 #endif /* _AVR_IOTN44_H_ */

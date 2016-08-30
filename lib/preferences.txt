@@ -129,7 +129,7 @@ editor.keys.home_and_end_beginning_end_of_doc = false
 console			 = true
 console.output.file      = stdout.txt
 console.error.file       = stderr.txt
-console.lines            = 6
+console.lines            = 8
 
 # set to false to disable automatically clearing the console
 # each time 'run' is hit
@@ -141,7 +141,7 @@ console.length = 500
 
 # convert tabs to spaces? how many spaces?
 editor.tabs.expand = true
-editor.tabs.size   = 4
+editor.tabs.size   = 2
 
 # automatically indent each line
 editor.indent = true
@@ -168,7 +168,7 @@ run.options.memory.initial = 64
 run.options.memory.maximum = 256
 
 # example of increasing the memory size for applets run externally
-run.options = -Xms128m -Xmx1024m
+#run.options = -Xms128m -Xmx1024m
 
 # index of the default display to use for present mode
 # (this setting not yet completely implemented)
@@ -181,14 +181,14 @@ run.display = 1
 # (otherwise, the environment will quit)
 # default to the relative norm for the different platforms, 
 # but the setting can be changed in the prefs dialog anyway
-#sketchbook.closing_last_window_quits = true
+sketchbook.closing_last_window_quits = false
 #sketchbook.closing_last_window_quits.macosx = false
 
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-#history.recording = true
+history.recording = false
 
 # for advanced users, enable option to export a library
 #export.library = false
@@ -255,7 +255,7 @@ run.present.exclusive.macosx = true
 target_package = arduino
 target_platform = avr
 board = uno
-software=ARDUINO
+software=ARDUINO EducTechno
 # Warn when data segment uses greater than this percentage
 build.warn_data_percentage = 75
 

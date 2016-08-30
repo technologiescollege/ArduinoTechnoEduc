@@ -976,6 +976,12 @@
 #define SIGNATURE_1 0x94
 #define SIGNATURE_2 0x04
 
+#define SLEEP_MODE_IDLE         0
+#define SLEEP_MODE_PWR_DOWN     1
+#define SLEEP_MODE_PWR_SAVE     2
+#define SLEEP_MODE_ADC          3
+#define SLEEP_MODE_STANDBY      4
+#define SLEEP_MODE_EXT_STANDBY  5
 
 /* Deprecated items */
 #if !defined(__AVR_LIBC_DEPRECATED_ENABLE__)

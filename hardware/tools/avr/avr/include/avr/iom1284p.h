@@ -433,8 +433,21 @@
 #define PRTIM2 6
 #define PRTWI 7
 
+#define __AVR_HAVE_PRR0	((1<<PRADC)|(1<<PRSPI)|(1<<PRTIM1)|(1<<PRUSART0)|(1<<PRUSART1)|(1<<PRTIM0)|(1<<PRTIM2)|(1<<PRTWI))
+#define __AVR_HAVE_PRR0_PRADC
+#define __AVR_HAVE_PRR0_PRSPI
+#define __AVR_HAVE_PRR0_PRTIM1
+#define __AVR_HAVE_PRR0_PRUSART0
+#define __AVR_HAVE_PRR0_PRUSART1
+#define __AVR_HAVE_PRR0_PRTIM0
+#define __AVR_HAVE_PRR0_PRTIM2
+#define __AVR_HAVE_PRR0_PRTWI
+
 #define PRR1 _SFR_MEM8(0x65)
 #define PRTIM3 0
+
+#define __AVR_HAVE_PRR1	(1<<PRTIM3)
+#define __AVR_HAVE_PRR1_PRTIM3
 
 #define OSCCAL _SFR_MEM8(0x66)
 #define CAL0 0
@@ -1196,5 +1209,11 @@
 #define SIGNATURE_1 0x97
 #define SIGNATURE_2 0x05
 
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
+#define SLEEP_MODE_EXT_STANDBY (0x07<<1)
 
 #endif  /* _AVR_IOM1284P_H_ */

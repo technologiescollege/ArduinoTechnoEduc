@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class MeUltrasonicSensor
  * \brief   Driver for Me ultrasonic sensor device.
  * @file    MeUltrasonicSensor.cpp
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/09/04
+ * @version V1.0.2
+ * @date    2016/06/25
  * @brief   Driver for Me ultrasonic sensor device.
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -35,6 +35,8 @@
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * Mark Yan         2015/09/04     1.0.0            Rebuild the old lib.
+ * Mark Yan         2015/11/16     1.0.1            Increase 100us delay, avoid ultrasonic read exception.
+ * Mark Yan         2016/06/25     1.0.2            Modify Read mechanism of ultrasonic waves.
  * </pre>
  *
  * @example UltrasonicSensorTest.ino
@@ -72,6 +74,9 @@ MeUltrasonicSensor::MeUltrasonicSensor(uint8_t port) : MePort(port)
 MeUltrasonicSensor::MeUltrasonicSensor(uint8_t port)
 {
   _SignalPin = port;
+  _lastEnterTime = millis();
+  _measureFlag = true;
+  _measureValue = 0;
 }
 #endif // ME_PORT_DEFINED
 
@@ -92,6 +97,9 @@ MeUltrasonicSensor::MeUltrasonicSensor(uint8_t port)
 void MeUltrasonicSensor::setpin(uint8_t SignalPin)
 {
   _SignalPin = SignalPin;
+  _lastEnterTime = millis();
+  _measureFlag = true;
+  _measureValue = 0;
 #ifdef ME_PORT_DEFINED
   s2 = _SignalPin;
 #endif // ME_PORT_DEFINED
@@ -114,6 +122,10 @@ void MeUltrasonicSensor::setpin(uint8_t SignalPin)
 double MeUltrasonicSensor::distanceCm(uint16_t MAXcm)
 {
   long distance = measure(MAXcm * 55 + 200);
+  if(distance == 0)
+  {
+    distance = MAXcm * 58;
+  }
   return( (double)distance / 58.0);
 }
 
@@ -134,6 +146,10 @@ double MeUltrasonicSensor::distanceCm(uint16_t MAXcm)
 double MeUltrasonicSensor::distanceInch(uint16_t MAXinch)
 {
   long distance = measure(MAXinch * 145 + 200);
+  if(distance == 0)
+  {
+    distance = MAXinch * 148;
+  }
   return( (double)(distance / 148.0) );
 }
 
@@ -155,14 +171,28 @@ double MeUltrasonicSensor::distanceInch(uint16_t MAXinch)
 long MeUltrasonicSensor::measure(unsigned long timeout)
 {
   long duration;
-  MePort::dWrite2(LOW);
-  delayMicroseconds(2);
-  MePort::dWrite2(HIGH);
-  delayMicroseconds(10);
-  MePort::dWrite2(LOW);
-  pinMode(s2, INPUT);
-  duration = pulseIn(s2, HIGH, timeout);
-  delayMicroseconds(100);
+  if(millis() - _lastEnterTime > 23)
+  {
+    _measureFlag = true; 
+  }
+
+  if(_measureFlag == true)
+  {
+    _lastEnterTime = millis();
+    _measureFlag = false;
+    MePort::dWrite2(LOW);
+    delayMicroseconds(2);
+    MePort::dWrite2(HIGH);
+    delayMicroseconds(10);
+    MePort::dWrite2(LOW);
+    pinMode(s2, INPUT);
+    duration = pulseIn(s2, HIGH, timeout);
+    _measureValue = duration;
+  }
+  else
+  {
+    duration = _measureValue;
+  }
   return(duration);
 }
 

@@ -495,5 +495,7 @@
 #define SIGNATURE_1 0x93
 #define SIGNATURE_2 0x01
 
+#define SLEEP_MODE_IDLE         0
+#define SLEEP_MODE_PWR_DOWN     _BV(SM)
 
 #endif /* _AVR_IO8515_H_ */

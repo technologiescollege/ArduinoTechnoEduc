@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -314,6 +314,15 @@
 #define PRTIM2  6
 #define PRTWI   7
 
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSART0)|(1<<PRSPI)|(1<<PRTIM1)|(1<<PRTIM0)|(1<<PRTIM2)|(1<<PRTWI))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSART0
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTIM2
+#define __AVR_HAVE_PRR_PRTWI
+
 /* Reserved [0x65] */
 
 #define OSCCAL  _SFR_MEM8(0x66)
@@ -607,6 +616,16 @@
 
 
 
+/* Values and associated defines */
+
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
+#define SLEEP_MODE_EXT_STANDBY (0x07<<1)
+
 /* Interrupt vectors */
 /* Vector 0 is the reset vector */
 /* External Interrupt Request 0 */
@@ -740,6 +759,8 @@
 #define FUSE_SUT_CKSEL5  (unsigned char)~_BV(5)
 #define FUSE_CKOUT       (unsigned char)~_BV(6)
 #define FUSE_CKDIV8      (unsigned char)~_BV(7)
+#define LFUSE_DEFAULT    (FUSE_SUT_CKSEL0 & FUSE_SUT_CKSEL2 & FUSE_SUT_CKSEL3 & FUSE_SUT_CKSEL4 & FUSE_CKDIV8)
+
 
 /* High Fuse Byte */
 #define FUSE_BOOTRST     (unsigned char)~_BV(0)
@@ -750,11 +771,15 @@
 #define FUSE_SPIEN       (unsigned char)~_BV(5)
 #define FUSE_DWEN        (unsigned char)~_BV(6)
 #define FUSE_RSTDISBL    (unsigned char)~_BV(7)
+#define HFUSE_DEFAULT    (FUSE_BOOTSZ0 & FUSE_BOOTSZ1 & FUSE_SPIEN)
+
 
 /* Extended Fuse Byte */
 #define FUSE_BODLEVEL0   (unsigned char)~_BV(0)
 #define FUSE_BODLEVEL1   (unsigned char)~_BV(1)
 #define FUSE_BODLEVEL2   (unsigned char)~_BV(2)
+#define EFUSE_DEFAULT    (0xFF)
+
 
 
 /* Lock Bits */

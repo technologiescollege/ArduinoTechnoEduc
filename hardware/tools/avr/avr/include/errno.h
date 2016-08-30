@@ -41,17 +41,24 @@
     Some functions in the library set the global variable \c errno when an
     error occurs. The file, \c <errno.h>, provides symbolic names for various
     error codes. 
+ */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/** \ingroup avr_errno
+    \brief Error code for last error encountered by library
+
+    The variable \c errno holds the last error code encountered by
+    a library function.  This variable must be cleared by the
+    user prior to calling a library function.
 
     \warning The \c errno global variable is not safe to use in a threaded or
     multi-task system. A race condition can occur if a task is interrupted
     between the call which sets \c error and when the task examines \c
     errno. If another task changes \c errno during this time, the result will
     be incorrect for the interrupted task. */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern int errno;
 
 #ifdef __cplusplus
@@ -69,5 +76,79 @@ extern int errno;
 
     Range error. */
 #define ERANGE     34
+
+#ifndef __DOXYGEN__
+
+/* ((((('E'-64)*26+('N'-64))*26+('O'-64))*26+('S'-64))*26+('Y'-64))*26+'S'-64 */
+#define ENOSYS ((int)(66081697 & 0x7fff))
+
+/* (((('E'-64)*26+('I'-64))*26+('N'-64))*26+('T'-64))*26+('R'-64) */
+#define EINTR ((int)(2453066 & 0x7fff))
+
+#define E2BIG ENOERR
+#define EACCES ENOERR
+#define EADDRINUSE ENOERR
+#define EADDRNOTAVAIL ENOERR
+#define EAFNOSUPPORT ENOERR
+#define EAGAIN ENOERR
+#define EALREADY ENOERR
+#define EBADF ENOERR
+#define EBUSY ENOERR
+#define ECHILD ENOERR
+#define ECONNABORTED ENOERR
+#define ECONNREFUSED ENOERR
+#define ECONNRESET ENOERR
+#define EDEADLK ENOERR
+#define EDESTADDRREQ ENOERR
+#define EEXIST ENOERR
+#define EFAULT ENOERR
+#define EFBIG ENOERR
+#define EHOSTUNREACH ENOERR
+#define EILSEQ ENOERR
+#define EINPROGRESS ENOERR
+#define EINVAL ENOERR
+#define EIO ENOERR
+#define EISCONN ENOERR
+#define EISDIR ENOERR
+#define ELOOP ENOERR
+#define EMFILE ENOERR
+#define EMLINK ENOERR
+#define EMSGSIZE ENOERR
+#define ENAMETOOLONG ENOERR
+#define ENETDOWN ENOERR
+#define ENETRESET ENOERR
+#define ENETUNREACH ENOERR
+#define ENFILE ENOERR
+#define ENOBUFS ENOERR
+#define ENODEV ENOERR
+#define ENOENT ENOERR
+#define ENOEXEC ENOERR
+#define ENOLCK ENOERR
+#define ENOMEM ENOERR
+#define ENOMSG ENOERR
+#define ENOPROTOOPT ENOERR
+#define ENOSPC ENOERR
+#define ENOTCONN ENOERR
+#define ENOTDIR ENOERR
+#define ENOTEMPTY ENOERR
+#define ENOTSOCK ENOERR
+#define ENOTTY ENOERR
+#define ENXIO ENOERR
+#define EOPNOTSUPP ENOERR
+#define EPERM ENOERR
+#define EPIPE ENOERR
+#define EPROTONOSUPPORT ENOERR
+#define EPROTOTYPE ENOERR
+#define EROFS ENOERR
+#define ESPIPE ENOERR
+#define ESRCH ENOERR
+#define ETIMEDOUT ENOERR
+#define EWOULDBLOCK ENOERR
+#define EXDEV ENOERR
+
+/* ((((('E'-64)*26+('N'-64))*26+('O'-64))*26+('E'-64))*26+('R'-64))*26+'R'-64 */
+#define ENOERR ((int)(66072050 & 0xffff))
+
+#endif	/* !__DOXYGEN__ */
 
 #endif

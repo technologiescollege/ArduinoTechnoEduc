@@ -57,6 +57,12 @@
 #define PRTIM0 2
 #define PRTIM1 3
 
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSI)|(1<<PRTIM0)|(1<<PRTIM1))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSI
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTIM1
+
 #define DIDR0 _SFR_IO8(0x01)
 #define ADC0D 0
 #define ADC1D 1
@@ -828,6 +834,11 @@
 #define PCINT5_PORT  PORTA
 #define PCINT5_PIN   PINA
 #define PCINT5_BIT   5
+
+#define SLEEP_MODE_IDLE (0x00<<3)
+#define SLEEP_MODE_ADC (0x01<<3)
+#define SLEEP_MODE_PWR_DOWN (0x02<<3)
+#define SLEEP_MODE_STANDBY (0x03<<3)
 
 #endif /* _AVR_ATtiny84A_H_ */
 

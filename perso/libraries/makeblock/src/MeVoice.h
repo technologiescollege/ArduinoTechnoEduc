@@ -1,5 +1,5 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class MeVoice
  * \brief   Driver for Me voice device.
  * @file    MeVoice.h
@@ -10,7 +10,7 @@
  * \par Description
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -26,7 +26,7 @@
  *
  * \par Method List:
  *
- *    1. void MeVoice::begin(void)
+ *    1. void MeVoice::begin(long speed)
  *    2. int16_t MeVoice::read(void)
  *    3. bool MeVoice::buttonState(void)
  *    4. uint8_t MeVoice::getCode(void)

@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -114,11 +114,23 @@
 
 #define DDRC    _SFR_IO8(0x08)
 #define DDRC5   5
+// Inserted "DDC5" from "DDRC5" due to compatibility
+#define DDC5    5
 #define DDRC4   4
+// Inserted "DDC4" from "DDRC4" due to compatibility
+#define DDC4    4
 #define DDRC3   3
+// Inserted "DDC3" from "DDRC3" due to compatibility
+#define DDC3    3
 #define DDRC2   2
+// Inserted "DDC2" from "DDRC2" due to compatibility
+#define DDC2    2
 #define DDRC1   1
+// Inserted "DDC1" from "DDRC1" due to compatibility
+#define DDC1    1
 #define DDRC0   0
+// Inserted "DDC0" from "DDRC0" due to compatibility
+#define DDC0    0
 
 #define PORTC   _SFR_IO8(0x09)
 #define PORTC5  5
@@ -144,9 +156,17 @@
 
 #define DDRB    _SFR_IO8(0x0C)
 #define DDRB3   3
+// Inserted "DDB3" from "DDRB3" due to compatibility
+#define DDB3    3
 #define DDRB2   2
+// Inserted "DDB2" from "DDRB2" due to compatibility
+#define DDB2    2
 #define DDRB1   1
+// Inserted "DDB1" from "DDRB1" due to compatibility
+#define DDB1    1
 #define DDRB0   0
+// Inserted "DDB0" from "DDRB0" due to compatibility
+#define DDB0    0
 
 #define PORTB   _SFR_IO8(0x0D)
 #define PORTB3  3
@@ -172,13 +192,29 @@
 
 #define DDRA    _SFR_IO8(0x10)
 #define DDRA7   7
+// Inserted "DDA7" from "DDRA7" due to compatibility
+#define DDA7    7
 #define DDRA6   6
+// Inserted "DDA6" from "DDRA6" due to compatibility
+#define DDA6    6
 #define DDRA5   5
+// Inserted "DDA5" from "DDRA5" due to compatibility
+#define DDA5    5
 #define DDRA4   4
+// Inserted "DDA4" from "DDRA4" due to compatibility
+#define DDA4    4
 #define DDRA3   3
+// Inserted "DDA3" from "DDRA3" due to compatibility
+#define DDA3    3
 #define DDRA2   2
+// Inserted "DDA2" from "DDRA2" due to compatibility
+#define DDA2    2
 #define DDRA1   1
+// Inserted "DDA1" from "DDRA1" due to compatibility
+#define DDA1    1
 #define DDRA0   0
+// Inserted "DDA0" from "DDRA0" due to compatibility
+#define DDA0    0
 
 #define PORTA   _SFR_IO8(0x11)
 #define PORTA7  7
@@ -379,6 +415,15 @@
 #define PRTIM0  4
 #define PRTIM1  5
 #define PRTWI   6
+
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSART0)|(1<<PRUSART1)|(1<<PRUSI)|(1<<PRTIM0)|(1<<PRTIM1)|(1<<PRTWI))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSART0
+#define __AVR_HAVE_PRR_PRUSART1
+#define __AVR_HAVE_PRR_PRUSI
+#define __AVR_HAVE_PRR_PRTIM0
+#define __AVR_HAVE_PRR_PRTIM1
+#define __AVR_HAVE_PRR_PRTWI
 
 #define MCUSR   _SFR_IO8(0x35)
 #define PORF    0
@@ -606,6 +651,14 @@
 
 
 
+/* Values and associated defines */
+
+
+#define SLEEP_MODE_IDLE (0x00<<5)
+#define SLEEP_MODE_ADC (0x01<<5)
+#define SLEEP_MODE_PWR_DOWN (0x02<<5)
+#define SLEEP_MODE_STANDBY (0x03<<5)
+
 /* Interrupt vectors */
 /* Vector 0 is the reset vector */
 /* External Interrupt Request 0 */
@@ -822,6 +875,8 @@
 #define FUSE_SUT_CKSEL4  (unsigned char)~_BV(4)
 #define FUSE_CKOUT       (unsigned char)~_BV(6)
 #define FUSE_CKDIV8      (unsigned char)~_BV(7)
+#define LFUSE_DEFAULT    (FUSE_SUT_CKSEL0 & FUSE_SUT_CKSEL2 & FUSE_SUT_CKSEL3 & FUSE_SUT_CKSEL4 & FUSE_CKDIV8)
+
 
 /* High Fuse Byte */
 #define FUSE_BODLEVEL0   (unsigned char)~_BV(0)
@@ -832,6 +887,8 @@
 #define FUSE_SPIEN       (unsigned char)~_BV(5)
 #define FUSE_DWEN        (unsigned char)~_BV(6)
 #define FUSE_RSTDISBL    (unsigned char)~_BV(7)
+#define HFUSE_DEFAULT    (FUSE_SPIEN)
+
 
 /* Extended Fuse Byte */
 #define FUSE_SELFPRGEN   (unsigned char)~_BV(0)
@@ -839,6 +896,8 @@
 #define FUSE_BODACT1     (unsigned char)~_BV(2)
 #define FUSE_BODPD0      (unsigned char)~_BV(3)
 #define FUSE_BODPD1      (unsigned char)~_BV(4)
+#define EFUSE_DEFAULT    (0xFF)
+
 
 
 /* Lock Bits */

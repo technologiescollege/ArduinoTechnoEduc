@@ -1,5 +1,5 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class MeTouchSensor
  * \brief   Driver for Me touch sensor device.
  * @file    MeTouchSensor.cpp
@@ -9,7 +9,7 @@
  * @brief   Driver for Me touch sensor device.
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -77,6 +77,7 @@ MeTouchSensor::MeTouchSensor(uint8_t TogPin, uint8_t OutputPin)
   _OutputPin = OutputPin;
   pinMode(_TogPin,OUTPUT);
   pinMode(_OutputPin,INPUT);
+  digitalWrite(_TogPin,LOW);
 }
 #endif // ME_PORT_DEFINED
 

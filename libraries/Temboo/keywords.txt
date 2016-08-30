@@ -9,6 +9,7 @@
 Temboo	KEYWORD1
 TembooMQTTEdgeDevice KEYWORD1
 TembooCoAPEdgeDevice KEYWORD1
+TembooYunShield KEYWORD1
 
 #######################################
 # Datatypes (KEYWORD2)
@@ -17,6 +18,7 @@ TembooCoAPEdgeDevice KEYWORD1
 TembooChoreo	KEYWORD2
 TembooCoAPChoreo KEYWORD2
 TembooMQTTChoreo KEYWORD2
+TembooYunShieldChoreo KEYWORD2
 
 #######################################
 # Methods and Functions (KEYWORD2)

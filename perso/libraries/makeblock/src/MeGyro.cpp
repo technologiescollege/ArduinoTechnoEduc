@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   MeGyro
  * \brief   Driver for MeGyro module.
  * @file    MeGyro.cpp
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/09/01
+ * @version V1.0.3
+ * @date    2016/03/09
  * @brief   Driver for MeGyro module.
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -29,15 +29,21 @@
  *    1. void MeGyro::setpin(uint8_t AD0, uint8_t INT)
  *    2. void MeGyro::begin(void)
  *    3. void MeGyro::update(void)
- *    4. double MeGyro::getAngleX(void)
- *    5. double MeGyro::getAngleY(void)
- *    6. double MeGyro::getAngleZ(void)
+ *    4. void MeGyro::fast_update(void)
+ *    5. uint8_t MeGyro::getDevAddr(void)
+ *    6. double MeGyro::getAngleX(void)
+ *    7. double MeGyro::getAngleY(void)
+ *    8. double MeGyro::getAngleZ(void)
+ *    9. double MeGyro::getGyroX(void)
+ *    10. double MeGyro::getGyroY(void)
  *
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  *  Lawrence         2015/09/02          1.0.0         rebuild the old lib.
- *  Lawrence         2015/09/10          1.0.0         Added some comments and macros.
+ *  Lawrence         2015/09/10          1.0.1         Added some comments and macros.
+ *  Mark Yan         2016/03/09          1.0.2         Add function fast_update.
+ *  Mark Yan         2016/03/09          1.0.3         Add function getGyroX and getGyroY.
  * </pre>
  *
  * @example MeGyroTest.ino
@@ -232,6 +238,12 @@ void MeGyro::update(void)
     gy = gy - gyrX * dt;
   }
   gz += gyrZ * dt;
+  gz = gz - 360 * floor(gz / 360);
+  if(gz > 180)
+  {
+    gz = gz - 360;
+  }
+
   /*
      complementary filter
      set 0.5sec = tau = dt * A / (1 - A)
@@ -244,7 +256,90 @@ void MeGyro::update(void)
 
 /**
  * \par Function
- *   getHeadingX
+ *   fast_update
+ * \par Description
+ *   Fast update some calculated angle values to the variable.
+ * \param[in]
+ *   None
+ * \par Output
+ *   None
+ * \return
+ *   None
+ * \par Others
+ *   The angle values are calculated by complementary filter.
+ *   The time constant of filter is set to 0.5 second, but period dt is not a constant, 
+ *   so the filter coefficient will be calculated dynamically.
+ */
+void MeGyro::fast_update(void)
+{
+  static unsigned long	last_time = 0;
+  int8_t return_value;
+  double dt, filter_coefficient;
+
+  dt = (double)(millis() - last_time) / 1000.0;
+  last_time = millis();
+
+  /* read imu data */
+  return_value = readData(0x3b, i2cData, 14);
+  if(return_value != 0)
+  {
+    return;
+  }
+
+  double ax, ay, az;
+  /* assemble 16 bit sensor data */
+  accX = ( (i2cData[0] << 8) | i2cData[1] );
+  accY = ( (i2cData[2] << 8) | i2cData[3] );
+  accZ = ( (i2cData[4] << 8) | i2cData[5] );  
+  gyrX = ( ( (i2cData[8] << 8) | i2cData[9] ) - gyrXoffs) / gSensitivity;
+  gyrY = ( ( (i2cData[10] << 8) | i2cData[11] ) - gyrYoffs) / gSensitivity;
+  gyrZ = ( ( (i2cData[12] << 8) | i2cData[13] ) - gyrZoffs) / gSensitivity;  
+  ax = atan2(accX, sqrt( pow(accY, 2) + pow(accZ, 2) ) ) * 180 / 3.1415926;
+  ay = atan2(accY, sqrt( pow(accX, 2) + pow(accZ, 2) ) ) * 180 / 3.1415926;  
+
+  if(accZ > 0)
+  {
+    gx = gx - gyrY * dt;
+    gy = gy + gyrX * dt;
+  }
+  else
+  {
+    gx = gx + gyrY * dt;
+    gy = gy - gyrX * dt;
+  }
+  gz += gyrZ * dt;
+  gz = gz - 360 * floor(gz / 360);
+  if(gz > 180)
+  {
+    gz = gz - 360;
+  }
+
+  gy = 0.98 * gy + 0.02 * ay;
+  gx = 0.98 * gx + 0.02 * ax; 
+}
+
+/**
+ * \par Function
+ *   getDevAddr
+ * \par Description
+ *   Get the device address of Gyro.
+ * \param[in]
+ *   None
+ * \par Output
+ *   None
+ * \return
+ *   The device address of Gyro
+ * \par Others
+ *   None
+ */
+uint8_t MeGyro::getDevAddr(void)
+{
+  return Device_Address;
+}
+
+/**
+ * \par Function
+ *   getAngleY
  * \par Description
  *   Get the angle value of X-axis.
  * \param[in]
@@ -263,7 +358,7 @@ double MeGyro::getAngleX(void)
 
 /**
  * \par Function
- *   getHeadingY
+ *   getAngleY
  * \par Description
  *   Get the angle value of Y-axis.
  * \param[in]
@@ -282,7 +377,7 @@ double MeGyro::getAngleY(void)
 
 /**
  * \par Function
- *   getHeadingZ
+ *   getAngleZ
  * \par Description
  *   Get the angle value of Z-axis.
  * \param[in]
@@ -301,7 +396,45 @@ double MeGyro::getAngleZ(void)
 
 /**
  * \par Function
- *   getHeadingZ
+ *   getGyroX
+ * \par Description
+ *   Get the data of gyroXrate.
+ * \param[in]
+ *   None
+ * \par Output
+ *   None
+ * \return
+ *   The data of gyroXrate
+ * \par Others
+ *   None
+ */
+double MeGyro::getGyroX(void)
+{
+  return gyrX;
+}
+
+/**
+ * \par Function
+ *   getGyroY
+ * \par Description
+ *   Get the data of gyroYrate.
+ * \param[in]
+ *   None
+ * \par Output
+ *   None
+ * \return
+ *   The data of gyroYrate
+ * \par Others
+ *   None
+ */
+double MeGyro::getGyroY(void)
+{
+  return gyrY;
+}
+
+/**
+ * \par Function
+ *   getAngle
  * \par Description
  *   Get the angle value of setting axis.
  * \param[in]
@@ -315,6 +448,7 @@ double MeGyro::getAngleZ(void)
  */
 double MeGyro::getAngle(uint8_t index)
 {
+  update();
   if(index == 1)
   {
     return gx;
@@ -352,10 +486,10 @@ void MeGyro::deviceCalibration(void)
   long xSum	= 0, ySum = 0, zSum = 0;
   for(x = 0; x < num; x++)
   {
-	  return_value = readData(0x43, i2cData, 6);
-	  xSum += ( (i2cData[0] << 8) | i2cData[1] );
-	  ySum += ( (i2cData[2] << 8) | i2cData[3] );
-	  zSum += ( (i2cData[4] << 8) | i2cData[5] );
+    return_value = readData(0x43, i2cData, 6);
+    xSum += ( (i2cData[0] << 8) | i2cData[1] );
+    ySum += ( (i2cData[2] << 8) | i2cData[3] );
+    zSum += ( (i2cData[4] << 8) | i2cData[5] );
   }
   gyrXoffs = xSum / num;
   gyrYoffs = ySum / num;
@@ -421,7 +555,7 @@ int8_t MeGyro::readData(uint8_t start, uint8_t *buffer, uint8_t size)
 {
   int16_t i = 0;
   int8_t return_value = 0;
-  Wire.beginTransmission((uint8_t)0x68);
+  Wire.beginTransmission(Device_Address);
   return_value = Wire.write(start);
   if(return_value != 1)
   {
@@ -434,7 +568,7 @@ int8_t MeGyro::readData(uint8_t start, uint8_t *buffer, uint8_t size)
   }
   delayMicroseconds(1);
   /* Third parameter is true: relase I2C-bus after data is read. */
-  Wire.requestFrom((uint8_t)0x68, size, (uint8_t)true);
+  Wire.requestFrom(Device_Address, size, (uint8_t)true);
   while(Wire.available() && i < size)
   {
     buffer[i++] = Wire.read();
@@ -475,7 +609,7 @@ int8_t MeGyro::readData(uint8_t start, uint8_t *buffer, uint8_t size)
 int8_t MeGyro::writeData(uint8_t start, const uint8_t *pData, uint8_t size)
 {
   int8_t return_value = 0;
-  Wire.beginTransmission(0x68);
+  Wire.beginTransmission(Device_Address);
   return_value = Wire.write(start); 
   if(return_value != 1)
   {

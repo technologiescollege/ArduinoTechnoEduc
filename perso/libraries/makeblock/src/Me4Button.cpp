@@ -1,15 +1,15 @@
-﻿/**
- * \par Copyright (C), 2012-2015, MakeBlock
+﻿/**   
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class   Me4Button
  * \brief   Driver for Me 4 Button module.
  * @file    Me4Button.cpp
  * @author  MakeBlock
- * @version V1.0.0
+ * @version V1.0.1
  * @date    2015/09/01
  * @brief   Driver for Me 4 Button module
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -33,7 +33,7 @@
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * Mark Yan         2015/07/24     1.0.0            Rebuild the old lib.
- * Rafael Lee       2015/09/02     1.0.0            Added some comments and macros add setpin function.
+ * Rafael Lee       2015/09/02     1.0.1            Added some comments and macros add setpin function.
  * </pre>
  *
  * @example Me4ButtonTest.ino
@@ -65,6 +65,7 @@ Me4Button::Me4Button(void) : MePort()
 Me4Button::Me4Button(uint8_t port) : MePort(port)
 {
   _KeyPin = s2;
+  Pre_Button_Value = 950;
 }
 #else  // ME_PORT_DEFINED
 
@@ -76,6 +77,7 @@ Me4Button::Me4Button(uint8_t port) : MePort(port)
 Me4Button::Me4Button(uint8_t port)
 {
   _KeyPin = port;
+  Pre_Button_Value = 950;
 }
 #endif // ME_PORT_DEFINED
 
@@ -99,6 +101,7 @@ void Me4Button::setpin(uint8_t port)
 #ifdef ME_PORT_DEFINED
   s2 = port;
 #endif // ME_PORT_DEFINED
+  Pre_Button_Value = 950;
 }
 
 /**
@@ -132,7 +135,7 @@ uint8_t Me4Button::pressed(void)
     // smaller number in Me4Button.h.
     previous_time = current_time;
 #ifdef ME_PORT_DEFINED
-    key_temp_value = MePort::aRead2();
+    key_temp_value = Me4Button::aRead2();
 #else  // ME_PORT_DEFINED
     key_temp_value = analogRead(_KeyPin);
 #endif // ME_PORT_DEFINED

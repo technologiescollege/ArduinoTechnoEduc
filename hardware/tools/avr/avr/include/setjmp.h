@@ -40,19 +40,19 @@ extern "C" {
 /*
    jmp_buf:
 	offset	size	description
-	 0	16/4	call-saved registers (r2-r17)
-                        (AVR tiny10 family has only 4 call saved registers (r18-r21))
-	16/4	 2	frame pointer (r29:r28)
-	18/6	 2	stack pointer (SPH:SPL)
-	20/8	 1	status register (SREG)
-	21/9	 2/3	return address (PC) (2 bytes used for <=128Kw flash)
-	23/24/11 = total size (AVR Tiny10 family always has 2 bytes PC)
+	 0	16/2	call-saved registers (r2-r17)
+				(AVR_TINY arch has only 2 call saved registers (r18,r19))
+	16/2	 2	frame pointer (r29:r28)
+	18/4	 2	stack pointer (SPH:SPL)
+	20/6	 1	status register (SREG)
+	21/7	 2/3	return address (PC) (2 bytes used for <=128Kw flash)
+	23/24/9 = total size (AVR_TINY arch always has 2 bytes PC)
  */
 
 #if !defined(__DOXYGEN__)
 
 #if defined(__AVR_TINY__)
-# define _JBLEN 11
+# define _JBLEN  9
 #elif	defined(__AVR_3_BYTE_PC__) && __AVR_3_BYTE_PC__
 # define _JBLEN  24
 #else
@@ -115,7 +115,7 @@ typedef struct _jmp_buf { unsigned char _jb[_JBLEN]; } jmp_buf[1];
     }
     \endcode */
 
-#ifndef __ATTR_NORETURN__
+#if !(defined(__ATTR_NORETURN__) || defined(__DOXYGEN__))
 #define __ATTR_NORETURN__ __attribute__((__noreturn__))
 #endif
 

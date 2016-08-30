@@ -380,8 +380,6 @@
 #define IVCE    0
 #define IVSEL   1
 #define PUD     4
-#define BODSE   5
-#define BODS    6
 
 /* Reserved [0x36] */
 
@@ -421,6 +419,12 @@
 #define PRUSART0 1
 #define PRSPI   2
 #define PRTIM1  3
+
+#define __AVR_HAVE_PRR	((1<<PRADC)|(1<<PRUSART0)|(1<<PRSPI)|(1<<PRTIM1))
+#define __AVR_HAVE_PRR_PRADC
+#define __AVR_HAVE_PRR_PRUSART0
+#define __AVR_HAVE_PRR_PRSPI
+#define __AVR_HAVE_PRR_PRTIM1
 
 /* Reserved [0x65] */
 
@@ -819,5 +823,10 @@
 #define SIGNATURE_2 0x10
 
 
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_ADC (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+#define SLEEP_MODE_STANDBY (0x06<<1)
 #endif /* #ifdef _AVR_ATMEGA165A_H_INCLUDED */
 

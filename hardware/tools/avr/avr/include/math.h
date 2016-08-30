@@ -167,15 +167,16 @@ extern double fmod(double __x, double __y) __ATTR_CONST__;
  */
 extern double modf(double __x, double *__iptr);
 
-/** The alias for modf().
- */
+/** An alias for modf(). */
 extern float modff (float __x, float *__iptr);
 
 /**
     The sqrt() function returns the non-negative square root of \a __x.
  */
 extern double sqrt(double __x) __ATTR_CONST__;
-#define sqrtf	sqrt		/**< The alias for sqrt().	*/
+
+/** An alias for sqrt(). */
+extern float sqrtf (float) __ATTR_CONST__;
 
 /**
     The cbrt() function returns the cube root of \a __x.

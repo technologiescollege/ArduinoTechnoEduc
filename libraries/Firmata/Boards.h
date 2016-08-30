@@ -1,7 +1,7 @@
 /*
   Boards.h - Hardware Abstraction Layer for Firmata library
   Copyright (c) 2006-2008 Hans-Christoph Steiner.  All rights reserved.
-  Copyright (C) 2009-2015 Jeff Hoefs.  All rights reserved.
+  Copyright (C) 2009-2016 Jeff Hoefs.  All rights reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -10,7 +10,7 @@
 
   See file LICENSE.txt for further informations on licensing terms.
 
-  Last updated December 19th, 2015
+  Last updated April 10th, 2016
 */
 
 #ifndef Firmata_Boards_h
@@ -449,6 +449,22 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_SERVO(p)         ((p) - 2)
 
 
+// RedBearLab BLE Nano with factory switch settings (S1 - S10)
+#elif defined(BLE_NANO)
+#define TOTAL_ANALOG_PINS       6
+#define TOTAL_PINS              15 // 9 digital + 3 analog
+#define IS_PIN_DIGITAL(p)       ((p) >= 2 && (p) <= 14)
+#define IS_PIN_ANALOG(p)        ((p) == 8 || (p) == 9 || (p) == 10 || (p) == 11 || (p) == 12 || (p) == 14) //A0~A5
+#define IS_PIN_PWM(p)           ((p) == 3 || (p) == 5 || (p) == 6)
+#define IS_PIN_SERVO(p)         ((p) >= 2 && (p) <= 7)
+#define IS_PIN_I2C(p)           ((p) == SDA || (p) == SCL)
+#define IS_PIN_SPI(p)           ((p) == CS || (p) == MOSI || (p) == MISO || (p) == SCK)
+#define PIN_TO_DIGITAL(p)       (p)
+#define PIN_TO_ANALOG(p)        ((p) - 8)
+#define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
+#define PIN_TO_SERVO(p)         (p)
+
+
 // Sanguino
 #elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644__)
 #define TOTAL_ANALOG_PINS       8
@@ -665,6 +681,28 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
 #define PIN_TO_SERVO(p)         ((p) - 2)
 
+// ESP8266
+// note: boot mode GPIOs 0, 2 and 15 can be used as outputs, GPIOs 6-11 are in use for flash IO
+#elif defined(ESP8266)
+#define TOTAL_ANALOG_PINS       NUM_ANALOG_INPUTS
+#define TOTAL_PINS              A0 + NUM_ANALOG_INPUTS
+#define PIN_SERIAL_RX           3
+#define PIN_SERIAL_TX           1
+#define IS_PIN_DIGITAL(p)       (((p) >= 0 && (p) <= 5) || ((p) >= 12 && (p) < A0))
+#define IS_PIN_ANALOG(p)        ((p) >= A0 && (p) < A0 + NUM_ANALOG_INPUTS)
+#define IS_PIN_PWM(p)           digitalPinHasPWM(p)
+#define IS_PIN_SERVO(p)         (IS_PIN_DIGITAL(p) && (p) < MAX_SERVOS)
+#define IS_PIN_I2C(p)           ((p) == SDA || (p) == SCL)
+#define IS_PIN_SPI(p)           ((p) == SS || (p) == MOSI || (p) == MISO || (p) == SCK)
+#define IS_PIN_INTERRUPT(p)     (digitalPinToInterrupt(p) > NOT_AN_INTERRUPT)
+#define IS_PIN_SERIAL(p)        ((p) == PIN_SERIAL_RX || (p) == PIN_SERIAL_TX)
+#define PIN_TO_DIGITAL(p)       (p)
+#define PIN_TO_ANALOG(p)        ((p) - A0)
+#define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
+#define PIN_TO_SERVO(p)         (p)
+#define DEFAULT_PWM_RESOLUTION  10
+
+
 // anything else
 #else
 #error "Please edit Boards.h with a hardware abstraction for this board"
@@ -679,6 +717,9 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define IS_PIN_SERIAL(p)        0
 #endif
 
+#ifndef DEFAULT_PWM_RESOLUTION
+#define DEFAULT_PWM_RESOLUTION  8
+#endif
 
 /*==============================================================================
  * readPort() - Read an 8 bit port

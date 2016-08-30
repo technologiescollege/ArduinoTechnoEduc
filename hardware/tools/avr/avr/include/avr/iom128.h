@@ -66,7 +66,7 @@
 #define PORTE     _SFR_IO8(0x03)
 
 /* ADC Data Register */
-#define ADCW      _SFR_IO16(0x04) /* for backwards compatibility */
+#define ADCW      _SFR_IO16(0x04)
 #ifndef __ASSEMBLER__
 #define ADC       _SFR_IO16(0x04)
 #endif
@@ -1242,7 +1242,6 @@
 
 #pragma GCC system_header
 
-#pragma GCC poison ADCW
 #pragma GCC poison MCUSR
 #pragma GCC poison SPMCR
 
@@ -1290,6 +1289,11 @@
 
 #endif  /* !defined(__AVR_LIBC_DEPRECATED_ENABLE__) */
 
-
+#define SLEEP_MODE_IDLE (0x00<<2)
+#define SLEEP_MODE_ADC (0x02<<2)
+#define SLEEP_MODE_PWR_DOWN (0x04<<2)
+#define SLEEP_MODE_PWR_SAVE (0x06<<2)
+#define SLEEP_MODE_STANDBY (0x05<<2)
+#define SLEEP_MODE_EXT_STANDBY (0x07<<2)
 
 #endif /* _AVR_IOM128_H_ */

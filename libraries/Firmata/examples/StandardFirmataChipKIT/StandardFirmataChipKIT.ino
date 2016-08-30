@@ -74,7 +74,7 @@ struct i2c_device_info {
 /* for i2c read continuous more */
 i2c_device_info query[I2C_MAX_QUERIES];
 
-byte i2cRxData[32];
+byte i2cRxData[64];
 boolean isI2CEnabled = false;
 signed char queryIndex = -1;
 // default delay time between i2c read request and Wire.requestFrom()
@@ -616,7 +616,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
         }
         if (IS_PIN_PWM(pin)) {
           Firmata.write(PIN_MODE_PWM);
-          Firmata.write(8); // 8 = 8-bit resolution
+          Firmata.write(DEFAULT_PWM_RESOLUTION);
         }
         if (IS_PIN_DIGITAL(pin)) {
           Firmata.write(PIN_MODE_SERVO);

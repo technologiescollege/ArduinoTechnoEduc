@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class MeStepper
  * \brief   Driver for Me Stepper device.
  * @file    MeStepper.h
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/11/11
+ * @version V1.0.3
+ * @date    2016/01/20
  * @brief   Header for MeStepper.cpp module
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -21,8 +21,7 @@
  * distributed. See http://www.gnu.org/copyleft/gpl.html
  *
  * \par Description
- * This file is a drive for temperature sensor device, It supports temperature sensor
- * 18B20 provided by the MakeBlock.
+ * This file is a drive for Me Stepper device.
  *
  * \par Method List:
  *
@@ -48,7 +47,10 @@
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
- * forfish         2015/11/11     1.0.0            Add description.
+ * Mark Yan        2015/10/09     1.0.0            Bulid the new
+ * Mark Yan        2015/10/29     1.0.1            Fix minor errors in format
+ * forfish         2015/11/11     1.0.2            Add description.
+ * Mark Yan        2016/01/20     1.0.3            Fix minor errors in comment.
  * </pre>
  */
  

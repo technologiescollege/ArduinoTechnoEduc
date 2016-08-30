@@ -1,15 +1,14 @@
 /*************************************************************************
-* File Name          : Mbot_Firmware.ino
-* Author             : Ander
-* Updated            : Ander
-* Version            : V1.20101
-* Date               : 12/29/2014
+* File Name          : mbot_firmware.ino
+* Author             : Ander, Mark Yan
+* Updated            : Ander, Mark Yan
+* Version            : V06.01.106
+* Date               : 07/06/2016
 * Description        : Firmware for Makeblock Electronic modules with Scratch.  
 * License            : CC-BY-SA 3.0
-* Copyright (C) 2013 - 2014 Maker Works Technology Co., Ltd. All right reserved.
+* Copyright (C) 2013 - 2016 Maker Works Technology Co., Ltd. All right reserved.
 * http://www.makeblock.cc/
 **************************************************************************/
-#include <Servo.h>
 #include <Wire.h>
 #include <MeMCore.h>
 
@@ -29,6 +28,8 @@ MeCompass Compass;
 MeHumiture humiture;
 MeFlameSensor FlameSensor;
 MeGasSensor GasSensor;
+MeTouchSensor touchSensor;
+Me4Button buttonSensor;
 
 typedef struct MeModule
 {
@@ -61,7 +62,7 @@ const int analogs[12] PROGMEM = {A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11};
 #else
 const int analogs[8] PROGMEM = {A0,A1,A2,A3,A4,A5,A6,A7};
 #endif
-String mVersion = "06.01.030";
+String mVersion = "06.01.106";
 boolean isAvailable = false;
 
 int len = 52;
@@ -71,6 +72,7 @@ byte dataLen;
 byte modulesLen=0;
 boolean isStart = false;
 char serialRead;
+uint8_t command_index = 0;
 #define VERSION 0
 #define ULTRASONIC_SENSOR 1
 #define TEMPERATURE_SENSOR 2
@@ -105,6 +107,7 @@ char serialRead;
 #define BUTTON_INNER 35
 #define LEDMATRIX 41
 #define TIMER 50
+#define TOUCH_SENSOR 51
 
 #define GET 1
 #define RUN 2
@@ -113,6 +116,24 @@ char serialRead;
 float angleServo = 90.0;
 int servo_pins[8]={0,0,0,0,0,0,0,0};
 unsigned char prevc=0;
+boolean buttonPressed = false;
+uint8_t keyPressed = KEY_NULL;
+
+void readButtonInner(uint8_t pin, int8_t s)
+{
+  pin = pgm_read_byte(&analogs[pin]);
+  pinMode(pin,INPUT);
+  boolean currentPressed = !(analogRead(pin)>10);
+      
+  if(buttonPressed == currentPressed){
+    return;
+  }
+  buttonPressed = currentPressed;
+  writeHead();
+  writeSerial(0x80);
+  sendByte(currentPressed);
+  writeEnd();
+}
 
 void setup(){
   pinMode(13,OUTPUT);
@@ -131,6 +152,8 @@ void setup(){
   gyro.begin();
   Serial.print("Version: ");
   Serial.println(mVersion);
+  ledMx.setBrightness(6);
+  ledMx.setColorIndex(1);
 }
 int irDelay = 0;
 int irIndex = 0;
@@ -140,15 +163,15 @@ String irBuffer = "";
 double lastTime = 0.0;
 double currentTime = 0.0;
 double lastIRTime = 0.0;
-boolean buttonPressed = false;
-boolean irPressed = false;
+
 void loop(){
+  readButtonInner(7,0);
+  keyPressed = buttonSensor.pressed();
   currentTime = millis()/1000.0-lastTime;
   if(ir.decode())
   {
     irRead = ((ir.value>>8)>>8)&0xff;
     lastIRTime = millis()/1000.0;
-    irPressed = true;
     if(irRead==0xa||irRead==0xd){
       irIndex = 0;
       irReady = true;
@@ -237,12 +260,15 @@ ff 55 len idx action device port slot data a
 void parseData(){
   isStart = false;
   int idx = readBuffer(3);
+  command_index = (uint8_t)idx;
   int action = readBuffer(4);
   int device = readBuffer(5);
   switch(action){
     case GET:{
-        writeHead();
-        writeSerial(idx);
+        if(device != ULTRASONIC_SENSOR){
+          writeHead();
+          writeSerial(idx);
+        }
         readSensor(device);
         writeEnd();
      }
@@ -374,9 +400,12 @@ void runModule(int device){
      int g = readBuffer(10);
      int b = readBuffer(11);
      led.reset(port,slot);
-     if(idx>0){
+     if(idx>0)
+     {
        led.setColorAt(idx-1,r,g,b); 
-     }else{
+     }
+     else
+     {
        led.setColor(r,g,b); 
      }
      led.show();
@@ -386,10 +415,14 @@ void runModule(int device){
      int slot = readBuffer(7);
      pin = slot==1?mePort[port].s1:mePort[port].s2;
      int v = readBuffer(8);
-     if(v>=0&&v<=180){
-       int sp = searchServoPin(pin);
-       servos[sp].attach(pin);
-       servos[sp].write(v);
+     Servo sv = servos[searchServoPin(pin)];
+     if(v >= 0 && v <= 180)
+     {
+       if(!sv.attached())
+       {
+         sv.attach(pin);
+       }
+       sv.write(v);
      }
    }
    break;
@@ -407,36 +440,23 @@ void runModule(int device){
      }
      int action = readBuffer(7);
      if(action==1){
-            int brightness = readBuffer(8);
-            int color = readBuffer(9);
-            int px = readShort(10);
-            int py = readShort(12);
-            int len = readBuffer(14);
-            char *s = readString(15,len);
-            ledMx.clearScreen();
-            ledMx.setColorIndex(color);
-            ledMx.setBrightness(brightness);
+            int px = buffer[8];
+            int py = buffer[9];
+            int len = readBuffer(10);
+            char *s = readString(11,len);
             ledMx.drawStr(px,py,s);
-         }else if(action==2){
-           int brightness = readBuffer(8);
-            int dw = readBuffer(9);
-            int px = readShort(10);
-            int py = readShort(12);
-            int len = readBuffer(14);
-            uint8_t *ss = readUint8(15,len);
-            ledMx.clearScreen();
-            ledMx.setColorIndex(1);
-            ledMx.setBrightness(brightness);
-            ledMx.drawBitmap(px,py,dw,ss);
-         }else if(action==3){
-            int brightness = readBuffer(8);
-            int point = readBuffer(9);
-            int hours = readShort(10);
-            int minutes = readShort(12);
-            ledMx.clearScreen();
-            ledMx.setColorIndex(1);
-            ledMx.setBrightness(brightness);
+      }else if(action==2){
+            int px = readBuffer(8);
+            int py = readBuffer(9);
+            uint8_t *ss = readUint8(10,16);
+            ledMx.drawBitmap(px,py,16,ss);
+      }else if(action==3){
+            int point = readBuffer(8);
+            int hours = readBuffer(9);
+            int minutes = readBuffer(10);
             ledMx.showClock(hours,minutes,point);
+     }else if(action == 4){
+            ledMx.showNum(readFloat(8),3);
      }
    }
    break;
@@ -494,10 +514,14 @@ void runModule(int device){
    break;
    case SERVO_PIN:{
      int v = readBuffer(7);
-     if(v >= 0 && v <= 180){
-       int sp = searchServoPin(pin);
-       servos[sp].attach(pin);
-       servos[sp].write(v);
+     Servo sv = servos[searchServoPin(pin)]; 
+     if(v >= 0 && v <= 180)
+     {
+       if(!sv.attached())
+       {
+         sv.attach(pin);
+       }
+       sv.write(v);
      }
    }
    break;
@@ -507,6 +531,7 @@ void runModule(int device){
    break;
   }
 }
+
 int searchServoPin(int pin){
     for(int i=0;i<8;i++){
       if(servo_pins[i] == pin){
@@ -534,7 +559,9 @@ void readSensor(int device){
      if(us.getPort()!=port){
        us.reset(port);
      }
-     value = (float)us.distanceCm(50000);
+     value = (float)us.distanceCm();
+     writeHead();
+     writeSerial(command_index);
      sendFloat(value);
    }
    break;
@@ -620,10 +647,10 @@ void readSensor(int device){
      }
      if(slot==1){
        pinMode(generalDevice.pin1(),INPUT_PULLUP);
-       value = generalDevice.dRead1();
+       value = !generalDevice.dRead1();
      }else{
        pinMode(generalDevice.pin2(),INPUT_PULLUP);
-       value = generalDevice.dRead2();
+       value = !generalDevice.dRead2();
      }
      sendFloat(value);  
    }
@@ -643,9 +670,7 @@ void readSensor(int device){
        Compass.reset(port);
        Compass.setpin(Compass.pin1(),Compass.pin2());
      }
-     double CompassAngle;
-     CompassAngle = Compass.getAngle();
-     sendDouble(CompassAngle);
+     sendFloat(Compass.getAngle());
    }
    break;
    case HUMITURE:{
@@ -704,6 +729,22 @@ void readSensor(int device){
    break;
    case TIMER:{
      sendFloat(currentTime);
+   }
+   break;
+   case TOUCH_SENSOR:
+   {
+     if(touchSensor.getPort() != port){
+       touchSensor.reset(port);
+     }
+     sendByte(touchSensor.touched());
+   }
+   break;
+   case BUTTON:
+   {
+     if(buttonSensor.getPort() != port){
+       buttonSensor.reset(port);
+     }
+     sendByte(keyPressed == readBuffer(7));
    }
    break;
   }

@@ -1,15 +1,15 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * \class MeSerial
  * \brief   Driver for serial.
  * @file    MeSerial.cpp
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/09/08
+ * @version V1.0.1
+ * @date    2016/01/20
  * @brief   this file is a drive for serial
  *
  * \par Copyright
- * This software is Copyright (C), 2012-2015, MakeBlock. Use is subject to license \n
+ * This software is Copyright (C), 2012-2016, MakeBlock. Use is subject to license \n
  * conditions. The main licensing options available are GPL V2 or Commercial: \n
  *
  * \par Open Source Licensing GPL V2
@@ -39,6 +39,7 @@
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * Mark Yan         2015/09/08     1.0.0            Rebuild the old lib.
+ * Mark Yan         2016/01/20     1.0.1            support arduino pin-setting.
  * </pre>
  * @example MeSerialReceiveTest.ino
  * @example MeSerialTransmitTest.ino
@@ -47,7 +48,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#ifdef ME_PORT_DEFINED
 /**
  * Alternate Constructor which can call your own function to map the serial to arduino port,
  * no pins are used or initialized here. hardware serial will be used by default.
@@ -82,7 +82,7 @@ MeSerial::MeSerial(uint8_t port) : MePort(port), SoftwareSerial(mePort[port].s2,
   _hard = getPort() == PORT_5;
 #endif
 }
-#else // ME_PORT_DEFINED
+
 /**
  * Alternate Constructor which can call your own function to map the serial to arduino port,
  * If the hardware serial was selected, we will used the hardware serial.
@@ -122,7 +122,6 @@ MeSerial::MeSerial(uint8_t receivePin, uint8_t transmitPin, bool inverse_logic)\
   }
 #endif
 }
-#endif // ME_PORT_DEFINED
 
 /**
  * \par Function
@@ -166,6 +165,8 @@ void MeSerial::begin(long baudrate)
   {
 #if defined(__AVR_ATmega32U4__)
     _scratch ? Serial.begin(baudrate) : Serial1.begin(baudrate);
+#elif defined(__AVR_ATmega2560__)
+    Serial2.begin(baudrate);
 #else
     Serial.begin(baudrate);
 #endif
@@ -194,6 +195,8 @@ void MeSerial::end(void)
   {
 #if defined(__AVR_ATmega32U4__)
     Serial1.end();
+#elif defined(__AVR_ATmega2560__)
+    Serial2.end();
 #else
     Serial.end();
 #endif
@@ -224,6 +227,8 @@ size_t MeSerial::write(uint8_t byte)
   {
 #if defined(__AVR_ATmega32U4__)
     return (_scratch ? Serial.write(byte) : Serial1.write(byte) );
+#elif defined(__AVR_ATmega2560__)
+    return (Serial2.write(byte) );
 #else
     return (Serial.write(byte) );
 #endif
@@ -260,6 +265,8 @@ int16_t MeSerial::read(void)
   {
 #if defined(__AVR_ATmega32U4__)
     return (_scratch ? Serial.read() : Serial1.read() );
+#elif defined(__AVR_ATmega2560__)
+    return (Serial2.read() );
 #else
     return (Serial.read() );
 #endif
@@ -295,6 +302,8 @@ int16_t MeSerial::available(void)
   {
 #if defined(__AVR_ATmega32U4__)
     return (_scratch ? Serial.available() : Serial1.available() );
+#elif defined(__AVR_ATmega2560__)
+    return (Serial2.available() );
 #else
     return (Serial.available() );
 #endif

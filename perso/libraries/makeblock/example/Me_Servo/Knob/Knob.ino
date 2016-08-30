@@ -1,5 +1,5 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * @file    Knob.ino
  * @author  MakeBlock
  * @version V1.0.0
@@ -18,7 +18,6 @@
  * </pre>
  */
 #include "MeOrion.h"
-#include <Servo.h>
 
 MePort port(PORT_3);
 Servo myservo;  // create servo object to control a servo

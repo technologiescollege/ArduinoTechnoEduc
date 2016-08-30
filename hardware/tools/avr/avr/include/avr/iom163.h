@@ -653,6 +653,10 @@
 #define SIGNATURE_1 0x94
 #define SIGNATURE_2 0x02
 
+#define SLEEP_MODE_IDLE         0
+#define SLEEP_MODE_ADC          _BV(SM0)
+#define SLEEP_MODE_PWR_DOWN     _BV(SM1)
+#define SLEEP_MODE_PWR_SAVE     (_BV(SM0) | _BV(SM1))
 
 /* Deprecated items */
 #if !defined(__AVR_LIBC_DEPRECATED_ENABLE__)
@@ -678,8 +682,5 @@
 #pragma GCC poison SIG_2WIRE_SERIAL
 
 #endif  /* !defined(__AVR_LIBC_DEPRECATED_ENABLE__) */
-
-
-
 
 #endif /* _AVR_IOM163_H_ */

@@ -1,5 +1,5 @@
 /**
- * \par Copyright (C), 2012-2015, MakeBlock
+ * \par Copyright (C), 2012-2016, MakeBlock
  * @file    GyroRotation.ino
  * @author  MakeBlock
  * @version V1.0.0
@@ -26,7 +26,7 @@
 MeGyro gyro;
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   gyro.begin();
 }
 

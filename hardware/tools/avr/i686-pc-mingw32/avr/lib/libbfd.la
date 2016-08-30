@@ -17,7 +17,7 @@ old_library='libbfd.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=''
+dependency_libs=' -L/c/jenkins/workspace/avr-gcc/label/winxp-32-mingw/binutils-build/zlib -lz'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/c/jenkins/workspace/toolchain-avr-windows/objdir/i686-pc-mingw32/avr/lib'
+libdir='/c/jenkins/workspace/avr-gcc/label/winxp-32-mingw/objdir/i686-pc-mingw32/avr/lib'

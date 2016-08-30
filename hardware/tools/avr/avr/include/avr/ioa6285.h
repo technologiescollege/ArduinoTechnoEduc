@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,13 +60,29 @@
 
 #define DDRB    _SFR_IO8(0x04)
 #define DDRB7   7
+// Inserted "DDB7" from "DDRB7" due to compatibility
+#define DDB7    7
 #define DDRB6   6
+// Inserted "DDB6" from "DDRB6" due to compatibility
+#define DDB6    6
 #define DDRB5   5
+// Inserted "DDB5" from "DDRB5" due to compatibility
+#define DDB5    5
 #define DDRB4   4
+// Inserted "DDB4" from "DDRB4" due to compatibility
+#define DDB4    4
 #define DDRB3   3
+// Inserted "DDB3" from "DDRB3" due to compatibility
+#define DDB3    3
 #define DDRB2   2
+// Inserted "DDB2" from "DDRB2" due to compatibility
+#define DDB2    2
 #define DDRB1   1
+// Inserted "DDB1" from "DDRB1" due to compatibility
+#define DDB1    1
 #define DDRB0   0
+// Inserted "DDB0" from "DDRB0" due to compatibility
+#define DDB0    0
 
 #define PORTB   _SFR_IO8(0x05)
 #define PORTB7  7
@@ -85,8 +101,14 @@
 
 #define DDRC    _SFR_IO8(0x07)
 #define DDRC2   2
+// Inserted "DDC2" from "DDRC2" due to compatibility
+#define DDC2    2
 #define DDRC1   1
+// Inserted "DDC1" from "DDRC1" due to compatibility
+#define DDC1    1
 #define DDRC0   0
+// Inserted "DDC0" from "DDRC0" due to compatibility
+#define DDC0    0
 
 #define PORTC   _SFR_IO8(0x08)
 #define PORTC2  2
@@ -105,13 +127,29 @@
 
 #define DDRD    _SFR_IO8(0x0A)
 #define DDRD7   7
+// Inserted "DDD7" from "DDRD7" due to compatibility
+#define DDD7    7
 #define DDRD6   6
+// Inserted "DDD6" from "DDRD6" due to compatibility
+#define DDD6    6
 #define DDRD5   5
+// Inserted "DDD5" from "DDRD5" due to compatibility
+#define DDD5    5
 #define DDRD4   4
+// Inserted "DDD4" from "DDRD4" due to compatibility
+#define DDD4    4
 #define DDRD3   3
+// Inserted "DDD3" from "DDRD3" due to compatibility
+#define DDD3    3
 #define DDRD2   2
+// Inserted "DDD2" from "DDRD2" due to compatibility
+#define DDD2    2
 #define DDRD1   1
+// Inserted "DDD1" from "DDRD1" due to compatibility
+#define DDD1    1
 #define DDRD0   0
+// Inserted "DDD0" from "DDRD0" due to compatibility
+#define DDD0    0
 
 #define PORTD   _SFR_IO8(0x0B)
 #define PORTD7  7
@@ -526,6 +564,13 @@
 
 
 
+/* Values and associated defines */
+
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_SENSOR_NOISE_REDUCTION (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+
 /* Interrupt vectors */
 /* Vector 0 is the reset vector */
 /* External Interrupt Request 0 */
@@ -663,6 +708,8 @@
 #define FUSE_SUT_CKSEL1  (unsigned char)~_BV(5)
 #define FUSE_CKOUT       (unsigned char)~_BV(6)
 #define FUSE_CKDIV8      (unsigned char)~_BV(7)
+#define LFUSE_DEFAULT    (FUSE_BODEN & FUSE_FRCFS & FUSE_WDRCON & FUSE_SUT_CKSEL0 & FUSE_CKDIV8)
+
 
 /* High Fuse Byte */
 #define FUSE_BOOTRST     (unsigned char)~_BV(0)
@@ -673,6 +720,8 @@
 #define FUSE_SPIEN       (unsigned char)~_BV(5)
 #define FUSE_DWEN        (unsigned char)~_BV(6)
 #define FUSE_EELOCK      (unsigned char)~_BV(7)
+#define HFUSE_DEFAULT    (FUSE_BOOTSZ0 & FUSE_BOOTSZ1 & FUSE_SPIEN)
+
 
 
 /* Lock Bits */

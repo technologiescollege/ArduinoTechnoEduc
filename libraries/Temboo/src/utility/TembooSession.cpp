@@ -85,8 +85,9 @@ int TembooSession::executeChoreo(
     uint32toa((uint32_t)TembooSession::getTime(), buffer);
 
     uint16_t contentLength = getAuth(fmt, appKeyValue, buffer, auth);
-
-    m_client.stop();
+    if (m_client.connected()) {
+        m_client.stop();
+    }
     m_client.flush();
 
     int connected = 0;

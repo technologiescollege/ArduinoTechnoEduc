@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2014 Atmel Corporation
+ * Copyright (C) 2016 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,12 +56,27 @@
 #define PRVM    4
 #define PRCO    5
 
+#define __AVR_HAVE_PRR0	((1<<PRSPI)|(1<<PRRXDC)|(1<<PRTXDC)|(1<<PRCRC)|(1<<PRVM)|(1<<PRCO))
+#define __AVR_HAVE_PRR0_PRSPI
+#define __AVR_HAVE_PRR0_PRRXDC
+#define __AVR_HAVE_PRR0_PRTXDC
+#define __AVR_HAVE_PRR0_PRCRC
+#define __AVR_HAVE_PRR0_PRVM
+#define __AVR_HAVE_PRR0_PRCO
+
 #define PRR1    _SFR_IO8(0x02)
 #define PRT1    0
 #define PRT2    1
 #define PRT3    2
 #define PRT4    3
 #define PRT5    4
+
+#define __AVR_HAVE_PRR1	((1<<PRT1)|(1<<PRT2)|(1<<PRT3)|(1<<PRT4)|(1<<PRT5))
+#define __AVR_HAVE_PRR1_PRT1
+#define __AVR_HAVE_PRR1_PRT2
+#define __AVR_HAVE_PRR1_PRT3
+#define __AVR_HAVE_PRR1_PRT4
+#define __AVR_HAVE_PRR1_PRT5
 
 #define PRR2    _SFR_IO8(0x03)
 #define PRXB    0
@@ -72,6 +87,16 @@
 #define PRRS    5
 #define PRTM    6
 #define PRSSM   7
+
+#define __AVR_HAVE_PRR2	((1<<PRXB)|(1<<PRXA)|(1<<PRSF)|(1<<PRDF)|(1<<PRIDS)|(1<<PRRS)|(1<<PRTM)|(1<<PRSSM))
+#define __AVR_HAVE_PRR2_PRXB
+#define __AVR_HAVE_PRR2_PRXA
+#define __AVR_HAVE_PRR2_PRSF
+#define __AVR_HAVE_PRR2_PRDF
+#define __AVR_HAVE_PRR2_PRIDS
+#define __AVR_HAVE_PRR2_PRRS
+#define __AVR_HAVE_PRR2_PRTM
+#define __AVR_HAVE_PRR2_PRSSM
 
 #define RDPR    _SFR_IO8(0x04)
 #define PRPTB   0
@@ -95,13 +120,29 @@
 
 #define DDRB    _SFR_IO8(0x06)
 #define DDRB7   7
+// Inserted "DDB7" from "DDRB7" due to compatibility
+#define DDB7    7
 #define DDRB6   6
+// Inserted "DDB6" from "DDRB6" due to compatibility
+#define DDB6    6
 #define DDRB5   5
+// Inserted "DDB5" from "DDRB5" due to compatibility
+#define DDB5    5
 #define DDRB4   4
+// Inserted "DDB4" from "DDRB4" due to compatibility
+#define DDB4    4
 #define DDRB3   3
+// Inserted "DDB3" from "DDRB3" due to compatibility
+#define DDB3    3
 #define DDRB2   2
+// Inserted "DDB2" from "DDRB2" due to compatibility
+#define DDB2    2
 #define DDRB1   1
+// Inserted "DDB1" from "DDRB1" due to compatibility
+#define DDB1    1
 #define DDRB0   0
+// Inserted "DDB0" from "DDRB0" due to compatibility
+#define DDB0    0
 
 #define PORTB   _SFR_IO8(0x07)
 #define PORTB7  7
@@ -123,11 +164,23 @@
 
 #define DDRC    _SFR_IO8(0x09)
 #define DDRC5   5
+// Inserted "DDC5" from "DDRC5" due to compatibility
+#define DDC5    5
 #define DDRC4   4
+// Inserted "DDC4" from "DDRC4" due to compatibility
+#define DDC4    4
 #define DDRC3   3
+// Inserted "DDC3" from "DDRC3" due to compatibility
+#define DDC3    3
 #define DDRC2   2
+// Inserted "DDC2" from "DDRC2" due to compatibility
+#define DDC2    2
 #define DDRC1   1
+// Inserted "DDC1" from "DDRC1" due to compatibility
+#define DDC1    1
 #define DDRC0   0
+// Inserted "DDC0" from "DDRC0" due to compatibility
+#define DDC0    0
 
 #define PORTC   _SFR_IO8(0x0A)
 #define PORTC5  5
@@ -1673,6 +1726,14 @@
 
 
 
+/* Values and associated defines */
+
+
+#define SLEEP_MODE_IDLE (0x00<<1)
+#define SLEEP_MODE_EXT_PWR_SAVE (0x01<<1)
+#define SLEEP_MODE_PWR_DOWN (0x02<<1)
+#define SLEEP_MODE_PWR_SAVE (0x03<<1)
+
 /* Interrupt vectors */
 /* Vector 0 is the reset vector */
 /* External Interrupt Request 0 */
@@ -1851,9 +1912,9 @@
 #define RAMSIZE      1024
 #define RAMEND       0x05FF
 #define E2START     0
-#define E2SIZE      1152
+#define E2SIZE      1024
 #define E2PAGESIZE  16
-#define E2END       0x047F
+#define E2END       0x03FF
 #define XRAMEND      RAMEND
 
 
@@ -1862,14 +1923,17 @@
 #define FUSE_MEMORY_SIZE 1
 
 /* Fuse Byte */
-#define FUSE_CKDIV8 (unsigned char)~_BV(128)
-#define FUSE_DWEN (unsigned char)~_BV(64)
-#define FUSE_SPIEN (unsigned char)~_BV(32)
-#define FUSE_WDTON (unsigned char)~_BV(16)
-#define FUSE_EESAVE (unsigned char)~_BV(8)
-#define FUSE_BOOTRST (unsigned char)~_BV(4)
-#define FUSE_RSTDISBL (unsigned char)~_BV(2)
-#define FUSE_EXTCLKEN (unsigned char)~_BV(1)
+#define FUSE_EXTCLKEN    (unsigned char)~_BV(0)
+#define FUSE_RSTDISBL    (unsigned char)~_BV(1)
+#define FUSE_BOOTRST     (unsigned char)~_BV(2)
+#define FUSE_EESAVE      (unsigned char)~_BV(3)
+#define FUSE_WDTON       (unsigned char)~_BV(4)
+#define FUSE_SPIEN       (unsigned char)~_BV(5)
+#define FUSE_DWEN        (unsigned char)~_BV(6)
+#define FUSE_CKDIV8      (unsigned char)~_BV(7)
+#define LFUSE_DEFAULT    (FUSE_SPIEN)
+
+
 
 /* Lock Bits */
 #define __LOCK_BITS_EXIST

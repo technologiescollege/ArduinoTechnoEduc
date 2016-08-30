@@ -1,0 +1,40 @@
+
+Page web
+		webPage  = "";
+		webPage += "<!doctype html>";
+		webPage += "<html>";
+		webPage += "<head>";
+		webPage += "<title>DuinoEDU</title>";
+		webPage += "</head>";
+		
+		webPage += "<body>";
+			// Début formulaire
+			// http://www.scriptol.fr/html5/formulaire.php
+			webPage += "<form method=\"get\" action=\"/\">";		 					// <form method="get" action="/">
+			webPage += "<input type=\"submit\" name=\"bouton1\" value=\"ON\">";			// <input type="submit" name="A" value="ON">
+			webPage += "<input type=\"submit\" name=\"bouton1\" value=\"OFF\">";		// <input type="submit" name="A" value="OFF">
+			webPage += "</form>";
+			webPage += "kjdjkhjhdhjkdhkjhd";
+		webPage += "</body>";
+		webPage += "</html>";
+	
+		// REM
+		// Connection: keep-alive\r\n :
+			// ok : 1 client
+			// pb : 2 clients
+
+	
+		header   = "";
+		header  += "HTTP/1.1 200 OK\r\n";
+		header  += "Refresh: 5\r\n";
+		//header  += "Refresh: 0;url=my_view_page.php";
+		//header  += "Server: arduino\nCache-Control: no-store, no-cache, must-revalidate\r\n";
+		//header  += "Pragma:no-cache\r\n";
+		header  += "Content-Type: text/html; charset=UTF-8\r\n";
+		header  += "Connection: close\r\n";
+		//header  += "Connection: keep-alive\r\n";
+		
+		header  += "Content-Length: ";
+		header  += (int)(webPage.length());
+		header  += "\r\n";
+		header  += "\r\n";
