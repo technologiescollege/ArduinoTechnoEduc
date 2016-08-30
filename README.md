@@ -1,4 +1,4 @@
-### Arduino EducTechno
+### Arduino TechnoEduc
 
 
 EDI Arduino identique à l'original en version **1.6.10**, mais **enrichi** de programmes et de bibliothèques (_librairies_) nécessaires pour permettre aux enseignants de disposer d'un environnement clé en main pour :
