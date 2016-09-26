@@ -5,7 +5,7 @@
  installed on your Yún in folder /usr/bin.
  It prints information about the status of your wifi connection.
 
- It uses Serial to print, so you need to connect your Yún to your
+ It uses Serial to print, so you need to connect your YunShield/Yún to your
  computer using a USB cable and select the appropriate port from
  the Port menu
 
@@ -49,4 +49,3 @@ void loop() {
 
   delay(5000);
 }
-

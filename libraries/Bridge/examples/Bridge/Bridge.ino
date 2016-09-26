@@ -1,11 +1,11 @@
 /*
   Arduino Yún Bridge example
 
-  This example for the Arduino Yún shows how to use the
-  Bridge library to access the digital and analog pins
-  on the board through REST calls. It demonstrates how
-  you can create your own API when using REST style
-  calls through the browser.
+  This example for the YunShield/Yún shows how 
+  to use the Bridge library to access the digital and
+  analog pins on the board through REST calls.
+  It demonstrates how you can create your own API when
+  using REST style calls through the browser.
 
   Possible commands created in this shetch:
 
@@ -181,5 +181,3 @@ void modeCommand(BridgeClient client) {
   client.print(F("error: invalid mode "));
   client.print(mode);
 }
-
-

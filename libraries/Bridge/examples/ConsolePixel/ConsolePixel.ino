@@ -1,8 +1,8 @@
 /*
   Console Pixel
 
- An example of using the Arduino board to receive data from the
- Console on the Arduino Yún.  In this case, the Arduino boards turns on an LED when
+ An example of using YunShield/Yún board to receive data from the
+ Console on the Yún.  In this case, the board turns on an LED when
  it receives the character 'H', and turns off the LED when it
  receives the character 'L'.
 
@@ -61,4 +61,3 @@ void loop() {
     }
   }
 }
-

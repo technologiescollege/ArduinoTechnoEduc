@@ -2,11 +2,11 @@
   Temperature web interface
 
  This example shows how to serve data from an analog input
- via the Arduino Yún's built-in webserver using the Bridge library.
+ via the YunShield/Yún built-in webserver using the Bridge library.
 
  The circuit:
  * TMP36 temperature sensor on analog pin A1
- * SD card attached to SD card slot of the Arduino Yún
+ * SD card attached to SD card slot of the YunShield/Yún
 
  This sketch must be uploaded via wifi. REST API must be set to "open".
 
@@ -120,6 +120,3 @@ void loop() {
 
   delay(50); // Poll every 50ms
 }
-
-
-

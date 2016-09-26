@@ -1,10 +1,10 @@
 /*
   Arduino Yún USB-to-Serial
 
-  Allows you to use the Yún's 32U4 processor as a
+  Allows you to use the YunShield/Yún processor as a
   serial terminal for the Linux side on the Yún.
 
-  Upload this to an Arduino Yún via serial (not WiFi) then open
+  Upload this to a YunShield/Yún via serial (not WiFi) then open
   the serial monitor at 115200 to see the boot process of Linux.
   You can also use the serial monitor as a basic command line
   interface for Linux using this sketch.
@@ -19,7 +19,7 @@
                         obtain the console.
 
   The circuit:
-   Arduino Yún
+   YunShield/Yún
 
   created March 2013
   by Massimo Banzi

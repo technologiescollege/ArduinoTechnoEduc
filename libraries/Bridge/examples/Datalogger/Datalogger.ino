@@ -2,11 +2,11 @@
   SD card datalogger
 
  This example shows how to log data from three analog sensors
- to an SD card mounted on the Arduino Yún using the Bridge library.
+ to an SD card mounted on the YunShield/Yún using the Bridge library.
 
  The circuit:
  * analog sensors on analog pins 0, 1 and 2
- * SD card attached to SD card slot of the Arduino Yún
+ * SD card attached to SD card slot of the YunShield/Yún
 
  Prepare your SD card creating an empty folder in the SD root
  named "arduino". This will ensure that the Yún will create a link

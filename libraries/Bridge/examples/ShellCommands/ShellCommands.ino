@@ -2,13 +2,13 @@
   Running shell commands using Process class.
 
  This sketch demonstrate how to run linux shell commands
- using an Arduino Yún. It runs the wifiCheck script on the Linux side
+ using a YunShield/Yún. It runs the wifiCheck script on the Linux side
  of the Yún, then uses grep to get just the signal strength line.
  Then it uses parseInt() to read the wifi signal strength as an integer,
  and finally uses that number to fade an LED using analogWrite().
 
  The circuit:
- * Arduino Yún with LED connected to pin 9
+ * YunShield/Yún with LED connected to pin 9
 
  created 12 Jun 2013
  by Cristian Maglie
@@ -50,6 +50,3 @@ void loop() {
   }
   delay(5000);  // wait 5 seconds before you do it again
 }
-
-
-

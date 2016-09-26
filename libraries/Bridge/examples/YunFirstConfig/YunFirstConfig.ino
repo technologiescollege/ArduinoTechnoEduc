@@ -2,12 +2,13 @@
 /*
   Arduino Yún First configuration sketch
 
-  Configures the Yun's wifi and infos via the Bridge
+  Configures the YunShield/Yún WiFi and infos via the Bridge
   Works correctly if Line Ending is set as "NewLine"
   If your board has two USB ports, use the Native one
 
   The circuit:
-   Arduino Yún/Yún101/YunShield with firmware > 1.6.1
+   Arduino YunShield
+   (or any Yun model with firmware > 1.6.1)
 
   created March 2016
   by Arduino LLC
@@ -30,7 +31,7 @@ void setup() {
   while (!SERIAL_PORT_USBVIRTUAL);     // do nothing until the serial monitor is opened
 
   SERIAL_PORT_USBVIRTUAL.println(F("Hi! Nice to see you!"));
-  SERIAL_PORT_USBVIRTUAL.println(F("I'm your Yun101 assistant sketch"));
+  SERIAL_PORT_USBVIRTUAL.println(F("I'm your YunShield assistant sketch"));
   SERIAL_PORT_USBVIRTUAL.println(F("I'll help you configuring your Yun in a matter of minutes"));
 
   SERIAL_PORT_USBVIRTUAL.println(F("Let's start by communicating with the Linux processor"));

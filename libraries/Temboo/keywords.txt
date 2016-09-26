@@ -33,6 +33,10 @@ setCredential	KEYWORD2
 setSavedInputs	KEYWORD2
 addInput	KEYWORD2
 addOutputFilter	KEYWORD2
+addSensorInput	KEYWORD2
+addInputExpression	KEYWORD2
+setDeviceName 	KEYWORD2
+setDeviceType 	KEYWORD2
 setSettingsFileToWrite	KEYWORD2
 setSettingsFileToRead	KEYWORD2
 setGatewayAddress	KEYWORD2

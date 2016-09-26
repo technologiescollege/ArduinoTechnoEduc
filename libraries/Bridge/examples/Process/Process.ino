@@ -2,7 +2,7 @@
   Running process using Process class.
 
  This sketch demonstrate how to run linux processes
- using an Arduino Yún.
+ using a YunShield/Yún
 
  created 5 Jun 2013
  by Cristian Maglie
@@ -69,4 +69,3 @@ void runCpuInfo() {
   // Ensure the last bit of data is sent.
   SerialUSB.flush();
 }
-

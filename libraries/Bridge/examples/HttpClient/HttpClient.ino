@@ -1,7 +1,7 @@
 /*
   Yún HTTP Client
 
- This example for the Arduino Yún shows how create a basic
+ This example for the YunShield/Yún shows how create a basic
  HTTP client that connects to the internet and downloads
  content. In this case, you'll connect to the Arduino
  website and download a version of the logo as ASCII text.
@@ -49,5 +49,3 @@ void loop() {
 
   delay(5000);
 }
-
-

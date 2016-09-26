@@ -2,7 +2,7 @@
   Time Check
 
  Gets the time from Linux via Bridge then parses out hours,
- minutes and seconds for the Arduino using an Arduino Yún.
+ minutes and seconds using a YunShield/Yún.
 
  created  27 May 2013
  modified 21 June 2013

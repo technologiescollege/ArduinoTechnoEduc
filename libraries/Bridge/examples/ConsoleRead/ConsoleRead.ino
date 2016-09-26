@@ -1,5 +1,5 @@
 /*
-  Console Read example
+Console Read example for YunShield/Yún
 
  Read data coming from bridge using the Console.read() function
  and store it in a string.
@@ -56,5 +56,3 @@ void loop() {
     delay(100);
   }
 }
-
-

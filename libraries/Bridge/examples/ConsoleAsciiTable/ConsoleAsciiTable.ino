@@ -1,13 +1,13 @@
 /*
-  ASCII table
-
+ Console ASCII table for YunShield/Yún
  Prints out byte values in all possible formats:
  * as raw binary values
  * as ASCII-encoded decimal, hex, octal, and binary values
 
  For more on ASCII, see http://www.asciitable.com and http://en.wikipedia.org/wiki/ASCII
 
- The circuit:  No external hardware needed.
+ The circuit:
+ - YunShield/Yún
 
  created 2006
  by Nicholas Zambetti
