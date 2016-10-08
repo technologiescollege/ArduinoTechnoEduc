@@ -1,0 +1,14 @@
+MoleGraph KEYWORD1
+Setup	KEYWORD2
+SetSendingCallback	KEYWORD2
+SetMeasurementStartedCallback	KEYWORD2
+SetMeasurementStoppedCallback	KEYWORD2
+SetMeasurementPausedCallback	KEYWORD2
+SetMeasurementContinuedCallback	KEYWORD2
+SetChannelValue	KEYWORD2
+GetChannelValue	KEYWORD2
+SampleRequest	KEYWORD2
+StartMeasurement	KEYWORD2
+StopMeasurement	KEYWORD2
+IsMeasurementInProgress	KEYWORD2
+CheckInput	KEYWORD2
