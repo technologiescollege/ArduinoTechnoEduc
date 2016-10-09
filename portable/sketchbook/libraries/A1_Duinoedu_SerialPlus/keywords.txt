@@ -40,5 +40,7 @@ recevoir1Octet	LITERAL1
 recevoir2Octet	LITERAL1
 recevoirTexte	LITERAL1
 
+bluetoothSetNameHc05	LITERAL1
+
 
 	

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cb:CODEBLOCKS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://education.mit.edu/openblocks/ns http://education.mit.edu/openblocks/codeblocks.xsd" xmlns:cb="http://education.mit.edu/openblocks/ns">
+<Pages collapsible-pages="yes" drawer-with-page="yes">
+<Page page-color="128 128 128" page-drawer="Main" page-infullview="yes" page-name="Main" page-width="1920">
+<PageBlocks>
+<Block genus-name="Serialplus_recevoir2Octet_number" id="762">
+<Location>
+<X>423</X>
+<Y>222</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="771" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="763" connector-kind="socket" connector-type="number" init-type="number" label="Option :" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_IRREMOTE_MEMORISER_TOUCHE" id="763">
+<Location>
+<X>711</X>
+<Y>222</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="762" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_Servo_Plus360" id="771">
+<Location>
+<X>131</X>
+<Y>195</Y>
+</Location>
+<BeforeBlockId>384</BeforeBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="772" connector-kind="socket" connector-type="number" init-type="number" label="Broche#" position-type="single"/>
+<BlockConnector con-block-id="762" connector-kind="socket" connector-type="number" init-type="number" label="Vitesse" position-type="single"/>
+<BlockConnector con-block-id="774" connector-kind="socket" connector-type="boolean" init-type="boolean" label="Inverser rotation" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_NON" id="774">
+<Location>
+<X>423</X>
+<Y>246</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="771" connector-kind="plug" connector-type="boolean" init-type="boolean" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_D2" id="772">
+<Location>
+<X>423</X>
+<Y>198</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="771" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="Serialplus_Init_Soft" id="384">
+<Location>
+<X>131</X>
+<Y>117</Y>
+</Location>
+<BeforeBlockId>353</BeforeBlockId>
+<AfterBlockId>771</AfterBlockId>
+<Sockets num-sockets="3">
+<BlockConnector con-block-id="385" connector-kind="socket" connector-type="number" init-type="number" label="Vitesse" position-type="single"/>
+<BlockConnector con-block-id="386" connector-kind="socket" connector-type="number" init-type="number" label="Broche de réception RX" position-type="single"/>
+<BlockConnector con-block-id="387" connector-kind="socket" connector-type="number" init-type="number" label="Broche d'envoi TX" position-type="single"/>
+</Sockets>
+</Block>
+<Block genus-name="DuinoEDU_D9" id="387">
+<Location>
+<X>517</X>
+<Y>168</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="384" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="DuinoEDU_D8" id="386">
+<Location>
+<X>517</X>
+<Y>144</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="384" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="single"/>
+</Plug>
+</Block>
+<Block genus-name="number" id="385">
+<Label>9600</Label>
+<Location>
+<X>517</X>
+<Y>120</Y>
+</Location>
+<Plug>
+<BlockConnector con-block-id="384" connector-kind="plug" connector-type="number" init-type="number" label="" position-type="mirror"/>
+</Plug>
+</Block>
+<Block genus-name="loop" id="353">
+<Location>
+<X>32</X>
+<Y>109</Y>
+</Location>
+<Sockets num-sockets="1">
+<BlockConnector con-block-id="384" connector-kind="socket" connector-type="cmd" init-type="cmd" label="Faire" position-type="single"/>
+</Sockets>
+</Block>
+</PageBlocks>
+</Page>
+</Pages>
+</cb:CODEBLOCKS>

@@ -18,31 +18,18 @@
 Duinoedu_ESP8266Add::Duinoedu_ESP8266Add(SoftwareSerial &uart, uint32_t baud)
 : ESP8266(uart, baud)
 {
-	buffer = (uint8_t*)malloc(100*sizeof(uint8_t));
+	buffer = (uint8_t*)malloc(30*sizeof(uint8_t));
 	serialInfos=true;
 	softSerial = &uart;	
-		
 	mode=-1;
 }
-		
-
-					
-			
-
-
 
 
 //========== SETUP
-// Activation du Serial
-extern  HardwareSerial *myHS = &Serial;
 
 void 	Duinoedu_ESP8266Add::setSerialInfos(bool _serialInfos ){
-	if(_serialInfos==true){
-		
-		myHS->begin(9600); 
-	}
 	
-	
+	serialInfos=_serialInfos;	
 }
 
 void 	Duinoedu_ESP8266Add::setClientServer(){
@@ -100,9 +87,10 @@ void 	Duinoedu_ESP8266Add::choseIotServer(String _server, uint32_t _port){
 	
 }
 
+/*
 void 	Duinoedu_ESP8266Add::choseIotServerAdafruit(String _Name, String _aioKey){
 	
-	
+		
 		Serial.print("SERVER SELECTED: ");
 		Serial.print("io.adafruit.com ");
 		//--- On enregistre la bonne IP
@@ -112,6 +100,7 @@ void 	Duinoedu_ESP8266Add::choseIotServerAdafruit(String _Name, String _aioKey){
 		AioKey=_aioKey;
 
 }
+*/
 
 
 
@@ -198,7 +187,7 @@ void	Duinoedu_ESP8266Add::sendTweet(String _tweet, String _apiKeyTweet, uint16_t
 
 }
 
-
+/*
 void 	Duinoedu_ESP8266Add::sendValueAdafruit(uint32_t _value, String _Feed, uint16_t _minIntervalSeconds ){
 
 	
@@ -232,16 +221,16 @@ void 	Duinoedu_ESP8266Add::sendValueAdafruit(uint32_t _value, String _Feed, uint
 		Serial.print(req);
 		sendRequest(req);
 }
-
+*/
 
 
 void	Duinoedu_ESP8266Add::sendAt(String _at, uint16_t _timeout){
-	m_puart->println(_at);
+	espSerial->println(_at);
 	unsigned long start = millis();
 	// Méthode timeout bloquant sans sortie par break
     while (millis() - start < _timeout) {
-		while(m_puart->available()){
-			Serial.write(m_puart->read());
+		while(espSerial->available()){
+			Serial.write(espSerial->read());
 		}
 	}
 }

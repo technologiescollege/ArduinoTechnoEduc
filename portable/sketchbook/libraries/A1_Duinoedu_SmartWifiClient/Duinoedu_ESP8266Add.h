@@ -28,7 +28,7 @@ class Duinoedu_ESP8266Add : public ESP8266 {
 
 	public:
 		//===== << CONSTRUCTORS >>
-			Duinoedu_ESP8266Add						(SoftwareSerial &uart, uint32_t baud=9600);
+			Duinoedu_ESP8266Add						(SoftwareSerial &uart, uint32_t baud=38400);
 			uint8_t *buffer;
 													// softwareSerial(Rx,Tx)
 			SoftwareSerial 	*softSerial;
@@ -44,7 +44,7 @@ class Duinoedu_ESP8266Add : public ESP8266 {
 		
 		//===== méthodes opératives collège
 			void 	choseIotServer					(String _server, uint32_t _port=80);
-			void 	choseIotServerAdafruit			(String _Name, String _aioKey);
+			//void 	choseIotServerAdafruit			(String _Name, String _aioKey);
 					String iotServerIp;
 					String Name;
 					String AioKey;
@@ -52,9 +52,9 @@ class Duinoedu_ESP8266Add : public ESP8266 {
 			void	choseApiKey						(String _apiKey);
 					String apiKey;
 					
-			void 	sendValue						(uint32_t _value, 	String _apiKey=0, 		uint16_t _minIntervalSeconds=20);
+			void 	sendValue						(uint32_t _value, 	String _apiKey, 		uint16_t _minIntervalSeconds=20);
 			void	sendTweet						(String _tweet, 	String _apiKeyTweet, 	uint16_t _minIntervalSeconds=60);
-			void 	sendValueAdafruit				(uint32_t _value, 	String _Feed=0, 		uint16_t _minIntervalSeconds=1);
+			//void 	sendValueAdafruit				(uint32_t _value, 	String _Feed=0, 		uint16_t _minIntervalSeconds=1);
 			
 			
 

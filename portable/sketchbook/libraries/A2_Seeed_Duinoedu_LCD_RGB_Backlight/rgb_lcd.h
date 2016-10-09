@@ -210,7 +210,7 @@ public:
 /*EDU FR*/ 		void ecrire(int16_t nbr);								// INT
 /*EDU US*/ 		void newWrite(int16_t nbr);	
 /*EDU US*/		void ecrire(double nbr);								// FLOAT
-				
+/*EDU US*/		void ecrire(long nbr);									// long			
 
 /*EDU US*/		void newWrite(double nbr);								
 /*EDU FR */ 	void ecrire(String newString);							// STRING
