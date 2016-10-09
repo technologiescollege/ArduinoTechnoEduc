@@ -12,16 +12,16 @@
 
 #include <avr/pgmspace.h>
 
-#define SERIAL_PLUS_BEGIN(arg)      (serialSoft!=0)?serialSoft->begin(arg):serialHard->begin(arg)
-#define SERIAL_PLUS_PRINT(arg)      (serialSoft!=0)?serialSoft->print(arg):serialHard->print(arg)
-#define SERIAL_PLUS_PRINTLN(arg)    (serialSoft!=0)?serialSoft->println(arg):serialHard->println(arg)
-#define SERIAL_PLUS_READ(arg)       (serialSoft!=0)?serialSoft->read(arg):serialHard->read(arg)
-#define SERIAL_PLUS_AVAILABLE()     (serialSoft!=0)?serialSoft->available():serialHard->available()
-#define SERIAL_PLUS_PARSEINT()      (serialSoft!=0)?serialSoft->parseInt():serialHard->parseInt()
-#define SERIAL_PLUS_FLUSH()         (serialSoft!=0)?serialSoft->flush():serialHard->flush()
-#define SERIAL_PLUS_READSTRING()    (serialSoft!=0)?serialSoft->readString():serialHard->readString()
+#define SERIAL_PLUS_BEGIN(arg)      	(serialSoft!=0)?serialSoft->begin(arg):serialHard->begin(arg)
+#define SERIAL_PLUS_PRINT(arg)      	(serialSoft!=0)?serialSoft->print(arg):serialHard->print(arg)
+#define SERIAL_PLUS_PRINTLN(arg)    	(serialSoft!=0)?serialSoft->println(arg):serialHard->println(arg)
+#define SERIAL_PLUS_READ(arg)       	(serialSoft!=0)?serialSoft->read(arg):serialHard->read(arg)
+#define SERIAL_PLUS_AVAILABLE()    		(serialSoft!=0)?serialSoft->available():serialHard->available()
+#define SERIAL_PLUS_PARSEINT()      	(serialSoft!=0)?serialSoft->parseInt():serialHard->parseInt()
+#define SERIAL_PLUS_FLUSH()         	(serialSoft!=0)?serialSoft->flush():serialHard->flush()
+#define SERIAL_PLUS_READSTRING()    	(serialSoft!=0)?serialSoft->readString():serialHard->readString()
 #define SERIAL_PLUS_READBYTESUNTIL()    (serialSoft!=0)?serialSoft->readBytesUntil():serialHard->readBytesUntil()
-#define SERIAL_PLUS_WRITE(arg)    	(serialSoft!=0)?serialSoft->write(arg):serialHard->write(arg)
+#define SERIAL_PLUS_WRITE(arg)    		(serialSoft!=0)?serialSoft->write(arg):serialHard->write(arg)
 
 //========== << CONSTRUCTOR >>
 
@@ -55,6 +55,9 @@
 	
 	//---- On termine l'initialisation commune à tous les modes d'initialisation
 		endBranch();
+		
+	//---- On active le port série	
+		Serial.begin(9600);
 		
 }//*/
 
@@ -182,9 +185,10 @@
 }
 
 
-/*EDU FR*/  byte Duinoedu_SerialPlus::recevoir1Octet(int option){readByte(option);}
-/*EDU US*/	byte Duinoedu_SerialPlus::readByte(int option){
+/*EDU FR*/  byte Duinoedu_SerialPlus::recevoir1Octet(int _option){return readByte(_option);}
+/*EDU US*/	byte Duinoedu_SerialPlus::readByte(int _option){
 	//--- Lecture d'un octet
+		static byte returnVal=0;
 		//-- Si des données sont disponibles, on les transmet tout de suite
 			if(SERIAL_PLUS_AVAILABLE()){
 				valByte = SERIAL_PLUS_READ();
@@ -192,20 +196,21 @@
 				delayMicroseconds(20);
 				lastTimeByte= millis();
 				SERIAL_PLUS_FLUSH();
-				return valByte;
+				returnVal = valByte;
 				}
 		//-- Mais que faire si plus aucune donnée n'est disponible
+			
 			else{
 				
 				//- MODE SANS EFFET MEMOIRE : Retourner 0
-				if(option==0){
+				if(_option==0){
 					return 0;
 				}
 				
 				//- MODE AVEC EFFET MEMOIRE MOMENTANE : Retourner dernière valeur pendant un certain temps, puis 0
-				else if(option>0){
+				else if(_option>0){
 					//Serial.println("op>0");
-					if(millis()<lastTimeByte+option){
+					if( millis() < lastTimeByte+_option ){
 						//Serial.print("rt:");Serial.print(valText);
 						return valByte;
 					}else{
@@ -214,22 +219,24 @@
 				}
 				
 				//- MODE AVEC EFFET MEMOIRE PERMANANT : Retourner la dernière valeur 
-				else if(option==-1){
+				else if(_option==-1){
 					return valByte;
 				}				
 			}
+			
+	return returnVal;
 }
 
-/*EDU FR*/  int Duinoedu_SerialPlus::recevoir2Octet(int option){readInteger(option);}
+/*EDU FR*/  int Duinoedu_SerialPlus::recevoir2Octet(int option){return readInteger(option);}
 /*EDU US*/	int Duinoedu_SerialPlus::readInteger(int option){
 	//--- Lecture d'un octet
 		//-- Si des données sont disponibles, on les transmet tout de suite
-			if(SERIAL_PLUS_AVAILABLE()>1){
+			if(SERIAL_PLUS_AVAILABLE()>0){
 				byte lsb = SERIAL_PLUS_READ(); 
-				delayMicroseconds(20);
+				delayMicroseconds(50);
 				//Serial.println(lsb, DEC);
 				byte msb = SERIAL_PLUS_READ();
-				delayMicroseconds(20);
+				//delayMicroseconds(20);
 				//Serial.println(msb, DEC);
 				valInteger = msb*256;
 				valInteger += lsb;
@@ -264,7 +271,7 @@
 			}
 }
 
-/*EDU US*/	String Duinoedu_SerialPlus::recevoirTexte(int option){readText(option);}
+/*EDU US*/	String Duinoedu_SerialPlus::recevoirTexte(int option){return readText(option);}
 /*EDU US*/	String Duinoedu_SerialPlus::readText(int option){
 	
 	//--- Lecture d'une chaîne
@@ -371,7 +378,7 @@ return nbrBool;
 	//---- Formatage de la chaîne
 	if(nbrOctet!=0){
 		//---- Si on impose une longueur de chaîne
-		uint8_t myLength = nbrOctet-2;		// Propre à App inventor
+		uint8_t myLength = nbrOctet/*-2*/;		// Propre à App inventor
 		//--- Trop longue ?
 		if(text.length()>myLength){
 			//-- La chaîne est trop longue. Il faut la raccourcir
@@ -393,9 +400,9 @@ return nbrBool;
 	
 	//---- Gestion de l'intervalle des envois
 	static uint32_t lastTime = 0;
-	uint16_t interval = intervalTimerAppInventor*3;
+	uint16_t interval = intervalTimerAppInventor*5;
 	if(millis()>lastTime+interval){	
-		SERIAL_PLUS_PRINTLN(text);
+		SERIAL_PLUS_PRINT(text);
 		lastTime=millis();
 		//Serial.println(lastTime);
 	}
@@ -552,9 +559,63 @@ return nbrBool;
 }
 
 
-/*EDU US*/	void Duinoedu_SerialPlus::btSetName(String btName){
-	SERIAL_PLUS_PRINT("\r\n+STNA=blocklyduino\r\n");
+/*EDU US*/	void Duinoedu_SerialPlus::bluetoothSetNameHc06(String _btName){
+	Serial.begin(9600);
+	delay(500);
+	Serial.println("MODIFICATION OPTIONS BLUETOOTH");
+	//Serial.println("SUIVRE PROCEDURE SUR: https://lc.cx/oTcT ");
+	SERIAL_PLUS_BEGIN(9600);									//Les HC06 sont à 9600 par défaut
+	delay(500);
+	//---- Envoid de la commande AT
+		Serial.println("Envoi du nouveau nom: "+_btName);
+		SERIAL_PLUS_PRINT("AT+NAME");
+		SERIAL_PLUS_PRINT(_btName);
+		//SERIAL_PLUS_PRINT("\r\n");							// Pas \r\n sur les HC06
+		delay(1000);
+	//---- Affichage de la réponse
+	char   recvChar;
+	String recvString = "";
+	while(SERIAL_PLUS_AVAILABLE()){  
+		recvChar = SERIAL_PLUS_READ();
+		recvString += recvChar;			
+	} 
+	Serial.print(recvString);
+	if(recvString=="OKsetname"){
+		Serial.print("\r\n");
+		Serial.println("RENOMMAGE TERMINE");
+	}
+ 	return;
 }	
+
+/*EDU US*/	void Duinoedu_SerialPlus::bluetoothSetNameHc05(String _btName){
+	Serial.begin(9600);
+	delay(500);
+	Serial.println("MODIFICATION OPTIONS BLUETOOTH");
+	Serial.println("Le module doit clignoter lentement");
+	Serial.println("SUIVRE PROCEDURE SUR: https://lc.cx/oTcT ");
+	SERIAL_PLUS_BEGIN(38400);									//Les HC05 sont à 38400 par défaut
+	delay(500);
+	//---- Envoid de la commande AT
+		Serial.println("Envoi du nouveau nom: "+_btName);
+		SERIAL_PLUS_PRINT("AT+NAME=");
+		SERIAL_PLUS_PRINT(_btName);
+		SERIAL_PLUS_PRINT("\r\n");
+		delay(1000);
+	//---- Affichage de la réponse
+	char   recvChar;
+	String recvString = "";
+	while(SERIAL_PLUS_AVAILABLE()){  
+		recvChar = SERIAL_PLUS_READ();
+		recvString += recvChar;			
+	} 
+	Serial.print(recvString);
+	if(recvString=="OK\r\n"){
+		Serial.println("RENOMMAGE TERMINE");
+		Serial.println("REBRANCHEZ LE MODULE BLUETOOTH AVEC UNIQUEMENT LE CABLE GROVE");
+	}
+ 	return;
+}	
+
 	
 
 	

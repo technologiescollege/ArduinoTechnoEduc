@@ -266,6 +266,9 @@ void rgb_lcd::home(){
 }
 
 /*EDU FR */ void rgb_lcd::ecrire(double nbr){newWrite(nbr);}
+/*EDU US*/	void rgb_lcd::ecrire(long nbr){
+	newWrite((double)nbr);
+}								
 
 /*EDU US*/ 	void rgb_lcd::newWrite(double nbr){
 
