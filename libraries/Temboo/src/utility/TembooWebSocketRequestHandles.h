@@ -29,6 +29,14 @@
 extern "C" {
 #endif
 
+#ifndef MAX_PIN_NUMBER
+#define MAX_PIN_NUMBER 256
+#endif
+
+#ifndef MAX_PIN_VALUE
+#define MAX_PIN_VALUE 255
+#endif
+
 typedef enum {
     WS_GET_REQUEST = 0,
     WS_SET_REQUEST,
@@ -43,19 +51,21 @@ typedef enum {
     WS_INTERVAL_REQUEST
 } WSMessageRequest;
 
-typedef struct TembooPinTable {
-	uint8_t pin;
-	uint32_t (*pinRead)(uint32_t pin);
-	void  (*pinWrite)(uint32_t pin, int val);
-    int currentPinValue;
+typedef struct TembooSensor{
+    void* sensorConfig;
+    int (*read)(void* sensorConfig);
+    void (*write)(void* sensorConfig, int val);
+    void (*begin)(void* sensorConfig);
+    int (*getSensorPin)(void*sensorConfig);
+    uint8_t* (*getSensorChannel)(void*sensorConfig);
     int defaultValue;
-} TembooPinTable;
+} TembooSensor;
 
 void addWebSocketPinData(int pin, int pinVal, bool requestResponse);
 void updateIntervalTime(int intervalTime);
 
 // Send frame
-WSMessageRequest handleResponse(uint8_t* request, TembooPinTable* pinTable, int pinTableDepth, bool connectionStatus);
+WSMessageRequest handleResponse(uint8_t* request, TembooSensor** sensors, int sensorTableDepth, bool connectionStatus);
 void logTembooDebug(const char *c);
 #if defined(__cplusplus)
 }

@@ -3,7 +3,7 @@
 
   Demonstrates appending a row of data to a Google spreadsheet using Temboo from an Arduino Yún.
 
-  Check out the latest Arduino & Temboo examples and support docs at http://www.temboo.com/arduino
+  Check out the latest Arduino & Temboo examples and tutorials at http://www.temboo.com/arduino
 
   A Temboo account and application key are necessary to run all Temboo examples. 
   If you don't already have one, you can register for a free Temboo account at 
@@ -12,8 +12,11 @@
  Instructions:
  
   1. Create a Temboo account: http://www.temboo.com
+  
   2. Retrieve your Temboo application details: http://www.temboo.com/account/applications
+  
   3. Replace the values in the TembooAccount.h tab with your Temboo application details
+  
   4. You'll also need a Google Spreadsheet that includes a title in the first row 
      of each column that data will be written to. This example assumes there are two columns. 
      The first column is the time (in milliseconds) that the row was appended, and the second 
@@ -29,7 +32,7 @@
      
      https://temboo.com/library/Library/Google/OAuth/
      
-     For the scope field, you need to use: https://spreadsheets.google.com/feeds/
+     For the scope field, you need to use: https://www.googleapis.com/auth/spreadsheets
      
      Here's a video outlines how Temboo helps with the OAuth process: 
      
@@ -37,12 +40,12 @@
      
      And here's a more in-depth version of this example on our website: 
      
-     https://temboo.com/hardware/ti/update-google-spreadsheet
+     https://temboo.com/arduino/yun/update-google-spreadsheet
  
-  6. Next, upload the sketch to your Arduino Yún and open Arduino's serial monitor
- 
+  6. Next, upload the sketch to your Arduino Yún and open the serial monitor
+  
      Note: you can test this Choreo and find the latest instructions on our website:
-     https://temboo.com/library/Library/Google/Spreadsheets/AppendRow/
+     https://temboo.com/library/Library/Google/Sheets/AppendValues/
   
   Looking for another API to use with your Arduino Yún? We've got over 100 in our Library!
 
@@ -61,20 +64,20 @@
 // Note that for additional security and reusability, you could
 // use #define statements to specify these values in a .h file.
 
-// the clientID found in Google's Developer Console under APIs & Auth > Credentials
+// the clientID found in Google's Developer Console under API Manager > Credentials
 const String CLIENT_ID = "your-client-id";
 
-// the clientSecret found in Google's Developer Console under APIs & Auth > Credentials
+// the clientSecret found in Google's Developer Console under API Manager > Credentials
 const String CLIENT_SECRET = "your-client-secret";
 
 // returned after running FinalizeOAuth
 const String REFRESH_TOKEN = "your-oauth-refresh-token";
 
-// the title of the spreadsheet you want to send data to
-// (Note that this must actually be the title of a Google spreadsheet
-// that exists in your Google Drive/Docs account, and is configured
-// as described above.)
-const String SPREADSHEET_TITLE = "your-spreadsheet-title";
+// The ID of the spreadsheet you want to send data to
+// which can be found in the URL when viewing your spreadsheet at Google. For example, 
+// the ID in the URL below is: "1tvFW2n-xFFJCE1q5j0HTetOsDhhgw7_998_K4sFtk"
+// Sample URL: https://docs.google.com/spreadsheets/d/1tvFW2n-xFFJCE1q5j0HTetOsDhhgw7_998_K4sFtk/edit
+const String SPREADSHEET_ID = "your-spreadsheet-id";
 
 const unsigned long RUN_INTERVAL_MILLIS = 60000; // how often to run the Choreo (in milliseconds)
 
@@ -114,47 +117,44 @@ void loop()
     Serial.println("Appending value to spreadsheet...");
 
     // we need a Process object to send a Choreo request to Temboo
-    TembooChoreo AppendRowChoreo;
+    TembooChoreo AppendValuesChoreo;
 
     // invoke the Temboo client
     // NOTE that the client must be reinvoked and repopulated with
     // appropriate arguments each time its run() method is called.
-    AppendRowChoreo.begin();
+    AppendValuesChoreo.begin();
     
     // set Temboo account credentials
-    AppendRowChoreo.setAccountName(TEMBOO_ACCOUNT);
-    AppendRowChoreo.setAppKeyName(TEMBOO_APP_KEY_NAME);
-    AppendRowChoreo.setAppKey(TEMBOO_APP_KEY);
+    AppendValuesChoreo.setAccountName(TEMBOO_ACCOUNT);
+    AppendValuesChoreo.setAppKeyName(TEMBOO_APP_KEY_NAME);
+    AppendValuesChoreo.setAppKey(TEMBOO_APP_KEY);
     
-    // identify the Temboo Library choreo to run (Google > Spreadsheets > AppendRow)
-    AppendRowChoreo.setChoreo("/Library/Google/Spreadsheets/AppendRow");
+    // identify the Temboo Library choreo to run (Google > Sheets > AppendValues)
+    AppendValuesChoreo.setChoreo("/Library/Google/Sheets/AppendValues");
     
     // set the required Choreo inputs
-    // see https://www.temboo.com/library/Library/Google/Spreadsheets/AppendRow/ 
+    // see https://www.temboo.com/library/Library/Google/Sheets/AppendValues/ 
     // for complete details about the inputs for this Choreo
     
     // your Google application client ID
-    AppendRowChoreo.addInput("ClientID", CLIENT_ID);
-    // your Google application client secert
-    AppendRowChoreo.addInput("ClientSecret", CLIENT_SECRET);
+    AppendValuesChoreo.addInput("ClientID", CLIENT_ID);
+    // your Google application client secret
+    AppendValuesChoreo.addInput("ClientSecret", CLIENT_SECRET);
     // your Google OAuth refresh token
-    AppendRowChoreo.addInput("RefreshToken", REFRESH_TOKEN);
+    AppendValuesChoreo.addInput("RefreshToken", REFRESH_TOKEN);
 
-    // the title of the spreadsheet you want to append to
-    // NOTE: substitute your own value, retaining the "SpreadsheetTitle:" prefix.
-    AppendRowChoreo.addInput("SpreadsheetTitle", SPREADSHEET_TITLE);
+    // the ID of the spreadsheet you want to append to
+    AppendValuesChoreo.addInput("SpreadsheetID", SPREADSHEET_ID);
 
     // convert the time and sensor values to a comma separated string
-    String rowData(now);
-    rowData += ",";
-    rowData += sensorValue;
+    String rowData = "[[\"" + String(now) + "\", \"" + String(sensorValue) + "\"]]";
 
     // add the RowData input item
-    AppendRowChoreo.addInput("RowData", rowData);
+    AppendValuesChoreo.addInput("Values", rowData);
 
     // run the Choreo and wait for the results
     // The return code (returnCode) will indicate success or failure 
-    unsigned int returnCode = AppendRowChoreo.run();
+    unsigned int returnCode = AppendValuesChoreo.run();
 
     // return code of zero (0) means success
     if (returnCode == 0) {
@@ -163,13 +163,13 @@ void loop()
     } else {
       // return code of anything other than zero means failure  
       // read and display any error messages
-      while (AppendRowChoreo.available()) {
-        char c = AppendRowChoreo.read();
+      while (AppendValuesChoreo.available()) {
+        char c = AppendValuesChoreo.read();
         Serial.print(c);
       }
     }
 
-    AppendRowChoreo.close();
+    AppendValuesChoreo.close();
   }
 }
 

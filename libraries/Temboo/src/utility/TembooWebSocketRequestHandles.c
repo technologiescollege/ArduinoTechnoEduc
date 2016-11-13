@@ -27,15 +27,15 @@
 
 static WSMessageRequest handleMessageRequest(char** saveptr);
 static WSMessageRequest handleIntervalRequest(char** saveptr);
-static WSMessageRequest handleSetRequest(char** saveptr, TembooPinTable* pinTable, int pinTableDepth);
-static WSMessageRequest handleGetRequest(char** saveptr, TembooPinTable* pinTable, int pinTableDepth);
+static WSMessageRequest handleSetRequest(char** saveptr, TembooSensor** sensorTable, int sensorTableDepth);
+static WSMessageRequest handleGetRequest(char** saveptr, TembooSensor** sensorTable, int sensorTableDepth);
 static WSMessageRequest handleMonitoringUpdateRequest(char**saveptr);
 
 static const uint16_t WS_MAX_PAYLOAD_SIZE = 126;
 
 
 
-WSMessageRequest handleGetRequest(char** saveptr, TembooPinTable* pinTable, int pinTableDepth) {
+WSMessageRequest handleGetRequest(char** saveptr, TembooSensor** sensorTable, int sensorTableDepth) {
     char* textField = strtok_r(NULL, "|", &(*saveptr));
     int pinNum = -1;
     int pinVal = -1;
@@ -43,11 +43,31 @@ WSMessageRequest handleGetRequest(char** saveptr, TembooPinTable* pinTable, int 
     // strlen should catch the + sign
     while (textField != NULL && strlen(textField) >= 2) {
         if (*textField == 'P') {
-            if (isdigit(textField[1]) && strlen(&textField[1]) < 4) {
-               pinNum = atoi(&textField[1]);
+            // if pinNum is already set, then an extra pin number
+            // has been added to the request incorrectly
+            if (pinNum != -1) {
+                logTembooDebug("Invalid Get request\n");
+                return WS_REQUEST_ERROR;
+            }
+            size_t i = 0;
+            // make sure the pin value is made of digits
+            while (i < strlen(&textField[1])) {
+                if (isdigit(textField[1 + i++]) == 0) {
+                    logTembooDebug(("Invalid pin number\n"));
+                    return WS_REQUEST_ERROR;
+                }
+            }
+            pinNum = atoi(&textField[1]);
+            // make sure pin number is valid, set to -1 if error
+            if (pinNum > MAX_PIN_NUMBER) {
+                logTembooDebug(("Invalid pin number\n"));
+                pinNum = -1;
             }
         } else if (*textField == '+') {
             break;
+        } else {
+            logTembooDebug("Invalid message key\n");
+            return WS_REQUEST_ERROR;
         }
         textField = strtok_r(NULL, "|", &(*saveptr));
     }
@@ -55,15 +75,9 @@ WSMessageRequest handleGetRequest(char** saveptr, TembooPinTable* pinTable, int 
     if (pinNum >= 0) {
         //obtain the data and send to Temboo
         int i = 0;
-        for (i = 0; i < pinTableDepth; i++) {
-            if (pinTable[i].pin == pinNum) {
-                if (pinTable[i].pinRead != NULL) {
-                    // input pin
-                    pinVal = pinTable[i].pinRead(pinNum);
-                } else {
-                    // output pin/actuator, use saved value
-                    pinVal = pinTable[i].currentPinValue;
-                }
+        for (i = 0; i < sensorTableDepth; i++) {
+            if (sensorTable[i]->getSensorPin(sensorTable[i]->sensorConfig) == pinNum) {
+                pinVal = sensorTable[i]->read(sensorTable[i]->sensorConfig);
                 rc = WS_GET_REQUEST;
                 break;
             }
@@ -76,7 +90,7 @@ WSMessageRequest handleGetRequest(char** saveptr, TembooPinTable* pinTable, int 
     return rc;
 }
 
-WSMessageRequest handleSetRequest(char** saveptr, TembooPinTable* pinTable, int pinTableDepth) {
+WSMessageRequest handleSetRequest(char** saveptr, TembooSensor** sensorTable, int sensorTableDepth) {
     int pinNum = -1;
     int pinVal = -1;
     bool pinValSet = false;
@@ -84,28 +98,65 @@ WSMessageRequest handleSetRequest(char** saveptr, TembooPinTable* pinTable, int 
     char* textField = strtok_r(NULL, "|", &(*saveptr));
     while (textField != NULL && strlen(textField) >= 2) {
         if (*textField == 'P') {
-            if (isdigit(textField[1]) && strlen(&textField[1]) < 4) {
-               pinNum = atoi(&textField[1]);
+            // if pinNum is already set, then an extra pin number
+            // has been added to the request incorrectly
+            if (pinNum != -1) {
+                logTembooDebug("Invalid Set request\n");
+                return WS_REQUEST_ERROR;
+            }
+            size_t i = 0;
+            // make sure the pin value is made of digits
+            while (i < strlen(&textField[1])) {
+                if (isdigit(textField[1 + i++]) == 0) {
+                    logTembooDebug(("Invalid pin number\n"));
+                    return WS_REQUEST_ERROR;
+                }
+            }
+            pinNum = atoi(&textField[1]);
+            // make sure pin number is valid, set to -1 if error
+            if (pinNum > MAX_PIN_NUMBER) {
+                logTembooDebug(("Invalid pin number\n"));
+                return WS_REQUEST_ERROR;
             }
         } else if (*textField == 'V') {
-            if (isdigit(textField[1]) && strlen(&textField[1]) < 7) {
-                pinVal = atoi(&textField[1]);
+            // if pinVal is already set, then an extra pin value
+            // has been added to the request incorrectly
+            if (pinValSet) {
+                logTembooDebug("Invalid Set request\n");
+                return WS_REQUEST_ERROR;
+            }
+            size_t i = 0;
+            // make sure the pin value is made of digits
+            while (i < strlen(&textField[1])) {
+                if (isdigit(textField[1 + i++]) == 0) {
+                    logTembooDebug(("Invalid pin value\n"));
+                    return WS_REQUEST_ERROR;
+                }
+            }
+            pinVal = atoi(&textField[1]);
+            // make sure pin value is valid, pinValSet will remain false
+            if (pinVal > MAX_PIN_VALUE) {
+                logTembooDebug(("Invalid pin value\n"));
+                return WS_REQUEST_ERROR;
+            } else {
                 pinValSet = true;
             }
             
         } else if (*textField == '+') {
             break;
+        } else {
+            logTembooDebug("Invalid message key\n");
+            return WS_REQUEST_ERROR;
         }
         textField = strtok_r(NULL, "|", &(*saveptr));
     }
     
     if (pinNum >= 0 &&  pinValSet) {
-         int i = 0;
-         for (; i < pinTableDepth; i++) {
-            if (pinTable[i].pin == pinNum) {
-                if (pinTable[i].pinWrite != NULL) {
-                    pinTable[i].currentPinValue = pinVal;
-                    pinTable[i].pinWrite(pinNum, pinVal);
+        int i = 0;
+        for (; i < sensorTableDepth; i++) {
+            if (sensorTable[i]->getSensorPin(sensorTable[i]->sensorConfig) == pinNum) {
+                if (sensorTable[i]->write != NULL) {
+                    sensorTable[i]->write(sensorTable[i]->sensorConfig, pinVal);
                     rc = WS_SET_REQUEST;
                 }
                 break;
@@ -119,8 +170,55 @@ WSMessageRequest handleSetRequest(char** saveptr, TembooPinTable* pinTable, int 
     return rc;
 }
 
+// Parse out the error message while ignoring escaped characters.
+// This functions acts like strstr where it will move saveptr
+// to the index past the delimeter ('|' in this case), add '\0'
+// where the delimeter is, and return the pointer of the error message
+char* getErrorMessage(char** saveptr) {
+    if (saveptr == NULL || *saveptr == NULL) {
+        return NULL;
+    }
+    char* tok = *saveptr;
+    size_t len = strlen(*saveptr);
+    (*saveptr)++;
+    if (**saveptr == '\0') {
+        return NULL;
+    }
+    while (**saveptr != '\0') {
+        // check for delimiter
+        if (**saveptr == '\\') {
+            // check if we're escaping a special character
+            switch (*(*saveptr+1)) {
+                case '+':
+                case '|':
+                case '\\':
+                    // shift string over 1 and increment
+                    memmove(*saveptr,*saveptr+1, --len);
+                    (*saveptr)++;
+                    break;
+                default:
+                    // increment pointer and decrement str length
+                    (*saveptr)++;
+                    len--;
+                    break;
+            }
+        } else if (**saveptr == '|') {
+            // end of message
+            **saveptr = '\0';
+            (*saveptr)++;
+            return tok;
+        } else {
+            // increment pointer and decrement str length
+            (*saveptr)++;
+            len--;
+        }
+    }
+    // return string when if the end of the text is found
+    return tok;
+}
+
 WSMessageRequest handleMessageRequest(char** saveptr) {
-    char* textField = strtok_r(NULL, "|", &(*saveptr));
+    char* textField = getErrorMessage(&(*saveptr));
     WSMessageRequest rc = WS_REQUEST_ERROR;
     if (textField != NULL && strlen(textField) >= 2) {
         if (*textField == 'T') {
@@ -162,7 +260,7 @@ WSMessageRequest handleIntervalRequest(char** saveptr) {
     return rc;
 }
 
-WSMessageRequest handleResponse(uint8_t* request, TembooPinTable* pinTable, int pinTableDepth, bool connectionStatus) {
+WSMessageRequest handleResponse(uint8_t* request, TembooSensor** sensorTable, int sensorTableDepth, bool connectionStatus) {
     // parse response to find request type
     char* saveptr = NULL;
     char* requestField = strtok_r((char*)request, "|", &saveptr);
@@ -175,13 +273,13 @@ WSMessageRequest handleResponse(uint8_t* request, TembooPinTable* pinTable, int 
                 case 'G':
                     // send pin data to Temboo
                     if (connectionStatus) {
-                        rc = handleGetRequest(&saveptr, pinTable, pinTableDepth);
+                        rc = handleGetRequest(&saveptr, sensorTable, sensorTableDepth);
                     }
                     break;
                 case 'S':
                     // change state of a pin
                     if (connectionStatus) {
-                        rc = handleSetRequest(&saveptr, pinTable, pinTableDepth);
+                        rc = handleSetRequest(&saveptr, sensorTable, sensorTableDepth);
                     }
                     break;
                 case 'E':

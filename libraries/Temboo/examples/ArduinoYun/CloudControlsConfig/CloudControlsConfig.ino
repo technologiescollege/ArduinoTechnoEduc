@@ -28,7 +28,7 @@ void setup() {
   Serial.println();
   // upgrade the Temboo package
   Serial.print("Updating Temboo...");
-  p.runShellCommand("opkg install http://downloads.arduino.cc/openwrtyun/1/packages/temboo_1.3.1-1_ar71xx.ipk");
+  p.runShellCommand("opkg install http://downloads.arduino.cc/openwrtyun/1/packages/temboo_1.4.0-1_ar71xx.ipk");
   returnCode = p.exitValue();
   if (returnCode == 0) {
     Serial.println("Success!");
@@ -88,7 +88,7 @@ void setup() {
     }
     return;
   }
-  
+  Serial.println();
   Serial.println("Update Complete - your Yun is ready for Cloud Controls!");
 }
 

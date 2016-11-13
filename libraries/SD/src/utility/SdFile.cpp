@@ -904,8 +904,8 @@ uint8_t SdFile::rmRfStar(void) {
       if (!f.remove()) return false;
     }
     // position to next entry if required
-    if (curPosition_ != (32*(index + 1))) {
-      if (!seekSet(32*(index + 1))) return false;
+    if (curPosition_ != (32u*(index + 1))) {
+      if (!seekSet(32u*(index + 1))) return false;
     }
   }
   // don't try to delete root
@@ -1124,7 +1124,7 @@ uint8_t SdFile::truncate(uint32_t length) {
  * \param[in] nbyte Number of bytes to write.
  *
  * \return For success write() returns the number of bytes written, always
- * \a nbyte.  If an error occurs, write() returns -1.  Possible errors
+ * \a nbyte.  If an error occurs, write() returns 0.  Possible errors
  * include write() is called before a file has been opened, write is called
  * for a read-only file, device is full, a corrupt file system or an I/O error.
  *

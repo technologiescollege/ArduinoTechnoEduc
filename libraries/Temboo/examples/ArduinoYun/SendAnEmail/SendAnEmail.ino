@@ -3,7 +3,7 @@
 
   Demonstrates sending an email via a Google Gmail account using Temboo from an Arduino Yún.
 
-  Check out the latest Arduino & Temboo examples and support docs at http://www.temboo.com/arduino
+  Check out the latest Arduino & Temboo examples and tutorials at http://www.temboo.com/arduino
 
   A Temboo account and application key are necessary to run all Temboo examples. 
   If you don't already have one, you can register for a free Temboo account at 
@@ -34,13 +34,13 @@
  
   9. Copy and paste this password into the code below, updating the GMAIL_APP_PASSWORD variable
  
-  10. Upload the sketch to your Arduino Yún and open Arduino's serial monitor
+  10. Upload the sketch to your Arduino Yún and open the serial monitor
   
   NOTE: You can test this Choreo and find the latest instructions on our website: 
   https://temboo.com/library/Library/Google/Gmail/SendEmail
   
   You can also find an in-depth version of this example here:
-  https://temboo.com/hardware/ti/send-an-email
+  https://temboo.com/arduino/yun/send-an-email
 
   This example assumes basic familiarity with Arduino sketches, and that your Yún is connected
   to the Internet.

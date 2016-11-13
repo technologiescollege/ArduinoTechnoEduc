@@ -566,6 +566,100 @@
           ]
         },
         {
+          "name": "Arduino AVR Boards",
+          "architecture": "avr",
+          "version": "1.6.14",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.14.tar.bz2",
+          "archiveFileName": "avr-1.6.14.tar.bz2",
+          "checksum": "SHA-256:a5f7d66c83e3d4722f4c8dab42bdbcf5af98c611ffca1802ef3d1957b894bd92",
+          "size": "4993455",
+          "boards": [
+            {"name": "Arduino Yún"},
+            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Diecimila"},
+            {"name": "Arduino Nano"},
+            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Leonardo"},
+            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Esplora"},
+            {"name": "Arduino Mini"},
+            {"name": "Arduino Ethernet"},
+            {"name": "Arduino Fio"},
+            {"name": "Arduino BT"},
+            {"name": "Arduino LilyPadUSB"},
+            {"name": "Arduino Lilypad"},
+            {"name": "Arduino Pro"},
+            {"name": "Arduino ATMegaNG"},
+            {"name": "Arduino Robot Control"},
+            {"name": "Arduino Robot Motor"},
+            {"name": "Arduino Gemma"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "4.9.2-atmel3.5.3-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino6"
+            }
+          ]
+        },
+        {
+          "name": "Arduino AVR Boards",
+          "architecture": "avr",
+          "version": "1.6.15",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.15.tar.bz2",
+          "archiveFileName": "avr-1.6.15.tar.bz2",
+          "checksum": "SHA-256:c222efcabbdf6fa63ba3d64afb8d149f83fa73693c413aa05a2ccd9f986ed2fa",
+          "size": "4993959",
+          "boards": [
+            {"name": "Arduino Yún"},
+            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Diecimila"},
+            {"name": "Arduino Nano"},
+            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Leonardo"},
+            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Esplora"},
+            {"name": "Arduino Mini"},
+            {"name": "Arduino Ethernet"},
+            {"name": "Arduino Fio"},
+            {"name": "Arduino BT"},
+            {"name": "Arduino LilyPadUSB"},
+            {"name": "Arduino Lilypad"},
+            {"name": "Arduino Pro"},
+            {"name": "Arduino ATMegaNG"},
+            {"name": "Arduino Robot Control"},
+            {"name": "Arduino Robot Motor"},
+            {"name": "Arduino Gemma"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "4.9.2-atmel3.5.3-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino6"
+            }
+          ]
+        },
+        {
           "name": "Arduino SAM Boards (32-bits ARM Cortex-M3)",
           "architecture": "sam",
           "version": "1.6.2",
@@ -1018,6 +1112,78 @@
               "version": "4.0.0-atmel"
             }
           ]
+        },
+        {
+          "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+          "architecture": "samd",
+          "version": "1.6.7",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/samd-1.6.7.tar.bz2",
+          "archiveFileName": "samd-1.6.7.tar.bz2",
+          "checksum": "SHA-256:7342d0d127b1facdfbe8801759368bb0e6939b8e9a7db86eefb23135e3c701a8",
+          "size": "841503",
+          "boards": [
+            { "name": "Arduino/Genuino Zero" },
+            { "name": "Arduino/Genuino MKR1000" }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "4.8.3-2014q1"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.7.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.9.0-arduino"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS",
+              "version": "4.0.0-atmel"
+            }
+          ]
+        },
+        {
+          "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+          "architecture": "samd",
+          "version": "1.6.8",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/samd-1.6.8.tar.bz2",
+          "archiveFileName": "samd-1.6.8.tar.bz2",
+          "checksum": "SHA-256:05bff70561e5f10e86d1d890f647614aac989c4b2c384fc1b568e7d8c96b8267",
+          "size": "841801",
+          "boards": [
+            { "name": "Arduino/Genuino Zero" },
+            { "name": "Arduino/Genuino MKR1000" }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "4.8.3-2014q1"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.7.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.9.0-arduino"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS",
+              "version": "4.0.0-atmel"
+            }
+          ]
         }
       ],
       "tools": [
@@ -1438,6 +1604,47 @@
           ]
         },
         {
+          "name": "avrdude",
+          "version": "6.3.0-arduino6",
+          "systems": [
+            {
+              "size": "644600",
+              "checksum": "SHA-256:2426207423d58eb0e5fc4df9493418f1cb54ba3f328fdc7c3bb582f920b9cbe7",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avrdude-6.3.0-arduino6-armhf-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino6-armhf-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "696273",
+              "checksum": "SHA-256:d9a039c9e92d3dbb2011e75e6c044a1a4a2789e2fbf8386b1d580994811be084",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "avrdude-6.3.0-arduino6-i386-apple-darwin11.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino6-i386-apple-darwin11.tar.bz2"
+            },
+            {
+              "size": "746653",
+              "checksum": "SHA-256:97b4875cad6110c70101bb776f3ac37b64a2e73f036cd0b10afb6f4be96a6621",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino6-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino6-x86_64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "733127",
+              "checksum": "SHA-256:5f4bc4b0957b1d34cec9908b7f84a7c297b894b39fe16a4992c284b24c00d6fb",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino6-i686-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino6-i686-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "645859",
+              "checksum": "SHA-256:7468a1bcdfa459d175a095b102c0de28efc466accfb104305fbcad7832659ddc",
+              "host": "i686-mingw32",
+              "archiveFileName": "avrdude-6.3.0-arduino6-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino6-i686-w64-mingw32.zip"
+            }
+          ]
+        },
+        {
           "name": "bossac",
           "version": "1.5-arduino",
           "systems": [
@@ -1550,6 +1757,47 @@
               "archiveFileName": "bossac-1.6.1-arduino-i486-linux-gnu.tar.gz",
               "checksum": "SHA-256:1e211347569d75193b337296a10dd25b0ce04419e3d7dc644355178b6b514f92",
               "size": "30320"
+            }
+          ]
+        },
+        {
+          "name": "bossac",
+          "version": "1.7.0",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.7.0-mingw32.tar.gz",
+              "archiveFileName": "bossac-1.7.0-mingw32.tar.gz",
+              "checksum": "SHA-256:9ef7d11b4fabca0adc17102a0290957d5cc26ce46b422c3a5344722c80acc7b2",
+              "size": "243066"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.7.0-i386-apple-darwin15.6.0.tar.gz",
+              "archiveFileName": "bossac-1.7.0-i386-apple-darwin15.6.0.tar.gz",
+              "checksum": "SHA-256:feac36ab38876c163dcf51bdbcfbed01554eede3d41c59a0e152e170fe5164d2",
+              "size": "63822"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.7.0-x86_64-linux-gnu.tar.gz",
+              "archiveFileName": "bossac-1.7.0-x86_64-linux-gnu.tar.gz",
+              "checksum": "SHA-256:9475c0c8596c1ba12dcbce60e48fef7559087fa8eccbea7bab732113f3c181ee",
+              "size": "31373"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.7.0-i686-linux-gnu.tar.gz",
+              "archiveFileName": "bossac-1.7.0-i686-linux-gnu.tar.gz",
+              "checksum": "SHA-256:17003b0bdc698d52eeb91b09c34aec501c6e0285b4aa88659ab7cc407a451a4d",
+              "size": "31086"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.7.0-arm-linux-gnueabihf.tar.gz",
+              "archiveFileName": "bossac-1.7.0-arm-linux-gnueabihf.tar.gz",
+              "checksum": "SHA-256:09e46d0af61b2189caaac0bc6d4dd15cb22c167fdedc56ec98602dd5f10e68e0",
+              "size": "27382"
             }
           ]
         },
@@ -1844,6 +2092,43 @@
               "name": "arduino101load"
             }
           ]
+        },
+        {
+          "name": "Intel Curie Boards",
+          "version": "1.0.7",
+          "category": "Arduino Certified",
+          "archiveFileName": "arduino101-1.0.7.zip",
+          "architecture": "arc32",
+          "url": "https://github.com/01org/corelibs-arduino101/archive/1.6.11+1.83.zip",
+          "checksum": "SHA-256:cf55b718d26bcfac78a325c2b5558e1ee978a3f7de127b1571b2c5244bbd8df8",
+          "size": 730897,
+          "boards": [
+            {
+              "name": "Arduino/Genuino 101"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "Intel",
+              "version": "1.6.9+1.0.1",
+              "name": "arc-elf32"
+            },
+            {
+              "packager": "Intel",
+              "version": "1.6.9+1.28",
+              "name": "arduino101load"
+            },
+            {
+              "packager": "Intel",
+              "version": "0.9.0+0.1",
+              "name": "openocd"
+            },
+            {
+              "packager": "Intel",
+              "version": "1.0.0",
+              "name": "flashpack"
+            }
+          ]
         }
       ],
       "tools": [
@@ -2118,6 +2403,108 @@
               "size": 1507392
             }
           ]
+        },
+        {
+          "version": "1.6.9+1.28",
+          "name": "arduino101load",
+          "systems": [
+            {
+              "url": "https://github.com/01org/intel-arduino-tools/archive/1.6.9+1.28-windows.zip",
+              "checksum": "SHA-256:0847ba5466ad97c4624c7b76c84aea036f24f1189828274310f52b86e6c3de1e",
+              "host": "i686-mingw32",
+              "archiveFileName": "arduino101load-1.6.9+1.28-windows.zip",
+              "size": 9331111
+            },
+            {
+              "url": "https://github.com/01org/intel-arduino-tools/archive/1.6.9+1.28-osx.tar.gz",
+              "checksum": "SHA-256:011fcb145728842aa6dc7a2332a12b7cd0d0e4f9eae7e9c35400d3727eb33db9",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "arduino101load-1.6.9+1.28-osx.tar.gz",
+              "size": 1134614
+            },
+            {
+              "url": "https://github.com/01org/intel-arduino-tools/archive/1.6.9+1.28-linux32.tar.gz",
+              "checksum": "SHA-256:36681f3dbe4edc04c0f6c3888ab7787c8015b0fce2d9cffccd17d7ec5fb1204d",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "arduino101load-1.6.9+1.28-linux32.tar.gz",
+              "size": 1202482
+            },
+            {
+              "url": "https://github.com/01org/intel-arduino-tools/archive/1.6.9+1.28-linux64.tar.gz",
+              "checksum": "SHA-256:c691e2f077771b18a83b61c1cda96608150c80707adb7bac6b9665232bc74d4b",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "arduino101load-1.6.9+1.28-linux64.tar.gz",
+              "size": 1411007
+            }
+          ]
+        },
+        {
+          "version": "0.9.0+0.1",
+          "name": "openocd",
+          "systems": [
+            {
+              "url": "https://github.com/01org/OpenOCD/releases/download/0.9-0.1/openocd-windows.zip",
+              "checksum": "SHA-256:95accfa22294cf150f33fba3cac45e6aa6857ebc2ba5dacebc2963b4a6021962",
+              "host": "i686-mingw32",
+              "archiveFileName": "openocd-windows-0.9.0.zip",
+              "size": 9181935
+            },
+            {
+              "url": "https://github.com/01org/OpenOCD/releases/download/0.9-0.1/openocd-osx.tar.bz2",
+              "checksum": "SHA-256:57083e887ba77826a5f532f4b1ca4b7390cb7a2e2744583576a72f28a77dcc44",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "openocd-osx-0.9.0.tar.bz2",
+              "size": 896625
+            },
+            {
+              "url": "https://github.com/01org/OpenOCD/releases/download/0.9-0.1/openocd-linux32.tar.bz2",
+              "checksum": "SHA-256:49d2a220e4b25eead4fe03d2ffa339ed946abef9cb718debdc7369f7b3c70534",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "openocd-linux32-0.9.0.tar.bz2",
+              "size": 3923308
+            },
+            {
+              "url": "https://github.com/01org/OpenOCD/releases/download/0.9-0.1/openocd-linux64.tar.bz2",
+              "checksum": "SHA-256:4df6d3d387b45fa6214145f736c48c95109871fcd85fa81b81c01b533097a031",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "openocd-linux64-0.9.0.tar.bz2",
+              "size": 4010990
+            }
+          ]
+        },
+        {
+          "version": "1.0.0",
+          "name": "flashpack",
+          "systems": [
+            {
+              "url": "https://github.com/01org/corelibs-arduino101/releases/download/1.0.7/arduino101-factory_ble-flashpack-ide.tar.bz2",
+              "checksum": "SHA-256:6d4422cfa5c21ceba522ebf298bf24ebb2f57089e6bbaf6356038ef6fae6ca6d",
+              "host": "i686-mingw32",
+              "archiveFileName": "arduino101-factory_ble-flashpack-ide.tar.bz2",
+              "size": 654391
+            },
+            {
+              "url": "https://github.com/01org/corelibs-arduino101/releases/download/1.0.7/arduino101-factory_ble-flashpack-ide.tar.bz2",
+              "checksum": "SHA-256:6d4422cfa5c21ceba522ebf298bf24ebb2f57089e6bbaf6356038ef6fae6ca6d",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "arduino101-factory_ble-flashpack-ide.tar.bz2",
+              "size": 654391
+            },
+            {
+              "url": "https://github.com/01org/corelibs-arduino101/releases/download/1.0.7/arduino101-factory_ble-flashpack-ide.tar.bz2",
+              "checksum": "SHA-256:6d4422cfa5c21ceba522ebf298bf24ebb2f57089e6bbaf6356038ef6fae6ca6d",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "arduino101-factory_ble-flashpack-ide.tar.bz2",
+              "size": 654391
+            },
+            {
+              "url": "https://github.com/01org/corelibs-arduino101/releases/download/1.0.7/arduino101-factory_ble-flashpack-ide.tar.bz2",
+              "checksum": "SHA-256:6d4422cfa5c21ceba522ebf298bf24ebb2f57089e6bbaf6356038ef6fae6ca6d",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "arduino101-factory_ble-flashpack-ide.tar.bz2",
+              "size": 654391
+            }
+          ]
         }
       ]
     },
@@ -2174,6 +2561,54 @@
           "archiveFileName": "atmel-avr-xmini-boardmanagermodule-0.4.0.tar.bz2",
           "checksum": "SHA-256:36e09208c91071ff2fce4a7ed06463cf820c867d9f59477192d18965c0830ed5",
           "size": "95452",
+          "boards": [
+            {
+              "name": "atmega168pb-xmini"
+            },
+            {
+              "name": "atmega328pb-xmini"
+            },
+            {
+              "name": "atmega328p-xmini"
+            }
+          ],
+          "toolsDependencies":
+          [
+          ]
+        },
+        {
+          "name": "Atmel AVR Xplained-minis",
+          "architecture": "avr",
+          "version": "0.5.0",
+          "category": "Partner",
+          "url": "https://github.com/AtmelUniversityFrance/atmel-avr-xmini-boardmanagermodule/releases/download/v0.5.0/atmel-avr-xmini-boardmanagermodule-0.5.0.tar.bz2",
+          "archiveFileName": "atmel-avr-xmini-boardmanagermodule-0.5.0.tar.bz2",
+          "checksum": "SHA-256:e2e401fc30f8e8519bcd628884699373dc386d83a366c740b1895aa9b8cc30f4",
+          "size": "95573",
+          "boards": [
+            {
+              "name": "atmega168pb-xmini"
+            },
+            {
+              "name": "atmega328pb-xmini"
+            },
+            {
+              "name": "atmega328p-xmini"
+            }
+          ],
+          "toolsDependencies":
+          [
+          ]
+        },
+        {
+          "name": "Atmel AVR Xplained-minis",
+          "architecture": "avr",
+          "version": "0.6.0",
+          "category": "Partner",
+          "url": "https://github.com/AtmelUniversityFrance/atmel-avr-xmini-boardmanagermodule/releases/download/v0.6.0/atmel-avr-xmini-boardmanagermodule-0.6.0.tar.bz2",
+          "archiveFileName": "atmel-avr-xmini-boardmanagermodule-0.6.0.tar.bz2",
+          "checksum": "SHA-256:60bcb315a33056fac9b1d626ac039b3439efdae821ba91b70e09dc5ce8e07f88",
+          "size": "95447",
           "boards": [
             {
               "name": "atmega168pb-xmini"
@@ -2274,6 +2709,46 @@
             {"name": "Windows 10 IoT Core"}
           ],
           "toolsDependencies":[]
+        },
+        {
+          "name": "Windows 10 Iot Core",
+          "architecture": "win10",
+          "version": "1.1.1",
+          "category": "Contributed",
+          "help": {
+            "online": "http://ms-iot.github.io/content/en-US/win10/IotCoreAppDeployment_ArduinoIde.htm"
+          },
+          "url": "https://github.com/ms-iot/iot-utilities/raw/master/IotCoreAppDeployment/ArduinoIde/release/win10_iotcore-1.1.1_ide-1.6.11.zip",
+          "archiveFileName": "win10_iotcore-1.1.1_ide-1.6.11.zip",
+          "checksum": "SHA-256:f455f2829164065faacde141b3c15604c51bb79b6874d55d1124c66aae372693",
+          "size": "48317624",
+          "help": {
+                    "online": "http://ms-iot.github.io/content/en-US/win10/IotCoreAppDeployment_ArduinoIde.htm"
+          },
+          "boards": [
+            {"name": "Windows 10 IoT Core"}
+          ],
+          "toolsDependencies":[]
+        },
+        {
+          "name": "Windows 10 Iot Core",
+          "architecture": "win10",
+          "version": "1.1.2",
+          "category": "Contributed",
+          "help": {
+            "online": "http://ms-iot.github.io/content/en-US/win10/IotCoreAppDeployment_ArduinoIde.htm"
+          },
+          "url": "https://github.com/ms-iot/iot-utilities/raw/master/IotCoreAppDeployment/ArduinoIde/release/win10_iotcore-1.1.2_ide-1.6.11.zip",
+          "archiveFileName": "win10_iotcore-1.1.2_ide-1.6.11.zip",
+          "checksum": "SHA-256:b1c9956b46f33bcebb7f500d29931b19ed4723c713ac0439681ea1fb172722d1",
+          "size": "48317648",
+          "help": {
+                    "online": "http://ms-iot.github.io/content/en-US/win10/IotCoreAppDeployment_ArduinoIde.htm"
+          },
+          "boards": [
+            {"name": "Windows 10 IoT Core"}
+          ],
+          "toolsDependencies":[]
         }
       ],
       "tools":[]
@@ -2322,6 +2797,26 @@
               "version": "4.0.0-atmel"
             }
           ]
+        },
+        {
+          "name": "Arrow Boards",
+          "architecture": "samd",
+          "version": "2.0.0",
+          "category": "Partner",
+          "url": "http://downloads.arduino.cc/cores/Arrow-samd-2.0.0.tar.gz",
+          "archiveFileName": "Arrow-samd-2.0.0.tar.gz",
+          "checksum": "SHA-256:e0bbf85d28af03a196a625462598294f9dd30ffbc9d686cbf2cc09bc5a76421a",
+          "size": "772778",
+          "boards": [
+            {"name": "SmartEverything Fox"},
+            {"name": "SmartEverything Fox3"},
+            {"name": "SmartEverything Lion"},
+            {"name": "SmartEverything Dragonfly"},
+            {"name": "Analog ADI"},
+            {"name": "SmartTutto"}
+          ],
+          "toolsDependencies": [
+          ]
         }
       ],
       "tools": [
@@ -2330,27 +2825,12 @@
     {
       "name": "emoro",
       "maintainer": "Inovatic-ICT",
-      "websiteURL": "http://www.inovatic-ict.com/",
+      "websiteURL": "http://www.emoro.eu/shop/system/download/EMoRo2560_and_GLAM_brochure.pdf.0b83da8ad90db30722cca3a5d2529494",
       "email": "support@inovatic-ict.com",
       "help": {
-        "online": "http://www.inovatic-ict.com/"
+        "online": "http://www.emoro.eu/shop/index.php?route=product/product&product_id=52"
       },
       "platforms": [
-        {
-          "name": "EMORO 2560",
-          "architecture": "avr",
-          "version": "3.2",
-          "category": "Arduino@Heart",
-          "url": "http://downloads.arduino.cc/cores/EMoRo_2560.zip",
-          "archiveFileName": "EMoRo_2560.zip",
-          "checksum": "SHA-256:8DFC8BB1AD9F573BF355AFAB1D4231F81E42345E1DD4AC98E4B74019BFD699D3",
-          "size": "846949",
-          "boards": [
-            {"name": "EMoRo 2560"}
-          ],
-          "toolsDependencies": [
-          ]
-        },
         {
           "name": "EMORO 2560",
           "architecture": "avr",
@@ -2361,7 +2841,22 @@
           "checksum": "SHA-256:56dd308fc2f84229688f6219a4c31629ec9b38bdadcd382c45fae9247b94f051",
           "size": "846444",
           "boards": [
-            {"name": "EMoRo 2560"}
+            {"name": "EMoRo 2560. Board based on ATmega 2560 MCU"}
+          ],
+          "toolsDependencies": [
+          ]
+        },
+        {
+          "name": "EMORO 2560",
+          "architecture": "avr",
+          "version": "3.2.2",
+          "category": "Arduino@Heart",
+          "url": "http://downloads.arduino.cc/cores/EMoRo_2560-3.2.2.zip",
+          "archiveFileName": "EMoRo_2560-3.2.2.zip",
+          "checksum": "SHA-256:c67e6660af44c923c10deede252f9c46dabaf5b61d6e44f3785be688f1c9b46f",
+          "size": "565744",
+          "boards": [
+            {"name": "EMoRo 2560. Board based on ATmega 2560 MCU"}
           ],
           "toolsDependencies": [
           ]
