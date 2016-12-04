@@ -15,7 +15,6 @@
 #define BLYNK_INFO_CONNECTION "RB_Duo_BLE"
 #endif
 
-#define BLYNK_NO_YIELD
 #define BLYNK_SEND_ATOMIC
 #define BLYNK_SEND_CHUNK 20
 //#define BLYNK_SEND_THROTTLE 20
@@ -135,7 +134,7 @@ public:
     {}
 
     // IP redirect not available
-    void begin(char* h, uint16_t p) {}
+    void begin(char BLYNK_UNUSED *h, uint16_t BLYNK_UNUSED p) {}
 
     void begin() {
         instance = this;

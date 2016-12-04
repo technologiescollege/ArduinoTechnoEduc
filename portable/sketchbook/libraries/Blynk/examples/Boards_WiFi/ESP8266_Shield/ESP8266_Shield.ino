@@ -17,12 +17,9 @@
  * This example shows how to use ESP8266 Shield (with AT commands)
  * to connect your project to Blynk.
  *
- * Note: Ensure a stable serial connection to ESP8266!
- *       Firmware version 1.0.0 (AT v0.22) is needed.
- *       You can change ESP baud rate. Connect to AT console and call:
- *           AT+UART_DEF=9600,8,1,0,0
- *       In general, Soft Serial may be unstable.
- *       It is highly recommended to switch to Hard Serial.
+ * WARNING!
+ *   It's rather tricky to get it working, please read this article:
+ *   https://github.com/blynkkk/blynk-library/wiki/ESP8266-with-AT-firmware
  *
  * Change WiFi ssid, pass, and Blynk auth token to run :)
  * Feel free to apply it to any other example. It's simple!
@@ -50,7 +47,7 @@ char pass[] = "YourPassword";
 //SoftwareSerial EspSerial(2, 3); // RX, TX
 
 // Your ESP8266 baud rate:
-#define ESP8266_BAUD 9600
+#define ESP8266_BAUD 115200
 
 ESP8266 wifi(&EspSerial);
 

@@ -37,7 +37,7 @@ public:
 
     bool connect() {
         if (BlynkArduinoClientGen<Client>::connect()) {
-          if (fingerprint && !this->client.verify(fingerprint, this->domain)) {
+          if (fingerprint && !this->client->verify(fingerprint, this->domain)) {
               BLYNK_LOG1(BLYNK_F("Certificate doesn't match"));
               return false;
           } else {
@@ -109,6 +109,7 @@ public:
     {
         connectWiFi(ssid, pass);
         config(auth, domain, port, fingerprint);
+        while(this->connect() != true) {}
     }
 
     void begin(const char* auth,
@@ -120,6 +121,7 @@ public:
     {
         connectWiFi(ssid, pass);
         config(auth, ip, port, fingerprint);
+        while(this->connect() != true) {}
     }
 
 };

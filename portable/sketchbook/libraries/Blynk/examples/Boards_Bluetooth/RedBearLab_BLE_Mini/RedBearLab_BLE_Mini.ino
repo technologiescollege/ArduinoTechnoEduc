@@ -21,10 +21,9 @@
  *
  **************************************************************/
 
-//#define BLYNK_DEBUG
-#define BLYNK_PRINT Serial
-
 #define BLYNK_USE_DIRECT_CONNECT
+
+#define BLYNK_PRINT Serial
 
 #include <BlynkSimpleSerialBLE.h>
 
@@ -40,7 +39,7 @@ void setup()
   Serial.begin(9600);
 
   SerialBLE.begin(57600);       // BLE Mini uses baud 57600
-  Blynk.begin(auth, SerialBLE);
+  Blynk.begin(SerialBLE, auth);
 }
 
 void loop()

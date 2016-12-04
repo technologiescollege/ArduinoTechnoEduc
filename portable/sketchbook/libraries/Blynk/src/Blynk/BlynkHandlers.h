@@ -180,20 +180,9 @@
 #define BLYNK_CONNECTED()    void BlynkOnConnected()
 #define BLYNK_DISCONNECTED() void BlynkOnDisconnected()
 
+#define BLYNK_APP_CONNECTED() void BlynkOnAppConnected()
+
 // Advanced functions
-
-class BlynkAttachWidgetHelper {
-public:
-    template<typename T>
-    explicit BlynkAttachWidgetHelper(T& widget, uint8_t vPin) {
-        widget.setVPin(vPin);
-    }
-};
-
-// Could use __attribute__ ((constructor)), but hope for better portability
-#define BLYNK_ATTACH_WIDGET(widget, pin) \
-    BlynkAttachWidgetHelper BLYNK_CONCAT2(blnk_widget_helper_, __COUNTER__)((widget), (pin)); \
-    BLYNK_WRITE(pin) { (widget).onWrite(request, param); }
 
 #define BLYNK_VAR_INT(name, pin) \
     int name;  \
@@ -243,6 +232,8 @@ void BlynkNoOpCbk();
 // Declare all pin handlers (you can redefine them in your code)
 BLYNK_CONNECTED();
 BLYNK_DISCONNECTED();
+
+BLYNK_APP_CONNECTED();
 
 BLYNK_READ_DEFAULT();
 BLYNK_WRITE_DEFAULT();

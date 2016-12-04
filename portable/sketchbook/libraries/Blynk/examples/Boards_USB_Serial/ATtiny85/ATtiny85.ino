@@ -35,7 +35,6 @@
 SoftwareSerial DebugSerial(1, 2); // RX, TX
 SoftwareSerial SwSerial(3, 4);
 
-//#define BLYNK_DEBUG
 #define BLYNK_PRINT DebugSerial    // Comment this out to disable prints and save space
 #include <BlynkSimpleStream.h>
 
@@ -52,8 +51,9 @@ void setup()
   DebugSerial.begin(9600);
 
   // Blynk will work through SoftwareSerial
+  // Do not read or write this serial manually in your sketch
   SwSerial.begin(9600);
-  Blynk.begin(auth, SwSerial);
+  Blynk.begin(SwSerial, auth);
 
   // Sometimes you need to calibrate your ATtiny timer
   //OSCCAL = 175;

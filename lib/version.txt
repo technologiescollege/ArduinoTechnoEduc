@@ -1,1 +1,1 @@
-1.6.13 TechnoEduc
+1.8.0 TechnoEduc, by S.CANET

@@ -17,7 +17,7 @@
  * to connect your project to Blynk.
  * Feel free to apply it to any other example. It's simple!
  *
- * Note: This requires STM32duino core:
+ * Note: This requires STM32duino support package:
  *   https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki/Installation
  *
  * Note: You may need to wait up to 30 seconds after board starts,
@@ -40,8 +40,9 @@ void setup()
   Serial1.begin(9600);
 
   // Blynk will work through Serial
+  // Do not read or write this serial manually in your sketch
   Serial.begin(9600);
-  Blynk.begin(auth, Serial);
+  Blynk.begin(Serial, auth);
 }
 
 void loop()

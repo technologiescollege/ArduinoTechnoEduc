@@ -17,16 +17,16 @@
  * This example shows how to use Arduino 101 CurieBLE
  * to connect your project to Blynk.
  *
- * Note: This requires CurieBLE library from http://librarymanager
+ * Note: This requires CurieBLE library
+ *   from http://librarymanager/all#CurieBLE
  *
  * NOTE: BLE support is in beta!
  *
  **************************************************************/
 
-//#define BLYNK_DEBUG
-#define BLYNK_PRINT Serial
-
 //#define BLYNK_USE_DIRECT_CONNECT
+
+#define BLYNK_PRINT Serial
 
 #include <BlynkSimpleCurieBLE.h>
 #include <CurieBLE.h>
@@ -45,7 +45,7 @@ void setup() {
   blePeripheral.setDeviceName("Blynk");
   blePeripheral.setAppearance(384);
 
-  Blynk.begin(auth, blePeripheral);
+  Blynk.begin(blePeripheral, auth);
 
   blePeripheral.begin();
 

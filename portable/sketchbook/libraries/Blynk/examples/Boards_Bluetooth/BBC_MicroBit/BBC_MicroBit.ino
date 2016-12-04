@@ -17,10 +17,12 @@
  * This example shows how to use BBC Micro:Bit
  * to connect your project to Blynk.
  *
- * Note: This requires installing:
+ * Note: This requires nRF5 support package:
  *   https://github.com/sandeepmistry/arduino-nRF5
- *   and
- *   https://github.com/sandeepmistry/arduino-BLEPeripheral
+ *
+ * And BLEPeripheral library
+ *   from http://librarymanager/all#BLEPeripheral
+ *   or https://github.com/sandeepmistry/arduino-BLEPeripheral
  *
  * 1. Select: Tools -> SoftDevice -> S110
  * 2. Select: Tools -> Programmer -> CMSIS-DAP
@@ -32,13 +34,11 @@
  *
  **************************************************************/
 
-//#define BLYNK_DEBUG
-#define BLYNK_PRINT Serial
-
 #define BLYNK_USE_DIRECT_CONNECT
 
+#define BLYNK_PRINT Serial
+
 #include <BlynkSimpleSerialBLE.h>
-#include <SPI.h>
 #include <BLEPeripheral.h>
 #include "BLESerial.h"
 
@@ -57,7 +57,7 @@ void setup() {
   SerialBLE.setAppearance(0x0080);
   SerialBLE.begin();
 
-  Blynk.begin(auth, SerialBLE);
+  Blynk.begin(SerialBLE, auth);
 
   Serial.println("Waiting for connections...");
 }

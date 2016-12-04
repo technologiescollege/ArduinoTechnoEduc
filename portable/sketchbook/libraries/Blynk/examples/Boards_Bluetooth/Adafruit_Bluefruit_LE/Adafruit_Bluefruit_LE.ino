@@ -18,22 +18,21 @@
  * to connect your project to Blynk.
  *
  * Note: This requires BLEPeripheral library
- *   from http://librarymanager
+ *   from http://librarymanager/all#BLEPeripheral
  *   or https://github.com/sandeepmistry/arduino-BLEPeripheral
  *
  * NOTE: BLE support is in beta!
  *
  **************************************************************/
 
-//#define BLYNK_DEBUG
-#define BLYNK_PRINT Serial
-
 #define BLYNK_USE_DIRECT_CONNECT
 
+#define BLYNK_PRINT Serial
+
 #include <BlynkSimpleSerialBLE.h>
-#include <SPI.h>
 #include <BLEPeripheral.h>
 #include "BLESerial.h"
+#include <SPI.h>
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
@@ -55,7 +54,7 @@ void setup() {
   SerialBLE.setAppearance(0x0080);
   SerialBLE.begin();
 
-  Blynk.begin(auth, SerialBLE);
+  Blynk.begin(SerialBLE, auth);
 
   Serial.println("Waiting for connections...");
 }
