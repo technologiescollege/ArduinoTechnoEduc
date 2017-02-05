@@ -1,4 +1,4 @@
-# Adafruit IO Arduino Library [![Build Status](https://travis-ci.org/adafruit/Adafruit_IO_Arduino.svg?branch=master)](https://travis-ci.org/adafruit/Adafruit_IO_Arduino)
+# Adafruit IO Arduino Library
 
 This library provides a simple device independent interface for interacting with [Adafruit IO](https://io.adafruit.com) using Arduino.
 It allows you to switch beween WiFi (ESP8266, M0 WINC1500, & WICED), Cellular (32u4 FONA), and Ethernet (Ethernet FeatherWing)
@@ -18,8 +18,17 @@ This library requires the latest version of the [Arduino IDE](https://www.arduin
 * Latest version of the [Arduino SAMD Arduino Core](https://github.com/arduino/ArduinoCore-samd)
 * Latest version of the [Adafruit SAMD Arduino Core](https://github.com/adafruit/ArduinoCore-samd)
 * Latest version of the [Adafruit MQTT Library](https://github.com/adafruit/Adafruit_MQTT_Library)
+* Latest version of the [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
 
 You will also need to add the SSL certificate for `io.adafruit.com` using the [guide on the Adafruit Learning System.](https://learn.adafruit.com/adafruit-feather-m0-wifi-atwinc1500/updating-ssl-certificates)
+
+### Arduino MKR1000
+
+* Latest version of the [Arduino SAMD Arduino Core](https://github.com/arduino/ArduinoCore-samd)
+* Latest version of the [Adafruit MQTT Library](https://github.com/adafruit/Adafruit_MQTT_Library)
+* Latest version of the [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
+
+You will also need to add the SSL certificate for `io.adafruit.com` using the MKR1000 SSL utility.
 
 ### Adafruit WICED Feather WiFi
 
