@@ -5,6 +5,7 @@
  * projects by simply dragging and dropping widgets.
  *
  *   Downloads, docs, tutorials: http://www.blynk.cc
+ *   Sketch generator:           http://examples.blynk.cc
  *   Blynk community:            http://community.blynk.cc
  *   Social networks:            http://www.fb.com/blynkapp
  *                               http://twitter.com/blynk_app
@@ -18,7 +19,7 @@
  * to connect your project to Blynk.
  *
  * For this example you need UIPEthernet library:
- *   https://github.com/ntruchsess/arduino_uip
+ *   https://github.com/UIPEthernet/UIPEthernet
  *
  * Typical wiring would be:
  *  VCC -- 5V

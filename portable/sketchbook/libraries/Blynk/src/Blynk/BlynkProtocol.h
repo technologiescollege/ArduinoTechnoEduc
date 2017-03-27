@@ -299,22 +299,19 @@ bool BlynkProtocol<Transp>::processInput(void)
     {
     case BLYNK_CMD_LOGIN: {
 #ifdef BLYNK_USE_DIRECT_CONNECT
-        if (!strncmp(authkey, (char*)inputBuffer, 32)) {
-            BLYNK_LOG1(BLYNK_F("Ready"));
-            state = CONNECTED;
-            sendCmd(BLYNK_CMD_RESPONSE, hdr.msg_id, NULL, BLYNK_SUCCESS);
-            this->sendInfo();
-            BlynkOnConnected();
-        } else {
+        if (strncmp(authkey, (char*)inputBuffer, 32)) {
             BLYNK_LOG1(BLYNK_F("Invalid token"));
             sendCmd(BLYNK_CMD_RESPONSE, hdr.msg_id, NULL, BLYNK_INVALID_TOKEN);
+            break;
         }
-#else
-        BLYNK_LOG1(BLYNK_F("Ready"));
-        state = CONNECTED;
-        sendCmd(BLYNK_CMD_RESPONSE, hdr.msg_id, NULL, BLYNK_SUCCESS);
-        this->sendInfo();
 #endif
+        if (state == CONNECTING) {
+            BLYNK_LOG1(BLYNK_F("Ready"));
+            state = CONNECTED;
+            this->sendInfo();
+            BlynkOnConnected();
+        }
+        sendCmd(BLYNK_CMD_RESPONSE, hdr.msg_id, NULL, BLYNK_SUCCESS);
     } break;
     case BLYNK_CMD_PING: {
         sendCmd(BLYNK_CMD_RESPONSE, hdr.msg_id, NULL, BLYNK_SUCCESS);
@@ -344,8 +341,27 @@ bool BlynkProtocol<Transp>::processInput(void)
         this->processCmd(inputBuffer, hdr.length);
         currentMsgId = 0;
     } break;
-    case BLYNK_CMD_APP_CONNECTED: {
-    	BlynkOnAppConnected();
+    case BLYNK_CMD_INTERNAL: {
+        BlynkReq req = { 0 };
+        BlynkParam param(inputBuffer, hdr.length);
+        BlynkParam::iterator it = param.begin();
+        if (it >= param.end())
+            return true;
+
+        uint32_t cmd32;
+        memcpy(&cmd32, it.asStr(), sizeof(cmd32));
+
+        if (++it >= param.end())
+            return true;
+        char* start = (char*)it.asStr();
+        BlynkParam param2(start, hdr.length - (start - (char*)inputBuffer));
+
+        switch (cmd32) {
+        case BLYNK_INT_RTC:  BlynkWidgetWriteInternalPinRTC(req, param2);    break;
+        case BLYNK_INT_OTA:  BlynkWidgetWriteInternalPinOTA(req, param2);    break;
+        case BLYNK_INT_ACON: BlynkWidgetWriteInternalPinACON(req, param2);   break;
+        case BLYNK_INT_ADIS: BlynkWidgetWriteInternalPinADIS(req, param2);   break;
+        }
     } break;
     case BLYNK_CMD_DEBUG_PRINT: {
         if (hdr.length) {

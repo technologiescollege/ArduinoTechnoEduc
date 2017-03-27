@@ -45,10 +45,14 @@
     #define BLYNK_NO_YIELD
 #endif
 
-#if defined(BLYNK_NO_YIELD)
-    #define BLYNK_RUN_YIELD() {}
-#else
-    #define BLYNK_RUN_YIELD() { ::delay(0); }
+#if !defined(BLYNK_RUN_YIELD)
+    #if defined(BLYNK_NO_YIELD)
+        #define BLYNK_RUN_YIELD() {}
+    #elif defined(SPARK) || defined(PARTICLE)
+        #define BLYNK_RUN_YIELD() { Particle.process(); }
+    #else
+        #define BLYNK_RUN_YIELD() { ::delay(0); }
+    #endif
 #endif
 
 #if defined(__AVR__)
@@ -135,7 +139,7 @@ void BlynkFatal() BLYNK_NORETURN;
                 bool prev_print = true;
                 while (l2--) {
                     const uint8_t c = *octets++ & 0xFF;
-                    if (isprint(c)) {
+                    if (c >= 32 && c < 127) {
                         if (!prev_print) { BLYNK_PRINT.print(']'); }
                         BLYNK_PRINT.print((char)c);
                         prev_print = true;
