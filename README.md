@@ -1,7 +1,7 @@
 ### Arduino TechnoEduc
 
 
-EDI Arduino identique à l'original en version **1.8.0**, mais **enrichi** de programmes et de bibliothèques (_librairies_) nécessaires pour permettre aux enseignants de disposer d'un environnement clé en main pour :
+EDI Arduino identique à l'original en version **1.8.2**, mais **enrichi** de programmes et de bibliothèques (_librairies_) nécessaires pour permettre aux enseignants de disposer d'un environnement clé en main pour :
 - installer _FirmataPlus_ et permettre le pilotage par **[Scratch2](http://scratch.mit.edu/)** à l'aide de **[s2aio](https://github.com/technologiescollege/s2aio-control-panel)**
 - recevoir les programmes de [Blockly@rduino](https://github.com/technologiescollege/Blockly-at-rduino) grâce à l'interface [Blockly@rduino-communication](https://github.com/technologiescollege/Blockly-rduino-communication)
 - installer le _firmware de [MakeBlock](http://www.makeblock.cc/)_ et permettre le pilotage par **[mBlock](http://mblock.cc)**
