@@ -3,7 +3,7 @@
 #
 # Temboo Arduino library
 #
-# Copyright 2016, Temboo Inc.
+# Copyright 2017, Temboo Inc.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,6 +60,8 @@ typedef struct TembooSensor{
     uint8_t* (*getSensorChannel)(void*sensorConfig);
     int defaultValue;
 } TembooSensor;
+
+typedef TembooSensor TembooActuator;
 
 void addWebSocketPinData(int pin, int pinVal, bool requestResponse);
 void updateIntervalTime(int intervalTime);

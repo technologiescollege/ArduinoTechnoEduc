@@ -1,0 +1,42 @@
+#######################################
+#Syntax Coloring Map For ShiftRegLCD123
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ShiftRegLCD123	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+backlightOn	KEYWORD2
+backlightOff	KEYWORD2
+clear	KEYWORD2
+home	KEYWORD2
+print	KEYWORD2
+noDisplay	KEYWORD2
+display	KEYWORD2
+noBlink	KEYWORD2
+blink	KEYWORD2
+noCursor	KEYWORD2
+cursor	KEYWORD2
+scrollDisplayLeft	KEYWORD2
+scrollDisplayRight	KEYWORD2
+printLeft	KEYWORD2
+printRight	KEYWORD2
+leftToRight	KEYWORD2
+rightToLeft	KEYWORD2
+autoscroll	KEYWORD2
+noAutoscroll	KEYWORD2
+createChar	KEYWORD2
+setCursor	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+SRLCD123	LITERAL1
+LCD3WIRE	LITERAL1
+

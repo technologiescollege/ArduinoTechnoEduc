@@ -2,6 +2,7 @@
 # Data types (KEYWORD1)
 #######################################
 Blynk	KEYWORD1
+BlynkTimer	KEYWORD1
 WidgetBridge	KEYWORD1
 WidgetLCD	KEYWORD1
 WidgetLED	KEYWORD1
@@ -29,6 +30,7 @@ virtualWriteBinary	KEYWORD2
 syncAll	KEYWORD2
 syncVirtual	KEYWORD2
 setProperty	KEYWORD2
+logEvent	KEYWORD2
 
 # Handler helpers
 BLYNK_READ	KEYWORD2

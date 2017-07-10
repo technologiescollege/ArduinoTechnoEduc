@@ -46,7 +46,7 @@
 
 # if you don't want settings to go into "application data" on windows
 # and "library" on macosx, set this to the alternate location.
-#settings.path=data
+settings.path=data
 
 # temporary build path, normally this goes into the default
 # "temp" folder for that platform (as defined by java)
@@ -92,7 +92,7 @@ editor.window.height.min = 290
 #editor.window.height.min.windows = 530
 
 # Enable code folding 
-editor.code_folding=true
+editor.code_folding=false
 
 # font size for editor
 editor.font=Monospaced,plain,12
@@ -112,7 +112,7 @@ editor.caret.blink=true
 editor.invalid=false
 
 # show line numbers in editor
-editor.linenumbers = true
+editor.linenumbers = false
 
 # enable ctrl-ins, shift-ins, shift-delete for cut/copy/paste
 # on windows and linux, but disable on the mac
@@ -129,7 +129,7 @@ editor.keys.home_and_end_beginning_end_of_doc = false
 console			 = true
 console.output.file      = stdout.txt
 console.error.file       = stderr.txt
-console.lines            = 8
+console.lines            = 4
 
 # set to false to disable automatically clearing the console
 # each time 'run' is hit
@@ -145,6 +145,9 @@ editor.tabs.size   = 2
 
 # automatically indent each line
 editor.indent = true
+
+# enable/disable auto-close of curly brace
+editor.auto_close_braces = true
 
 # size of divider between editing area and the console
 editor.divider.size = 0

@@ -3,7 +3,7 @@
 #
 # Temboo Arduino library
 #
-# Copyright 2015, Temboo Inc.
+# Copyright 2017, Temboo Inc.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,10 @@
 
 #ifndef TEMBOOYUNSHIELD_H_
 #define TEMBOOYUNSHIELD_H_
+
+#ifndef TEMBOO_LIBRARY_VERSION
+#define TEMBOO_LIBRARY_VERSION 2
+#endif
 
 #include <Arduino.h>
 
@@ -48,10 +52,15 @@ class TembooYunShieldChoreo : public Process {
     void setSettingsFileToRead(const String& filePath) { addParameter("-r" + filePath);}
     void setGatewayAddress(const String& addr) { addParameter("-s" + addr);}
     void addInputExpression(const String& inputName, const String& inputValue) { addParameter("-f" + inputName + ":" + inputValue);}
+    void addInputWithSensor(const String& inputName, const String& inputValue) { addParameter("-f" + inputName + ":" + inputValue);}
     void addSensorInput(const String& sensorName, long sensorValue, const String& conversion) {addParameter("-n" + sensorName + ":" + String(sensorValue) + ":" + conversion);}
     void addSensorInput(const String& sensorName, long sensorValue) {addParameter("-v" + sensorName + ":" + String(sensorValue));}
-    void addSensorInput(const String& sensorName, long sensorValue, const String& rawLow, const String& rawHigh, const String& scaleLow, const String& scaleHigh) {addParameter("-m" + sensorName + ":" + String(sensorValue) + ":" + rawLow+ ":" + rawHigh+ ":" + scaleLow+ ":" + scaleHigh);}
     void addSensorInput(const String& sensorName, long sensorValue, const String& conversion, const String& calibrationValue) {addParameter("-b" + sensorName + ":" + String(sensorValue) + ":" + conversion + ":" + calibrationValue);}
+    void addSensorInput(const String& sensorName, long sensorValue, const String& rawLow, const String& rawHigh, const String& scaleLow, const String& scaleHigh) {addParameter("-m" + sensorName + ":" + String(sensorValue) + ":" + rawLow+ ":" + rawHigh+ ":" + scaleLow+ ":" + scaleHigh);}
+    void addSensorValue(const String& sensorName, long sensorValue, const String& conversion) {addParameter("-n" + sensorName + ":" + String(sensorValue) + ":" + conversion);}
+    void addSensorValue(const String& sensorName, long sensorValue) {addParameter("-v" + sensorName + ":" + String(sensorValue));}
+    void addSensorValue(const String& sensorName, long sensorValue, const String& conversion, const String& calibrationValue) {addParameter("-b" + sensorName + ":" + String(sensorValue) + ":" + conversion + ":" + calibrationValue);}
+    void addSensorValue(const String& sensorName, long sensorValue, const String& rawLow, const String& rawHigh, const String& scaleLow, const String& scaleHigh) {addParameter("-m" + sensorName + ":" + String(sensorValue) + ":" + rawLow+ ":" + rawHigh+ ":" + scaleLow+ ":" + scaleHigh);}
     void setDeviceName(const String& deviceName) {addParameter("-d" + deviceName);}
     void setDeviceType(const String& deviceType) {addParameter("-t" + deviceType);}
 };

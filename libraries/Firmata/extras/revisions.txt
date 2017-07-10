@@ -1,3 +1,26 @@
+FIRMATA 2.5.6 - Mar 18, 2017
+
+[core library]
+* Fixed string encoder/decoder bug that also affected I2C (Zak Fields)
+* Added support for Arduino Primo (chiararuggeri)
+* Added unit tests for Firmata string message encoding/decoding
+
+FIRMATA 2.5.5 - Mar 6, 2017
+
+[core library]
+* Updated BLEStream for compatibility with CurieBLE v2 (Sandeep Mistry)
+* Added support for MKRZero (Sandeep Mistry)
+
+This update also includes a number of changes from an ongoing refactor by
+Zak Fields of the Firmata core. These changes don't impact user facing sketches,
+they are all internal only. Changes include:
+
+* Split out parser logic into new lib free of Arduino-specific dependencies.
+* Add new class to support cross platform marshalling of Firmata procedure calls.
+* Split out core constants to separate file.
+* Split out core defines to separate file.
+* Added firmata namespace to core library classes.
+
 FIRMATA 2.5.4 - Oct 23, 2016
 
 [core library]

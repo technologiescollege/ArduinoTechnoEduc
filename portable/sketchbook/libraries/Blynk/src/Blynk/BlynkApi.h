@@ -14,6 +14,7 @@
 #include <Blynk/BlynkConfig.h>
 #include <Blynk/BlynkDebug.h>
 #include <Blynk/BlynkParam.h>
+#include <Blynk/BlynkTimer.h>
 #include <Blynk/BlynkHandlers.h>
 #include <Blynk/BlynkProtocolDefs.h>
 
@@ -246,6 +247,23 @@ public:
         cmd.add(pin);
         cmd.add(property);
         static_cast<Proto*>(this)->sendCmd(BLYNK_CMD_PROPERTY, 0, cmd.getBuffer(), cmd.getLength(), param.getBuffer(), param.getLength());
+    }
+
+    template <typename NAME>
+    void logEvent(const NAME& event_name) {
+        char mem[BLYNK_MAX_SENDBYTES];
+        BlynkParam cmd(mem, 0, sizeof(mem));
+        cmd.add(event_name);
+        static_cast<Proto*>(this)->sendCmd(BLYNK_CMD_EVENT_LOG, 0, cmd.getBuffer(), cmd.getLength());
+    }
+
+    template <typename NAME, typename DESCR>
+    void logEvent(const NAME& event_name, const DESCR& description) {
+        char mem[BLYNK_MAX_SENDBYTES];
+        BlynkParam cmd(mem, 0, sizeof(mem));
+        cmd.add(event_name);
+        cmd.add(description);
+        static_cast<Proto*>(this)->sendCmd(BLYNK_CMD_EVENT_LOG, 0, cmd.getBuffer(), cmd.getLength());
     }
 
 #if defined(BLYNK_EXPERIMENTAL)

@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<dpinst>
+<language code="0x0401">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0804">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0404">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0405">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0406">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0407">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0408">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0409">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0C0A">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x040B">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x040C">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x040D">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x040E">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0410">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0411">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0412">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0414">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0413">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0415">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0416">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0816">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x0419">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x041D">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+<language code="0x041F">
+<dpinstTitle>Pololu CP2102 USB-to-Serial Bridge Driver Installer</dpinstTitle>
+<welcomeTitle>Welcome to the Pololu CP2102 Driver Installer</welcomeTitle>
+<welcomeIntro>This wizard will help you install the drivers for your Pololu CP2102 USB-to-Serial Bridge.</welcomeIntro>
+<finishTitle>Completing the Installation of the Pololu CP2102 USB-to-Serial Bridge Driver</finishTitle>
+</language>
+</dpinst>

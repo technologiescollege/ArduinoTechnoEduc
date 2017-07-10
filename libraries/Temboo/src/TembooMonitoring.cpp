@@ -3,7 +3,7 @@
 #
 # Temboo Arduino library
 #
-# Copyright 2016, Temboo Inc.
+# Copyright 2017, Temboo Inc.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 
 #include <Arduino.h>
 #include <Mailbox.h>
-#ifdef ARDUINO_ARCH_SAMD 
+#if defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_SAM)
 #include "avr/dtostrf.h"
 #endif
 #include "utility/TembooGlobal.h"

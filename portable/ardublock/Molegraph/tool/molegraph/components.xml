@@ -1,0 +1,15 @@
+<Packages>
+    <ApplicationName>MoleGraph</ApplicationName>
+    <ApplicationVersion>1.0.0</ApplicationVersion>
+    <Package>
+        <Name>cz.emole</Name>
+        <Pixmap></Pixmap>
+        <Title>MoleGraph</Title>
+        <Description>MoleGraph, accessible through a start menu entry.</Description>
+        <Version>1</Version>
+        <LastUpdateDate></LastUpdateDate>
+        <InstallDate>2016-10-01</InstallDate>
+        <Size>23862500</Size>
+        <Dependencies></Dependencies>
+    </Package>
+</Packages>

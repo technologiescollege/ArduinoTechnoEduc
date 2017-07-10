@@ -1,0 +1,5 @@
+GroveColorSensor KEYWORD1
+
+readRGB KEYWORD2
+calculateCoordinate KEYWORD2
+clearInterrupt KEYWORD2

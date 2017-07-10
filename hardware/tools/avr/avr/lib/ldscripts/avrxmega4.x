@@ -1,14 +1,26 @@
 /* Default linker script, for normal executables */
+/* Copyright (C) 2014-2015 Free Software Foundation, Inc.
+   Copying and distribution of this script, with or without modification,
+   are permitted in any medium without royalty provided the copyright
+   notice and this notice are preserved.  */
 OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:104)
+__TEXT_REGION_LENGTH__ = DEFINED(__TEXT_REGION_LENGTH__) ? __TEXT_REGION_LENGTH__ : 1024K;
+__DATA_REGION_LENGTH__ = DEFINED(__DATA_REGION_LENGTH__) ? __DATA_REGION_LENGTH__ : 0xffa0;
+__EEPROM_REGION_LENGTH__ = DEFINED(__EEPROM_REGION_LENGTH__) ? __EEPROM_REGION_LENGTH__ : 64K;
+__FUSE_REGION_LENGTH__ = DEFINED(__FUSE_REGION_LENGTH__) ? __FUSE_REGION_LENGTH__ : 1K;
+__LOCK_REGION_LENGTH__ = DEFINED(__LOCK_REGION_LENGTH__) ? __LOCK_REGION_LENGTH__ : 1K;
+__SIGNATURE_REGION_LENGTH__ = DEFINED(__SIGNATURE_REGION_LENGTH__) ? __SIGNATURE_REGION_LENGTH__ : 1K;
+__USER_SIGNATURE_REGION_LENGTH__ = DEFINED(__USER_SIGNATURE_REGION_LENGTH__) ? __USER_SIGNATURE_REGION_LENGTH__ : 1K;
 MEMORY
 {
-  text   (rx)   : ORIGIN = 0, LENGTH = 1024K
-  data   (rw!x) : ORIGIN = 0x802000, LENGTH = 0xffa0
-  eeprom (rw!x) : ORIGIN = 0x810000, LENGTH = 64K
-  fuse      (rw!x) : ORIGIN = 0x820000, LENGTH = 1K
-  lock      (rw!x) : ORIGIN = 0x830000, LENGTH = 1K
-  signature (rw!x) : ORIGIN = 0x840000, LENGTH = 1K
+  text   (rx)   : ORIGIN = 0, LENGTH = __TEXT_REGION_LENGTH__
+  data   (rw!x) : ORIGIN = 0x802000, LENGTH = __DATA_REGION_LENGTH__
+  eeprom (rw!x) : ORIGIN = 0x810000, LENGTH = __EEPROM_REGION_LENGTH__
+  fuse      (rw!x) : ORIGIN = 0x820000, LENGTH = __FUSE_REGION_LENGTH__
+  lock      (rw!x) : ORIGIN = 0x830000, LENGTH = __LOCK_REGION_LENGTH__
+  signature (rw!x) : ORIGIN = 0x840000, LENGTH = __SIGNATURE_REGION_LENGTH__
+  user_signatures (rw!x) : ORIGIN = 0x850000, LENGTH = __USER_SIGNATURE_REGION_LENGTH__
 }
 SECTIONS
 {
@@ -84,6 +96,9 @@ SECTIONS
     *(.trampolines)
      *(.trampolines*)
      __trampolines_end = . ;
+    /* avr-libc expects these data to reside in lower 64K. */
+     *libprintf_flt.a:*(.progmem.data)
+     *libc.a:*(.progmem.data)
      *(.progmem*)
     . = ALIGN(2);
     /* For future tablejump instruction arrays for 3 byte pc devices.
@@ -152,10 +167,7 @@ SECTIONS
   .data          :
   {
      PROVIDE (__data_start = .) ;
-    /* --gc-sections will delete empty .data. This leads to wrong start
-       addresses for subsequent sections because -Tdata= from the command
-       line will have no effect, see PR13697.  Thus, keep .data  */
-    KEEP (*(.data))
+    *(.data)
      *(.data*)
     *(.rodata)  /* We need to include .rodata here if gcc is used */
      *(.rodata*) /* with -fdata-sections.  */
@@ -164,7 +176,7 @@ SECTIONS
      _edata = . ;
      PROVIDE (__data_end = .) ;
   }  > data AT> text
-  .bss   : AT (ADDR (.bss))
+  .bss  ADDR(.data) + SIZEOF (.data)   : AT (ADDR (.bss))
   {
      PROVIDE (__bss_start = .) ;
     *(.bss)
@@ -175,7 +187,7 @@ SECTIONS
    __data_load_start = LOADADDR(.data);
    __data_load_end = __data_load_start + SIZEOF(.data);
   /* Global data not cleared after reset.  */
-  .noinit  :
+  .noinit  ADDR(.bss) + SIZEOF (.bss)  :  AT (ADDR (.noinit))
   {
      PROVIDE (__noinit_start = .) ;
     *(.noinit*)
@@ -204,6 +216,10 @@ SECTIONS
   {
     KEEP(*(.signature*))
   }  > signature
+  .user_signatures  :
+  {
+    KEEP(*(.user_signatures*))
+  }  > user_signatures
   /* Stabs debugging sections.  */
   .stab 0 : { *(.stab) }
   .stabstr 0 : { *(.stabstr) }

@@ -1,0 +1,11 @@
+#######################################
+# Class (KEYWORD1)
+# Methods and Functions (KEYWORD2)
+# Constants (LITERAL1)
+#######################################
+
+SharpIR			KEYWORD1
+getDistance		KEYWORD2
+GP2YA41SK0F		LITERAL1
+GP2Y0A21YK0F	LITERAL1
+GP2Y0A02YK0F	LITERAL1

@@ -1,0 +1,128 @@
+// EMETTEUR
+#include <SPI.h>                    // Pour la communication via le port SPI
+#include <Mirf.h>                   // Pour la gestion de la communication
+#include <nRF24L01.h>               // Pour les définitions des registres du nRF24L01
+#include <MirfHardwareSpiDriver.h>  // Pour la communication SPI
+#include <Duinoedu_MirfAdd.h>
+
+Duinoedu_MirfAdd myMirf;
+
+void setup() {
+        /**/ Serial.begin(9600);
+        /**/ Serial.println("EMETTEUR");
+        /*/
+        myMirf.cePin = 9;               // Broche CE sur D9
+        myMirf.csnPin = 10;             // Broche CSN sur D10
+        myMirf.spi = &MirfHardwareSpi;  // On veut utiliser le port SPI hardware
+        myMirf.init();                  // Initialise la bibliothèque
+        //*/
+  myMirf.branch(9,10);
+  
+        /*/
+        myMirf.channel = 0; // Choix du canal de communication (128 canaux disponibles, de 0 à 127)
+        myMirf.payload = sizeof(long); // Taille d'un message (maximum 32 octets)
+        myMirf.config(); // Sauvegarde la configuration dans le module radio
+        //*/
+  myMirf.configDefaultChannelAndPayload(0,sizeof(long));
+
+  myMirf.setTADDR((byte *) "nrf01"); // Adresse de transmission
+        //myMirf.setMyName("nrf01");
+  
+  myMirf.setRADDR((byte *) "nrf02"); // Adresse de réception
+        //myMirf.setReceiverName("nrf02");
+
+        pinMode(A0, INPUT);
+       
+}
+
+
+void loop() {
+
+  float valeurR;
+  float valeurT = analogRead(A0);
+
+  /*
+  if(myMirf.dataReady()){
+    myMirf.getData((byte *) &valeur); // Réception du paquet
+    Serial.print("RECU:");
+    Serial.println(valeur); // Affiche le message
+  }
+  */
+  
+  valeurR = myMirf.getFloat();
+  delay(40);
+  Serial.print("valeurR:");Serial.println(valeurR);
+  myMirf.sendFloat(valeurT);
+  delay(60);
+  
+
+  
+}
+
+
+
+/////////////////////////////////////
+/////////////////////////////////////
+// RECEPTEUR
+#include <SPI.h>                    // Pour la communication via le port SPI
+#include <Mirf.h>                   // Pour la gestion de la communication
+#include <nRF24L01.h>               // Pour les définitions des registres du nRF24L01
+#include <MirfHardwareSpiDriver.h>  // Pour la communication SPI
+#include <Duinoedu_MirfAdd.h>
+
+Duinoedu_MirfAdd myMirf;
+
+void setup() {
+        /**/ Serial.begin(9600);
+        /**/ Serial.println("RECEPTEUR");
+        /*/
+        myMirf.cePin = 9;               // Broche CE sur D9
+        myMirf.csnPin = 10;             // Broche CSN sur D10
+        myMirf.spi = &MirfHardwareSpi;  // On veut utiliser le port SPI hardware
+        myMirf.init();                  // Initialise la bibliothèque
+        //*/
+  myMirf.branch(9,10);
+  
+        /*/
+        myMirf.channel = 0; // Choix du canal de communication (128 canaux disponibles, de 0 à 127)
+        myMirf.payload = sizeof(long); // Taille d'un message (maximum 32 octets)
+        myMirf.config(); // Sauvegarde la configuration dans le module radio
+        //*/
+  myMirf.configDefaultChannelAndPayload(0,sizeof(long));
+
+  myMirf.setTADDR((byte *) "nrf02"); // Adresse de transmission
+        //myMirf.setMyName("nrf02");
+  
+  myMirf.setRADDR((byte *) "nrf01"); // Adresse de réception
+        //myMirf.setReceiverName("nrf01");
+
+        pinMode(A0, INPUT);
+
+       
+}
+
+
+void loop() {
+
+  float valeurR;
+  float valeurT = analogRead(A0);
+
+  /*
+  if(myMirf.dataReady()){
+    myMirf.getData((byte *) &valeur); // Réception du paquet
+    Serial.print("RECU:");
+    Serial.println(valeur); // Affiche le message
+  }
+  */
+  
+  valeurR = myMirf.getFloat();
+  delay(60);
+  Serial.print("valeurR:");Serial.println(valeurR);
+  myMirf.sendFloat(valeurT);
+  delay(40);
+  
+
+  
+}
+
+

@@ -1,0 +1,1 @@
+Limitation au Timer5 uniquement pour Mega
