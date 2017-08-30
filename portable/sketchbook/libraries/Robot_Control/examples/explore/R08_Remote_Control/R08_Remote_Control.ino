@@ -24,8 +24,8 @@
  */
 
 // include the necessary libraries
-#include <IRremote.h>
-#include <IRremoteTools.h>
+#include <RobotIRremote.h>
+#include <RobotIRremoteTools.h>
 #include <ArduinoRobot.h>
 #include <Wire.h>
 

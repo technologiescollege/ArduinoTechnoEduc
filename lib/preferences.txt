@@ -92,7 +92,7 @@ editor.window.height.min = 290
 #editor.window.height.min.windows = 530
 
 # Enable code folding 
-editor.code_folding=false
+editor.code_folding=true
 
 # font size for editor
 editor.font=Monospaced,plain,12
@@ -112,7 +112,7 @@ editor.caret.blink=true
 editor.invalid=false
 
 # show line numbers in editor
-editor.linenumbers = false
+editor.linenumbers = true
 
 # enable ctrl-ins, shift-ins, shift-delete for cut/copy/paste
 # on windows and linux, but disable on the mac
@@ -129,7 +129,7 @@ editor.keys.home_and_end_beginning_end_of_doc = false
 console			 = true
 console.output.file      = stdout.txt
 console.error.file       = stderr.txt
-console.lines            = 4
+console.lines            = 8
 
 # set to false to disable automatically clearing the console
 # each time 'run' is hit
@@ -157,7 +157,7 @@ editor.divider.size = 0
 editor.divider.size.windows = 2
 
 # automatically save sketch when verifying or uploading
-editor.save_on_verify = true
+editor.save_on_verify = false
 
 # any additional java options when running externally
 # (for applets that are run external to the environment...
@@ -191,7 +191,7 @@ run.display = 1
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-#history.recording = true
+history.recording = false
 
 # for advanced users, enable option to export a library
 #export.library = false
@@ -258,7 +258,7 @@ run.present.exclusive.macosx = true
 target_package = arduino
 target_platform = avr
 board = uno
-software=ARDUINO
+software=ARDUINO TechnoEduc
 # Warn when data segment uses greater than this percentage
 build.warn_data_percentage = 75
 

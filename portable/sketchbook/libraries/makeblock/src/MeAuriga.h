@@ -3,8 +3,8 @@
  * \brief   Driver for MeAuriga board.
  * @file    MeAuriga.h
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2016/01/27
+ * @version V1.0.4
+ * @date    2016/09/23
  * @brief   Driver for MeAuriga board.
  *
  * \par Copyright
@@ -25,8 +25,12 @@
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
- * Mark Yan         2016/01/27     1.0.0            Build the New.
- * Mark Yan         2016/02/20     1.0.1            Change the port enumeration
+ * Mark Yan         2016/01/27          1.0.0            Build the New.
+ * Mark Yan         2016/02/20          1.0.1            Change the port enumeration
+ * Scott wang       2016/09/18          1.0.2            Add the PORT[15].
+ * Scott            2016/09/20          1.0.3            Add the PORT[16].
+ * Scott            2016/09/23          1.0.4            Add the MePS2.h .
+ * Zzipeng          2016/12/15          1.0.5            Add the MePm25Sensor.h .
  * </pre>
  */
 #ifndef MeAuriga_H
@@ -68,15 +72,18 @@
 #include "MeGasSensor.h"
 #include "MeEncoderOnBoard.h"
 #include "MeOnBoardTemp.h"
-
+#include "MeSmartServo.h"
+#include "MePS2.h"
+#include "MePm25Sensor.h"
 /*********************  Auriga Board GPIO Map *********************************/
 // struct defined in MeAuriga.h
- MePort_Sig mePort[15] =
+ MePort_Sig mePort[17] =
  {
    { NC, NC }, {   5,   4 }, {   3,   2 }, {   7,   6 }, {   9,   8 }, 
    { 16, 17 }, { A10, A15 }, {  A9, A14 }, {  A8, A13 }, {  A7, A12 }, 
    //             LIGHT2        LIGHT1        TEMP          SOUND
    { A6,A11 }, {  NC,  A2 }, {  NC,  A3 }, {  NC,  A0 }, {  NC,  A1 },
+   { NC, NC }, { NC, NC },
  };
  
 Encoder_port_type encoder_Port[6] =

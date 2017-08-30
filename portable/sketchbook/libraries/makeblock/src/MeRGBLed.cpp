@@ -4,8 +4,8 @@
  * \brief   Driver for W2812 full-color LED.
  * @file    MeRGBLed.cpp
  * @author  MakeBlock
- * @version V1.0.0
- * @date    2015/09/01
+ * @version V1.0.1
+ * @date    2016/09/20
  * @brief   Driver for W2812 full-color LED lights
  *
  * \par Copyright
@@ -41,6 +41,7 @@
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * Mark Yan         2015/09/01     1.0.0            Rebuild the old lib.
+ * Scott            2016/9/20      1.0.1            Add a delay.
  * </pre>
  *
  * @example ColorLoopTest.ino
@@ -76,6 +77,8 @@ MeRGBLed::MeRGBLed(uint8_t port) : MePort(port)
   //set pinMode OUTPUT
   pinMode(s2, OUTPUT);
   setNumber(DEFAULT_MAX_LED_NUMBER);
+  _port = port;
+  _slot = SLOT2;
 }
 
 /**
@@ -94,6 +97,8 @@ MeRGBLed::MeRGBLed(uint8_t port, uint8_t led_num) : MePort(port)
   //set pinMode OUTPUT */
   pinMode(s2, OUTPUT);
   setNumber(led_num);
+  _port = port;
+  _slot = SLOT2;
 }
 
 /**
@@ -124,6 +129,8 @@ MeRGBLed::MeRGBLed(uint8_t port, uint8_t slot, uint8_t led_num) : MePort(port)
     pinMode(s2, OUTPUT);
   }
   setNumber(led_num);
+  _port = port;
+  _slot = slot;
 }
 #else // ME_PORT_DEFINED
 /**
@@ -179,8 +186,10 @@ MeRGBLed::MeRGBLed(uint8_t port, uint8_t led_num)
 void MeRGBLed::reset(uint8_t port)
 {
   _port = port;
+  _slot = SLOT2;
   s2    = mePort[port].s2;
   s1    = mePort[port].s1;
+  setColor(0,0,0,0);
   pinMask = digitalPinToBitMask(s2);
   ws2812_port = portOutputRegister(digitalPinToPort(s2) );
   pinMode(s2, OUTPUT);
@@ -205,8 +214,10 @@ void MeRGBLed::reset(uint8_t port)
 void MeRGBLed::reset(uint8_t port,uint8_t slot)
 {
   _port = port;
+  _slot = slot;
   s2    = mePort[port].s2;
   s1    = mePort[port].s1;
+  setColor(0,0,0,0);
   if(SLOT2 == slot)
   {
     pinMask     = digitalPinToBitMask(s2);
@@ -237,9 +248,12 @@ void MeRGBLed::reset(uint8_t port,uint8_t slot)
  */
 void MeRGBLed::setpin(uint8_t port)
 {
+  setColor(0,0,0,0);
   pinMask   = digitalPinToBitMask(port);
   ws2812_port = portOutputRegister(digitalPinToPort(port) );
   pinMode(port, OUTPUT);
+  _port = 0;
+  _slot = SLOT2;
 }
 
 /**
@@ -267,6 +281,16 @@ void MeRGBLed::setNumber(uint8_t num_leds)
   for(int16_t i = 0; i < count_led * 3; i++)
   {
     pixels[i] = 0;
+  }
+
+  pixels_bak    = (uint8_t*)malloc(count_led * 3);
+  if(!pixels_bak)
+  {
+    printf("There is not enough space!\r\n");
+  }
+  for(int16_t i = 0; i < count_led * 3; i++)
+  {
+    pixels_bak[i] = 0;
   }
 }
 
@@ -635,7 +659,12 @@ void MeRGBLed::rgbled_sendarray_mask(uint8_t *data, uint16_t datlen, uint8_t mas
  */
 void MeRGBLed::show(void)
 {
-  rgbled_sendarray_mask(pixels, 3 * count_led, pinMask, (uint8_t*)ws2812_port);
+  if(memcmp(pixels_bak,pixels,3 * count_led) != 0)
+  {
+    rgbled_sendarray_mask(pixels, 3 * count_led, pinMask, (uint8_t*)ws2812_port);
+    memcpy(pixels_bak,pixels,3 * count_led);
+    delayMicroseconds(500);
+  }
 }
 
 /**
@@ -645,5 +674,7 @@ MeRGBLed::~MeRGBLed(void)
 {
   free(pixels);
   pixels = NULL;
+  free(pixels_bak);
+  pixels_bak = NULL;
 }
 

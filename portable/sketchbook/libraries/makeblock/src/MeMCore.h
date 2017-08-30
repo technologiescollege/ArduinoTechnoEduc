@@ -3,8 +3,8 @@
  * \brief   Driver for mCore Board.
  * \file    MeMCore.h
  * @author  MakeBlock
- * @version V1.0.1
- * @date    2015/11/09
+ * @version V1.0.4
+ * @date    2016/09/23
  * @brief   Driver for mCore Board.
  *
  * \par Copyright
@@ -26,8 +26,11 @@
  * \par History:
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
- * Mark Yan         2015/09/01     1.0.0            Rebuild the old lib.
- * Mark Yan         2015/11/09     1.0.1            fix some comments error.
+ * Mark Yan         2015/09/01         1.0.0            Rebuild the old lib.
+ * Mark Yan         2015/11/09         1.0.1            fix some comments error.
+ * Scott wang       2016/09/18         1.0.2            Add the PORT[15].
+ * Scott            2016/09/20         1.0.3            Add the PORT[16].
+ * Scott            2016/09/23         1.0.4            Add the MePS2.h .
  * </pre>
  */
 #ifndef MeMCore_H
@@ -68,13 +71,15 @@
 #include "MeHumitureSensor.h"
 #include "MeFlameSensor.h"
 #include "MeGasSensor.h"
+#include "MePS2.h"
 
 /*********************  Mbot Board GPIO Map *********************************/
-MePort_Sig mePort[15] =
+MePort_Sig mePort[17] =
 {
   { NC, NC }, { 11, 12 }, {  9, 10 }, { A2, A3 }, { A0, A1 },
   { NC, NC }, {  8, A6 }, { A7, 13 }, {  8, A6 }, {  6,  7 },
   {  5,  4 }, { NC, NC }, { NC, NC }, { NC, NC }, { NC, NC },
+  { NC, NC },{ NC, NC },
 };
 #endif // MeMCore_H
 
