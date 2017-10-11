@@ -46,7 +46,7 @@
 
 # if you don't want settings to go into "application data" on windows
 # and "library" on macosx, set this to the alternate location.
-settings.path=data
+#settings.path=data
 
 # temporary build path, normally this goes into the default
 # "temp" folder for that platform (as defined by java)
@@ -129,7 +129,7 @@ editor.keys.home_and_end_beginning_end_of_doc = false
 console			 = true
 console.output.file      = stdout.txt
 console.error.file       = stderr.txt
-console.lines            = 8
+console.lines            = 4
 
 # set to false to disable automatically clearing the console
 # each time 'run' is hit
@@ -191,7 +191,7 @@ run.display = 1
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-history.recording = false
+#history.recording = true
 
 # for advanced users, enable option to export a library
 #export.library = false
@@ -258,7 +258,7 @@ run.present.exclusive.macosx = true
 target_package = arduino
 target_platform = avr
 board = uno
-software=ARDUINO TechnoEduc
+software=ARDUINO
 # Warn when data segment uses greater than this percentage
 build.warn_data_percentage = 75
 
@@ -276,7 +276,7 @@ serial.debug_rate=9600
 # I18 Preferences
 
 # default chosen language (none for none)
-editor.languages.current = fr
+editor.languages.current = 
 
 # Debugging/Development Preferences
 # ---------------------------------
