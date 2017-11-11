@@ -10,7 +10,7 @@
     Downloads, docs, tutorials: http://www.blynk.cc
     Sketch generator:           http://examples.blynk.cc
     Blynk community:            http://community.blynk.cc
-    Social networks:            http://www.fb.com/blynkapp
+    Follow us:                  http://www.fb.com/blynkapp
                                 http://twitter.com/blynk_app
 
   Blynk library is licensed under MIT license
@@ -22,8 +22,8 @@
   to connect your project to Blynk.
 
   WARNING!
-    It's rather tricky to get it working, please read this article:
-    https://github.com/blynkkk/blynk-library/wiki/ESP8266-with-AT-firmware
+    It's very tricky to get it working. Please read this article:
+    http://help.blynk.cc/hardware-and-libraries/arduino/esp8266-with-at-firmware
 
   Change WiFi ssid, pass, and Blynk auth token to run :)
   Feel free to apply it to any other example. It's simple!

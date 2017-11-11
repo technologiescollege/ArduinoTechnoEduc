@@ -3,9 +3,8 @@
   showcases how your app made with Blynk can work
 
   You can download free app here:
-
-  iOS:     TODO
-  Android: http://play.google.com/store/apps/details?id=cc.blynk.appexport.demo
+    iOS:     https://itunes.apple.com/us/app/blynk-myplant/id1163620518?mt=8
+    Android: https://play.google.com/store/apps/details?id=cc.blynk.appexport.demo
 
   If you would like to add these features to your product,
   please contact Blynk for Businesses:
@@ -17,7 +16,8 @@
 #define USE_SPARKFUN_BLYNK_BOARD    // Uncomment the board you are using
 //#define USE_NODE_MCU_BOARD        // Comment out the boards you are not using
 //#define USE_WITTY_CLOUD_BOARD
-//#define USE_CUSTOM_BOARD          // See "Custom board configuration" in Settings.h
+//#define USE_CUSTOM_BOARD          // For all other ESP8266-based boards -
+                                    // see "Custom board configuration" in Settings.h
 
 #define APP_DEBUG        // Comment this out to disable debug prints
 

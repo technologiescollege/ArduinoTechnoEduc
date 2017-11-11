@@ -1058,7 +1058,7 @@ void Adafruit_NeoPixel::show(void) {
 
 // ARM MCUs -- Teensy 3.0, 3.1, LC, Arduino Due ---------------------------
 
-#if defined(__MK20DX128__) || defined(__MK20DX256__) // Teensy 3.0 & 3.1
+#if defined(TEENSYDUINO) && defined(KINETISK) // Teensy 3.0, 3.1, 3.2, 3.5, 3.6
 #define CYCLES_800_T0H  (F_CPU / 4000000)
 #define CYCLES_800_T1H  (F_CPU / 1250000)
 #define CYCLES_800      (F_CPU /  800000)
@@ -1115,7 +1115,7 @@ void Adafruit_NeoPixel::show(void) {
   }
 #endif // NEO_KHZ400
 
-#elif defined(__MKL26Z64__) // Teensy-LC
+#elif defined(TEENSYDUINO) && defined(__MKL26Z64__) // Teensy-LC
 
 #if F_CPU == 48000000
   uint8_t          *p   = pixels,
@@ -1487,7 +1487,7 @@ void Adafruit_NeoPixel::show(void) {
   }
 // END of NRF52 implementation
 
-#elif defined(__SAMD21G18A__)  || defined(__SAMD21E18A__) || defined(__SAMD21J18A__) // Arduino Zero, Gemma/Trinket M0, SODAQ Autonomo and others
+#elif defined (__SAMD21E17A__) || defined(__SAMD21G18A__)  || defined(__SAMD21E18A__) || defined(__SAMD21J18A__) // Arduino Zero, Gemma/Trinket M0, SODAQ Autonomo and others
   // Tried this with a timer/counter, couldn't quite get adequate
   // resolution.  So yay, you get a load of goofball NOPs...
 
@@ -1559,6 +1559,83 @@ void Adafruit_NeoPixel::show(void) {
         bitMask = 0x80;
       }
     }
+  }
+#endif
+
+#elif defined (__SAMD51__) // M4 @ 120mhz
+  // Tried this with a timer/counter, couldn't quite get adequate
+  // resolution.  So yay, you get a load of goofball NOPs...
+
+  uint8_t  *ptr, *end, p, bitMask, portNum;
+  uint32_t  pinMask;
+
+  portNum =  g_APinDescription[pin].ulPort;
+  pinMask =  1ul << g_APinDescription[pin].ulPin;
+  ptr     =  pixels;
+  end     =  ptr + numBytes;
+  p       = *ptr++;
+  bitMask =  0x80;
+
+  volatile uint32_t *set = &(PORT->Group[portNum].OUTSET.reg),
+                    *clr = &(PORT->Group[portNum].OUTCLR.reg);
+
+#ifdef NEO_KHZ400 // 800 KHz check needed only if 400 KHz support enabled
+  if(is800KHz) {
+#endif
+    for(;;) {
+      if(p & bitMask) { // ONE
+        // High 800ns
+        *set = pinMask;
+        asm("nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;");
+        // Low 450ns
+        *clr = pinMask;
+        asm("nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop;");
+      } else { // ZERO
+        // High 400ns
+        *set = pinMask;
+        asm("nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop;");
+        // Low 850ns
+        *clr = pinMask;
+        asm("nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;"
+            "nop; nop; nop; nop; nop; nop; nop; nop;");
+      }
+      if(bitMask >>= 1) {
+        // Move on to the next pixel
+        asm("nop;");
+      } else {
+        if(ptr >= end) break;
+        p       = *ptr++;
+        bitMask = 0x80;
+      }
+    }
+#ifdef NEO_KHZ400
+  } else { // 400 KHz bitstream
+    // ToDo!
   }
 #endif
 
