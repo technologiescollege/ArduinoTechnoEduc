@@ -8,8 +8,7 @@
 #include <inttypes.h>
 #include <Duinoedu_Utility.h>
 
-
-#include <avr/pgmspace.h>
+//#include <avr/pgmspace.h>
 
 
 
@@ -27,11 +26,20 @@ void irGenerator(uint8_t _pin, uint8_t on, unsigned int frequency){
 }
 
 
-
-
-
+String SendStringSerial(String _key, String _Value, char _separator, char _end){
+	_Value+= _key+ _separator+_Value ;
+	if(_end!=-1){_Value+=_end;}
+	return _Value;
+}
 
 // STRING : récupération d'une valeur à partir d'une clé
+int findIntValue(String _bigString, String _key, char _separator, char _end) {
+	return findStringValue( _bigString, _key, _separator, _end).toInt();
+}
+double findDoubleValue(String _bigString, String _key, char _separator, char _end){
+	return findStringValue( _bigString, _key, _separator, _end).toFloat();
+}
+
 String	findStringValue(String _bigString, String _key, char _separator, char _end){
 // Permet de renvoyer la valeur (Val) associée à la variable (Var)	
 // La chaine dans laquelle on doit trouver la variable et la valeur est "parameters" 
@@ -122,16 +130,16 @@ Chrono::Chrono(){
 }
 
 void Chrono::start(){
-	lostTime = millis();
+	lastTime = millis();
 }
 
 uint32_t  Chrono::duration(){
 	uint32_t d;
-	d = millis()-lostTime;
+	d = millis()-lastTime;
 	return d;
 }
 void Chrono::reset(){
-	lostTime = millis();
+	lastTime = millis();
 }
 
 

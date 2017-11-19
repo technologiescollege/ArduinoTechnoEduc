@@ -37,6 +37,8 @@ public:
 	void calculateCoordinate();
 	void clearInterrupt();
 	
+				
+	
 private:	 
 	 
 	// Set trigger mode. Including free mode, manually mode, single synchronization mode or so.
@@ -66,3 +68,68 @@ private:
 };
 
 #endif
+
+/* Exemple EDU : base
+
+#include <Wire.h>
+#include <GroveColorSensor.h>
+
+void setup(){
+    Serial.begin(9600);
+    Wire.begin();
+}
+ 
+void loop(){
+  int red, green, blue;
+          
+  GroveColorSensor *colorSensor = new GroveColorSensor();
+    colorSensor->ledStatus = 1;            
+    colorSensor->readRGB(&red, &green, &blue); 
+    colorSensor->clearInterrupt();
+  delete colorSensor;
+
+  Serial.print(red);
+  Serial.print(", ");
+  Serial.print(green);
+  Serial.print(", ");
+  Serial.println(blue);
+}
+
+*/
+
+/* 
+#include <Wire.h>
+#include <GroveColorSensor.h>
+
+int Duinoedu_red, Duinoedu_green, Duinoedu_blue;
+
+void setup(){
+    Serial.begin(9600);
+    Wire.begin();
+}
+ 
+void loop(){
+
+ readAllColors();
+
+ Serial.print(Duinoedu_red);    
+ Serial.print(", ");
+ Serial.print(Duinoedu_green);
+ Serial.print(", ");
+ Serial.print(Duinoedu_blue); 
+ Serial.print("\r\n");    
+  
+}
+
+
+// BONNE FONCTION
+int readAllColors(){
+  GroveColorSensor *colorSensor = new GroveColorSensor();
+    colorSensor->ledStatus = 1;            
+    colorSensor->readRGB(&Duinoedu_red, &Duinoedu_green, &Duinoedu_blue); 
+    colorSensor->clearInterrupt();
+}
+
+*/
+
+

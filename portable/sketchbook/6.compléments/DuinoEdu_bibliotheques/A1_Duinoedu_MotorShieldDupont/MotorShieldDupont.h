@@ -16,7 +16,7 @@
 #include "Wire.h"
 #endif
 
-//-- Les différentes constructeurs
+//-- Les différents constructeurs
 #define EDU_ARDUMOTO 0
 #define EDU_L298 	 1
 #define EDU_HBRIDGE  2
@@ -92,13 +92,6 @@ class MotorShieldDupont{
 	
 	/*EDU US*/	void serialDebug(const char _message1[]);	
 			boolean serialInfos;
-			
-	
-
-	
-	
-	
-	
 	
 	
 	
