@@ -1,0 +1,65 @@
+#######################################
+# Syntax Coloring Map For GOLDELOX_SGC
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+G4D			KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+Init			KEYWORD2
+powerUp			KEYWORD2
+powerDown			KEYWORD2
+getTimeoutFlag			KEYWORD2
+resetTimeoutFlag			KEYWORD2
+version				KEYWORD2
+replaceBackground			KEYWORD2
+clear			KEYWORD2
+control			KEYWORD2
+sleep			KEYWORD2
+waitJoystick			KEYWORD2
+joystick			KEYWORD2
+sound			KEYWORD2
+tune			KEYWORD2
+addUserBitmap			KEYWORD2
+drawUserBitmap			KEYWORD2
+circle			KEYWORD2
+triangle			KEYWORD2
+image			KEYWORD2
+setBackground			KEYWORD2
+line			KEYWORD2
+pixel			KEYWORD2
+screenCopyPaste			KEYWORD2
+polygon			KEYWORD2
+replaceColor			KEYWORD2
+pen			KEYWORD2
+rectangle			KEYWORD2
+font			KEYWORD2
+opacity			KEYWORD2
+string			KEYWORD2
+asciiChar			KEYWORD2
+button			KEYWORD2
+asciiCharG			KEYWORD2
+usdImage			KEYWORD2
+setAddress			KEYWORD2
+screenCopyuSD			KEYWORD2
+object			KEYWORD2
+runScript			KEYWORD2
+readSector			KEYWORD2
+writeSector			KEYWORD2
+video			KEYWORD2
+inituSD			KEYWORD2
+readByte			KEYWORD2
+writeByte			KEYWORD2
+getColor			KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

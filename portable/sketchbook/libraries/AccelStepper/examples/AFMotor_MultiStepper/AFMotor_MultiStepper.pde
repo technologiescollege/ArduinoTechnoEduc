@@ -1,11 +1,12 @@
-// MultiStepper
+// AFMotor_MultiStepper.pde
 // -*- mode: C++ -*-
 //
 // Control both Stepper motors at the same time with different speeds
 // and accelerations. 
 // Requires the AFMotor library (https://github.com/adafruit/Adafruit-Motor-Shield-library)
-// And AccelStepper with AFMotor support (https://github.com/adafruit/AccelStepper)
-// Public domain!
+// Caution, does not work with Adafruit Motor Shield V2
+// See https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library 
+// for examples that work with Adafruit Motor Shield V2.
 
 #include <AccelStepper.h>
 #include <AFMotor.h>
