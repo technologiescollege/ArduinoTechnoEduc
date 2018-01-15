@@ -15,9 +15,12 @@
 #include <Blynk/BlynkDebug.h>
 #include <Blynk/BlynkParam.h>
 #include <Blynk/BlynkTimer.h>
-//#include <Blynk/BlynkEveryN.h>
 #include <Blynk/BlynkHandlers.h>
 #include <Blynk/BlynkProtocolDefs.h>
+
+#if defined(BLYNK_EXPERIMENTAL)
+    #include <Blynk/BlynkEveryN.h>
+#endif
 
 /**
  * Represents high-level functions of Blynk
@@ -27,7 +30,6 @@ class BlynkApi
 {
 public:
     BlynkApi() {
-        Init();
     }
 
 #ifdef DOXYGEN // These API here are only for the documentation
@@ -311,8 +313,6 @@ public:
 #endif
 
 protected:
-    void Init();
-    static millis_time_t getMillis();
     void processCmd(const void* buff, size_t len);
     void sendInfo();
 };

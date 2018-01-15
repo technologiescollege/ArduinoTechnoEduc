@@ -1,4 +1,7 @@
 // ---------------------------------------------------------------------------
+// Before attempting to use this sketch, please read the "Help with 15 Sensors Example Sketch":
+// https://bitbucket.org/teckel12/arduino-new-ping/wiki/Help%20with%2015%20Sensors%20Example%20Sketch
+//
 // This example code was used to successfully communicate with 15 ultrasonic sensors. You can adjust
 // the number of sensors in your project by changing SONAR_NUM and the number of NewPing objects in the
 // "sonar" array. You also need to change the pins for each sensor for the NewPing objects. Each sensor
@@ -11,7 +14,7 @@
 // ---------------------------------------------------------------------------
 #include <NewPing.h>
 
-#define SONAR_NUM     15 // Number or sensors.
+#define SONAR_NUM     15 // Number of sensors.
 #define MAX_DISTANCE 200 // Maximum distance (in cm) to ping.
 #define PING_INTERVAL 33 // Milliseconds between sensor pings (29ms is about the min to avoid cross-sensor echo).
 
@@ -55,7 +58,7 @@ void loop() {
       sonar[currentSensor].ping_timer(echoCheck); // Do the ping (processing continues, interrupt will call echoCheck to look for echo).
     }
   }
-  // The rest of your code would go here.
+  // Other code that *DOESN'T* analyze ping results can go here.
 }
 
 void echoCheck() { // If ping received, set the sensor distance to array.
@@ -64,6 +67,7 @@ void echoCheck() { // If ping received, set the sensor distance to array.
 }
 
 void oneSensorCycle() { // Sensor ping cycle complete, do something with the results.
+  // The following code would be replaced with your code that does something with the ping results.
   for (uint8_t i = 0; i < SONAR_NUM; i++) {
     Serial.print(i);
     Serial.print("=");

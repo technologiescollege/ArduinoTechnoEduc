@@ -29,9 +29,8 @@
 
 #define BLYNK_USE_DIRECT_CONNECT
 
-#include <BlynkSimpleSerialBLE.h>
+#include <BlynkSimpleBLEPeripheral.h>
 #include <BLEPeripheral.h>
-#include "BLESerial.h"
 #include <SPI.h>
 
 // You should get Auth Token in the Blynk App.
@@ -56,9 +55,9 @@ void setup()
   SerialBLE.setAppearance(0x0080);
   SerialBLE.begin();
 
-  Blynk.begin(SerialBLE, auth);
-
   Serial.println("Waiting for connections...");
+
+  Blynk.begin(SerialBLE, auth);
 }
 
 void loop()

@@ -39,9 +39,8 @@
 
 #define BLYNK_PRINT Serial
 
-#include <BlynkSimpleSerialBLE.h>
+#include <BlynkSimpleBLEPeripheral.h>
 #include <BLEPeripheral.h>
-#include "BLESerial.h"
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
@@ -58,9 +57,9 @@ void setup() {
   SerialBLE.setAppearance(0x0080);
   SerialBLE.begin();
 
-  Blynk.begin(SerialBLE, auth);
-
   Serial.println("Waiting for connections...");
+
+  Blynk.begin(SerialBLE, auth);
 }
 
 void loop() {
