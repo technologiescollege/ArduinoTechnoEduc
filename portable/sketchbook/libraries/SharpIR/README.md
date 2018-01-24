@@ -1,91 +1,91 @@
 # SharpIR
-An Arduino library that allows to acquire distance data from a Sharp analog distance sensor
+Arduino Infra Red Sharp Lib
 
-## Currently supported MCU architectures
+Based on an original work of Dr. Marcal Casas-Cartagena .
 
-- ALL
+ 1. Perform 25 reading of analog pin (Nb samples can be changed in .h)
+ 2. Sort values
+ 3. Convert median value to cm
 
-## Currently supported sensor models
+# Usage
 
-- GP2YA41SK0F  
-- GP2Y0A21YK0F  
-- GP2Y0A02YK0F  
+- #include \<SharpIR.h\>
+- SharpIR sharp(ir_analog_pin, model);
+- int dist = sharp.distance();
 
-## Usage
+Model : 
+- GP2Y0A02YK0F --> "20150"
+- GP2Y0A21YK --> "1080"
+- GP2Y0A710K0F --> "100500"
+- GP2YA41SK0F --> "430"
 
-- Adding the library to the sketch
+# Sharp IR Volt Centimeter conversion
 
-~~~c++
-#include <SharpIR.h>
-~~~
+## GP2Y0A02YK0F
+### Model: "20150" [20cm to 150cm]
 
-- Creating an istance  
+| Volt | Distance |
+| ---- | -------- |
+| 2,8 | 15 |
+| 2,5 | 20 |
+| 2 | 30 |
+| 1,55 | 40 |
+| 1,24 | 50 |
+| 1,05 | 60 |
+| 0,905 | 70 |
+| 0,82 | 80 |
+| 0,7 | 90 |
+| 0,66 | 100 |
+| 0,6 | 110 |
+| 0,55 | 120 |
+| 0,5 | 130 |
+| 0,455 | 140 |
+| 0,435 | 150 |
 
-~~~c++
-SharpIR sensorName(sensorModel, sensorPin);
-~~~
-~~~
-sensorName	: the name of the object   
-sensorModel	: the model code of the sensor (e.g. GP2YA41SK0F)  
-sensorPin	: the analog pin where the sensor Vout pin is attached  
-~~~    
+Using MS Excel, we can calculate function (For distance > 15cm) :
 
-- Acquiring data
+Distance = 60.374 X POW(Volt , -1.16)
 
-~~~c++
-sensorName.getDistance();
-sensorName.getDistance( avoidBurstRead );
-~~~
-~~~
-avoidBurstRead	: can be true or false
-~~~
+## GP2Y0A21YK 
+### Model: "1080" [10cm to 80cm]
 
-The above method returns an uint8_t type value that is the distance in centimeters from the sensor and the object in front of it.  
-By default burst reads are avoided but this causes a delay of 20ms on every call.
-In order to speed up the sketch is possible to allow bust reads by setting the parameter **avoidBurstRead** to **false**, in this way:
+| Volt | Distance |
+| ---- | -------- |
+| 2,6 | 10 |
+| 2,1 | 12 |
+| 1,85 | 14 |
+| 1,65 | 15 |
+| 1,5 | 18 |
+| 1,39 | 20 |
+| 1,15 | 25 |
+| 0,98 | 30 |
+| 0,85 | 35 |
+| 0,75 | 40 |
+| 0,67 | 45 |
+| 0,61 | 50 |
+| 0,59 | 55 |
+| 0,55 | 60 |
+| 0,5 | 65 |
+| 0,48 | 70 |
+| 0,45 | 75 |
+| 0,42 | 80 |
 
-~~~c++
-sensorName.getDistance( false );
-~~~
+Using MS Excel, we can calculate function (For distance > 10cm) :
 
-## Getting started
+Distance = 29.988 X POW(Volt , -1.173)
 
-### Installation
-#### via the Arduino Library Manager
+## GP2Y0A710K0F
+### Model: "100500" [100cm to 500cm]
 
-1. Open the Arduino IDE
-2. Go to Sketch > Include Library > Manage Libraries
-3. Search **SharpIR**
-4. Click on **"SharpIR** by **Giuseppe Masino (HackerInside)"**
-5. Select the latest version and then click on **install**
-6. When the download is complete restart the IDE
+Based on the SHARP datasheet we can calculate the linear function: 
+`y = 137500x + 1125` 
+which gives us: 
+`1 / ((Volt - 1125) / 137500) = distance_in_cm`
+(For distance > 100cm)
 
-![How to open the library manager](https://github.com/HackerInside0/support_repo/blob/master/generic/ArduinoLibraryManager.png  "Go to Sketch > Include Library > Manage Libraries")
+## GP2YA41SK0F ( <=> GP2D120 )
+### Model: "430" [4cm to 30cm]
 
-![How to download from the library manager](https://github.com/HackerInside0/support_repo/blob/master/Arduino_SharpIR/LibraryManagerTutorial.png  "Click on **SharpIR** by **Giuseppe Masino (HackerInside)**")
+Based on the SHARP datasheet we can calculate the function (For distance > 3cm) :
 
-#### via GitHub ( manual installation )
-
-1. Download the library from GitHub
-2. Copy the zip file in the arduino library folder
-3. If already open, restart the IDE
-
-![How to download from github](https://github.com/HackerInside0/support_repo/blob/master/Arduino_SharpIR/downloadFromGitHub.png "Click on **SharpIR** by **Giuseppe Masino (HackerInside)**")
-
-### Where to find help?
-
-First be sure to read the FAQs in this repository ( if present ) and/or the [generic FAQs](https://www.facebook.com/notes/giuseppe-masino/faqs-about-my-works/197854657355058).
-
-Use the GitHub issue tracker for techincal troubles about the implementation and to report bugs, for other requests there is [THIS PAGE](http://www.facebook.com/dev.hackerinside/).
-
-## LICENSE
-
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
-</a>
-<br />
-<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">The SharpIR Library</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/HackerInside0/" property="cc:attributionName" rel="cc:attributionURL">Giuseppe Masino ( HackerInside0 )</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> and also under a custom MIT license.
-
-The updated terms of the license can be found [HERE]( https://www.facebook.com/notes/giuseppe-masino/faqs-about-my-works/197854657355058) and shall be available in the LICENSE.md 
-
-If you need permissions that are beyond the scope of this license, you can ask to me through <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.facebook.com/dev.hackerinside/" rel="cc:morePermissions">THIS PAGE</a>
+Distance = 12.08 X POW(Volt , -1.058)
