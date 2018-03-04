@@ -4,15 +4,17 @@ rem fichiers BAT et fork créés par Sébastien CANET
 SET currentpath=%~dp1
 cd %currentpath%portable\ardublock
 cls
-xcopy ArduBlock*.* /S/C ..\..\tools
+xcopy ArduBlockTool*.* /S/C ..\..\tools
 pause
-xcopy "..\sketchbook\6.complements\DuinoEdu_bibliotheques" /S/C ..\sketchbook\libraries
+xcopy Matrice*.* /S/C ..\..\tools
 pause
-xcopy "4.DuinoEDU - Ardublock" /S/C/I "..\sketchbook\4.DuinoEDU - Ardublock"
+xcopy "..\sketchbook\7.complements\DuinoEdu_bibliotheques" /S/C ..\sketchbook\libraries
 pause
-rd /s/q "..\sketchbook\4.TechnoZone51 - Organigram"
+xcopy "Ardublock - DuinoEDU" /S/C/I "..\sketchbook\5.Ardublock - DuinoEDU"
 pause
-rd /s/q "..\sketchbook\6.complements\DuinoEdu_bibliotheques"
+rd /s/q "..\sketchbook\5.Organigram TZ51"
+pause
+rd /s/q "..\sketchbook\7.complements\DuinoEdu_bibliotheques"
 pause
 cd ..
 rd /s/q ardublock
