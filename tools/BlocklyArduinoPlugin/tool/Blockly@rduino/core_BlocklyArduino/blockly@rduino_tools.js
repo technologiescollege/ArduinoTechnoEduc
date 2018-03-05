@@ -125,93 +125,33 @@ BlocklyDuino.verify_local_Click = function() {
  */
 
 BlocklyDuino.ArduinoIDEClick_IDE = function() {
-    $("#db_menu_item_run").off("click");
-    $("#db_menu_item_dwengo_robot_teacher_image").attr("src", "img/gear_animation.gif");
-    console.log('{"Code": "' + sketchCode + '"}');
-    $.ajax({
-        type: 'POST',
-        url: DwenguinoBlockly.serverUrl + "/build",
-        contentType: "application/json",
-        async: true,
-        data: '{"Code": "' + sketchCode + '"}',
-        error: function(msg){
-          $("#db_menu_item_run").click(DwenguinoBlockly.runEventHandler);
-          $("#db_menu_item_dwengo_robot_teacher_image").attr("src", "img/dwengo_robot_plain.svg");
-          console.log(msg);
-        },
-        success: function(msg){
-          console.log(msg);
-          if (msg.base64HexCode != ""){
-            console.log("compilation succesful, uploading");
-            DwenguinoBlockly.upload(msg.base64HexCode);
-          }
-        }
-    });
+	if (!window.BlocklyArduinoServer) {
+		BlocklyArduinoServer = false;
+		}
+	var code = $('#pre_arduino').text();
+	if ((typeof BlocklyArduinoServer) != 'undefined' && BlocklyArduinoServer){
+          BlocklyArduinoServer.pasteCode(code);
+    }	
 };
 
-BlocklyDuino.uploadClick_IDE = function(base64HexCode) {
-    var requestData = '{"port": "' + '/dev/ttyACM0' + '", "base64HexCode": "' + base64HexCode + '"}';
-    if (window["WebSocket"]) {
-       conn = new WebSocket("wss://localhost:8991/ws");
-       conn.onclose = function(evt) {
-           appendLog($("<div><b>Connection closed.</b></div>"))
-       }
-       conn.onmessage = function(evt) {
-           appendLog($("<div/>").text(evt.data))
-       }
-
-       if (!conn) {
-            return false;
-        }
-        conn.send("open /dev/ttyACM0 57600");
-        msg.val("");
-   } else {
-       appendLog($("<div><b>Your browser does not support WebSockets.</b></div>"))
-   }
-    console.log(requestData);
-    $.ajax({
-        type: 'POST',
-        url: DwenguinoBlockly.serverUrl + "/uploadToDwenguino",
-        contentType: "application/json",
-        async: true,
-        data: requestData,
-        error: function(msg){
-          $("#db_menu_item_run").click(DwenguinoBlockly.runEventHandler);
-          $("#db_menu_item_dwengo_robot_teacher_image").attr("src", "img/dwengo_robot_plain.svg");
-          console.log(msg);
-        },
-        success: function(msg){
-          $("#db_menu_item_run").click(DwenguinoBlockly.runEventHandler);
-          $("#db_menu_item_dwengo_robot_teacher_image").attr("src", "img/dwengo_robot_plain.svg");
-          console.log(msg);
-        }
-    });
+BlocklyDuino.uploadClick_IDE = function() {
+	if (!window.BlocklyArduinoServer) {
+		BlocklyArduinoServer = false;
+		}
+	var code = $('#pre_arduino').text();
+	if ((typeof BlocklyArduinoServer) != 'undefined' && BlocklyArduinoServer){
+          BlocklyArduinoServer.uploadCode(code);
+    }
 };
 
 BlocklyDuino.verify_local_Click_IDE = function() {
-	//first change board
-	var board = "board=" + profile.defaultBoard['upload_arg'];
-    var url = "http://127.0.0.1:5005/set_board";
-    var method = "POST";
-    var async = true;
-    var request = new XMLHttpRequest();
-    request.open(method, url, async);
-    request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	//Call a function when the state changes.
-    request.onreadystatechange = function() {
-		if(request.readyState == 4 && request.status == 200) {
-			alert(request.responseText);
+	if (!window.BlocklyArduinoServer) {
+		BlocklyArduinoServer = false;
 		}
-	}
-    request.send(board);
-    setTimeout( function() {		
-		//then send code after 1000ms
-		var code = $('#pre_arduino').text();
-		url = "http://127.0.0.1:5005/compile";
-		request.open(method, url, async);
-		request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-		request.send(code);
-	}, 2000);
+	var code = $('#pre_arduino').text();
+	if ((typeof BlocklyArduinoServer) != 'undefined' && BlocklyArduinoServer){
+          BlocklyArduinoServer.verifyCode(code);
+    }	
 };
 
 
