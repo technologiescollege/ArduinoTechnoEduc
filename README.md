@@ -1,4 +1,4 @@
-### Arduino TechnoEduc
+### Arduino TechnoEduc tout intégré
 
 
 EDI Arduino identique à l'original en version **1.8.5**, mais **enrichi** de programmes et de bibliothèques (_librairies_) nécessaires pour permettre aux enseignants de disposer d'un environnement clé en main pour :
