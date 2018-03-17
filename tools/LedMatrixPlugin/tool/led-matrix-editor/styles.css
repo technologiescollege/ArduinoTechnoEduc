@@ -1,0 +1,261 @@
+body {
+    background: #eee;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#cols-list,
+#rows-list,
+#leds-matrix {
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    border-spacing: 5px;
+    border-collapse: separate;
+}
+
+#leds-matrix .item,
+#cols-list .item,
+#rows-list .item {
+    width: 25px;
+    min-width: 25px;
+    max-width: 25px;
+
+    height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+
+    cursor: pointer;
+    font-size: 17px;
+}
+
+#leds-matrix .item {
+    border-radius: 50%;
+    box-shadow: inset 0 0 1px #666666;
+    background: #808080 radial-gradient(ellipse at 42% 42%, #999999 0%, #808080 50%);
+}
+
+#leds-matrix {
+    background-color: #333;
+    box-shadow: 1px 1px 10px #333;
+}
+
+body.red-leds #matrix-toggle:hover,
+body.red-leds #cols-list .item:hover,
+body.red-leds #rows-list .item:hover,
+body.red-leds #cols-list .item.hover,
+body.red-leds #rows-list .item.hover {
+    color: #ff3333;
+    font-weight: bold;
+}
+
+#red-leds-case,
+body.red-leds #frames .item.active,
+body.red-leds #leds-matrix .item.active {
+    background: #ff0000 radial-gradient(ellipse at 42% 42%, #ffffff 0%, #ff3300 25%, #ff0000 50%);
+}
+
+body.yellow-leds #matrix-toggle:hover,
+body.yellow-leds #cols-list .item:hover,
+body.yellow-leds #rows-list .item:hover,
+body.yellow-leds #cols-list .item.hover,
+body.yellow-leds #rows-list .item.hover {
+    color: #ffcc33;
+    font-weight: bold;
+}
+
+#yellow-leds-case,
+body.yellow-leds #frames .item.active,
+body.yellow-leds #leds-matrix .item.active {
+    background: #ffcc00 radial-gradient(ellipse at 42% 42%, #ffffff 0%, #ffcc00 25%, #ffcc00 50%);
+}
+
+body.green-leds #matrix-toggle:hover,
+body.green-leds #cols-list .item:hover,
+body.green-leds #rows-list .item:hover,
+body.green-leds #cols-list .item.hover,
+body.green-leds #rows-list .item.hover {
+    color: #33ff33;
+    font-weight: bold;
+}
+
+#green-leds-case,
+body.green-leds #frames .item.active,
+body.green-leds #leds-matrix .item.active {
+    background: #00ff00 radial-gradient(ellipse at 42% 42%, #ffffff 0%, #00ff33 25%, #00ff00 50%);
+}
+
+body.blue-leds #matrix-toggle:hover,
+body.blue-leds #cols-list .item:hover,
+body.blue-leds #rows-list .item:hover,
+body.blue-leds #cols-list .item.hover,
+body.blue-leds #rows-list .item.hover {
+    color: #0033ff;
+    font-weight: bold;
+}
+
+#blue-leds-case,
+body.blue-leds #frames .item.active,
+body.blue-leds #leds-matrix .item.active {
+    background: #0000ff radial-gradient(ellipse at 42% 42%, #ffffff 0%, #0033ff 25%, #0000ff 50%);
+}
+
+body.white-leds #matrix-toggle:hover,
+body.white-leds #cols-list .item:hover,
+body.white-leds #rows-list .item:hover,
+body.white-leds #cols-list .item.hover,
+body.white-leds #rows-list .item.hover {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#white-leds-case,
+body.white-leds #frames .item.active,
+body.white-leds #leds-matrix .item.active {
+    background: #ffffff radial-gradient(ellipse at 42% 42%, #ffffff 0%, #eeeeee 25%, #ffffff 50%);
+}
+
+#player {
+    display: inline-block;
+    padding: 10px;
+}
+
+#play-delay-input {
+    height: 25px;
+    width: 65px;
+    padding: 5px;
+}
+
+#hex-input {
+    text-align: center;
+    width: 150px;
+    height: 30px;
+    padding: 5px;
+}
+
+#edit-buttons-container {
+    padding: 10px;
+}
+
+#shift-buttons-container {
+    display: inline-block;
+    position: relative;
+    box-sizing: content-box;
+    width: 130px;
+    height: 130px;
+}
+
+#insert-button,
+#update-button,
+#delete-button {
+    width: 75px;
+    height: 30px;
+    margin: 0 10px;
+}
+
+#invert-button,
+#shift-up-button,
+#shift-right-button,
+#shift-down-button,
+#shift-left-button {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.leds-case {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: inset 0 0 1px #333333;
+    background: #cccccc radial-gradient(circle at center, lightgray 0%, darkgray 100%);
+}
+
+#leds-matrix .item:hover,
+.leds-case:hover {
+    box-shadow: 0 0 1px #cccccc;
+}
+
+#circuit-theme {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    background-image: url('img/circuit-icon.png');
+    margin-left: 25px;
+}
+
+#frames {
+    padding: 5px;
+    height: 200px;
+    overflow-y: scroll;
+    text-align: left;
+    border: solid #666666 1px;
+    background: #ccc linear-gradient(#ccc, #aaa)
+}
+
+#frames .frame {
+    margin: 2px;
+    display: inline-block;
+    background-color: #333;
+    border-spacing: 2px;
+    border-collapse: separate;
+    border: solid #ccc 3px;
+}
+
+#frames .frame .item {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 1px #333333;
+    background: #808080;
+}
+
+#frames .frame.selected {
+    border-color: #3399ff;
+}
+
+#output {
+    font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+    resize: none;
+    padding: 5px;
+    height: 280px;
+    overflow-y: scroll;
+}
+
+/*Themes*/
+
+.circuit-theme #circuit {
+    background-image: url('img/circuit.jpg');
+    padding: 5px;
+}
+
+.circuit-theme #matrix {
+    color: white;
+    border: solid 1px #547eae;
+    background-color: #26477a;
+    box-shadow: 10px 10px 10px #333;
+    margin: 10px;
+}
+
+.circuit-theme #leds-container {
+    border: solid 1px #808080;
+}
+
+.circuit-theme #player,
+.circuit-theme #shift-buttons-container,
+.circuit-theme #edit-buttons-container {
+    background-color: #26477a;
+    border: solid 1px #547eae;
+    box-shadow: 10px 10px 10px #333;
+
+}
+
+.circuit-theme #player label,
+.circuit-theme #ms,
+.circuit-theme #shift-buttons-container label,
+.circuit-theme #edit-buttons-container label {
+    color: white;
+}
