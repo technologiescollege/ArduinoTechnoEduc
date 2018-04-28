@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="UTF-16"?>
 <sections>
+  <section name="B@_IDE" version="%versionB@_IDE%"/>
+  <section name="B@" version="%versionB@%"/>
+  <section name="b@_ide" version="1"/>
+  <section name="b@" version="2.7.27042018"/>
 </sections>
