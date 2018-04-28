@@ -674,23 +674,59 @@ BlocklyDuino.bindFunctions = function() {
 	});
 	
 	$('#btn_convert, #menu_31').on('click', function() {
-		$('#convertModal').css("z-index", 1060);
-		$('#convertModal').css("display", "inline-block");
-	});
-	
-	$('#convertModal button.close').on('click', function() {
-		$('#convertModal').css("z-index", 0);
-		$('#convertModal').hide();
+		var dialogConvert = $("#convertModal").dialog({
+			autoOpen: false,
+			resizable: false,
+			height: 200,
+			width: 480,
+			show: {
+				effect: "drop",
+				duration: 1000
+			},
+			hide: {
+				effect: "drop",
+				duration: 1000
+			},
+			position: {
+				my: "center",
+				at: "center",
+				of: window
+			},
+		});
+		if (!dialogConvert.dialog("isOpen")) {
+			dialogConvert.dialog("open").dialog( "option", "buttons" );
+		};
 	});
 	
 	$('#btn_RGB, #menu_32').on('click', function() {
-		$('#RGB_modal').css("z-index", 1070);
-		$('#RGB_modal').css("display", "inline-block");
-	});
-	
-	$('#RGB_modal button.close').on('click', function() {
-		$('#RGB_modal').css("z-index", 0);
-		$('#RGB_modal').hide();
+		var iframe = $("#RGB_falsemodal > iframe");
+		var dialogRGB = $("#RGB_falsemodal").dialog({
+			autoOpen: false,
+			resizable: true,
+			height: 760,
+			width: 550,
+			show: {
+				effect: "drop",
+				duration: 1000
+			},
+			hide: {
+				effect: "drop",
+				duration: 1000
+			},
+			position: {
+				my: "center",
+				at: "center",
+				of: window
+			},
+		});
+		iframe.attr({
+			width: "100%",
+			height: "100%",
+			src: "./tools/RGB/RGB.html"
+		});
+		if (!dialogRGB.dialog("isOpen")) {
+			dialogRGB.dialog("open").dialog( "option", "buttons" );
+		};
 	});
 	
 	// $('#btn_switch').on("click", BlocklyDuino.switchOrientation);
@@ -786,8 +822,7 @@ BlocklyDuino.changeToolbox = function () {
 	
 	search = BlocklyDuino.addReplaceParamToUrl(search, 'toolbox', $("#toolboxes").val());
 	
-	window.location = window.location.protocol + '//'
-	+ window.location.host + window.location.pathname + search;
+	window.location = window.location.protocol + '//'+ window.location.host + window.location.pathname + search;
 };
 
 /**
@@ -1103,20 +1138,6 @@ BlocklyDuino.init = function() {
     });
 	
 	$('body').on('mousedown', '#convertModal', function() {
-        $(this).addClass('draggable').parents().on('mousemove', function(e) {
-            $('.draggable').offset({
-                top: e.pageY,
-                left: e.pageX - $('.draggable').outerWidth()/2
-            }).on('mouseup', function() {
-                $(this).removeClass('draggable');
-            });
-            e.preventDefault();
-        });
-    }).on('mouseup', function() {
-        $('.draggable').removeClass('draggable');
-    });
-	
-	$('body').on('mousedown', '#RGB_modal', function() {
         $(this).addClass('draggable').parents().on('mousemove', function(e) {
             $('.draggable').offset({
                 top: e.pageY,
@@ -1465,7 +1486,7 @@ BlocklyDuino.DialogCode = function() {
 	});
 	if (!dialogCode.dialog("isOpen")) {
 		dialogCode.dialog("open").dialog( "option", "buttons" );
-	};      
+	};
 };
 
 BlocklyDuino.DialogCode_edit = function() {
