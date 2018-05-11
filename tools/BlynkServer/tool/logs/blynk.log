@@ -1,0 +1,55 @@
+17:57:35.961 INFO - Using data dir 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool'
+17:57:36.117 INFO - Region : local. Host : 192.168.0.33.
+17:57:39.502 INFO - Initializing gmail smtp mail transport. Username : example@gmail.com. SMTP host : smtp.gmail.com:587
+17:57:40.469 INFO - Didn't find custom user certificates.
+17:57:40.469 INFO - Didn't find Let's Encrypt certificates.
+17:57:40.469 WARN - You didn't specified 'server.host' or 'contact.email' properties in server.properties file. Automatic certificate generation is turned off. Please specify above properties for automatic certificates retrieval.
+17:57:40.469 WARN - ATTENTION. Server certificate paths (cert : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool', key : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool') not valid. Using embedded server certs and one way ssl. This is not secure. Please replace it with your own certs.
+17:57:45.383 INFO - Hardware SSL server listening at 8441 port.
+17:57:45.383 INFO - HTTP API and WebSockets server listening at 8080 port.
+17:57:45.383 INFO - HTTPS API, WebSockets and Admin page server listening at 9443 port.
+17:57:45.383 INFO - Mqtt hardware server listening at 8440 port.
+18:02:49.728 INFO - Using data dir 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool'
+18:02:50.352 INFO - Region : local. Host : 192.168.0.33.
+18:02:52.395 INFO - Initializing gmail smtp mail transport. Username : example@gmail.com. SMTP host : smtp.gmail.com:587
+18:02:53.035 INFO - Didn't find custom user certificates.
+18:02:53.051 INFO - Didn't find Let's Encrypt certificates.
+18:02:53.051 WARN - You didn't specified 'server.host' or 'contact.email' properties in server.properties file. Automatic certificate generation is turned off. Please specify above properties for automatic certificates retrieval.
+18:02:53.051 WARN - ATTENTION. Server certificate paths (cert : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool', key : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool') not valid. Using embedded server certs and one way ssl. This is not secure. Please replace it with your own certs.
+18:02:57.450 INFO - Hardware SSL server listening at 8441 port.
+18:02:57.450 INFO - HTTP API and WebSockets server listening at 8080 port.
+18:02:57.450 INFO - HTTPS API, WebSockets and Admin page server listening at 9443 port.
+18:02:57.450 INFO - Mqtt hardware server listening at 8440 port.
+18:04:14.469 INFO - Using data dir 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool'
+18:04:15.015 INFO - Region : local. Host : 192.168.0.33.
+18:04:17.012 INFO - Initializing gmail smtp mail transport. Username : example@gmail.com. SMTP host : smtp.gmail.com:587
+18:04:17.620 INFO - Didn't find custom user certificates.
+18:04:17.620 INFO - Didn't find Let's Encrypt certificates.
+18:04:17.620 WARN - You didn't specified 'server.host' or 'contact.email' properties in server.properties file. Automatic certificate generation is turned off. Please specify above properties for automatic certificates retrieval.
+18:04:17.620 WARN - ATTENTION. Server certificate paths (cert : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool', key : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool') not valid. Using embedded server certs and one way ssl. This is not secure. Please replace it with your own certs.
+18:04:21.754 INFO - Hardware SSL server listening at 8441 port.
+18:04:21.754 INFO - HTTP API and WebSockets server listening at 8080 port.
+18:04:21.754 INFO - HTTPS API, WebSockets and Admin page server listening at 9443 port.
+18:04:21.754 INFO - Mqtt hardware server listening at 8440 port.
+18:05:53.579 INFO - Using data dir 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool'
+18:05:54.047 INFO - Region : local. Host : 192.168.0.33.
+18:05:56.153 INFO - Initializing gmail smtp mail transport. Username : example@gmail.com. SMTP host : smtp.gmail.com:587
+18:05:56.777 INFO - Didn't find custom user certificates.
+18:05:56.777 INFO - Didn't find Let's Encrypt certificates.
+18:05:56.777 WARN - You didn't specified 'server.host' or 'contact.email' properties in server.properties file. Automatic certificate generation is turned off. Please specify above properties for automatic certificates retrieval.
+18:05:56.777 WARN - ATTENTION. Server certificate paths (cert : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool', key : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool') not valid. Using embedded server certs and one way ssl. This is not secure. Please replace it with your own certs.
+18:06:01.051 INFO - Hardware SSL server listening at 8441 port.
+18:06:01.051 INFO - HTTP API and WebSockets server listening at 8080 port.
+18:06:01.051 INFO - HTTPS API, WebSockets and Admin page server listening at 9443 port.
+18:06:01.051 INFO - Mqtt hardware server listening at 8440 port.
+18:16:50.152 INFO - Using data dir 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool'
+18:16:50.605 INFO - Region : local. Host : 192.168.0.33.
+18:16:52.461 INFO - Initializing gmail smtp mail transport. Username : example@gmail.com. SMTP host : smtp.gmail.com:587
+18:16:53.179 INFO - Didn't find custom user certificates.
+18:16:53.179 INFO - Didn't find Let's Encrypt certificates.
+18:16:53.179 WARN - You didn't specified 'server.host' or 'contact.email' properties in server.properties file. Automatic certificate generation is turned off. Please specify above properties for automatic certificates retrieval.
+18:16:53.179 WARN - ATTENTION. Server certificate paths (cert : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool', key : 'F:\Logiciels\ArduinoTechnoEduc\tools\BlynkServer\tool') not valid. Using embedded server certs and one way ssl. This is not secure. Please replace it with your own certs.
+18:16:57.453 INFO - Hardware SSL server listening at 8441 port.
+18:16:57.453 INFO - HTTP API and WebSockets server listening at 8080 port.
+18:16:57.453 INFO - HTTPS API, WebSockets and Admin page server listening at 9443 port.
+18:16:57.453 INFO - Mqtt hardware server listening at 8440 port.

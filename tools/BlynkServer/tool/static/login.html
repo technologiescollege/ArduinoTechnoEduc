@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- saved from url=(0025)https://publish.blynk.cc/ -->
+<html lang="en-US" class="gr__publish_blynk_cc"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Blynk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/blynk.css">
+</head>
+<body class="login" data-gr-c-s-loaded="true">
+<script src="/static/js/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+<script src="/static/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="/static/js/core-min.js"></script>
+<script src="/static/js/sha256-min.js"></script>
+<script src="/static/js/enc-base64-min.js"></script>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="https://www.blynk.cc">
+                Blynk Administration
+            </a>
+        </div>
+        <div class="navbar-text navbar-right">
+            <div class="dropdown">
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li><a href="/logout">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</nav>
+
+
+
+<div class="container login-container">
+    <div class="login-content">
+        <form class="form-signin" method="post" onsubmit="get_action(this);">
+            <h4 class="form-signin-heading">Log In</h4>
+            <label>
+                Use your Admin account to log in
+            </label>
+            <div class="form-group">
+                <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+            </div>
+            <div class="form-group">
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                <input type="hidden" name="password" id="finalPass">
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    function get_action(form) {
+        form.action = window.location.pathname + "/login";
+    }
+</script>
+
+<script src="/static/js/login.js"></script>
+
+</body></html>
