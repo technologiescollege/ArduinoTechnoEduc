@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map for parsing
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Parser	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+readStream	KEYWORD2
+getName		KEYWORD2
+getValue	KEYWORD2
+parsing		KEYWORD2
+free		KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
