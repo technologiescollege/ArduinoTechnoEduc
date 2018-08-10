@@ -1,9 +1,9 @@
 // ---------------------------------------------------------------------------
-// NewPing Library - v1.9.0 - 12/09/2017
+// NewPing Library - v1.9.1 - 07/15/2018
 //
 // AUTHOR/LICENSE:
 // Created by Tim Eckel - teckel@leethost.com
-// Copyright 2017 License: Forks and derivitive works are NOT permitted without
+// Copyright 2018 License: Forks and derivitive works are NOT permitted without
 // permission. Permission is only granted to use as-is for private and
 // commercial use. If you wish to contribute, make changes, or enhancements,
 // please create a pull request. I get a TON of support issues from this
@@ -60,6 +60,8 @@
 //   NewPing::timer_stop() - Stop the timer.
 //
 // HISTORY:
+// 07/15/2018 v1.9.1 - Added support for ATtiny441 and ATtiny841
+//   microcontrollers.
 // 12/09/2017 v1.9.0 - Added support for the ARM-based Particle devices. If
 //   other ARM-based microcontrollers adopt a similar timer method that the
 //   Particle and Teensy 3.x share, support for other ARM-based microcontrollers
@@ -204,7 +206,7 @@
 	#endif
 
 	// Disable the timer interrupts when using ATmega128 and all ATtiny microcontrollers.
-	#if defined (__AVR_ATmega128__) || defined (__AVR_ATtiny24__) || defined (__AVR_ATtiny44__) || defined (__AVR_ATtiny84__) || defined (__AVR_ATtiny25__) || defined (__AVR_ATtiny45__) || defined (__AVR_ATtiny85__) || defined (__AVR_ATtiny261__) || defined (__AVR_ATtiny461__) || defined (__AVR_ATtiny861__) || defined (__AVR_ATtiny43U__)
+	#if defined (__AVR_ATmega128__) || defined (__AVR_ATtiny24__) || defined (__AVR_ATtiny44__) || defined (__AVR_ATtiny441__) || defined (__AVR_ATtiny84__) || defined (__AVR_ATtiny841__) || defined (__AVR_ATtiny25__) || defined (__AVR_ATtiny45__) || defined (__AVR_ATtiny85__) || defined (__AVR_ATtiny261__) || defined (__AVR_ATtiny461__) || defined (__AVR_ATtiny861__) || defined (__AVR_ATtiny43U__)
 		#undef  TIMER_ENABLED
 		#define TIMER_ENABLED false
 	#endif

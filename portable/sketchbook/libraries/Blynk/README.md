@@ -1,3 +1,5 @@
+# Blynk C++ Library [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Build%20your%20IoT%20App%20in%20minutes,%20right%20on%20your%20smartphone!&url=https://github.com/blynkkk/blynk-library&via=blynk_app&hashtags=IoT,iOS,Android,Arduino,ESP8266,ESP32,RaspberryPi)
+
 [![GitHub version](https://img.shields.io/github/release/blynkkk/blynk-library.svg)](https://github.com/blynkkk/blynk-library/releases/latest)
 [![GitHub download](https://img.shields.io/github/downloads/blynkkk/blynk-library/total.svg)](https://github.com/blynkkk/blynk-library/releases/latest)
 [![GitHub stars](https://img.shields.io/github/stars/blynkkk/blynk-library.svg)](https://github.com/blynkkk/blynk-library/stargazers)
@@ -59,11 +61,11 @@ __________
 
 ### Implementations for other platforms
 * [Particle](https://github.com/vshymanskyy/blynk-library-spark)
-* [Node.js + Espruino](https://github.com/vshymanskyy/blynk-library-js)
-* [MicroPython WiPy](https://github.com/wipy/wipy/tree/master/lib/blynk)
+* [Node.js, Espruino, Browsers](https://github.com/vshymanskyy/blynk-library-js)
+* [Python, MicroPython](https://github.com/vshymanskyy/blynk-library-python)
 * [OpenWrt](https://github.com/vshymanskyy/blynk-library-openwrt)
 * [MBED](https://developer.mbed.org/users/vshymanskyy/code/Blynk/)
-* [Node-RED](https://github.com/tzapu/node-red-contrib-blynk-websockets)
+* [Node-RED](https://www.npmjs.com/package/node-red-contrib-blynk-ws)
 * [LabVIEW](https://github.com/juncaofish/NI-LabVIEWInterfaceforBlynk)
 * [C#](https://github.com/sverrefroy/BlynkLibrary)
 

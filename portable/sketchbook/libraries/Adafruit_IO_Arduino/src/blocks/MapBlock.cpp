@@ -13,24 +13,25 @@
 
 MapBlock::MapBlock(AdafruitIO_Dashboard *d, AdafruitIO_Feed *f) : AdafruitIO_Block(d, f)
 {
-  historyHours = 0;
-  tile = "contrast";
+    historyHours = 0;
+    tile = "contrast";
 }
 
-MapBlock::~MapBlock(){}
+MapBlock::~MapBlock() {}
 
 String MapBlock::properties()
 {
 
-  if(tile != "contrast" && tile != "street" && tile != "sat") {
-    tile = "contrast";
-  }
+    if ((strcmp(tile, "contrast") != 0) && (strcmp(tile, "street") != 0) && (strcmp(tile, "sat") != 0))
+    {
+        tile = "contrast";
+    }
 
-  String props = "{\"historyHours\":\"";
-  props += historyHours;
-  props += "\",\"tile\":\"";
-  props += tile;
-  props += "\"}";
+    props = "{\"historyHours\":\"";
+    props += historyHours;
+    props += "\",\"tile\":\"";
+    props += tile;
+    props += "\"}";
 
-  return props;
+    return props;
 }
