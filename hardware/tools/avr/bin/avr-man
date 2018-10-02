@@ -31,7 +31,7 @@
 ## man(1) replacement to access the avr-libc manual pages
 
 : ${DESTDIR:-}
-prefix=/c/jenkins/workspace/avr-gcc/label/winxp-32-mingw/objdir
-datadir=/c/jenkins/workspace/avr-gcc/label/winxp-32-mingw/objdir/share
+prefix=/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/objdir
+datadir=/home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/objdir/share
 
-exec man -M /c/jenkins/workspace/avr-gcc/label/winxp-32-mingw/objdir/share/doc/avr-libc-2.0.0/man "$@"
+exec man -M /home/jenkins-mingw32/workspace/avr-gcc-staging/label/Ubuntu14.04x64-mingw32/objdir/share/doc/avr-libc-2.0.0/man "$@"

@@ -134,9 +134,10 @@ SECTIONS
   .data        0 :
   {
     *(.data)
+    *(.gnu.linkonce.d*)
     *(.rodata)  /* We need to include .rodata here if gcc is used */
      /* with -fdata-sections.  */
-    *(.gnu.linkonce.d*)
+    *(.gnu.linkonce.r*)
   }
   .bss  0 :
   {

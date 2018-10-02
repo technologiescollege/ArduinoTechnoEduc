@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2016 Atmel Corporation
+ * Copyright (C) 2015 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

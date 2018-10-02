@@ -584,7 +584,7 @@ the clock below 131.072 kHz.
 #define power_psc2_disable()    (PRR |= (uint8_t)(1 << PRPSC2))
 #endif
 
-#if defined(__AVR_HAVE_PRR_PRSCR)
+#if defined(__AVR_HAVE_PRR_PRPSCR)
 #define power_pscr_enable()     (PRR &= (uint8_t)~(1 << PRPSCR))
 #define power_pscr_disable()    (PRR |= (uint8_t)(1 << PRPSCR))
 #endif
@@ -660,8 +660,13 @@ the clock below 131.072 kHz.
 #endif
 
 #if defined(__AVR_HAVE_PRR0_PRLFR)
-#define power_lfreceiver_enable()       (PRR0 &= (uint8_t)~(1 << PRLFR))            
-#define power_lfreceiver_disable()      (PRR0 |= (uint8_t)(1 << PRLFR))            
+#define power_lfreceiver_enable()       (PRR0 &= (uint8_t)~(1 << PRLFR))
+#define power_lfreceiver_disable()      (PRR0 |= (uint8_t)(1 << PRLFR))
+#endif
+
+#if defined(__AVR_HAVE_PRR0_PRLFRS)
+#define power_lfrs_enable()             (PRR0 &= (uint8_t)~(1 << PRLFRS))
+#define power_lfrs_disable()            (PRR0 |= (uint8_t)(1 << PRLFRS))
 #endif
 
 #if defined(__AVR_HAVE_PRR0_PRLIN)
@@ -729,6 +734,11 @@ the clock below 131.072 kHz.
 #define power_twi_disable()             (PRR0 |= (uint8_t)(1 << PRTWI))
 #endif
 
+#if defined(__AVR_HAVE_PRR0_PRTWI1)
+#define power_twi1_enable()             (PRR0 &= (uint8_t)~(1 << PRTWI1))
+#define power_twi1_disable()            (PRR0 |= (uint8_t)(1 << PRTWI1))
+#endif
+
 #if defined(__AVR_HAVE_PRR0_PRTXDC)
 #define power_transmit_dsp_control_enable()   (PRR0 &= (uint8_t)~(1 << PRTXDC))
 #define power_transmit_dsp_control_disable()  (PRR0 |= (uint8_t)(1 << PRTXDC))
@@ -779,9 +789,19 @@ the clock below 131.072 kHz.
 #define power_kb_disable()              (PRR1 |= (uint8_t)(1 << PRKB))
 #endif
 
+#if defined(__AVR_HAVE_PRR1_PRLFPH)
+#define power_lfph_enable()             (PRR1 &= (uint8_t)~(1 << PRLFPH))
+#define power_lfph_disable()            (PRR1 |= (uint8_t)(1 << PRLFPH))
+#endif
+
 #if defined(__AVR_HAVE_PRR1_PRLFR)
 #define power_lfreceiver_enable()       (PRR1 &= (uint8_t)~(1 << PRLFR))            
 #define power_lfreceiver_disable()      (PRR1 |= (uint8_t)(1 << PRLFR))            
+#endif
+
+#if defined(__AVR_HAVE_PRR1_PRLFTP)
+#define power_lftp_enable()             (PRR1 &= (uint8_t)~(1 << PRLFTP))
+#define power_lftp_disable()            (PRR1 |= (uint8_t)(1 << PRLFTP))
 #endif
 
 #if defined(__AVR_HAVE_PRR1_PRSCI)
@@ -849,6 +869,11 @@ the clock below 131.072 kHz.
 #define power_usart2_disable()          (PRR1 |= (uint8_t)(1 << PRUSART2))
 #endif
 
+#if defined(__AVR_HAVE_PRR1_PRUSART3)
+#define power_usart3_enable()           (PRR1 &= (uint8_t)~(1 << PRUSART3))
+#define power_usart3_disable()          (PRR1 |= (uint8_t)(1 << PRUSART3))
+#endif
+
 #if defined(__AVR_HAVE_PRR1_PRUSB)
 #define power_usb_enable()              (PRR1 &= (uint8_t)~(1 << PRUSB))
 #define power_usb_disable()             (PRR1 |= (uint8_t)(1 << PRUSB))
@@ -899,6 +924,11 @@ the clock below 131.072 kHz.
 #define power_preamble_rssi_fifo_disable()      (PRR2 |= (uint8_t)(1 << PRSF))
 #endif
 
+#if defined(__AVR_HAVE_PRR2_PRSPI2)
+#define power_spi2_enable()             (PRR2 &= (uint8_t)~(1 << PRSPI2))
+#define power_spi2_disable()            (PRR2 |= (uint8_t)(1 << PRSPI2))
+#endif
+
 #if defined(__AVR_HAVE_PRR2_PRSSM)
 #define power_sequencer_state_machine_enable()  (PRR2 &= (uint8_t)~(1 << PRSSM))
 #define power_sequencer_state_machine_disable() (PRR2 |= (uint8_t)(1 << PRSSM))
@@ -907,6 +937,11 @@ the clock below 131.072 kHz.
 #if defined(__AVR_HAVE_PRR2_PRTM)
 #define power_tx_modulator_enable()     (PRR2 &= (uint8_t)~(1 << PRTM))
 #define power_tx_modulator_disable()    (PRR2 |= (uint8_t)(1 << PRTM))
+#endif
+
+#if defined(__AVR_HAVE_PRR2_PRTWI2)
+#define power_twi2_enable()             (PRR2 &= (uint8_t)~(1 << PRTWI2))
+#define power_twi2_disable()            (PRR2 |= (uint8_t)(1 << PRTWI2))
 #endif
 
 #if defined(__AVR_HAVE_PRR2_PRXA)
@@ -1279,6 +1314,8 @@ __power_all_disable()
 || defined(__AVR_AT90USB162__) \
 || defined(__AVR_ATA5505__) \
 || defined(__AVR_ATA5272__) \
+|| defined(__AVR_ATA6617C__) \
+|| defined(__AVR_ATA664251__) \
 || defined(__AVR_ATmega1280__) \
 || defined(__AVR_ATmega1281__) \
 || defined(__AVR_ATmega1284__) \
@@ -1295,12 +1332,16 @@ __power_all_disable()
 || defined(__AVR_ATmega165P__) \
 || defined(__AVR_ATmega165PA__) \
 || defined(__AVR_ATmega168__) \
+|| defined(__AVR_ATmega168A__) \
 || defined(__AVR_ATmega168P__) \
 || defined(__AVR_ATmega168PA__) \
+|| defined(__AVR_ATmega168PB__) \
 || defined(__AVR_ATmega169__) \
 || defined(__AVR_ATmega169A__) \
 || defined(__AVR_ATmega169P__) \
 || defined(__AVR_ATmega169PA__) \
+|| defined(__AVR_ATmega16M1__) \
+|| defined(__AVR_ATmega16U2__) \
 || defined(__AVR_ATmega16U4__) \
 || defined(__AVR_ATmega2560__) \
 || defined(__AVR_ATmega2561__) \
@@ -1308,11 +1349,14 @@ __power_all_disable()
 || defined(__AVR_ATmega256RFR2__) \
 || defined(__AVR_ATmega324A__) \
 || defined(__AVR_ATmega324P__) \
+|| defined(__AVR_ATmega324PA__) \
 || defined(__AVR_ATmega325__) \
 || defined(__AVR_ATmega325A__) \
+|| defined(__AVR_ATmega325P__) \
 || defined(__AVR_ATmega325PA__) \
 || defined(__AVR_ATmega3250__) \
 || defined(__AVR_ATmega3250A__) \
+|| defined(__AVR_ATmega3250P__) \
 || defined(__AVR_ATmega3250PA__) \
 || defined(__AVR_ATmega328__) \
 || defined(__AVR_ATmega328P__) \
@@ -1322,6 +1366,7 @@ __power_all_disable()
 || defined(__AVR_ATmega329PA__) \
 || defined(__AVR_ATmega3290__) \
 || defined(__AVR_ATmega3290A__) \
+|| defined(__AVR_ATmega3290P__) \
 || defined(__AVR_ATmega3290PA__) \
 || defined(__AVR_ATmega32C1__) \
 || defined(__AVR_ATmega32M1__) \
@@ -1331,6 +1376,7 @@ __power_all_disable()
 || defined(__AVR_ATmega48__) \
 || defined(__AVR_ATmega48A__) \
 || defined(__AVR_ATmega48PA__) \
+|| defined(__AVR_ATmega48PB__) \
 || defined(__AVR_ATmega48P__) \
 || defined(__AVR_ATmega640__) \
 || defined(__AVR_ATmega649P__) \
@@ -1346,6 +1392,11 @@ __power_all_disable()
 || defined(__AVR_ATmega6450P__) \
 || defined(__AVR_ATmega649__) \
 || defined(__AVR_ATmega649A__) \
+|| defined(__AVR_ATmega64M1__) \
+|| defined(__AVR_ATmega64C1__) \
+|| defined(__AVR_ATmega88A__) \
+|| defined(__AVR_ATmega88PA__) \
+|| defined(__AVR_ATmega88PB__) \
 || defined(__AVR_ATmega6490__) \
 || defined(__AVR_ATmega6490A__) \
 || defined(__AVR_ATmega6490P__) \
@@ -1357,6 +1408,8 @@ __power_all_disable()
 || defined(__AVR_ATmega16U2__) \
 || defined(__AVR_ATmega32U2__) \
 || defined(__AVR_ATtiny48__) \
+|| defined(__AVR_ATtiny88__) \
+|| defined(__AVR_ATtiny87__) \
 || defined(__AVR_ATtiny167__) \
 || defined(__DOXYGEN__)
 

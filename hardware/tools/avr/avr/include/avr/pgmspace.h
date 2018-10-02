@@ -965,8 +965,8 @@ Bug: avrtc-536
 }))
 
 /*
-Check for architectures that implement RAMPD (avrxmega3, avrxmega5,
-avrxmega7) as they need to save/restore RAMPZ for ELPM macros so it does
+Check for architectures that implement RAMPD (avrxmega5, avrxmega7)
+as they need to save/restore RAMPZ for ELPM macros so it does
 not interfere with data accesses.
 */
 #if defined (__AVR_HAVE_RAMPD__)

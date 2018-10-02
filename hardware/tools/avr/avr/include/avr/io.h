@@ -613,6 +613,18 @@
 #  include <avr/iotn11.h>
 #elif defined (__AVR_M3000__)
 #  include <avr/iom3000.h>
+#elif defined (__AVR_ATmega4809__)
+#  include <avr/iom4809.h>
+#elif defined (__AVR_ATmega4808__)
+#  include <avr/iom4808.h>
+#elif defined (__AVR_ATmega328PB__)
+#  include <avr/iom328pb.h>
+#elif defined (__AVR_ATmega324PB__)
+#  include <avr/iom324pb.h>
+#elif defined (__AVR_ATmega3209__)
+#  include <avr/iom3209.h>
+#elif defined (__AVR_ATmega3208__)
+#  include <avr/iom3208.h>
 #elif defined (__AVR_DEV_LIB_NAME__)
 #  define __concat__(a,b) a##b
 #  define __header1__(a,b) __concat__(a,b)

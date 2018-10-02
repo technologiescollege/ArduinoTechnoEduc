@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2016 Atmel Corporation
+ * Copyright (C) 2015 Atmel Corporation
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1912,9 +1912,9 @@
 #define RAMSIZE      1024
 #define RAMEND       0x05FF
 #define E2START     0
-#define E2SIZE      1024
+#define E2SIZE      1152
 #define E2PAGESIZE  16
-#define E2END       0x03FF
+#define E2END       0x047F
 #define XRAMEND      RAMEND
 
 

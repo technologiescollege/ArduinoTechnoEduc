@@ -10,13 +10,12 @@ __DATA_REGION_LENGTH__ = DEFINED(__DATA_REGION_LENGTH__) ? __DATA_REGION_LENGTH_
 __FUSE_REGION_LENGTH__ = DEFINED(__FUSE_REGION_LENGTH__) ? __FUSE_REGION_LENGTH__ : 2;
 __LOCK_REGION_LENGTH__ = DEFINED(__LOCK_REGION_LENGTH__) ? __LOCK_REGION_LENGTH__ : 2;
 __SIGNATURE_REGION_LENGTH__ = DEFINED(__SIGNATURE_REGION_LENGTH__) ? __SIGNATURE_REGION_LENGTH__ : 4;
+__RODATA_PM_OFFSET__ = DEFINED(__RODATA_PM_OFFSET__) ? __RODATA_PM_OFFSET__ : 0x4000;
 MEMORY
 {
-  text   (rx)   : ORIGIN = 0x0, LENGTH = __TEXT_REGION_LENGTH__
+  text   (rx)   : ORIGIN = 0, LENGTH = __TEXT_REGION_LENGTH__
   data   (rw!x) : ORIGIN = 0x0800040, LENGTH = __DATA_REGION_LENGTH__
-  /* Provide offsets for config, lock and signature to match
-     production file format. Ignore offsets in datasheet.  */
-  config    (rw!x) : ORIGIN = 0x820000, LENGTH = __FUSE_REGION_LENGTH__
+  config      (rw!x) : ORIGIN = 0x820000, LENGTH = __FUSE_REGION_LENGTH__
   lock      (rw!x) : ORIGIN = 0x830000, LENGTH = __LOCK_REGION_LENGTH__
   signature (rw!x) : ORIGIN = 0x840000, LENGTH = __SIGNATURE_REGION_LENGTH__
 }
@@ -29,7 +28,7 @@ SECTIONS
   .gnu.version 0 : { *(.gnu.version)	}
   .gnu.version_d 0 : { *(.gnu.version_d)	}
   .gnu.version_r 0 : { *(.gnu.version_r)	}
-  .rel.init    0 : { *(.rel.init)	}
+  .rel.init    0 : { *(.rel.init)		}
   .rela.init   0 : { *(.rela.init)	}
   .rel.text    0 :
     {
@@ -39,7 +38,7 @@ SECTIONS
     {
       *(.rela.text)
     }
-  .rel.fini    0 : { *(.rel.fini)	}
+  .rel.fini    0 : { *(.rel.fini)		}
   .rela.fini   0 : { *(.rela.fini)	}
   .rel.rodata  0 :
     {
@@ -62,11 +61,11 @@ SECTIONS
   .rel.dtors   0 : { *(.rel.dtors)	}
   .rela.dtors  0 : { *(.rela.dtors)	}
   .rel.got     0 : { *(.rel.got)		}
-  .rela.got    0 : { *(.rela.got)	}
+  .rela.got    0 : { *(.rela.got)		}
   .rel.bss     0 : { *(.rel.bss)		}
-  .rela.bss    0 : { *(.rela.bss)	}
+  .rela.bss    0 : { *(.rela.bss)		}
   .rel.plt     0 : { *(.rel.plt)		}
-  .rela.plt    0 : { *(.rela.plt)	}
+  .rela.plt    0 : { *(.rela.plt)		}
   /* Internal text space or external memory.  */
   .text 0 :
   {
@@ -129,11 +128,14 @@ SECTIONS
     *(.fini0)  /* Infinite loop after program termination.  */
     KEEP (*(.fini0))
   }
+  .rodata  0 :
+  {
+    *(.rodata)
+    *(.gnu.linkonce.r*)
+  }
   .data        0 :
   {
     *(.data)
-    *(.rodata)  /* We need to include .rodata here if gcc is used */
-     /* with -fdata-sections.  */
     *(.gnu.linkonce.d*)
   }
   .bss  0 :
@@ -142,7 +144,7 @@ SECTIONS
     *(COMMON)
   }
   /* Global data not cleared after reset.  */
-  .noinit  0 :
+  .noinit  0:
   {
     *(.noinit*)
   }

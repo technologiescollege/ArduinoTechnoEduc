@@ -1,62 +1,40 @@
-/*
-  QTRSensors.cpp - Arduino library for using Pololu QTR reflectance
-    sensors and reflectance sensor arrays: QTR-1A, QTR-8A, QTR-1RC, and
-    QTR-8RC.  The object used will determine the type of the sensor (either
-    QTR-xA or QTR-xRC).  Then simply specify in the constructor which
-    Arduino I/O pins are connected to a QTR sensor, and the read() method
-    will obtain reflectance measurements for those sensors.  Smaller sensor
-    values correspond to higher reflectance (e.g. white) while larger
-    sensor values correspond to lower reflectance (e.g. black or a void).
-
-    * QTRSensorsRC should be used for QTR-1RC and QTR-8RC sensors.
-    * QTRSensorsAnalog should be used for QTR-1A and QTR-8A sensors.
-*/
-
-/*
- * Written by Ben Schmidel et al., October 4, 2010.
- * Copyright (c) 2008-2012 Pololu Corporation. For more information, see
- *
- *   http://www.pololu.com
- *   http://forum.pololu.com
- *   http://www.pololu.com/docs/0J19
- *
- * You may freely modify and share this code, as long as you keep this
- * notice intact (including the two links above).  Licensed under the
- * Creative Commons BY-SA 3.0 license:
- *
- *   http://creativecommons.org/licenses/by-sa/3.0/
- *
- * Disclaimer: To the extent permitted by law, Pololu provides this work
- * without any warranty.  It might be defective, in which case you agree
- * to be responsible for all resulting costs and damages.
- */
-
 #include <stdlib.h>
 #include "QTRSensors.h"
 #include <Arduino.h>
 
+
+// Base class constructor
+QTRSensors::QTRSensors() :
+    calibratedMinimumOn(nullptr),
+    calibratedMaximumOn(nullptr),
+    calibratedMinimumOff(nullptr),
+    calibratedMaximumOff(nullptr),
+    _pins(nullptr)
+{
+    // empty
+}
 
 
 // Base class data member initialization (called by derived class init())
 void QTRSensors::init(unsigned char *pins, unsigned char numSensors,
   unsigned char emitterPin)
 {
-    calibratedMinimumOn=0;
-    calibratedMaximumOn=0;
-    calibratedMinimumOff=0;
-    calibratedMaximumOff=0;
+    calibratedMinimumOn = nullptr;
+    calibratedMaximumOn = nullptr;
+    calibratedMinimumOff = nullptr;
+    calibratedMaximumOff = nullptr;
 
-    _lastValue=0; // assume initially that the line is left.
+    _lastValue = 0; // assume initially that the line is left.
 
     if (numSensors > QTR_MAX_SENSORS)
         _numSensors = QTR_MAX_SENSORS;
     else
         _numSensors = numSensors;
 
-    if (_pins == 0)
+    if (_pins == nullptr)
     {
         _pins = (unsigned char*)malloc(sizeof(unsigned char)*_numSensors);
-        if (_pins == 0)
+        if (_pins == nullptr)
             return;
     }
 
@@ -80,19 +58,21 @@ void QTRSensors::init(unsigned char *pins, unsigned char numSensors,
 // surface or a void).
 void QTRSensors::read(unsigned int *sensor_values, unsigned char readMode)
 {
-    unsigned int off_values[QTR_MAX_SENSORS];
     unsigned char i;
 
-    if(readMode == QTR_EMITTERS_ON || readMode == QTR_EMITTERS_ON_AND_OFF)
+    if (readMode == QTR_EMITTERS_ON || readMode == QTR_EMITTERS_ON_AND_OFF)
         emittersOn();
-    else
+    else if (readMode == QTR_EMITTERS_OFF)
         emittersOff();
 
     readPrivate(sensor_values);
-    emittersOff();
 
-    if(readMode == QTR_EMITTERS_ON_AND_OFF)
+    if (readMode != QTR_EMITTERS_MANUAL)
+        emittersOff();
+
+    if (readMode == QTR_EMITTERS_ON_AND_OFF)
     {
+        unsigned int off_values[QTR_MAX_SENSORS];
         readPrivate(off_values);
 
         for(i=0;i<_numSensors;i++)
@@ -103,10 +83,10 @@ void QTRSensors::read(unsigned int *sensor_values, unsigned char readMode)
 }
 
 
-// Turn the IR LEDs off and on.  This is mainly for use by the
-// read method, and calling these functions before or
-// after the reading the sensors will have no effect on the
-// readings, but you may wish to use these for testing purposes.
+// Turn the IR LEDs off and on.  These are mainly for use by the read
+// method, and calling these functions before or after reading the sensors
+// will have no effect on the readings unless the readMode is
+// QTR_EMITTERS_MANUAL, but you may wish to use these for testing purposes.
 void QTRSensors::emittersOff()
 {
     if (_emitterPin == QTR_NO_EMITTER_PIN)
@@ -360,26 +340,226 @@ int QTRSensors::readLine(unsigned int *sensor_values,
 }
 
 
-
-// Derived RC class constructors
-QTRSensorsRC::QTRSensorsRC()
+// Dimmable base class initialization for one bank or combined banks
+// (1 emitter control pin) (called by derived class init())
+// (overrides QTRSensors::init)
+void QTRDimmable::init(unsigned char *pins, unsigned char numSensors,
+  unsigned char emitterPin)
 {
-    calibratedMinimumOn = 0;
-    calibratedMaximumOn = 0;
-    calibratedMinimumOff = 0;
-    calibratedMaximumOff = 0;
-    _pins = 0;
+    QTRSensors::init(pins, numSensors, emitterPin);
+    _evenEmitterPin = QTR_NO_EMITTER_PIN;
 }
 
+// Dimmable base class initialization for separate banks
+// (2 emitter control pins) (called by derived class init())
+void QTRDimmable::init(unsigned char *pins, unsigned char numSensors,
+  unsigned char oddEmitterPin, unsigned char evenEmitterPin)
+{
+    QTRSensors::init(pins, numSensors, oddEmitterPin);
+    _evenEmitterPin = evenEmitterPin;
+}
+
+
+// Read function for dimmable sensors with support for additional (odd/even)
+// readModes. The odd/even readModes only work if the object was initialized
+// with two emitter pins.
+// (overrides QTRSensors::read)
+void QTRDimmable::read(unsigned int *sensor_values, unsigned char readMode)
+{
+    if (readMode == QTR_EMITTERS_ODD_EVEN || readMode == QTR_EMITTERS_ODD_EVEN_AND_OFF)
+    {
+        emitterBankSelect(QTR_BANK_ODD);
+
+        // Read the odd-numbered sensors.
+        // (readPrivate takes a 0-based array index, so start = 0 to start with
+        // the first sensor)
+        readPrivate(sensor_values, 2, 0);
+
+        emitterBankSelect(QTR_BANK_EVEN);
+
+        // Read the even-numbered sensors.
+        // (readPrivate takes a 0-based array index, so start = 1 to start with
+        // the second sensor)
+        readPrivate(sensor_values, 2, 1);
+    }
+    else
+    {
+        if (readMode == QTR_EMITTERS_ON || readMode == QTR_EMITTERS_ON_AND_OFF)
+            emittersOn();
+        else if (readMode == QTR_EMITTERS_OFF)
+            emittersOff();
+
+        readPrivate(sensor_values);
+    }
+    if (readMode != QTR_EMITTERS_MANUAL)
+        emittersOff();
+
+    if (readMode == QTR_EMITTERS_ON_AND_OFF || readMode == QTR_EMITTERS_ODD_EVEN_AND_OFF)
+    {
+        unsigned char i;
+
+        unsigned int off_values[QTR_MAX_SENSORS];
+        readPrivate(off_values);
+
+        for(i=0;i<_numSensors;i++)
+        {
+            sensor_values[i] += _maxValue - off_values[i];
+        }
+    }
+}
+
+
+// Turns off emitters for dimmable sensors with one bank or combined banks.
+// (overrides QTRSensors::emittersOff)
+void QTRDimmable::emittersOff()
+{
+    if (_evenEmitterPin != QTR_NO_EMITTER_PIN)
+    {
+        // Stop driving even emitter ctrl pin
+        // and let odd pin control all emitters
+        pinMode (_evenEmitterPin, INPUT);
+    }
+    emittersOff(QTR_BANK_ODD);
+}
+
+// Turns off emitters for selected bank on dimmable sensors with separate
+// banks. If wait = false, returns immediately without waiting for emitters
+// to actually turn off.
+void QTRDimmable::emittersOff(unsigned char bank, bool wait)
+{
+    unsigned char ePin;
+
+    if (bank == QTR_BANK_ODD)
+    {
+        ePin = _emitterPin;
+    }
+    else // bank == QTR_BANK_EVEN
+    {
+        ePin = _evenEmitterPin;
+    }
+
+    if (ePin == QTR_NO_EMITTER_PIN)
+        return;
+
+    pinMode(ePin, OUTPUT);
+    digitalWrite(ePin, LOW);
+
+    if (wait)
+    {
+        // Wait for emitters to turn off. (minimum 1 ms; add some margin)
+        delayMicroseconds(1200);
+    }
+}
+
+// Turns on emitters for dimmable sensors with one bank or combined banks.
+// (overrides QTRSensors::emittersOn)
+void QTRDimmable::emittersOn()
+{
+    if (_evenEmitterPin != QTR_NO_EMITTER_PIN)
+    {
+        // Stop driving even emitter pin and let odd pin control all emitters.
+        pinMode (_evenEmitterPin, INPUT);
+    }
+    emittersOn(QTR_BANK_ODD);
+}
+
+// Turns on emitters for selected bank on dimmable sensors with separate
+// banks. If wait = false, returns immediately without waiting for emitters
+// to actually turn on.
+void QTRDimmable::emittersOn(unsigned char bank, bool wait)
+{
+    unsigned char ePin;
+
+    if (bank == QTR_BANK_ODD)
+    {
+        ePin = _emitterPin;
+    }
+    else // bank == QTR_BANK_EVEN
+    {
+        ePin = _evenEmitterPin;
+    }
+
+    if (ePin == QTR_NO_EMITTER_PIN)
+        return;
+
+    pinMode(ePin, OUTPUT);
+    digitalWrite(ePin, HIGH);
+    unsigned int turnOnStart = micros();
+
+    noInterrupts();
+    for (unsigned char i = 0; i < _dimmingLevel; i++)
+    {
+        delayMicroseconds(1);
+        digitalWrite(ePin, LOW);
+        delayMicroseconds(1);
+        digitalWrite(ePin, HIGH);
+    }
+    interrupts();
+
+    if (wait)
+    {
+        // Wait for emitters to turn on: make sure it's been at least 300 us
+        // since the emitter pin first went high before returning.
+        // (minimum 250 us; add some margin)
+        while ((unsigned int)(micros() - turnOnStart) < 300)
+        {
+            delayMicroseconds(10);
+        }
+    }
+}
+
+
+// Turns on the selected bank and turns off the other bank with optimized
+// timing (no unnecessary waits compared to calling emittersOff and
+// emittersOn separately, but still waits for both banks of emitters to be
+// in the right states before returning).
+void QTRDimmable::emitterBankSelect(unsigned char bank)
+{
+    unsigned char offBank;
+
+    if (bank == QTR_BANK_ODD)
+    {
+        offBank = QTR_BANK_EVEN;
+    }
+    else // bank == QTR_BANK_EVEN
+    {
+        offBank = QTR_BANK_ODD;
+    }
+
+    // Turn off the off-bank; don't wait before proceeding, but record the time.
+    emittersOff(offBank, false);
+    unsigned int turnOffStart = micros();
+
+    // Turn on the on-bank.
+    emittersOn(bank);
+
+    // Finish waiting for the off-bank emitters to turn off: make sure it's been
+    // at least 1200 us since the off-bank was turned off before returning.
+    // (minimum 1 ms; add some margin)
+    while ((unsigned int)(micros() - turnOffStart) < 1200)
+    {
+        delayMicroseconds(10);
+    }
+}
+
+
+// Sets the dimming level (0-31). A dimming level of 0 corresponds
+// to full current and brightness, with higher dimming levels meaning lower
+// currents; see the product page for your sensor for details.
+void QTRDimmable::setDimmingLevel(unsigned char dimmingLevel)
+{
+    if (dimmingLevel > 31)
+    {
+        dimmingLevel = 31;
+    }
+    _dimmingLevel = dimmingLevel;
+}
+
+
+// Derived RC class constructor
 QTRSensorsRC::QTRSensorsRC(unsigned char* pins,
   unsigned char numSensors, unsigned int timeout, unsigned char emitterPin)
 {
-    calibratedMinimumOn = 0;
-    calibratedMaximumOn = 0;
-    calibratedMinimumOff = 0;
-    calibratedMaximumOff = 0;
-    _pins = 0;
-
     init(pins, numSensors, timeout, emitterPin);
 }
 
@@ -421,33 +601,37 @@ void QTRSensorsRC::init(unsigned char* pins,
 // ...
 // The values returned are in microseconds and range from 0 to
 // timeout (as specified in the constructor).
-void QTRSensorsRC::readPrivate(unsigned int *sensor_values)
+// A 'step' of n means that the first of every n sensors is read, starting
+// with 'start' (this is 0-indexed, so start = 0 means start with the first
+// sensor). For example, step = 2, start = 1 means read the *even-numbered*
+// sensors.
+void QTRSensorsRC::readPrivate(unsigned int *sensor_values, unsigned char step, unsigned char start)
 {
     unsigned char i;
 
     if (_pins == 0)
         return;
 
-    for(i = 0; i < _numSensors; i++)
+    for(i = start; i < _numSensors; i += step)
     {
         sensor_values[i] = _maxValue;
-        digitalWrite(_pins[i], HIGH);   // make sensor line an output
-        pinMode(_pins[i], OUTPUT);      // drive sensor line high
+        pinMode(_pins[i], OUTPUT);      // make sensor line an output (drives low briefly, but doesn't matter)
+        digitalWrite(_pins[i], HIGH);   // drive sensor line high
     }
 
     delayMicroseconds(10);              // charge lines for 10 us
 
-    for(i = 0; i < _numSensors; i++)
+    for(i = start; i < _numSensors; i += step)
     {
         pinMode(_pins[i], INPUT);       // make sensor line an input
-        digitalWrite(_pins[i], LOW);        // important: disable internal pull-up!
+        digitalWrite(_pins[i], LOW);    // important: disable internal pull-up!
     }
 
     unsigned long startTime = micros();
     while (micros() - startTime < _maxValue)
     {
         unsigned int time = micros() - startTime;
-        for (i = 0; i < _numSensors; i++)
+        for (i = start; i < _numSensors; i += step)
         {
             if (digitalRead(_pins[i]) == LOW && time < sensor_values[i])
                 sensor_values[i] = time;
@@ -456,28 +640,12 @@ void QTRSensorsRC::readPrivate(unsigned int *sensor_values)
 }
 
 
-
-// Derived Analog class constructors
-QTRSensorsAnalog::QTRSensorsAnalog()
-{
-    calibratedMinimumOn = 0;
-    calibratedMaximumOn = 0;
-    calibratedMinimumOff = 0;
-    calibratedMaximumOff = 0;
-    _pins = 0;
-}
-
-QTRSensorsAnalog::QTRSensorsAnalog(unsigned char* pins,
+// Derived Analog class constructor
+QTRSensorsAnalog::QTRSensorsAnalog(unsigned char* analogPins,
   unsigned char numSensors, unsigned char numSamplesPerSensor,
   unsigned char emitterPin)
 {
-    calibratedMinimumOn = 0;
-    calibratedMaximumOn = 0;
-    calibratedMinimumOff = 0;
-    calibratedMaximumOff = 0;
-    _pins = 0;
-
-    init(pins, numSensors, numSamplesPerSensor, emitterPin);
+    init(analogPins, numSensors, numSamplesPerSensor, emitterPin);
 }
 
 
@@ -504,11 +672,11 @@ QTRSensorsAnalog::QTRSensorsAnalog(unsigned char* pins,
 // modules.  If you are using a 1RC (i.e. if there is no emitter pin),
 // or if you just want the emitters on all the time and don't want to
 // use an I/O pin to control it, use a value of 255 (QTR_NO_EMITTER_PIN).
-void QTRSensorsAnalog::init(unsigned char* pins,
+void QTRSensorsAnalog::init(unsigned char* analogPins,
     unsigned char numSensors, unsigned char numSamplesPerSensor,
     unsigned char emitterPin)
 {
-    QTRSensors::init(pins, numSensors, emitterPin);
+    QTRSensors::init(analogPins, numSensors, emitterPin);
 
     _numSamplesPerSensor = numSamplesPerSensor;
     _maxValue = 1023; // this is the maximum returned by the A/D conversion
@@ -523,7 +691,11 @@ void QTRSensorsAnalog::init(unsigned char* pins,
 // The values returned are a measure of the reflectance in terms of a
 // 10-bit ADC average with higher values corresponding to lower
 // reflectance (e.g. a black surface or a void).
-void QTRSensorsAnalog::readPrivate(unsigned int *sensor_values)
+// A 'step' of n means that the first of every n sensors is read, starting
+// with 'start' (this is 0-indexed, so start = 0 means start with the first
+// sensor). For example, step = 2, start = 1 means read the *even-numbered*
+// sensors.
+void QTRSensorsAnalog::readPrivate(unsigned int *sensor_values, unsigned char step, unsigned char start)
 {
     unsigned char i, j;
 
@@ -531,22 +703,106 @@ void QTRSensorsAnalog::readPrivate(unsigned int *sensor_values)
         return;
 
     // reset the values
-    for(i = 0; i < _numSensors; i++)
+    for(i = start; i < _numSensors; i += step)
         sensor_values[i] = 0;
 
     for (j = 0; j < _numSamplesPerSensor; j++)
     {
-        for (i = 0; i < _numSensors; i++)
+        for (i = start; i < _numSensors; i += step)
         {
             sensor_values[i] += analogRead(_pins[i]);   // add the conversion result
         }
     }
 
     // get the rounded average of the readings for each sensor
-    for (i = 0; i < _numSensors; i++)
+    for (i = start; i < _numSensors; i += step)
         sensor_values[i] = (sensor_values[i] + (_numSamplesPerSensor >> 1)) /
             _numSamplesPerSensor;
 }
+
+
+// Derived Dimmable RC class constructor (one bank or combined banks)
+QTRDimmableRC::QTRDimmableRC(unsigned char* pins,
+  unsigned char numSensors, unsigned int timeout,
+  unsigned char emitterPin)
+{
+    init(pins, numSensors, timeout, emitterPin);
+}
+
+// Derived Dimmable RC class constructor (separate banks)
+QTRDimmableRC::QTRDimmableRC(unsigned char* pins,
+  unsigned char numSensors, unsigned int timeout,
+  unsigned char oddEmitterPin, unsigned char evenEmitterPin)
+{
+    init(pins, numSensors, timeout, oddEmitterPin, evenEmitterPin);
+}
+
+
+// initialization for dimmable RC sensors with one bank or combined banks
+// (1 emitter control pin)
+// (overrides QTRSensorsAnalog::init)
+void QTRDimmableRC::init(unsigned char* pins,
+    unsigned char numSensors, unsigned int timeout, unsigned char emitterPin)
+{
+    QTRDimmable::init(pins, numSensors, emitterPin);
+
+    _maxValue = timeout;
+}
+
+// initialization for dimmable RC sensors with separate banks
+// (2 emitter control pins)
+void QTRDimmableRC::init(unsigned char* pins,
+    unsigned char numSensors, unsigned int timeout,
+    unsigned char oddEmitterPin, unsigned char evenEmitterPin)
+{
+    QTRDimmable::init(pins, numSensors, oddEmitterPin, evenEmitterPin);
+
+    _maxValue = timeout;
+}
+
+
+// Derived Dimmable Analog class constructor (one bank or combined banks)
+QTRDimmableAnalog::QTRDimmableAnalog(unsigned char* analogPins,
+  unsigned char numSensors, unsigned char numSamplesPerSensor,
+  unsigned char emitterPin)
+{
+    init(analogPins, numSensors, numSamplesPerSensor, emitterPin);
+}
+
+// Derived Dimmable Analog class constructor (separate banks)
+QTRDimmableAnalog::QTRDimmableAnalog(unsigned char* analogPins,
+  unsigned char numSensors, unsigned char numSamplesPerSensor,
+  unsigned char oddEmitterPin, unsigned char evenEmitterPin)
+{
+    init(analogPins, numSensors, numSamplesPerSensor, oddEmitterPin, evenEmitterPin);
+}
+
+
+// initialization for dimmable analog sensors with one bank or combined banks
+// (1 emitter control pin)
+// (overrides QTRSensorsAnalog::init)
+void QTRDimmableAnalog::init(unsigned char* analogPins,
+    unsigned char numSensors, unsigned char numSamplesPerSensor,
+    unsigned char emitterPin)
+{
+    QTRDimmable::init(analogPins, numSensors, emitterPin);
+
+    _numSamplesPerSensor = numSamplesPerSensor;
+    _maxValue = 1023; // this is the maximum returned by the A/D conversion
+}
+
+// initialization for dimmable analog sensors with separate banks
+// (2 emitter control pins)
+void QTRDimmableAnalog::init(unsigned char* analogPins,
+    unsigned char numSensors, unsigned char numSamplesPerSensor,
+    unsigned char oddEmitterPin, unsigned char evenEmitterPin)
+{
+    QTRDimmable::init(analogPins, numSensors, oddEmitterPin, evenEmitterPin);
+
+    _numSamplesPerSensor = numSamplesPerSensor;
+    _maxValue = 1023; // this is the maximum returned by the A/D conversion
+}
+
 
 // the destructor frees up allocated memory
 QTRSensors::~QTRSensors()

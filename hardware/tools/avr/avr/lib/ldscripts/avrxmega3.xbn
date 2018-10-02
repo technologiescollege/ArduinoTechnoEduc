@@ -12,6 +12,7 @@ __FUSE_REGION_LENGTH__ = DEFINED(__FUSE_REGION_LENGTH__) ? __FUSE_REGION_LENGTH_
 __LOCK_REGION_LENGTH__ = DEFINED(__LOCK_REGION_LENGTH__) ? __LOCK_REGION_LENGTH__ : 1K;
 __SIGNATURE_REGION_LENGTH__ = DEFINED(__SIGNATURE_REGION_LENGTH__) ? __SIGNATURE_REGION_LENGTH__ : 1K;
 __USER_SIGNATURE_REGION_LENGTH__ = DEFINED(__USER_SIGNATURE_REGION_LENGTH__) ? __USER_SIGNATURE_REGION_LENGTH__ : 1K;
+__RODATA_PM_OFFSET__ = DEFINED(__RODATA_PM_OFFSET__) ? __RODATA_PM_OFFSET__ : 0x8000;
 MEMORY
 {
   text   (rx)   : ORIGIN = 0, LENGTH = __TEXT_REGION_LENGTH__
@@ -164,13 +165,17 @@ SECTIONS
     KEEP (*(.fini0))
      _etext = . ;
   }  > text
+  .rodata  ADDR(.text) + SIZEOF (.text) + __RODATA_PM_OFFSET__    :
+  {
+    *(.rodata)
+     *(.rodata*)
+    *(.gnu.linkonce.r*)
+  } AT> text
   .data          :
   {
      PROVIDE (__data_start = .) ;
     *(.data)
      *(.data*)
-    *(.rodata)  /* We need to include .rodata here if gcc is used */
-     *(.rodata*) /* with -fdata-sections.  */
     *(.gnu.linkonce.d*)
     . = ALIGN(2);
      _edata = . ;

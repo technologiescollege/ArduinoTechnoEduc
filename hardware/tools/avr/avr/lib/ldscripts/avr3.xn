@@ -169,9 +169,10 @@ SECTIONS
      PROVIDE (__data_start = .) ;
     *(.data)
      *(.data*)
+    *(.gnu.linkonce.d*)
     *(.rodata)  /* We need to include .rodata here if gcc is used */
      *(.rodata*) /* with -fdata-sections.  */
-    *(.gnu.linkonce.d*)
+    *(.gnu.linkonce.r*)
     . = ALIGN(2);
      _edata = . ;
      PROVIDE (__data_end = .) ;
