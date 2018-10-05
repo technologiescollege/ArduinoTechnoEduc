@@ -1,5 +1,21 @@
 -- Add changes to unreleased tag until we make a release.
 
+04 Oct 2018, v1.4.1
+- Replaced UINT8_MAX by UNUSED_PIN
+- Replaced default value NULL for pointer with correct nullptr
+- Added pin layout for wemos d1 mini @mmone
+- Added alternative fritzing layout for mfrc522 reader @jose1711
+- Added soft power control functions @Bill2462
+- Fixed typo in example ReadAndWrite.ino @Drachenfrucht1
+- Fixed grammar @KiddieD
+- Fixed infinite loop in example AccessControl.ino @mads256c 
+- Fixed 0-index key ID equals to 0 fails in AccessControl.ino @thoaitrieu
+- Changed type boolean to bool for a more common use @Rotzbua 
+- Fixed wrong var names in PICC_Select MFRC522.cpp @tuyethoa08041997
+- Fixed hang PCD_Init() on non-arduino boards @heziegl
+- Fixed possible infinite loop PCD_Reset() @psgreco
+- And many thanks to all other contributors
+
 13 Apr 2018, v1.4.0
 - Replaced UINT8_MAX by UNUSED_PIN @Rotzbua
 - Fixed hang PCD_Init() on non-arduino boards @heziegl

@@ -262,11 +262,11 @@ void MFRC522::PCD_Reset() {
 	// The datasheet does not mention how long the SoftRest command takes to complete.
 	// But the MFRC522 might have been in soft power-down mode (triggered by bit 4 of CommandReg) 
 	// Section 8.8.2 in the datasheet says the oscillator start-up time is the start up time of the crystal + 37,74μs. Let us be generous: 50ms.
-	delay(50);
-	// Wait for the PowerDown bit in CommandReg to be cleared
-	while (PCD_ReadRegister(CommandReg) & (1<<4)) {
-		// PCD still restarting - unlikely after waiting 50ms, but better safe than sorry.
-	}
+	uint8_t count = 0;
+	do {
+		// Wait for the PowerDown bit in CommandReg to be cleared (max 3x50ms)
+		delay(50);
+	} while ((PCD_ReadRegister(CommandReg) & (1 << 4)) && (++count) < 3);
 } // End PCD_Reset()
 
 /**
@@ -395,6 +395,35 @@ bool MFRC522::PCD_PerformSelfTest() {
 } // End PCD_PerformSelfTest()
 
 /////////////////////////////////////////////////////////////////////////////////////
+// Power control
+/////////////////////////////////////////////////////////////////////////////////////
+
+//IMPORTANT NOTE!!!!
+//Calling any other function that uses CommandReg will disable soft power down mode !!!
+//For more details about power control, refer to the datasheet - page 33 (8.6)
+
+void MFRC522::PCD_SoftPowerDown(){//Note : Only soft power down mode is available throught software
+	byte val = PCD_ReadRegister(CommandReg); // Read state of the command register 
+	val |= (1<<4);// set PowerDown bit ( bit 4 ) to 1 
+	PCD_WriteRegister(CommandReg, val);//write new value to the command register
+}
+
+void MFRC522::PCD_SoftPowerUp(){
+	byte val = PCD_ReadRegister(CommandReg); // Read state of the command register 
+	val &= ~(1<<4);// set PowerDown bit ( bit 4 ) to 0 
+	PCD_WriteRegister(CommandReg, val);//write new value to the command register
+	// wait until PowerDown bit is cleared (this indicates end of wake up procedure) 
+	const uint32_t timeout = (uint32_t)millis() + 500;// create timer for timeout (just in case) 
+	
+	while(millis()<=timeout){ // set timeout to 500 ms 
+		val = PCD_ReadRegister(CommandReg);// Read state of the command register
+		if(!(val & (1<<4))){ // if powerdown bit is 0 
+			break;// wake up procedure is finished 
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
 // Functions for communicating with PICCs
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -406,9 +435,9 @@ bool MFRC522::PCD_PerformSelfTest() {
  */
 MFRC522::StatusCode MFRC522::PCD_TransceiveData(	byte *sendData,		///< Pointer to the data to transfer to the FIFO.
 													byte sendLen,		///< Number of bytes to transfer to the FIFO.
-													byte *backData,		///< NULL or pointer to buffer if data should be read back after executing the command.
+													byte *backData,		///< nullptr or pointer to buffer if data should be read back after executing the command.
 													byte *backLen,		///< In: Max number of bytes to write to *backData. Out: The number of bytes returned.
-													byte *validBits,	///< In/Out: The number of valid bits in the last byte. 0 for 8 valid bits. Default NULL.
+													byte *validBits,	///< In/Out: The number of valid bits in the last byte. 0 for 8 valid bits. Default nullptr.
 													byte rxAlign,		///< In: Defines the bit position in backData[0] for the first bit received. Default 0.
 													bool checkCRC		///< In: True => The last two bytes of the response is assumed to be a CRC_A that must be validated.
 								 ) {
@@ -426,7 +455,7 @@ MFRC522::StatusCode MFRC522::PCD_CommunicateWithPICC(	byte command,		///< The co
 														byte waitIRq,		///< The bits in the ComIrqReg register that signals successful completion of the command.
 														byte *sendData,		///< Pointer to the data to transfer to the FIFO.
 														byte sendLen,		///< Number of bytes to transfer to the FIFO.
-														byte *backData,		///< NULL or pointer to buffer if data should be read back after executing the command.
+														byte *backData,		///< nullptr or pointer to buffer if data should be read back after executing the command.
 														byte *backLen,		///< In: Max number of bytes to write to *backData. Out: The number of bytes returned.
 														byte *validBits,	///< In/Out: The number of valid bits in the last byte. 0 for 8 valid bits.
 														byte rxAlign,		///< In: Defines the bit position in backData[0] for the first bit received. Default 0.
@@ -553,7 +582,7 @@ MFRC522::StatusCode MFRC522::PICC_REQA_or_WUPA(	byte command, 		///< The command
 	byte validBits;
 	MFRC522::StatusCode status;
 	
-	if (bufferATQA == NULL || *bufferSize < 2) {	// The ATQA response is 2 bytes long.
+	if (bufferATQA == nullptr || *bufferSize < 2) {	// The ATQA response is 2 bytes long.
 		return STATUS_NO_ROOM;
 	}
 	PCD_ClearRegisterBitMask(CollReg, 0x80);		// ValuesAfterColl=1 => Bits received after collision are cleared.
@@ -594,6 +623,7 @@ MFRC522::StatusCode MFRC522::PICC_Select(	Uid *uid,			///< Pointer to Uid struct
 	byte cascadeLevel = 1;
 	MFRC522::StatusCode result;
 	byte count;
+	byte checkBit;
 	byte index;
 	byte uidIndex;					// The first index in uid->uidByte[] that is used in the current Cascade Level.
 	int8_t currentLevelKnownBits;		// The number of known UID bits in the current Cascade Level.
@@ -738,10 +768,11 @@ MFRC522::StatusCode MFRC522::PICC_Select(	Uid *uid,			///< Pointer to Uid struct
 					return STATUS_INTERNAL_ERROR;
 				}
 				// Choose the PICC with the bit set.
-				currentLevelKnownBits = collisionPos;
-				count			= (currentLevelKnownBits - 1) % 8; // The bit to modify
+				currentLevelKnownBits	= collisionPos;
+				count			= currentLevelKnownBits % 8; // The bit to modify
+				checkBit		= (currentLevelKnownBits - 1) % 8;
 				index			= 1 + (currentLevelKnownBits / 8) + (count ? 1 : 0); // First byte is index 0.
-				buffer[index]	|= (1 << count);
+				buffer[index]	|= (1 << checkBit);
 			}
 			else if (result != STATUS_OK) {
 				return result;
@@ -818,7 +849,7 @@ MFRC522::StatusCode MFRC522::PICC_HaltA() {
 	//		If the PICC responds with any modulation during a period of 1 ms after the end of the frame containing the
 	//		HLTA command, this response shall be interpreted as 'not acknowledge'.
 	// We interpret that this way: Only STATUS_TIMEOUT is a success.
-	result = PCD_TransceiveData(buffer, sizeof(buffer), NULL, 0);
+	result = PCD_TransceiveData(buffer, sizeof(buffer), nullptr, 0);
 	if (result == STATUS_TIMEOUT) {
 		return STATUS_OK;
 	}
@@ -902,7 +933,7 @@ MFRC522::StatusCode MFRC522::MIFARE_Read(	byte blockAddr, 	///< MIFARE Classic: 
 	MFRC522::StatusCode result;
 	
 	// Sanity check
-	if (buffer == NULL || *bufferSize < 18) {
+	if (buffer == nullptr || *bufferSize < 18) {
 		return STATUS_NO_ROOM;
 	}
 	
@@ -916,7 +947,7 @@ MFRC522::StatusCode MFRC522::MIFARE_Read(	byte blockAddr, 	///< MIFARE Classic: 
 	}
 	
 	// Transmit the buffer and receive the response, validate CRC_A.
-	return PCD_TransceiveData(buffer, 4, buffer, bufferSize, NULL, 0, true);
+	return PCD_TransceiveData(buffer, 4, buffer, bufferSize, nullptr, 0, true);
 } // End MIFARE_Read()
 
 /**
@@ -937,7 +968,7 @@ MFRC522::StatusCode MFRC522::MIFARE_Write(	byte blockAddr, ///< MIFARE Classic: 
 	MFRC522::StatusCode result;
 	
 	// Sanity check
-	if (buffer == NULL || bufferSize < 16) {
+	if (buffer == nullptr || bufferSize < 16) {
 		return STATUS_INVALID;
 	}
 	
@@ -972,7 +1003,7 @@ MFRC522::StatusCode MFRC522::MIFARE_Ultralight_Write(	byte page, 		///< The page
 	MFRC522::StatusCode result;
 	
 	// Sanity check
-	if (buffer == NULL || bufferSize < 4) {
+	if (buffer == nullptr || bufferSize < 4) {
 		return STATUS_INVALID;
 	}
 	
@@ -1205,7 +1236,7 @@ MFRC522::StatusCode MFRC522::PCD_MIFARE_Transceive(	byte *sendData,		///< Pointe
 	byte cmdBuffer[18]; // We need room for 16 bytes data and 2 bytes CRC_A.
 	
 	// Sanity check
-	if (sendData == NULL || sendLen > 16) {
+	if (sendData == nullptr || sendLen > 16) {
 		return STATUS_INVALID;
 	}
 	

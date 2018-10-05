@@ -22,13 +22,12 @@
 #define APP_DEBUG        // Comment this out to disable debug prints
 
 #define BLYNK_PRINT Serial
-#include <BlynkSimpleEsp8266.h>
+
 #include "BlynkProvisioning.h"
 
 void setup() {
   delay(500);
   Serial.begin(115200);
-
 
   /**************************************************************
    *
@@ -47,7 +46,6 @@ void setup() {
    * to connect. User can RESET the board and re-initiate provisioning
    *
    * Explore the Settings.h for parameters
-   * Read the documentation for more info: http://
    *
    **************************************************************/
 

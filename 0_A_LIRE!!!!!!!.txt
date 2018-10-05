@@ -1,8 +1,3 @@
-1.
-Les fichiers '1ER_LANCEMENT.bat' & '1RST_LAUNCH.bat' sont identiques et permettent de nettoyer vos pofils si jamais vous utilisiez une version non portable d'Arduino.
+Les fichiers '1ER_LANCEMENT.bat' & '1RST_LAUNCH.bat' sont identiques et permettent de nettoyer vos profils si jamais vous utilisiez une version non portable d'Arduino.
+
 ATTENTION !!! Cela supprime donc les bibliothèques que vous auriez pu ajouter, recopiez celles-ci depuis Internet dans le dossier '\portable\sketchbook\libraries'.
-
-2.
-ARDUBLOCK ralentit malheureusement le comportement global de l'EDI Arduino.
-
-SI vous en avez besoin, vous lancez le fichier 'Ardublock_installation.cmd' qui va se charger de copier les fichiers aux bons endroits. Charge à vous de les supprimer par la suite si vous désiriez annuler la manipulation.

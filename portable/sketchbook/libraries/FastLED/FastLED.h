@@ -11,12 +11,12 @@
 #define FASTLED_HAS_PRAGMA_MESSAGE
 #endif
 
-#define  FASTLED_VERSION 3001005
+#define FASTLED_VERSION 3002000
 #ifndef FASTLED_INTERNAL
 #  ifdef FASTLED_HAS_PRAGMA_MESSAGE
-#    pragma message "FastLED version 3.001.006"
+#    pragma message "FastLED version 3.002.000"
 #  else
-#    warning FastLED version 3.001.006  (Not really a warning, just telling you here.)
+#    warning FastLED version 3.002.000  (Not really a warning, just telling you here.)
 #  endif
 #endif
 
@@ -25,15 +25,15 @@
 #endif
 
 #ifdef SmartMatrix_h
-#include<SmartMatrix.h>
+#include <SmartMatrix.h>
 #endif
 
 #ifdef DmxSimple_h
-#include<DmxSimple.h>
+#include <DmxSimple.h>
 #endif
 
 #ifdef DmxSerial_h
-#include<DMXSerial.h>
+#include <DMXSerial.h>
 #endif
 
 #include <stdint.h>
@@ -50,7 +50,7 @@
 #include "controller.h"
 #include "fastpin.h"
 #include "fastspi_types.h"
-#include "./dmx.h"
+#include "dmx.h"
 
 #include "platforms.h"
 #include "fastled_progmem.h"
@@ -84,6 +84,7 @@ enum ESPIChipsets {
 
 enum ESM { SMART_MATRIX };
 enum OWS2811 { OCTOWS2811,OCTOWS2811_400, OCTOWS2813};
+enum SWS2812 { WS2812SERIAL };
 
 #ifdef HAS_PIXIE
 template<uint8_t DATA_PIN, EOrder RGB_ORDER> class PIXIE : public PixieController<DATA_PIN, RGB_ORDER> {};
@@ -373,6 +374,15 @@ public:
 
 #endif
 
+#ifdef USE_WS2812SERIAL
+	template<SWS2812 CHIPSET, int DATA_PIN, EOrder RGB_ORDER>
+	static CLEDController &addLeds(struct CRGB *data, int nLedsOrOffset, int nLedsIfOffset = 0)
+	{
+		static CWS2812SerialController<DATA_PIN,RGB_ORDER> controller;
+		return addLeds(&controller, data, nLedsOrOffset, nLedsIfOffset);
+	}
+#endif
+
 #ifdef SmartMatrix_h
 	template<ESM CHIPSET>
 	static CLEDController &addLeds(struct CRGB *data, int nLedsOrOffset, int nLedsIfOffset = 0)
@@ -479,7 +489,7 @@ public:
 
 	/// clear the leds, wiping the local array of data, optionally black out the leds as well
 	/// @param writeData whether or not to write out to the leds as well
-	void clear(boolean writeData = false);
+	void clear(bool writeData = false);
 
 	/// clear out the local data array
 	void clearData();

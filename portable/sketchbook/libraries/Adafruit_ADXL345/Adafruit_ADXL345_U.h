@@ -5,7 +5,7 @@
     @license  BSD (see license.txt)
 
     This is a library for the Adafruit ADS1015 breakout board
-    ----> https://www.adafruit.com/products/???
+    ----> https://www.adafruit.com/products/1231
 
     Adafruit invests time and resources providing this open source code,
     please support Adafruit and open-source hardware by purchasing
@@ -16,6 +16,9 @@
     v1.0  - First release
 */
 /**************************************************************************/
+
+#ifndef Adafruit_ADXL345_h
+#define Adafruit_ADXL345_h
 
 #if ARDUINO >= 100
  #include "Arduino.h"
@@ -29,7 +32,7 @@
 /*=========================================================================
     I2C ADDRESS/BITS
     -----------------------------------------------------------------------*/
-    #define ADXL345_ADDRESS                 (0x53)    // Assumes ALT address pin low
+    #define ADXL345_DEFAULT_ADDRESS     (0x53)  // Assumes ALT address pin low
 /*=========================================================================*/
 
 /*=========================================================================
@@ -108,7 +111,7 @@ class Adafruit_ADXL345_Unified : public Adafruit_Sensor {
   Adafruit_ADXL345_Unified(int32_t sensorID = -1);
   Adafruit_ADXL345_Unified(uint8_t clock, uint8_t miso, uint8_t mosi, uint8_t cs, int32_t sensorID = -1);
 
-  bool       begin(void);
+  bool       begin(uint8_t addr = ADXL345_DEFAULT_ADDRESS);
   void       setRange(range_t range);
   range_t    getRange(void);
   void       setDataRate(dataRate_t dataRate);
@@ -131,4 +134,7 @@ class Adafruit_ADXL345_Unified : public Adafruit_Sensor {
   range_t _range;
   uint8_t _clk, _do, _di, _cs;
   bool    _i2c;
+  int8_t  _i2caddr;
 };
+
+#endif  // Adafruit_ADXL345_h

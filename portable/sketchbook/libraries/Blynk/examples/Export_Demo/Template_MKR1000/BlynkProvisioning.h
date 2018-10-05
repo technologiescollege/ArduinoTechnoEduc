@@ -9,6 +9,9 @@
  **************************************************************/
 
 #include "Settings.h"
+#include <SPI.h>
+#include <WiFi101.h>
+#include <BlynkSimpleMKR1000.h>
 #include "BlynkState.h"
 #include "ConfigStore.h"
 #include "ResetButton.h"
@@ -21,7 +24,6 @@ void BlynkState::set(State m) {
   if (state != m) {
     DEBUG_PRINT(String(StateStr[state]) + " => " + StateStr[m]);
     state = m;
-    indicator.updateState();
   }
 }
 
