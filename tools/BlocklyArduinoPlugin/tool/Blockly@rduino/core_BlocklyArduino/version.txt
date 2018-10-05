@@ -1,0 +1,4 @@
+[release]
+version=2.8
+[update]
+date=02102018
