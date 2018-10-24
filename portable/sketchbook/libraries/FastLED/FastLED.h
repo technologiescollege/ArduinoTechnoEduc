@@ -4,19 +4,16 @@
 ///@file FastLED.h
 /// central include file for FastLED, defines the CFastLED class/object
 
-#define xstr(s) str(s)
-#define str(s) #s
-
 #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
 #define FASTLED_HAS_PRAGMA_MESSAGE
 #endif
 
-#define FASTLED_VERSION 3002000
+#define FASTLED_VERSION 3002001
 #ifndef FASTLED_INTERNAL
 #  ifdef FASTLED_HAS_PRAGMA_MESSAGE
-#    pragma message "FastLED version 3.002.000"
+#    pragma message "FastLED version 3.002.001"
 #  else
-#    warning FastLED version 3.002.000  (Not really a warning, just telling you here.)
+#    warning FastLED version 3.002.001  (Not really a warning, just telling you here.)
 #  endif
 #endif
 
