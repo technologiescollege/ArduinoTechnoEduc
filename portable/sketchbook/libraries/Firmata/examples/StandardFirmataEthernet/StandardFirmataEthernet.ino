@@ -3,15 +3,15 @@
   from software on a host computer. It is intended to work with
   any host computer software package.
 
-  To download a host software package, please click on the following link
-  to open the list of Firmata client libraries in your default browser.
+  To download a host software package, please clink on the following link
+  to open the list of Firmata client libraries your default browser.
 
   https://github.com/firmata/arduino#firmata-client-libraries
 
   Copyright (C) 2006-2008 Hans-Christoph Steiner.  All rights reserved.
   Copyright (C) 2010-2011 Paul Stoffregen.  All rights reserved.
   Copyright (C) 2009 Shigeru Kobayashi.  All rights reserved.
-  Copyright (C) 2009-2017 Jeff Hoefs.  All rights reserved.
+  Copyright (C) 2009-2016 Jeff Hoefs.  All rights reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -20,14 +20,14 @@
 
   See file LICENSE.txt for further informations on licensing terms.
 
-  Last updated August 17th, 2017
+  Last updated by Jeff Hoefs: June 18th, 2016
 */
 
 /*
   README
 
-  StandardFirmataEthernet is a TCP client/server implementation. You will need a Firmata client library
-  with a network transport that can act as a TCP server or client in order to establish a connection between
+  StandardFirmataEthernet is a TCP client implementation. You will need a Firmata client library
+  with a network transport that can act as a TCP server in order to establish a connection between
   StandardFirmataEthernet and the Firmata client application.
 
   To use StandardFirmataEthernet you will need to have one of the following
@@ -68,7 +68,6 @@
 // follow the instructions in ethernetConfig.h to configure your particular hardware
 #include "ethernetConfig.h"
 #include "utility/EthernetClientStream.h"
-#include "utility/EthernetServerStream.h"
 
 /*
  * Uncomment the following include to enable interfacing with Serial devices via hardware or
@@ -79,8 +78,6 @@
  * remaining to reliably run Firmata. Arduino Yun is okay because it doesn't import the Ethernet
  * libraries.
  */
-// In order to use software serial, you will need to compile this sketch with
-// Arduino IDE v1.6.6 or higher. Hardware serial should work back to Arduino 1.0.
 //#include "utility/SerialFirmata.h"
 
 #define I2C_WRITE                   B00000000
@@ -104,25 +101,17 @@
 
 #if defined remote_ip && !defined remote_host
 #ifdef local_ip
-EthernetClientStream stream(client, local_ip, remote_ip, NULL, network_port);
+EthernetClientStream stream(client, local_ip, remote_ip, NULL, remote_port);
 #else
-EthernetClientStream stream(client, IPAddress(0, 0, 0, 0), remote_ip, NULL, network_port);
+EthernetClientStream stream(client, IPAddress(0, 0, 0, 0), remote_ip, NULL, remote_port);
 #endif
 #endif
 
 #if !defined remote_ip && defined remote_host
 #ifdef local_ip
-EthernetClientStream stream(client, local_ip, IPAddress(0, 0, 0, 0), remote_host, network_port );
+EthernetClientStream stream(client, local_ip, IPAddress(0, 0, 0, 0), remote_host, remote_port);
 #else
-EthernetClientStream stream(client, IPAddress(0, 0, 0, 0), IPAddress(0, 0, 0, 0), remote_host, network_port);
-#endif
-#endif
-
-#if !defined remote_ip && !defined remote_host
-#ifdef local_ip
-EthernetServerStream stream(local_ip, network_port);
-#else
-EthernetServerStream stream(IPAddress(0, 0, 0, 0), network_port);
+EthernetClientStream stream(client, IPAddress(0, 0, 0, 0), IPAddress(0, 0, 0, 0), remote_host, remote_port);
 #endif
 #endif
 
@@ -169,12 +158,6 @@ byte detachedServoCount = 0;
 byte servoCount = 0;
 
 boolean isResetting = false;
-
-// Forward declare a few functions to avoid compiler errors with older versions
-// of the Arduino IDE.
-void setPinModeCallback(byte, int);
-void reportAnalogCallback(byte analogPin, int value);
-void sysexCallback(byte, byte, byte*);
 
 /* utility functions */
 void wireWrite(byte data)
@@ -235,30 +218,6 @@ void detachServo(byte pin)
   }
 
   servoPinMap[pin] = 255;
-}
-
-void enableI2CPins()
-{
-  byte i;
-  // is there a faster way to do this? would probaby require importing
-  // Arduino.h to get SCL and SDA pins
-  for (i = 0; i < TOTAL_PINS; i++) {
-    if (IS_PIN_I2C(i)) {
-      // mark pins as i2c so they are ignore in non i2c data requests
-      setPinModeCallback(i, PIN_MODE_I2C);
-    }
-  }
-
-  isI2CEnabled = true;
-
-  Wire.begin();
-}
-
-/* disable the i2c pins so they can be used for other functions */
-void disableI2CPins() {
-  isI2CEnabled = false;
-  // disable read continuous mode for all devices
-  queryIndex = -1;
 }
 
 void readAndReportData(byte address, int theRegister, byte numBytes, byte stopTX) {
@@ -398,10 +357,7 @@ void setPinModeCallback(byte pin, int mode)
       break;
     case OUTPUT:
       if (IS_PIN_DIGITAL(pin)) {
-        if (Firmata.getPinMode(pin) == PIN_MODE_PWM) {
-          // Disable PWM if pin mode was previously set to PWM.
-          digitalWrite(PIN_TO_DIGITAL(pin), LOW);
-        }
+        digitalWrite(PIN_TO_DIGITAL(pin), LOW); // disable PWM
         pinMode(PIN_TO_DIGITAL(pin), OUTPUT);
         Firmata.setPinMode(pin, OUTPUT);
       }
@@ -666,7 +622,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
     case I2C_CONFIG:
       delayTime = (argv[0] + (argv[1] << 7));
 
-      if (argc > 1 && delayTime > 0) {
+      if (delayTime > 0) {
         i2cReadDelayTime = delayTime;
       }
 
@@ -776,6 +732,30 @@ void sysexCallback(byte command, byte argc, byte *argv)
   }
 }
 
+void enableI2CPins()
+{
+  byte i;
+  // is there a faster way to do this? would probaby require importing
+  // Arduino.h to get SCL and SDA pins
+  for (i = 0; i < TOTAL_PINS; i++) {
+    if (IS_PIN_I2C(i)) {
+      // mark pins as i2c so they are ignore in non i2c data requests
+      setPinModeCallback(i, PIN_MODE_I2C);
+    }
+  }
+
+  isI2CEnabled = true;
+
+  Wire.begin();
+}
+
+/* disable the i2c pins so they can be used for other functions */
+void disableI2CPins() {
+  isI2CEnabled = false;
+  // disable read continuous mode for all devices
+  queryIndex = -1;
+}
+
 /*==============================================================================
  * SETUP()
  *============================================================================*/
@@ -832,17 +812,6 @@ void systemResetCallback()
   isResetting = false;
 }
 
-void printEthernetStatus()
-{
-  DEBUG_PRINT("Local IP Address: ");
-  IPAddress ip = Ethernet.localIP();
-  DEBUG_PRINTLN(ip);
-#ifdef remote_ip
-  DEBUG_PRINT("Connecting to server at: ");
-  DEBUG_PRINTLN(remote_ip);
-#endif
-}
-
 /*
  * StandardFirmataEthernet communicates with Ethernet shields over SPI. Therefore all
  * SPI pins must be set to IGNORE. Otherwise Firmata would break SPI communication.
@@ -879,14 +848,11 @@ void initTransport()
 #ifdef local_ip
   Ethernet.begin((uint8_t *)mac, local_ip); //start ethernet
 #else
-  DEBUG_PRINTLN("Local IP will be requested from DHCP...");
-  //start ethernet using dhcp
-  if (Ethernet.begin((uint8_t *)mac) == 0) {
-    DEBUG_PRINTLN("Failed to configure Ethernet using DHCP");
-  }
+  Ethernet.begin((uint8_t *)mac);           //start ethernet using dhcp
 #endif
 #endif
-  printEthernetStatus();
+
+  DEBUG_PRINTLN("connecting...");
 }
 
 void initFirmata()
@@ -905,7 +871,7 @@ void initFirmata()
 
   // start up Network Firmata:
   Firmata.begin(stream);
-  systemResetCallback();  // Initialize default configuration
+  systemResetCallback();  // reset to default config
 }
 
 void setup()

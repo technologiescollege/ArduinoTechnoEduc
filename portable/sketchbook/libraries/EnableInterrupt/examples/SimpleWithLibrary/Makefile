@@ -1,6 +1,5 @@
 # Arduino Makefile, see https://github.com/sudar/Arduino-Makefile (it's awesome!)
-BOARD_TAG    = pro
-BOARD_SUB    = 16MHzatmega328
+BOARD_TAG    = atmega328
 ARDUINO_PORT = /dev/ttyUSB0
 #BOARD_TAG    = 2560
 #ARDUINO_PORT = /dev/ttyACM0

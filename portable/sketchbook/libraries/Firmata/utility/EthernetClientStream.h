@@ -130,9 +130,9 @@ EthernetClientStream::maintain()
     connected = host ? client.connect(host, port) : client.connect(ip, port);
     if (!connected) {
       time_connect = millis();
-      DEBUG_PRINTLN("Connection failed. Attempting to reconnect...");
+      DEBUG_PRINTLN("connection failed. attempting to reconnect...");
     } else {
-      DEBUG_PRINTLN("Connected");
+      DEBUG_PRINTLN("connected");
     }
   }
   return connected;
