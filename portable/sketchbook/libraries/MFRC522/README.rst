@@ -20,7 +20,17 @@ Interface (SPI) interface.
 .. _development:
 Development
 ----------
-**The development by owner miguelbalboa has ended**. Further development will be done by community. This library is still maintained by miguelbalboa, so make pull request if you like some new features or fixes. Support/issues should be solved by community.
+**The development by owner miguelbalboa has ended**. Further development will be done by community. This library is sporadically maintained. You can make pull request if you have developed a fix. Support/issues should be solved by community.
+
+
+.. _before buy:
+Before buy
+----------
+Please notice that there are many sellers (ebay, aliexpress, ..) who sell mfrc522 boards. **The quality of these boards are extremely different.** Some are soldered with wrong/low quality capacitors or fake/defect mfrc522.
+
+**Please consider buying several devices from different suppliers.** So the chance of getting a working device is higher.
+
+If you got a bad board and you can tell us how to detect those boards (silk, chip description, ..), please share your knowledge.
 
 
 .. _what works and not:
@@ -82,7 +92,6 @@ Some user made some patches/suggestions/ports for other boards:
 * Linux: https://github.com/miguelbalboa/rfid/pull/216
 * chipKIT: https://github.com/miguelbalboa/rfid/pull/230
 * ESP8266 (native): https://github.com/miguelbalboa/rfid/pull/235
-* ESP8266 nonos sdk: https://github.com/mmmmar/esp-ujn/tree/master/mfrc522
 * LPCOPen (in C): https://github.com/miguelbalboa/rfid/pull/258
 
 Note that the main target/support of library is still Arduino.
@@ -93,10 +102,10 @@ Support/issue
 1. First checkout `what works and not`_ and `troubleshooting`_ .
 
 2. It seems to be a hardware issue or you need support to program your project?
-    Please ask in the official `Arduino forum`_, where you would get a much faster answer than on github.
+    Please ask in the official `Arduino forum`_, where you would get a much faster answer than on Github.
 
 3. It seems to be a software issue?
-    Open an issue on github.
+    Open an issue on Github.
 
 
 .. _code style:
@@ -233,6 +242,13 @@ Troubleshooting
   #. According to reports #101, #126 and #131, there may be a problem with the soldering on the MFRC522 breakout. You could fix this on your own.
 
 
+* **Firmware Version: 0x12 = (unknown)**
+
+  #. The reason of this behaviour is unknown.
+  #. If this sometimes appear a bad connection or power source is the reason.
+  #. If the firmware version is reported permanent, it is very likely that the hardware is a fake or has a defect. Contact your supplier.
+
+
 * **Sometimes I get timeouts** or **sometimes tag/card does not work.**
 
   #. Try the other side of the antenna.
@@ -249,12 +265,12 @@ Troubleshooting
   #. NFC tokens are not supported. Some may work.
   #. Animal RFID tags are not supported. They use a different frequency (125 kHz).
   #. Hardware may be corrupted, most products are from china and sometimes the quality is really poor. Contact your seller.
-  #. Newer versions of Mifare cards like DESFire/Ultralight maybe not work according to missing authentification, see `security`_ or different `protocol`_.
-  #. Some boards bought from chinese manufactures do not use the best components and this can affect the detection of different types of tag/card. In some of these boards, the L1 and L2 inductors do not have a high enough current so the signal generated is not enough to get Ultralight C and NTAG203 tags to work, replacing those with same inductance (2.2uH) but higher operating current inductors should make things work smoothly. Also, in some of those boards the  harmonic and matching circuit needs to be tuned, for this replace C4 and C5 with 33pf capacitors and you are all set. (Source: `Mikro Elektronika`_) 
+  #. Newer versions of Mifare cards like DESFire/Ultralight maybe not work according to missing authentication, see `security`_ or different `protocol`_.
+  #. Some boards bought from Chinese manufactures do not use the best components and this can affect the detection of different types of tag/card. In some of these boards, the L1 and L2 inductors do not have a high enough current so the signal generated is not enough to get Ultralight C and NTAG203 tags to work, replacing those with same inductance (2.2uH) but higher operating current inductors should make things work smoothly. Also, in some of those boards the  harmonic and matching circuit needs to be tuned, for this replace C4 and C5 with 33pf capacitors and you are all set. (Source: `Mikro Elektronika`_) 
 
 * **My mobile phone doesn't recognize the MFRC522** or **my MFRC522 can't read data from other MFRC522**
 
-  #. Card simmulation is not supported.
+  #. Card simulation is not supported.
   #. Communication with mobile phones is not supported.
   #. Peer to peer communication is not supported.
 
@@ -329,6 +345,9 @@ It was translated into English and rewritten/refactored in the fall of 2013
 by Søren Thing Andersen (from http://access.thing.dk).
 
 It has been extended with functionality to alter sector 0 on Chinese UID changeable MIFARE card in Oct 2014 by Tom Clement (from http://tomclement.nl).
+
+Maintained by miguelbalboa until 2016.
+Maintained by Rotzbua from 2016 until 2018.
 
 
 .. _arduino: https://arduino.cc/
