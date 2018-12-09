@@ -14,25 +14,30 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-*/ 
+*/
 
 // Many definitions in /usr/avr/include/avr/io.h
 
 #ifndef EnableInterrupt_h
+#pragma message("NOTICE: *** EnableInterrupt library version pre-0.9.6. This is not a problem. Keep calm, and carry on. ***")
 #define EnableInterrupt_h
 #include <Arduino.h>
 
-
-// Function Prototypes 
-// 
-// 
-// These are the only functions the end user (programmer) needs to consider. 
-
+// Function Prototypes (comment) /*{{{*/
+/* *************************************************************************************
+// *************************************************************************************
+// Function Prototypes *****************************************************************
+// *************************************************************************************
+// *************************************************************************************
+// *** These are the only functions the end user (programmer) needs to consider.     ***
+// *** This means you!                                                               ***
+// *************************************************************************************
+*//*}}}*/
 
 // Arduino Due (not Duemilanove) and Zero macros. Easy-peasy.
 // Zero uses the __SAMD21G18A__ processor macro (2015-10-13) but we will use this handy macro, to
 // avoid breaking the library over tiny changes.
-#if defined __SAM3U4E__ || defined __SAM3X8E__ || defined __SAM3X8H__ || defined ARDUINO_SAMD_ZERO/*{{{*/
+#if defined __SAM3U4E__ || defined __SAM3X8E__ || defined __SAM3X8H__ || defined ARDUINO_SAMD_ZERO || defined __SAMD21G18A__  || defined __SAMD21J18A__ /*{{{*/
 #ifdef NEEDFORSPEED
 #error Due and Zero are already fast; the NEEDFORSPEED definition does not make sense on it.
 #endif
@@ -44,7 +49,7 @@
 /* enableInterrupt- Sets up an interrupt on a selected Arduino pin.
  * or
  * enableInterruptFast- When used with the NEEDFORSPEED macro, sets up an interrupt on a selected Arduino pin.
- * 
+ *
  * Usage:
  * enableInterrupt(uint8_t pinNumber, void (*userFunction)(void), uint8_t mode);
  * or
@@ -73,11 +78,11 @@
  * to specify that you want to use a Pin Change Interrupt type of interrupt on those pins that
  * support both Pin Change and External Interrupts. Otherwise, the library will choose whatever
  * interrupt type (External, or Pin Change) normally applies to that pin, with priority to
- * External Interrupt. 
+ * External Interrupt.
  *
  * The interruptDesignator is required because on the ATmega328 processor pins 2 and 3 support
  * ''either'' pin change or * external interrupts. On 644/1284-based systems, pin change interrupts
- * are supported on all pins and external interruptsare supported on pins 2, 10, and 11. 
+ * are supported on all pins and external interruptsare supported on pins 2, 10, and 11.
  * Otherwise, each pin only supports a single type of interrupt and the
  * PINCHANGEINTERRUPT scheme changes nothing. This means you can ignore this whole discussion
  * for ATmega2560- or ATmega32U4-based Arduinos. You can probably safely ignore it for
@@ -557,7 +562,7 @@ static volatile uint8_t portSnapshotK;
 #define ARDUINO_PIN_D3 1
 #define ARDUINO_PIN_E6 7
 
-/* To derive this list: 
+/* To derive this list:
    sed -n -e '1,/digital_pin_to_port_PGM/d' -e '/^}/,$d' -e '/P/p' \
        /usr/share/arduino/hardware/arduino/variants/leonardo/pins_arduino.h | \
        awk '{print "  ", $5 ", // " $5 "  pin: " $3}'
@@ -657,14 +662,6 @@ static volatile uint8_t portSnapshotB;
 #define ARDUINO_PIN_A5 29
 #define ARDUINO_PIN_A6 30
 #define ARDUINO_PIN_A7 31
-#define ARDUINO_PIN_B0 0
-#define ARDUINO_PIN_B1 1
-#define ARDUINO_PIN_B2 2
-#define ARDUINO_PIN_B3 3
-#define ARDUINO_PIN_B4 4
-#define ARDUINO_PIN_B5 5
-#define ARDUINO_PIN_B6 6
-#define ARDUINO_PIN_B7 7
 #define ARDUINO_PIN_C0 16
 #define ARDUINO_PIN_C1 17
 #define ARDUINO_PIN_C2 18
@@ -673,14 +670,44 @@ static volatile uint8_t portSnapshotB;
 #define ARDUINO_PIN_C5 21
 #define ARDUINO_PIN_C6 22
 #define ARDUINO_PIN_C7 23
+
+// For boards with the 44 pin options:  vectors B & D are reversed
+// Thanks to Sara Damiano for these updates!!!
+#if defined ARDUINO_AVR_ENVIRODIY_MAYFLY || defined ARDUINO_AVR_SODAQ_MBILI
+#define ARDUINO_PIN_B0 8
+#define ARDUINO_PIN_B1 9
+#define ARDUINO_PIN_B2 10  // INT2
+#define ARDUINO_PIN_B3 11
+#define ARDUINO_PIN_B4 12
+#define ARDUINO_PIN_B5 13
+#define ARDUINO_PIN_B6 14
+#define ARDUINO_PIN_B7 15
+#define ARDUINO_PIN_D0 0
+#define ARDUINO_PIN_D1 1
+#define ARDUINO_PIN_D2 2  // INT0
+#define ARDUINO_PIN_D3 3  // INT1
+#define ARDUINO_PIN_D4 4
+#define ARDUINO_PIN_D5 5
+#define ARDUINO_PIN_D6 6
+#define ARDUINO_PIN_D7 7
+#else
+#define ARDUINO_PIN_B0 0
+#define ARDUINO_PIN_B1 1
+#define ARDUINO_PIN_B2 2  // INT2
+#define ARDUINO_PIN_B3 3
+#define ARDUINO_PIN_B4 4
+#define ARDUINO_PIN_B5 5
+#define ARDUINO_PIN_B6 6
+#define ARDUINO_PIN_B7 7
 #define ARDUINO_PIN_D0 8
 #define ARDUINO_PIN_D1 9
-#define ARDUINO_PIN_D2 10
-#define ARDUINO_PIN_D3 11
+#define ARDUINO_PIN_D2 10  // INT0
+#define ARDUINO_PIN_D3 11  // INT1
 #define ARDUINO_PIN_D4 12
 #define ARDUINO_PIN_D5 13
 #define ARDUINO_PIN_D6 14
 #define ARDUINO_PIN_D7 15
+#endif
 
 const uint8_t PROGMEM digital_pin_to_port_bit_number_PGM[] = {
   0, // 0 == port B, 0
@@ -771,7 +798,7 @@ static volatile uint8_t portSnapshotB;
 volatile uint8_t risingPinsPORTC=0;
 volatile uint8_t fallingPinsPORTC=0;
 static volatile uint8_t portSnapshotC;
-#endif 
+#endif
 
 #ifndef EI_NOTPORTD
 volatile uint8_t risingPinsPORTD=0;
@@ -982,7 +1009,7 @@ static volatile uint8_t portSnapshotB;
 #define EI_printPSTR(x) EI_SerialPrint_P(PSTR(x))
 void EI_SerialPrint_P(const char *str) {
   for (uint8_t c; (c = pgm_read_byte(str)); str++) Serial.write(c);
-} 
+}
 #endif
 
 
@@ -1013,8 +1040,8 @@ void enableInterrupt(uint8_t interruptDesignator, interruptFunctionType userFunc
 #if defined ARDUINO_328
   if ( (interruptDesignator & PINCHANGEINTERRUPT) || (arduinoPin != 2 && arduinoPin != 3) ) {
 #elif defined MIGHTY1284
-  if ( (interruptDesignator & PINCHANGEINTERRUPT) || (arduinoPin != 2 && arduinoPin != 10 &&
-                                                      arduinoPin != 11) ) {
+  if ( (interruptDesignator & PINCHANGEINTERRUPT) ||
+     (arduinoPin != ARDUINO_PIN_B2 && arduinoPin != ARDUINO_PIN_D2 && arduinoPin != ARDUINO_PIN_D3) ) {
 #elif defined ARDUINO_LEONARDO
   if ( (arduinoPin > 3) && (arduinoPin != 7) ) {
 #elif defined EI_ATTINY24
@@ -1185,8 +1212,8 @@ void disableInterrupt (uint8_t interruptDesignator) {
 #if defined ARDUINO_328
   if ( (interruptDesignator & PINCHANGEINTERRUPT) || (arduinoPin != 2 && arduinoPin != 3) ) {
 #elif defined MIGHTY1284
-  if ( (interruptDesignator & PINCHANGEINTERRUPT) || (arduinoPin != 2 && arduinoPin != 10 &&
-                                                      arduinoPin != 11) ) {
+  if ( (interruptDesignator & PINCHANGEINTERRUPT) ||
+   (arduinoPin != ARDUINO_PIN_B2 && arduinoPin != ARDUINO_PIN_D2 && arduinoPin != ARDUINO_PIN_D3) ) {
 #elif defined EI_ATTINY24
   if ( (interruptDesignator & PINCHANGEINTERRUPT) || (arduinoPin != 8) ) {
 #elif defined EI_ATTINY25
@@ -1280,17 +1307,17 @@ ISR(INT0_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
 #if defined MIGHTY1284
-  arduinoInterruptedPin=ARDUINO_PIN_D2;
+  arduinoInterruptedPin=ARDUINO_PIN_D2; arduinoPinState=PIND & _BV(2);
 #elif defined ARDUINO_MEGA
-  arduinoInterruptedPin=ARDUINO_PIN_D0;
+  arduinoInterruptedPin=ARDUINO_PIN_D0; arduinoPinState=PIND & _BV(0);
 #elif defined ARDUINO_LEONARDO
-  arduinoInterruptedPin=ARDUINO_PIN_D0;
+  arduinoInterruptedPin=ARDUINO_PIN_D0; arduinoPinState=PIND & _BV(0);
 #elif defined ARDUINO_328
-  arduinoInterruptedPin=ARDUINO_PIN_D2;
+  arduinoInterruptedPin=ARDUINO_PIN_D2; arduinoPinState=PIND & _BV(2);
 #elif defined EI_ATTINY24
-  arduinoInterruptedPin=ARDUINO_PIN_B2;
+  arduinoInterruptedPin=ARDUINO_PIN_B2; arduinoPinState=PINB & _BV(2);
 #elif defined EI_ATTINY25
-  arduinoInterruptedPin=ARDUINO_PIN_B0;
+  arduinoInterruptedPin=ARDUINO_PIN_B0; arduinoPinState=PINB & _BV(0);
 #endif
 #endif // EI_ARDUINO_INTERRUPTED_PIN
 #if ! defined EI_ATTINY25 && ! defined EI_ATTINY24
@@ -1299,8 +1326,10 @@ ISR(INT0_vect) {/*{{{*/
   externalFunctionPointer();
 #endif
 #else
-#if defined MIGHTY1284
-  INTERRUPT_FLAG_PIN10++ 
+#if defined ARDUINO_AVR_ENVIRODIY_MAYFLY || defined ARDUINO_AVR_SODAQ_MBILI
+  INTERRUPT_FLAG_PIN2++;
+#elif defined MIGHTY1284
+  INTERRUPT_FLAG_PIN10++;
 #endif
 #if defined ARDUINO_MEGA
 #ifdef INTERRUPT_FLAG_PIN21
@@ -1339,19 +1368,21 @@ ISR(INT1_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
 #if defined MIGHTY1284
-  arduinoInterruptedPin=ARDUINO_PIN_D3;
+  arduinoInterruptedPin=ARDUINO_PIN_D3; arduinoPinState=PIND & _BV(3);
 #elif defined ARDUINO_MEGA
-  arduinoInterruptedPin=ARDUINO_PIN_D1;
+  arduinoInterruptedPin=ARDUINO_PIN_D1; arduinoPinState=PIND & _BV(1);
 #elif defined ARDUINO_LEONARDO
-  arduinoInterruptedPin=ARDUINO_PIN_D1;
+  arduinoInterruptedPin=ARDUINO_PIN_D1; arduinoPinState=PIND & _BV(1);
 #elif defined ARDUINO_328
-  arduinoInterruptedPin=ARDUINO_PIN_D3;
+  arduinoInterruptedPin=ARDUINO_PIN_D3; arduinoPinState=PIND & _BV(3);
 #endif
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   (*functionPointerArrayEXTERNAL[1])();
 #else
-#if defined MIGHTY1284
-  INTERRUPT_FLAG_PIN11++ 
+#if defined ARDUINO_AVR_ENVIRODIY_MAYFLY || defined ARDUINO_AVR_SODAQ_MBILI
+  INTERRUPT_FLAG_PIN3++;
+#elif defined MIGHTY1284
+  INTERRUPT_FLAG_PIN11++;
 #endif
 #if defined ARDUINO_MEGA
 #ifdef INTERRUPT_FLAG_PIN20
@@ -1379,17 +1410,19 @@ ISR(INT2_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
 #if defined MIGHTY1284
-  arduinoInterruptedPin=ARDUINO_PIN_B2;
+  arduinoInterruptedPin=ARDUINO_PIN_B2; arduinoPinState=PINB & _BV(2);
 #elif defined ARDUINO_MEGA
-  arduinoInterruptedPin=ARDUINO_PIN_D2;
+  arduinoInterruptedPin=ARDUINO_PIN_D2; arduinoPinState=PIND & _BV(2);
 #elif defined ARDUINO_LEONARDO
-  arduinoInterruptedPin=ARDUINO_PIN_D2;
+  arduinoInterruptedPin=ARDUINO_PIN_D2; arduinoPinState=PIND & _BV(2);
 #endif
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   (*functionPointerArrayEXTERNAL[2])();
 #else
-#if defined MIGHTY1284
-  INTERRUPT_FLAG_PIN2++ 
+#if defined ARDUINO_AVR_ENVIRODIY_MAYFLY || defined ARDUINO_AVR_SODAQ_MBILI
+  INTERRUPT_FLAG_PIN10++;
+#elif defined MIGHTY1284
+  INTERRUPT_FLAG_PIN2++;
 #endif
 #if defined ARDUINO_MEGA
 #ifdef INTERRUPT_FLAG_PIN19
@@ -1411,9 +1444,9 @@ ISR(INT3_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
 #if defined ARDUINO_MEGA
-  arduinoInterruptedPin=ARDUINO_PIN_D3;
+  arduinoInterruptedPin=ARDUINO_PIN_D3; arduinoPinState=PIND & _BV(3);
 #elif defined ARDUINO_LEONARDO
-  arduinoInterruptedPin=ARDUINO_PIN_D3;
+  arduinoInterruptedPin=ARDUINO_PIN_D3; arduinoPinState=PIND & _BV(3);
 #endif
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   (*functionPointerArrayEXTERNAL[3])();
@@ -1437,7 +1470,7 @@ ISR(INT3_vect) {/*{{{*/
 ISR(INT4_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
-  arduinoInterruptedPin=ARDUINO_PIN_E4;
+  arduinoInterruptedPin=ARDUINO_PIN_E4; arduinoPinState=PINE & _BV(4);
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   (*functionPointerArrayEXTERNAL[4])();
 #else
@@ -1452,7 +1485,7 @@ ISR(INT4_vect) {/*{{{*/
 ISR(INT5_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
-  arduinoInterruptedPin=ARDUINO_PIN_E5;
+  arduinoInterruptedPin=ARDUINO_PIN_E5; arduinoPinState=PINE & _BV(5);
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   (*functionPointerArrayEXTERNAL[5])();
 #else
@@ -1467,7 +1500,7 @@ ISR(INT5_vect) {/*{{{*/
 ISR(INT6_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
-  arduinoInterruptedPin=ARDUINO_PIN_E6;
+  arduinoInterruptedPin=ARDUINO_PIN_E6; arduinoPinState=PINE & _BV(6);
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   (*functionPointerArrayEXTERNAL[6])();
 #else
@@ -1482,7 +1515,7 @@ ISR(INT6_vect) {/*{{{*/
 ISR(INT7_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
-  arduinoInterruptedPin=ARDUINO_PIN_E7;
+  arduinoInterruptedPin=ARDUINO_PIN_E7; arduinoPinState=PINE & _BV(7);
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   (*functionPointerArrayEXTERNAL[7])();
 #else
@@ -1499,7 +1532,7 @@ ISR(INT7_vect) {/*{{{*/
 ISR(INT6_vect) {/*{{{*/
 #ifndef NEEDFORSPEED
 #ifdef EI_ARDUINO_INTERRUPTED_PIN
-  arduinoInterruptedPin=ARDUINO_PIN_E6;
+  arduinoInterruptedPin=ARDUINO_PIN_E6; arduinoPinState=PINE & _BV(6);
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   (*functionPointerArrayEXTERNAL[4])();
 #else
@@ -1651,7 +1684,11 @@ ISR(PORTC_VECT) {/*{{{*/
   interruptMask = fallingPinsPORTC & ~current;
   interruptMask = interruptMask | tmp;
   interruptMask = changedPins & interruptMask;
+#if (defined MIGHTY1284)
+  interruptMask = PCMSK2 & interruptMask;
+#else
   interruptMask = PCMSK1 & interruptMask;
+#endif
 
   portSnapshotC = current;
 #ifdef NEEDFORSPEED
@@ -1703,8 +1740,11 @@ ISR(PORTD_VECT) {/*{{{*/
   interruptMask = fallingPinsPORTD & ~current;
   interruptMask = interruptMask | tmp;
   interruptMask = changedPins & interruptMask;
+#if (defined MIGHTY1284)
+  interruptMask = PCMSK3 & interruptMask;
+#else
   interruptMask = PCMSK2 & interruptMask;
-
+#endif
 
   portSnapshotD = current;
 #ifdef NEEDFORSPEED
@@ -1826,7 +1866,7 @@ ISR(PORTK_VECT) {/*{{{*/
 #endif // EI_ARDUINO_INTERRUPTED_PIN
   exitPORTKISR: return;
 #endif // NEEDFORSPEED
-}
+}/*}}}*/
 #endif // EI_NOTPORTK
 
 // *************************************************************************************
