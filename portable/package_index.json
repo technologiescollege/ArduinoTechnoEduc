@@ -4106,6 +4106,55 @@
           ]
         },
         {
+          "name": "openocd",
+          "version": "0.10.0-arduino8",
+          "systems": [
+            {
+              "size": "1714346",
+              "checksum": "SHA-256:86c4ea3086b4a1475fd8a1e1daf4585748be093dad4160e816b1bf2502501fb2",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-arm-linux-gnueabihf.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-arm-linux-gnueabihf.tar.bz2"
+            },
+            {
+              "size": "1778371",
+              "checksum": "SHA-256:500cb112ee92092bbfce69649b90d0284752c5766f5aaf5c24dc754100788ef9",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-aarch64-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-aarch64-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "1653652",
+              "checksum": "SHA-256:584b513ebbc4a645a68234d964ba56f042aaf7668d84ba47398a07a294516cc4",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-x86_64-apple-darwin13.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-x86_64-apple-darwin13.tar.bz2"
+            },
+            {
+              "size": "1845547",
+              "checksum": "SHA-256:455d4123146bf6b4b095de86d3340fd01e39bba9c70b2f0bb8e979ac4dddac39",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "1781892",
+              "checksum": "SHA-256:5b44889984daefa966b8251edb98445169107ca32f974ca598d4c59e7d2c8901",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-i686-ubuntu12.04-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-i686-ubuntu12.04-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "2190397",
+              "checksum": "SHA-256:35a92f32f2762ef9405d2c684ec7bea2e70c01068f380251aecd9290f5bd5b24",
+              "host": "i686-mingw32",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-i686-w64-mingw32.zip"
+            }
+          ]
+        },
+
+        {
           "name": "CMSIS",
           "version": "4.0.0-atmel",
           "systems": [
@@ -4823,6 +4872,48 @@
           "url": "https://github.com/arduino/ArduinoCore-arc32/archive/2.0.2.zip",
           "checksum": "SHA-256:2cea02dee6959f784c6bb6bdb2dc0eafa4c4d0ce5539da9cfa64dd6ce50939fe",
           "size": "6242776",
+          "boards": [
+            {
+              "name": "Arduino/Genuino 101"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "Intel",
+              "version": "2.0.1",
+              "name": "arduino101load"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.9.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "Intel",
+              "version": "1.6.9+1.0.1",
+              "name": "arc-elf32"
+            },
+            {
+              "packager": "Intel",
+              "version": "0.9.0+0.1",
+              "name": "openocd"
+            },
+            {
+              "packager": "Intel",
+              "version": "2.0.0",
+              "name": "flashpack"
+            }
+          ]
+        },
+        {
+          "name": "Intel Curie Boards",
+          "version": "2.0.4",
+          "category": "Arduino Certified",
+          "archiveFileName": "corelibs-arduino101-2.0.4.zip",
+          "architecture": "arc32",
+          "url": "https://github.com/arduino/ArduinoCore-arc32/archive/2.0.3.zip",
+          "checksum": "SHA-256:466027da55175ba69115bc5aa859e10d1432cd6b6abfccc10a2687eff35ca906",
+          "size": "6243652",
           "boards": [
             {
               "name": "Arduino/Genuino 101"

@@ -14,28 +14,9 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.0.0/esp8266-2.0.0.zip", 
           "checksum": "SHA-256:00911ee9f5d4802b279fd81a5a8177fd6fef4888d04ebe93fc3952bac85d909c", 
-          "name": "esp8266", 
           "version": "2.0.0", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.0.0.zip", 
-          "size": "5606497", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.6", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.1.2", 
-              "name": "mkspiffs"
-            }
-          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -64,7 +45,26 @@
             {
               "name": "WeMos D1 mini"
             }
-          ]
+          ], 
+          "size": "5606497", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.6", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.1.2", 
+              "name": "mkspiffs"
+            }
+          ], 
+          "name": "esp8266"
         }, 
         {
           "category": "ESP8266", 
@@ -73,9 +73,28 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.3.0/esp8266-2.3.0.zip", 
           "checksum": "SHA-256:884188a54bc75f1f2e7f827619f8cb1980dc3f430f92f9b07186ed7f4db8c738", 
+          "name": "esp8266", 
           "version": "2.3.0", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.3.0.zip", 
+          "size": "8595050", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.9", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.1.2", 
+              "name": "mkspiffs"
+            }
+          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -128,26 +147,7 @@
             {
               "name": "ESPDuino"
             }
-          ], 
-          "size": "8595050", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.9", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.1.2", 
-              "name": "mkspiffs"
-            }
-          ], 
-          "name": "esp8266"
+          ]
         }, 
         {
           "category": "ESP8266", 
@@ -156,28 +156,9 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.4.0-rc2/esp8266-2.4.0-rc2.zip", 
           "checksum": "SHA-256:211244bf8caf4a8b0de70f8e9d50c3d3bcad640fac6bff836d52e60e0f236576", 
-          "name": "esp8266", 
           "version": "2.4.0-rc2", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.4.0-rc2.zip", 
-          "size": "10571318", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.12", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.2.0", 
-              "name": "mkspiffs"
-            }
-          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -236,7 +217,26 @@
             {
               "name": "DigiStump Oak"
             }
-          ]
+          ], 
+          "size": "10571318", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.12", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.2.0", 
+              "name": "mkspiffs"
+            }
+          ], 
+          "name": "esp8266"
         }, 
         {
           "category": "ESP8266", 
@@ -245,9 +245,28 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.4.0-rc1/esp8266-2.4.0-rc1.zip", 
           "checksum": "SHA-256:e0145abc2c08b1fb070cc4eb8304f66719539041561db5191a998df6a6112999", 
+          "name": "esp8266", 
           "version": "2.4.0-rc1", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.4.0-rc1.zip", 
+          "size": "10396896", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.9", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.1.2", 
+              "name": "mkspiffs"
+            }
+          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -303,26 +322,7 @@
             {
               "name": "4D Systems gen4 IoD Range"
             }
-          ], 
-          "size": "10396896", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.9", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.1.2", 
-              "name": "mkspiffs"
-            }
-          ], 
-          "name": "esp8266"
+          ]
         }, 
         {
           "category": "ESP8266", 
@@ -331,23 +331,9 @@
           }, 
           "url": "http://arduino.esp8266.com/versions/1.6.5-947-g39819f0/esp8266-1.6.5-947-g39819f0.zip", 
           "checksum": "SHA-256:79a395801a94c77f4855f3921b9cc127d679d961ec207e7fb89f90754123d66a", 
-          "name": "esp8266", 
           "version": "1.6.5-947-g39819f0", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-1.6.5-947-g39819f0.zip", 
-          "size": "2295584", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.5", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9", 
-              "name": "xtensa-lx106-elf-gcc"
-            }
-          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -367,7 +353,21 @@
             {
               "name": "SweetPea ESP-210"
             }
-          ]
+          ], 
+          "size": "2295584", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.5", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9", 
+              "name": "xtensa-lx106-elf-gcc"
+            }
+          ], 
+          "name": "esp8266"
         }, 
         {
           "category": "ESP8266", 
@@ -376,28 +376,9 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.2.0/esp8266-2.2.0.zip", 
           "checksum": "SHA-256:c0b57abdcd9ad11c506f79e019a35abadb9ac7921972caaa336e08a35048c1db", 
-          "name": "esp8266", 
           "version": "2.2.0", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.2.0.zip", 
-          "size": "5981702", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.8", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.1.2", 
-              "name": "mkspiffs"
-            }
-          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -444,7 +425,26 @@
             {
               "name": "ESPDuino"
             }
-          ]
+          ], 
+          "size": "5981702", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.8", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.1.2", 
+              "name": "mkspiffs"
+            }
+          ], 
+          "name": "esp8266"
         }, 
         {
           "category": "ESP8266", 
@@ -453,9 +453,28 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.4.2/esp8266-2.4.2.zip", 
           "checksum": "SHA-256:890428f3a8f03b4224cec66e20df4ae34f9c63003ce0f5e9291f01356aac458d", 
+          "name": "esp8266", 
           "version": "2.4.2", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.4.2.zip", 
+          "size": "15762364", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.13", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.2.0", 
+              "name": "mkspiffs"
+            }
+          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -541,26 +560,7 @@
             {
               "name": "Seeed Wio Link"
             }
-          ], 
-          "size": "15762364", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.13", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.2.0", 
-              "name": "mkspiffs"
-            }
-          ], 
-          "name": "esp8266"
+          ]
         }, 
         {
           "category": "ESP8266", 
@@ -569,28 +569,9 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.4.1/esp8266-2.4.1.zip", 
           "checksum": "SHA-256:794f5e82fbc0490b68d45b2c63e8ece8f1fe3fe8ff51c78637823ca89a5a553c", 
-          "name": "esp8266", 
           "version": "2.4.1", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.4.1.zip", 
-          "size": "13087845", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.13", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.2.0", 
-              "name": "mkspiffs"
-            }
-          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -664,7 +645,26 @@
             {
               "name": "Digistump Oak"
             }
-          ]
+          ], 
+          "size": "13087845", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.13", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.2.0", 
+              "name": "mkspiffs"
+            }
+          ], 
+          "name": "esp8266"
         }, 
         {
           "category": "ESP8266", 
@@ -673,9 +673,28 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.4.0/esp8266-2.4.0.zip", 
           "checksum": "SHA-256:b2bca24701873678faafc27949473a255867ccb1a7d577370028f74817bcc532", 
+          "name": "esp8266", 
           "version": "2.4.0", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.4.0.zip", 
+          "size": "11919873", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.12", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.2.0", 
+              "name": "mkspiffs"
+            }
+          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -734,26 +753,7 @@
             {
               "name": "DigiStump Oak"
             }
-          ], 
-          "size": "11919873", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.12", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.2.0", 
-              "name": "mkspiffs"
-            }
-          ], 
-          "name": "esp8266"
+          ]
         }, 
         {
           "category": "ESP8266", 
@@ -762,9 +762,28 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.5.0-beta1/esp8266-2.5.0-beta1.zip", 
           "checksum": "SHA-256:bf0073ab21042605fe7687093f1744257b23a1dca38e09f6cb3f536c418505f8", 
+          "name": "esp8266", 
           "version": "2.5.0-beta1", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.5.0-beta1.zip", 
+          "size": "21689129", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "2.5.0-2-59d892c8", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "2.5.0-2-59d892c8", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "2.5.0-2-59d892c8", 
+              "name": "mkspiffs"
+            }
+          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -856,26 +875,7 @@
             {
               "name": "ESPectro Core"
             }
-          ], 
-          "size": "21689129", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "2.5.0-2-59d892c8", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "2.5.0-2-59d892c8", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "2.5.0-2-59d892c8", 
-              "name": "mkspiffs"
-            }
-          ], 
-          "name": "esp8266"
+          ]
         }, 
         {
           "category": "ESP8266", 
@@ -884,9 +884,28 @@
           }, 
           "url": "https://github.com/esp8266/Arduino/releases/download/2.1.0/esp8266-2.1.0.zip", 
           "checksum": "SHA-256:000818d500ea90bcb516d667c688387f34003247bb5592e795bc549e91f9ace0", 
+          "name": "esp8266", 
           "version": "2.1.0", 
           "architecture": "esp8266", 
           "archiveFileName": "esp8266-2.1.0.zip", 
+          "size": "5776332", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "0.4.8", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "1.20.0-26-gb404fb9-2", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "0.1.2", 
+              "name": "mkspiffs"
+            }
+          ], 
           "boards": [
             {
               "name": "Generic ESP8266 Module"
@@ -933,39 +952,20 @@
             {
               "name": "ESPDuino"
             }
-          ], 
-          "size": "5776332", 
-          "toolsDependencies": [
-            {
-              "packager": "esp8266", 
-              "version": "0.4.8", 
-              "name": "esptool"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "1.20.0-26-gb404fb9-2", 
-              "name": "xtensa-lx106-elf-gcc"
-            }, 
-            {
-              "packager": "esp8266", 
-              "version": "0.1.2", 
-              "name": "mkspiffs"
-            }
-          ], 
-          "name": "esp8266"
+          ]
         }, 
         {
           "category": "ESP8266", 
           "name": "esp8266", 
-          "url": "https://github.com/esp8266/Arduino/releases/download/2.5.0-beta2/esp8266-2.5.0-beta2.zip", 
-          "checksum": "SHA-256:0c353a9ed03ae1f6ca760b6ad0668d5f8cae47d2904baf6134e787e52f34c5b8", 
+          "url": "https://github.com/esp8266/Arduino/releases/download/2.5.0-beta3/esp8266-2.5.0-beta3.zip", 
+          "checksum": "SHA-256:36905e91fe162f1b9056dcee7717e91cc46a27425b186f8a14a56b62f691dcf3", 
           "help": {
-            "online": "https://arduino-esp8266.readthedocs.io/en/2.5.0-beta2/"
+            "online": "https://arduino-esp8266.readthedocs.io/en/2.5.0-beta3/"
           }, 
-          "version": "2.5.0-beta2", 
+          "version": "2.5.0-beta3", 
           "architecture": "esp8266", 
-          "archiveFileName": "esp8266-2.5.0-beta2.zip", 
-          "size": "20241607", 
+          "archiveFileName": "esp8266-2.5.0-beta3.zip", 
+          "size": "20299608", 
           "toolsDependencies": [
             {
               "packager": "esp8266", 
@@ -1075,6 +1075,128 @@
               "name": "ESPectro Core"
             }
           ]
+        }, 
+        {
+          "category": "ESP8266", 
+          "help": {
+            "online": "https://arduino-esp8266.readthedocs.io/en/2.5.0-beta2/"
+          }, 
+          "url": "https://github.com/esp8266/Arduino/releases/download/2.5.0-beta2/esp8266-2.5.0-beta2.zip", 
+          "checksum": "SHA-256:0c353a9ed03ae1f6ca760b6ad0668d5f8cae47d2904baf6134e787e52f34c5b8", 
+          "version": "2.5.0-beta2", 
+          "architecture": "esp8266", 
+          "archiveFileName": "esp8266-2.5.0-beta2.zip", 
+          "boards": [
+            {
+              "name": "Generic ESP8266 Module"
+            }, 
+            {
+              "name": "Generic ESP8285 Module"
+            }, 
+            {
+              "name": "ESPDuino (ESP-13 Module)"
+            }, 
+            {
+              "name": "Adafruit Feather HUZZAH ESP8266"
+            }, 
+            {
+              "name": "Invent One"
+            }, 
+            {
+              "name": "XinaBox CW01"
+            }, 
+            {
+              "name": "ESPresso Lite 1.0"
+            }, 
+            {
+              "name": "ESPresso Lite 2.0"
+            }, 
+            {
+              "name": "Phoenix 1.0"
+            }, 
+            {
+              "name": "Phoenix 2.0"
+            }, 
+            {
+              "name": "NodeMCU 0.9 (ESP-12 Module)"
+            }, 
+            {
+              "name": "NodeMCU 1.0 (ESP-12E Module)"
+            }, 
+            {
+              "name": "Olimex MOD-WIFI-ESP8266(-DEV)"
+            }, 
+            {
+              "name": "SparkFun ESP8266 Thing"
+            }, 
+            {
+              "name": "SparkFun ESP8266 Thing Dev"
+            }, 
+            {
+              "name": "SweetPea ESP-210"
+            }, 
+            {
+              "name": "LOLIN(WEMOS) D1 R2 & mini"
+            }, 
+            {
+              "name": "LOLIN(WEMOS) D1 mini Pro"
+            }, 
+            {
+              "name": "LOLIN(WEMOS) D1 mini Lite"
+            }, 
+            {
+              "name": "WeMos D1 R1"
+            }, 
+            {
+              "name": "ESPino (ESP-12 Module)"
+            }, 
+            {
+              "name": "ThaiEasyElec's ESPino"
+            }, 
+            {
+              "name": "WifInfo"
+            }, 
+            {
+              "name": "Arduino"
+            }, 
+            {
+              "name": "4D Systems gen4 IoD Range"
+            }, 
+            {
+              "name": "Digistump Oak"
+            }, 
+            {
+              "name": "WiFiduino"
+            }, 
+            {
+              "name": "Amperka WiFi Slot"
+            }, 
+            {
+              "name": "Seeed Wio Link"
+            }, 
+            {
+              "name": "ESPectro Core"
+            }
+          ], 
+          "size": "20241607", 
+          "toolsDependencies": [
+            {
+              "packager": "esp8266", 
+              "version": "2.5.0-3-20ed2b9", 
+              "name": "esptool"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "2.5.0-3-20ed2b9", 
+              "name": "xtensa-lx106-elf-gcc"
+            }, 
+            {
+              "packager": "esp8266", 
+              "version": "2.5.0-3-20ed2b9", 
+              "name": "mkspiffs"
+            }
+          ], 
+          "name": "esp8266"
         }
       ], 
       "tools": [
@@ -1198,6 +1320,13 @@
               "host": "i686-mingw32", 
               "archiveFileName": "i686-w64-mingw32.xtensa-lx106-elf-20ed2b9c.zip", 
               "size": "44935132"
+            }, 
+            {
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/2.5.0-3/i686-linux-gnu.xtensa-lx106-elf-1f24aeae.tar.gz", 
+              "checksum": "SHA-256:96b106fbc814155e92d1805d3227d36096b88d3d54cfcd885804a0e9cf5631d7", 
+              "host": "i686-pc-linux-gnu", 
+              "archiveFileName": "i686-linux-gnu.xtensa-lx106-elf-1f24aeae.tar.gz", 
+              "size": "42500158"
             }, 
             {
               "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/2.5.0-3/x86_64-apple-darwin14.xtensa-lx106-elf-20ed2b9c.tar.gz", 
@@ -1383,6 +1512,13 @@
               "host": "i686-mingw32", 
               "archiveFileName": "i686-w64-mingw32.esptool-f80ae31.zip", 
               "size": "16466"
+            }, 
+            {
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/2.5.0-3/i686-linux-gnu.esptool-f80ae31.tar.gz", 
+              "checksum": "SHA-256:fe632f4602d02b6a9425c5bf95074095cb6d3c57912168a0f6b796fddd8ce991", 
+              "host": "i686-pc-linux-gnu", 
+              "archiveFileName": "i686-linux-gnu.esptool-f80ae31.tar.gz", 
+              "size": "16543"
             }, 
             {
               "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/2.5.0-3/x86_64-apple-darwin14.esptool-f80ae31.tar.gz", 
@@ -1753,6 +1889,13 @@
               "host": "i686-mingw32", 
               "archiveFileName": "i686-w64-mingw32.mkspiffs-7fefeac.zip", 
               "size": "337874"
+            }, 
+            {
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/2.5.0-3/i686-linux-gnu.mkspiffs-7fefeac.tar.gz", 
+              "checksum": "SHA-256:d080b3b50ee00ac56b7204f8d08b95cd53872a2e09da590775ee631bcb279cad", 
+              "host": "i686-pc-linux-gnu", 
+              "archiveFileName": "i686-linux-gnu.mkspiffs-7fefeac.tar.gz", 
+              "size": "54276"
             }, 
             {
               "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/2.5.0-3/x86_64-apple-darwin14.mkspiffs-7fefeac.tar.gz", 
