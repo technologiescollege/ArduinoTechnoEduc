@@ -1,12 +1,15 @@
 //lcd
 
-Blockly.Blocks.peguino_actuators_serial_lcd_print.getBlockType = function() {
+Blockly.Blocks.peguino_actuators_i2c_scan.getBlockType = function () {
+	return Blockly.Types.NULL;
+};
+Blockly.Blocks.peguino_actuators_i2c_lcdinit.getBlockType = function() {
 	return Blockly.Types.NUMBER;
 };
-Blockly.Blocks.peguino_actuators_serial_lcd_power.getBlockType = function() {
+Blockly.Blocks.peguino_actuators_i2c_lcdwrite.getBlockType = function() {
 	return Blockly.Types.BOOLEAN;
 };
-Blockly.Blocks.peguino_actuators_serial_lcd_effect.getBlockType = function() {
+Blockly.Blocks.peguino_actuators_i2c_lcdclear.getBlockType = function() {
 	return Blockly.Types.NUMBER;
 };
 
@@ -94,8 +97,13 @@ Blockly.Blocks.peguino_sensors_pir_motion_sensor.getBlockType = function() {
 };
 
 //climate brick
-Blockly.Blocks.peguino_sensors_dht_read.getBlockType = function() {
-	return Blockly.Types.NUMBER;
+Blockly.Blocks.peguino_sensors_dht_read_UnoESP32.getBlockType = function() {
+	return Blockly.Types.DECIMAL;
+};
+
+//climate brick
+Blockly.Blocks.peguino_sensors_dht_read_UnoNano.getBlockType = function() {
+	return Blockly.Types.DECIMAL;
 };
 
 //proximity brick
