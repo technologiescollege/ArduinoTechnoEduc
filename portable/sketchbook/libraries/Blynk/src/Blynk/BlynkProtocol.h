@@ -28,6 +28,7 @@ public:
         CONNECTING,
         CONNECTED,
         DISCONNECTED,
+        TOKEN_INVALID,
     };
 
     BlynkProtocol(Transp& transp)
@@ -43,7 +44,9 @@ public:
         , state(CONNECTING)
     {}
 
-    bool connected() { return state == CONNECTED; }
+    bool connected() const { return state == CONNECTED; }
+
+    bool isTokenInvalid() const { return state == TOKEN_INVALID; }
 
     bool connect(uint32_t timeout = BLYNK_TIMEOUT_MS*3) {
         conn.disconnect();
@@ -104,7 +107,9 @@ protected:
     void begin(const char* auth) {
         this->authkey = auth;
         lastHeartbeat = lastActivityIn = lastActivityOut = (BlynkMillis() - 5000UL);
-		printBanner();
+#if !defined(BLYNK_NO_DEFAULT_BANNER)
+        printBanner();
+#endif
     }
 
     bool processInput(void);
@@ -257,6 +262,7 @@ bool BlynkProtocol<Transp>::processInput(void)
                 return true;
             case BLYNK_INVALID_TOKEN:
                 BLYNK_LOG1(BLYNK_F("Invalid auth token"));
+                state = TOKEN_INVALID;
                 break;
             default:
                 BLYNK_LOG2(BLYNK_F("Connect failed. code: "), hdr.length);

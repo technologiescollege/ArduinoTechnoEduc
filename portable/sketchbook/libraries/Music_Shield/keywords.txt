@@ -1,0 +1,57 @@
+#######################################
+# Syntax Coloring Map MusicPlayer_v1_8
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+MusicPlayer	KEYWORD1
+spl_t	KEYWORD1
+playingstatetype	KEYWORD1
+ctrlState_t	KEYWORD1
+playMode_t	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+playOne	KEYWORD2
+addToPlaylist	KEYWORD2
+scanAndPlayAll	KEYWORD2
+setVolume	KEYWORD2
+setPlayMode	KEYWORD2
+deleteSong	KEYWORD2
+attachDigitOperation	KEYWORD2
+attachAnalogOperation	KEYWORD2
+play	KEYWORD2
+keyEnable	KEYWORD2
+keyDisable	KEYWORD2
+analogControlEnable	KEYWORD2
+digitalControlEnable	KEYWORD2
+opPlay	KEYWORD2
+opPause	KEYWORD2
+opStop	KEYWORD2
+opVolumeUp	KEYWORD2
+opVolumeDown	KEYWORD2
+opNextSong	KEYWORD2
+opPreviousSong	KEYWORD2
+opFastForward	KEYWORD2
+opFastRewind	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+PS_IDLE	LITERAL1
+PS_PLAY	LITERAL1
+PS_PAUSE	LITERAL1
+PS_PRE_PLAY	LITERAL1
+PS_POST_PLAY	LITERAL1
+PS_PRE_RECORD	LITERAL1
+PS_RECORDING	LITERAL1
+PS_POST_RECORD	LITERAL1
+
+
+
+
