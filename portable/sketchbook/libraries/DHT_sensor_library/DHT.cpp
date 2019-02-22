@@ -22,7 +22,9 @@ DHT::DHT(uint8_t pin, uint8_t type, uint8_t count) {
   // based on the speed of the processor.
 }
 
-void DHT::begin(void) {
+// Optionally pass pull-up time (in microseconds) before DHT reading starts.
+// Default is 55 (see function declaration in DHT.h).
+void DHT::begin(uint8_t usec) {
   // set up the pins!
   pinMode(_pin, INPUT_PULLUP);
   // Using this value makes sure that millis() - lastreadtime will be
@@ -30,6 +32,7 @@ void DHT::begin(void) {
   // but so will the subtraction.
   _lastreadtime = millis() - MIN_INTERVAL;
   DEBUG_PRINT("DHT max clock cycles: "); DEBUG_PRINTLN(_maxcycles, DEC);
+  pullTime = usec;
 }
 
 //boolean S == Scale.  True == Fahrenheit; False == Celcius
@@ -39,6 +42,15 @@ float DHT::readTemperature(bool S, bool force) {
   if (read(force)) {
     switch (_type) {
     case DHT11:
+      f = data[2];
+      if (data[3] & 0x80) {
+        f = -1 - f ;
+      }
+      f += (data[3] & 0x0f) * 0.1;
+      if(S) {
+        f = convertCtoF(f);
+      }
+      break;
     case DHT12:
       f = data[2];
       f += (data[3] & 0x0f) * 0.1;
@@ -143,6 +155,10 @@ bool DHT::read(bool force) {
   // Reset 40 bits of received data to zero.
   data[0] = data[1] = data[2] = data[3] = data[4] = 0;
 
+#if defined(ESP8266)
+    yield(); // Handle WiFi / reset software watchdog
+#endif
+
   // Send start signal.  See DHT datasheet for full signal diagram:
   //   http://www.adafruit.com/datasheets/Digital%20humidity%20and%20temperature%20sensor%20AM2302.pdf
 
@@ -155,11 +171,11 @@ bool DHT::read(bool force) {
   pinMode(_pin, OUTPUT);
   digitalWrite(_pin, LOW);
   switch(_type) {
-    case DHT22: 
-    case DHT21: 
+    case DHT22:
+    case DHT21:
       delayMicroseconds(1100); // data sheet says "at least 1ms"
       break;
-    case DHT11:		 
+    case DHT11:
     default:
       delay(20); //data sheet says at least 18ms, 20ms just to be safe
       break;
@@ -170,8 +186,10 @@ bool DHT::read(bool force) {
     // End the start signal by setting data line high for 40 microseconds.
     pinMode(_pin, INPUT_PULLUP);
 
+    // Delay a moment to let sensor pull data line low.
+    delayMicroseconds(pullTime);
+
     // Now start reading the data line to get the value from the DHT sensor.
-    delayMicroseconds(40);  // Delay a bit to let sensor pull data line low.
 
     // Turn off interrupts temporarily because the next sections
     // are timing critical and we don't want any interruptions.

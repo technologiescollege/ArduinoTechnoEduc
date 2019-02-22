@@ -1194,6 +1194,41 @@
           ]
         },
         {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.6.25",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.6.25.tar.bz2",
+          "archiveFileName": "megaavr-1.6.25.tar.bz2",
+          "checksum": "SHA-256:f776e0b8996d1d199699382b311595825911539f2809dec24780c4c0014d45ff",
+          "size": "712366",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "5.4.0-atmel3.6.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino14"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
           "name": "Arduino SAM Boards (32-bits ARM Cortex-M3)",
           "architecture": "sam",
           "version": "1.6.2",
@@ -1464,6 +1499,31 @@
           "archiveFileName": "sam-1.6.11.tar.bz2",
           "checksum": "SHA-256:fb8e275f39622a5574a11cef85be3ed36a6995c38a19b20de6fb48e9c7f88b70",
           "size": "16474757",
+          "boards": [
+            {"name": "Arduino Due"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "4.8.3-2014q1"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.6.1-arduino"
+            }
+          ]
+        },
+        {
+          "name": "Arduino SAM Boards (32-bits ARM Cortex-M3)",
+          "architecture": "sam",
+          "version": "1.6.12",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/sam-1.6.12.tar.bz2",
+          "archiveFileName": "sam-1.6.12.tar.bz2",
+          "checksum": "SHA-256:1d56d0ceea12a920c4a5c12fff793499354ffba7e93d330786bd2d6f3a191c47",
+          "size": "16496493",
           "boards": [
             {"name": "Arduino Due"}
           ],
