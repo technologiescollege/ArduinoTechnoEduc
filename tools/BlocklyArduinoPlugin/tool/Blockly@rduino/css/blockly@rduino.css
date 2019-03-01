@@ -96,8 +96,8 @@ html,body {
 ------------------------------------------------ */
 .btn-sm, .btn {
 	font-size: 14px;
-	line-height: 0;
-	padding: 5px 10px;
+	/* line-height: 0; */
+	padding: 3px 10px;
 	border: 1px solid #000000;
 }
 .btn-sm:hover, .btn:hover {
@@ -379,12 +379,12 @@ html[dir="RTL"] #languageMenu {
 #blockly_l{
 	float:left;
 	height:99%;
-	width:49%;
+	width:50%;
 }
 #blockly_r{
 	float:right;
 	height:99%;
-	width:49%;
+	width:50%;
 }
 #btn_group {
 	position: absolute;
