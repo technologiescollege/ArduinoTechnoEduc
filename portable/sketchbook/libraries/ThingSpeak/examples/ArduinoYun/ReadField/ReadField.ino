@@ -74,7 +74,8 @@ void loop() {
     Serial.println("Counter: " + String(count));
   }
   else{
-    Serial.println("Problem reading channel. HTTP error code " + String(statusCode)); 
+    Serial.print("Problem reading channel. HTTP error code ");
+    Serial.println(statusCode); 
   }
   
   delay(15000); // No need to read the counter too often.
