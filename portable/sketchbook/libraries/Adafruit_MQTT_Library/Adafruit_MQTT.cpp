@@ -21,7 +21,7 @@
 // SOFTWARE.
 #include "Adafruit_MQTT.h"
 
-#if defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000)
+#if defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_ARCH_SAMD)
 static char *dtostrf (double val, signed char width, unsigned char prec, char *sout) {
   char fmt[20];
   sprintf(fmt, "%%%d.%df", width, prec);
@@ -463,6 +463,9 @@ Adafruit_MQTT_Subscribe *Adafruit_MQTT::readSubscription(int16_t timeout) {
   DEBUG_PRINT("Packet len: "); DEBUG_PRINTLN(len); 
   DEBUG_PRINTBUFFER(buffer, len);
 
+	if (len<3) return NULL;
+	if ((buffer[0] & 0xF0) != (MQTT_CTRL_PUBLISH) << 4) return NULL;
+	
   // Parse out length of packet.
   topiclen = buffer[3];
   DEBUG_PRINT(F("Looking for subscription len ")); DEBUG_PRINTLN(topiclen);
