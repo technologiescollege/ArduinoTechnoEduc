@@ -61,7 +61,9 @@ BlocklyDuino.renderContent = function() {
 		case 'content_arduino':
 			$(".blocklyToolboxDiv").hide();
 			try {
-				$('#pre_arduino').text(Blockly.Arduino.workspaceToCode(BlocklyDuino.workspace));
+				var cardId = BlocklyDuino.getStringParamFromUrl('card', '');
+				if (cardId != 'kit_microbit') $('#pre_Arduino').text(Blockly.Arduino.workspaceToCode(BlocklyDuino.workspace));
+					else $('#pre_Arduino').text(Blockly.Python.workspaceToCode(BlocklyDuino.workspace));
 				if (typeof prettyPrintOne == 'function') {
 					$('#pre_arduino').html(prettyPrintOne($('#pre_arduino').html(), 'cpp'));
 				}
@@ -153,9 +155,18 @@ BlocklyDuino.valideEditedCode = function() {
  * Render Arduino code in preview box
  */
 BlocklyDuino.renderArduinoCodePreview = function() {
-	$('#pre_previewArduino').text(Blockly.Arduino.workspaceToCode(BlocklyDuino.workspace));
+	var cardId = BlocklyDuino.getStringParamFromUrl('card', '');
+	if (cardId != 'kit_microbit') {
+		$('#pre_previewArduino').text(Blockly.Arduino.workspaceToCode(BlocklyDuino.workspace));
+		$('#pre_arduino').text(Blockly.Arduino.workspaceToCode(BlocklyDuino.workspace));
+	}
+		else {
+			$('#pre_previewArduino').text(Blockly.Python.workspaceToCode(BlocklyDuino.workspace));
+			$('#pre_arduino').text(Blockly.Python.workspaceToCode(BlocklyDuino.workspace));
+		}
 	if (typeof prettyPrintOne == 'function') {
 		$('#pre_previewArduino').html(prettyPrintOne($('#pre_previewArduino').html(), 'cpp'));
+		$('#pre_arduino').html(prettyPrintOne($('#pre_previewArduino').html(), 'cpp'));
 	}
 };
 
@@ -1161,7 +1172,6 @@ BlocklyDuino.openWiringDialog = function() {
 
 BlocklyDuino.DialogCode = function() {
 	var dialogCode = $("#pre_previewArduino").dialog({
-		//$('#arduino_IDE_code').html(prettyPrintOne($('#pre_arduino').html(), 'cpp'));
 		autoOpen: false,
 		resizable: true,
 		height: 600,
