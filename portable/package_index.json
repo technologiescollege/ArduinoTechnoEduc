@@ -1340,6 +1340,82 @@
           ]
         },
         {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.8.3",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.8.3.tar.bz2",
+          "archiveFileName": "megaavr-1.8.3.tar.bz2",
+          "checksum": "SHA-256:9791d62551f1e6539769a026f903082344b8ae8b921c1796de94a2af368d866d",
+          "size": "856037",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            },
+            {
+              "name": "Arduino Nano Every"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino16"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.8.4",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.8.4.tar.bz2",
+          "archiveFileName": "megaavr-1.8.4.tar.bz2",
+          "checksum": "SHA-256:ff25944bc6f7b766f8a71b836763517de3b12008b0b08cf24460b8af5a05abd1",
+          "size": "855455",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            },
+            {
+              "name": "Arduino Nano Every"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino16"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            }
+          ]
+        },
+        {
           "name": "Arduino SAM Boards (32-bits ARM Cortex-M3)",
           "architecture": "sam",
           "version": "1.6.2",
@@ -3033,61 +3109,72 @@
           ]
         },
         {
-          "name": "Arduino STM32F4 Boards",
-          "architecture": "stm32f4",
-          "version": "1.0.0",
-          "category": "Arduino",
-          "url": "http://downloads.arduino.cc/arduino.org/package_arduino_stm32f4_1.0.0.tar.bz2",
-          "archiveFileName": "package_arduino_stm32f4_1.0.0.tar.bz2",
-          "size": "20499005",
-          "checksum": "SHA-256:79a67167bff45c34a4addf29a4c84904d0dc114c19220bfd204a65e51688b3d1",
+          "name": "Arduino nRF528x Boards (Mbed OS)",
+          "architecture": "mbed",
+          "version": "1.1.0",
+          "category": "Contributed",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.0.tar.bz2",
+          "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.0.tar.bz2",
+          "checksum": "SHA-256:d70d8c98fd5ec9cc0cc05722dda344c325910cdc4c5dddfa976dc9a8f00f5f5b",
+          "size": "35128465",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
+          },
           "boards": [
             {
-              "name": "Arduino Star OTTO"
+              "name": "Arduino Nano 33 BLE"
             }
           ],
           "toolsDependencies": [
             {
               "packager": "arduino",
-              "name": "arm-none-eabi-gcc",
-              "version": "4.8.3-2014q1"
+              "name": "openocd",
+              "version": "0.10.0-arduino9"
             },
             {
-             "packager": "arduino",
-             "version": "0.8.0-stm32-arduino1",
-             "name": "dfu-util"
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino1"
             }
           ]
         },
         {
-          "name": "Arduino STM32F4 Boards",
-          "architecture": "stm32f4",
-          "version": "1.0.1",
+          "name": "Arduino nRF528x Boards (Mbed OS)",
+          "architecture": "mbed",
+          "version": "1.1.1",
           "category": "Arduino",
-          "url": "http://downloads.arduino.cc/arduino.org/package_arduino_stm32f4_1.0.1.tar.bz2",
-          "archiveFileName": "package_arduino_stm32f4_1.0.1.tar.bz2",
-          "checksum": "SHA-256:e66dd40f8b9faeb6c7400b48745c023aacb65a6d5c700395edc9dd89d2d150c0",
-          "size": "20495225",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.1.tar.bz2",
+          "checksum": "SHA-256:ac8d6ec83f8c42e27b4dac9d4b565779ff213dd6bcd879dad876cfdf4a492c07",
+          "size": "35127935",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
+          },
           "boards": [
             {
-              "name": "Arduino Star OTTO"
+              "name": "Arduino Nano 33 BLE"
             }
           ],
           "toolsDependencies": [
             {
               "packager": "arduino",
+              "name": "openocd",
+              "version": "0.10.0-arduino9"
+            },
+            {
+              "packager": "arduino",
               "name": "arm-none-eabi-gcc",
-              "version": "4.8.3-2014q1"
+              "version": "7-2017q4"
             },
             {
               "packager": "arduino",
-              "name": "dfu-util",
-              "version": "0.9.0-arduino1"
-            },
-            {
-              "packager": "arduino",
-              "name": "arduinoSTM32load",
-              "version": "2.0.0"
+              "name": "bossac",
+              "version": "1.9.1-arduino1"
             }
           ]
         },
@@ -4533,6 +4620,54 @@
               "archiveFileName": "bossac-1.8-48-gb176eee-arm-linux-gnueabihf.tar.gz",
               "checksum": "SHA-256:2001e4a592f3aefd22f213b1ddd6f5d8d5e74bd04080cf1b97c24cbaa81b10ed",
               "size": "34825"
+            }
+          ]
+        },
+        {
+          "name": "bossac",
+          "version": "1.9.1-arduino1",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-windows.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-windows.tar.gz",
+              "checksum": "SHA-256:fe2d6ef78ca711c78e104e258357ed06b09e95e9356dc72d8d2c9f6670af4b7a",
+              "size": "1260118"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-osx.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-osx.tar.gz",
+              "checksum": "SHA-256:c356632f98d5bae9b4f5d3ad823a5ee89b23078c2b835e8ac39a208f4855b0e6",
+              "size": "47835"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-linux64.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-linux64.tar.gz",
+              "checksum": "SHA-256:d3d324a3503a8db825c01f3b38519e4d4824c4d0e42cb399a16c1e074f9a9a86",
+              "size": "399453"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-linux32.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-linux32.tar.gz",
+              "checksum": "SHA-256:eec622b8b5a8642af94ec23febfe14c928edd734f144db73b146bf6708d2057f",
+              "size": "384792"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-linuxarm.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-linuxarm.tar.gz",
+              "checksum": "SHA-256:b42061d2fa2dbd6910d0d295e024f2cff7bb44f3e2ecc0bc2fe71a1f31b0ecba",
+              "size": "361799"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-linuxaarch64.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-linuxaarch64.tar.gz",
+              "checksum": "SHA-256:b271013841e1e25ee55f241e8c50a56ed775d3b322844e1e3099231ba17f3868",
+              "size": "442657"
             }
           ]
         },
