@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2017 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
+ * Copyright (C) 2018 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1219,21 +1219,44 @@
 #define USART2_START_vect            _VECTOR(50)
 #define USART2_START_vect_num        50
 
-#define _VECTORS_SIZE 204
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define _VECTORS_SIZE 204
+#else
+#  define _VECTORS_SIZE 204U
+#endif
 
 
 /* Constants */
 
-#define SPM_PAGESIZE 128
-#define FLASHSTART   0x0000
-#define FLASHEND     0x7FFF
-#define RAMSTART     0x0100
-#define RAMSIZE      2048
-#define RAMEND       0x08FF
-#define E2START     0
-#define E2SIZE      1024
-#define E2PAGESIZE  4
-#define E2END       0x03FF
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define SPM_PAGESIZE 128
+#  define FLASHSTART   0x0000
+#  define FLASHEND     0x7FFF
+#else
+#  define SPM_PAGESIZE 128U
+#  define FLASHSTART   0x0000U
+#  define FLASHEND     0x7FFFU
+#endif
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define RAMSTART     0x0100
+#  define RAMSIZE      2048
+#  define RAMEND       0x08FF
+#else
+#  define RAMSTART     0x0100U
+#  define RAMSIZE      2048U
+#  define RAMEND       0x08FFU
+#endif
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define E2START     0
+#  define E2SIZE      1024
+#  define E2PAGESIZE  4
+#  define E2END       0x03FF
+#else
+#  define E2START     0U
+#  define E2SIZE      1024U
+#  define E2PAGESIZE  4U
+#  define E2END       0x03FFU
+#endif
 #define XRAMEND      RAMEND
 
 

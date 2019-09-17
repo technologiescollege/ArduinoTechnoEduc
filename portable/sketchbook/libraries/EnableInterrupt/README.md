@@ -6,15 +6,15 @@ Functions:
 enableInterrupt- Enables interrupt on a selected Arduino pin.
 disableInterrupt - Disables interrupt on the selected Arduino pin.
 
-*_What's New?_ Tue Sep 19 18:02:21 CDT 2017 Version 0.9.8 of the library has been released.
-There were a number of outstanding pull requests that were merged into the library. Thanks
-to Loranzo Cafaro for his switch debounce example, to Jevon Wild for his changes to make the
-library more functional with PlatformIO (http://docs.platformio.org/en/latest/what-is-platformio.html),
-Ricardo JL Rufino for some PlatformIO fixes to the library.json file, and Sara Damiano for
-adding support for the Sodaq Mbili and EnviroDIY Mayfly.
+
+*_What's New?_
+- Wed Sep  4 19:30:45 CDT 2019
+    - Version 1.1.0 of the library has been released. We add support for the ATmega2561 and 1281 chips,
+with pinouts defined from the MCUdude/MegaCore project. Code donations by Kizmit99. Plus, a documentation
+bugfix from Greg Bowler. Thanks, folks!
 
 The EnableInterrupt library is an Arduino interrupt library, designed for
-all versions of the Arduino- at this writing, the Uno (and other ATmega328p-based
+8-bit versions of the Arduino- at this writing, the Uno (and other ATmega328p-based
 boards, like the mini), Due, Zero, Leonardo (and other ATmega32u4-based boards, like the
 Micro), the Mega2560 (and other ATmega2560-based boards, like the MegaADK),
 and for non-Arduino chips: the 644/1284p (Mighty1284, Sodaq Mbili and EnviroDIY Mayfly)
@@ -25,6 +25,10 @@ means that on the Arduino Uno and Mega you don't give it an interrupt number, as
 http://arduino.cc/en/Reference/attachInterrupt. Rather, your first argument is a
 pin number of a pin that's supported on that chip (see
 https://github.com/GreyGnome/EnableInterrupt/wiki/Usage#pin--port-bestiary ).
+
+32-bit support for Due comes only in the form of a macro that enables your code
+to be shared unchanged between 32- and 8-bit Arduinos. No further support for
+32-bit Arduinos is planned.
 
 ## Download
 See the https://github.com/GreyGnome/EnableInterrupt/wiki/Download page to
@@ -54,11 +58,11 @@ PORT / PIN BESTIARY, below.
 There are a varying number of external interrupt pins on the different
 processors. The Uno supports only 2 and they are mapped to Arduino pins 2 and 3.
 The 2560 supports 6 usable, the Leonardo supports 5, and the ATmega1284p supports 3.
-These interrupts can be set to trigger on RISING, or FALLING, or both ("CHANGE")
-signal levels, or on LOW level. The triggers are interpreted by hardware, so by
-the time your user function is running, you know exactly which pin interrupted at
-the time of the event, and how it changed. On the other hand, as mentioned there
-are a limited number of these pins.
+These interrupts can be set to trigger on one of three signal values: RISING, 
+FALLING, or CHANGE (for both), or on LOW level. The triggers are interpreted by 
+hardware, so by the time your user function is running, you know exactly which 
+pin interrupted at the time of the event, and how it changed. On the other hand, 
+as mentioned there are a limited number of these pins.
 
 ### Pin Change Interrupts
 On the Arduino Uno (and again, all 328p-based boards) and 644/1284-based boards,
@@ -77,7 +81,7 @@ only 3 interrupt vectors (subroutines) available for the entire body of 20 pin
 change interrupt pins.
 
 ### The Library and Pin Change Interrupts
-The foregoing means that not only do pin change interrupts trigger on 
+The foregoing means that not only do pin change interrupts trigger on
 all pin transitions, but a number of pins share a
 single interrupt subroutine. It's the library's function to make pin change interrupts
 appear that each pin can support RISING, FALLING, or CHANGE, and each pin
@@ -146,7 +150,7 @@ there's a twist: You can perform a bitwise "and" with the pin number and PINCHAN
 to specify that you want to use a Pin Change Interrupt type of interrupt on those pins that
 support both Pin Change and External Interrupts. Otherwise, the library will choose whatever
 interrupt type (External, or Pin Change) normally applies to that pin,
-with priority to External Interrupt. 
+with priority to External Interrupt.
 
 * The complexity is because of pins 2 and 3 on the ATmega328-based Arduinos, and pins 2, 10,
 and 11 on 1284-based boards. Those are the only pins on the processors supported by this
@@ -297,7 +301,46 @@ the library's code and thus is not supported by this library.  It is the same
 pin the Arduino uses to upload sketches, and it is connected to the FT232RL
 USB-to-Serial chip (ATmega16U2 on the R3).
 
-### Mighty 1284, EnviroDIY Mayfly, Sodaq Mbili Support
+### ATmega2561/1281 (MegaCore) Support
+
+<pre>
+External Interrupts ------------------------------------------------------------
+The following External Interrupts are available on the Arduino/MegaCore:
+MegaCore           
+  Pin  PORT INT  ATmega2561/1281 pin
+  18     PD0  0     25
+  19     PD1  1     26
+  20     PD2  2     27
+  21     PD3  3     28
+   4     PE4  4      6
+   5     PE5  5      7
+   6     PE6  6      8
+   7     PE7  7      9
+
+
+Pin Change Interrupts ----------------------------------------------------------
+
+ATMEGA2561/1281 (MegaCore) Pin Change Interrupts
+MegaCore
+ Pin      PORT   PCINT
+  8/SS     PB0     0
+  9/SCK    PB1     1
+  10/MOSI  PB2     2
+  11/MISO  PB3     3
+  12       PB4     4
+  13       PB5     5
+  14       PB6     6
+  15       PB7     7
+   0       PE0     8 - this one is a little odd. *
+</pre>
+
+* Note: Arduino Pin 0 is PE0 (PCINT8), which is RX0. Also, it is the only other
+pin on another port on PCI1. This would make it very costly to integrate with
+the library's code and thus is not supported by this library.  It is the same
+pin the Arduino uses to upload sketches, and it is connected to the FT232RL
+USB-to-Serial chip (ATmega16U2 on the R3).
+
+### Mighty 1284, Bobuino, EnviroDIY Mayfly, Sodaq Mbili Support
 The ATmega 1284p shares pinout with the 644; the only difference is in memory
 size. We use the "Mighty 1284" platform as our model, because the needed files are
 mature and complete.
@@ -323,6 +366,26 @@ Pin     Interrupt               Pin*  PORT PCINT ATmega644/1284 pin    Pin*  POR
                                14     PD6  30        20             26/A2    PA2   2        38
                                                                     25/A1    PA1   1        39
                                                                     24/A0    PA0   0        40
+
+Bobuino External                Bobuino                                Bobuino           
+Pin     Interrupt               Pin*  PORT PCINT ATmega644/1284 pin    Pin*  PORT PCINT ATmega644/1284 pin
+                Port            4     PB0   8         1                31    PD7  31        21
+2       INT2    PB2             5     PB1   9         2                22    PC0  16        22
+10      INT1    PD2             6     PB2   2         3                23    PC1  17        23
+11      INT0    PD3             7     PB3  11         4                24    PC2  18        24
+                               10     PB4  12         5                25    PC3  19        25
+                               11     PB5  13         6                26    PC4  20        26
+                               12     PB6  14         7                27    PC5  21        27
+                               13     PB7  15         8                28    PC6  22        28
+                                0     PD0  24        14                29    PC7  23        29
+                                1     PD1  25        15             14/A0    PA7   7        33
+                                2     PD2  26        16             15/A1    PA6   6        34
+                                3     PD3  27        17             16/A2    PA5   5        35
+                               30     PD4  28        18             17/A3    PA4   4        36
+                                8     PD5  29        19             18/A4    PA3   3        37
+                                9     PD6  30        20             19/A5    PA2   2        38
+                                                                    20/A6    PA1   1        39
+                                                                    21/A7    PA0   0        40
 
 Mayfly                          Mayfly                                 Mayfly
 Mbili   External                Mbili                                  Mbili           
@@ -386,7 +449,7 @@ website. We all owe a debt of thanks to Lex, too, for all his hard work! He is
 currently the other official maintainer of this code.
 
 > Many thanks to all the contributors who have contributed bug fixes, code, and
-suggestions to this project: 
+suggestions to this project:
 
 > John Boiles and Baziki (who added fixes to PcInt), Maurice Beelen, nms277,
 Akesson Karlpetter, and Orly Andico for various fixes to this code, Rob Tillaart
@@ -403,6 +466,14 @@ Mega ADK to the PinChangeInt project!!! Wow, thanks Jan! This makes the
 2560-based Arduino Mega a first class supported platform- I will be able to test
 it and verify that it works.
 
+- In 2018, Alex Reinert contributed Bobuino support. Thanks, Alex!
+
+- In 4/2019 Kizmit99 contributed support for the ATmega2561 and 1281 chips, with
+pinouts defined from the MCUdude/MegaCore project. Thanks, Kizmit99!
+
+- In 8/2019 Greg Bowler helped suss out a documentation bug, and contributed
+a patch to make the README.md less confusing. Much appreciated.
+
 > Finally, a shout out to Leonard Bernstein. I was inspired by him
 (https://www.youtube.com/watch?feature=player_detailpage&v=R9g3Q-qvtss#t=1160)
 from a Ted talk by Itay Talgam. None of the contributors, myself included, has
@@ -414,4 +485,3 @@ terms)!
 > "If you love something,  give it away."
 
 I apologize if I have forgotten anyone here. Please let me know if so.
-

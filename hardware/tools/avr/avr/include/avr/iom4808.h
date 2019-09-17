@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2017 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
+ * Copyright (C) 2018 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,6 @@
 
 /* Ungrouped common registers */
 #define CCP  _SFR_MEM8(0x0034)  /* Configuration Change Protection */
-#define RAMPZ  _SFR_MEM8(0x003B)  /* Extended Z-pointer Register */
 #define SPH  _SFR_MEM8(0x003E)  /* Stack Pointer High */
 #define SPL  _SFR_MEM8(0x003D)  /* Stack Pointer Low */
 #define SREG  _SFR_MEM8(0x003F)  /* Status Register */
@@ -341,7 +340,7 @@ typedef enum BOD_LVL_enum
 typedef enum BOD_SAMPFREQ_enum
 {
     BOD_SAMPFREQ_1KHZ_gc = (0x00<<4),  /* 1kHz sampling frequency */
-    BOD_SAMPFREQ_125HZ_gc = (0x01<<4),  /* 125kHz sampling frequency */
+    BOD_SAMPFREQ_125HZ_gc = (0x01<<4),  /* 125Hz sampling frequency */
 } BOD_SAMPFREQ_t;
 
 /* Operation in sleep mode select */
@@ -379,7 +378,7 @@ typedef struct CCL_struct
 {
     register8_t CTRLA;  /* Control Register A */
     register8_t SEQCTRL0;  /* Sequential Control 0 */
-    register8_t reserved_0x02;
+    register8_t SEQCTRL1;  /* Sequential Control 1 */
     register8_t reserved_0x03;
     register8_t reserved_0x04;
     register8_t INTCTRL0;  /* Interrupt Control 0 */
@@ -448,9 +447,9 @@ typedef enum CCL_CLKSRC_enum
 {
     CCL_CLKSRC_CLKPER_gc = (0x00<<1),  /* CLK_PER is clocking the LUT */
     CCL_CLKSRC_IN2_gc = (0x01<<1),  /* IN[2] is clocking the LUT */
-    CCL_CLKSRC_OSC20M_gc = (0x02<<1),  /* 20MHz oscillator before prescaler is clocking the LUT */
-    CCL_CLKSRC_OSCULP32K_gc = (0x03<<1),  /* 32kHz oscillator is clocking the LUT */
-    CCL_CLKSRC_OSCULP1K_gc = (0x04<<1),  /* 32kHz oscillator after DIV32 is clocking the LUT */
+    CCL_CLKSRC_OSC20M_gc = (0x04<<1),  /* 20MHz oscillator before prescaler is clocking the LUT */
+    CCL_CLKSRC_OSCULP32K_gc = (0x05<<1),  /* 32kHz oscillator is clocking the LUT */
+    CCL_CLKSRC_OSCULP1K_gc = (0x06<<1),  /* 32kHz oscillator after DIV32 is clocking the LUT */
 } CCL_CLKSRC_t;
 
 /* Edge Detection Enable select */
@@ -482,7 +481,6 @@ typedef enum CCL_INSEL0_enum
     CCL_INSEL0_SPI0_gc = (0x09<<0),  /* SPI0 MOSI input source */
     CCL_INSEL0_TCA0_gc = (0x0A<<0),  /* TCA0 WO0 input source */
     CCL_INSEL0_TCB0_gc = (0x0C<<0),  /* TCB0 WO input source */
-    CCL_INSEL0_TCD0_gc = (0x0D<<0),  /* TCD0 WOA input source */
 } CCL_INSEL0_t;
 
 /* LUT Input 1 Source Selection select */
@@ -499,7 +497,6 @@ typedef enum CCL_INSEL1_enum
     CCL_INSEL1_SPI0_gc = (0x09<<4),  /* SPI0 MOSI input source */
     CCL_INSEL1_TCA0_gc = (0x0A<<4),  /* TCA0 WO1 input source */
     CCL_INSEL1_TCB1_gc = (0x0C<<4),  /* TCB1 WO input source */
-    CCL_INSEL1_TCD0_gc = (0x0D<<4),  /* TCD0 WOB input soruce */
 } CCL_INSEL1_t;
 
 /* LUT Input 2 Source Selection select */
@@ -516,54 +513,63 @@ typedef enum CCL_INSEL2_enum
     CCL_INSEL2_SPI0_gc = (0x09<<0),  /* SPI0 SCK input source */
     CCL_INSEL2_TCA0_gc = (0x0A<<0),  /* TCA0 WO2 input source */
     CCL_INSEL2_TCB2_gc = (0x0C<<0),  /* TCB2 WO input source */
-    CCL_INSEL2_TCD0_gc = (0x0D<<0),  /* TCD0 WOC input source */
 } CCL_INSEL2_t;
 
 /* Interrupt Mode for LUT0 select */
 typedef enum CCL_INTMODE0_enum
 {
-    CCL_INTMODE0_BOTH_gc = (0x00<<0),  /* Sense both edges */
-    CCL_INTMODE0_FALLING_gc = (0x01<<0),  /* Sense falling edge */
-    CCL_INTMODE0_RISING_gc = (0x02<<0),  /* Sense rising edge */
-    CCL_INTMODE0_INTDISABLE_gc = (0x03<<0),  /* Interrupt disabled */
+    CCL_INTMODE0_INTDISABLE_gc = (0x00<<0),  /* Interrupt disabled */
+    CCL_INTMODE0_RISING_gc = (0x01<<0),  /* Sense rising edge */
+    CCL_INTMODE0_FALLING_gc = (0x02<<0),  /* Sense falling edge */
+    CCL_INTMODE0_BOTH_gc = (0x03<<0),  /* Sense both edges */
 } CCL_INTMODE0_t;
 
 /* Interrupt Mode for LUT1 select */
 typedef enum CCL_INTMODE1_enum
 {
-    CCL_INTMODE1_BOTH_gc = (0x00<<2),  /* Sense both edges */
-    CCL_INTMODE1_FALLING_gc = (0x01<<2),  /* Sense falling edge */
-    CCL_INTMODE1_RISING_gc = (0x02<<2),  /* Sense rising edge */
-    CCL_INTMODE1_INTDISABLE_gc = (0x03<<2),  /* Interrupt disabled */
+    CCL_INTMODE1_INTDISABLE_gc = (0x00<<2),  /* Interrupt disabled */
+    CCL_INTMODE1_RISING_gc = (0x01<<2),  /* Sense rising edge */
+    CCL_INTMODE1_FALLING_gc = (0x02<<2),  /* Sense falling edge */
+    CCL_INTMODE1_BOTH_gc = (0x03<<2),  /* Sense both edges */
 } CCL_INTMODE1_t;
 
 /* Interrupt Mode for LUT2 select */
 typedef enum CCL_INTMODE2_enum
 {
-    CCL_INTMODE2_BOTH_gc = (0x00<<4),  /* Sense both edges */
-    CCL_INTMODE2_FALLING_gc = (0x01<<4),  /* Sense falling edge */
-    CCL_INTMODE2_RISING_gc = (0x02<<4),  /* Sense rising edge */
-    CCL_INTMODE2_INTDISABLE_gc = (0x03<<4),  /* Interrupt disabled */
+    CCL_INTMODE2_INTDISABLE_gc = (0x00<<4),  /* Interrupt disabled */
+    CCL_INTMODE2_RISING_gc = (0x01<<4),  /* Sense rising edge */
+    CCL_INTMODE2_FALLING_gc = (0x02<<4),  /* Sense falling edge */
+    CCL_INTMODE2_BOTH_gc = (0x03<<4),  /* Sense both edges */
 } CCL_INTMODE2_t;
 
 /* Interrupt Mode for LUT3 select */
 typedef enum CCL_INTMODE3_enum
 {
-    CCL_INTMODE3_BOTH_gc = (0x00<<6),  /* Sense both edges */
-    CCL_INTMODE3_FALLING_gc = (0x01<<6),  /* Sense falling edge */
-    CCL_INTMODE3_RISING_gc = (0x02<<6),  /* Sense rising edge */
-    CCL_INTMODE3_INTDISABLE_gc = (0x03<<6),  /* Interrupt disabled */
+    CCL_INTMODE3_INTDISABLE_gc = (0x00<<6),  /* Interrupt disabled */
+    CCL_INTMODE3_RISING_gc = (0x01<<6),  /* Sense rising edge */
+    CCL_INTMODE3_FALLING_gc = (0x02<<6),  /* Sense falling edge */
+    CCL_INTMODE3_BOTH_gc = (0x03<<6),  /* Sense both edges */
 } CCL_INTMODE3_t;
 
 /* Sequential Selection select */
-typedef enum CCL_SEQSEL_enum
+typedef enum CCL_SEQSEL0_enum
 {
-    CCL_SEQSEL_DISABLE_gc = (0x00<<0),  /* Sequential logic disabled */
-    CCL_SEQSEL_DFF_gc = (0x01<<0),  /* D FlipFlop */
-    CCL_SEQSEL_JK_gc = (0x02<<0),  /* JK FlipFlop */
-    CCL_SEQSEL_LATCH_gc = (0x03<<0),  /* D Latch */
-    CCL_SEQSEL_RS_gc = (0x04<<0),  /* RS Latch */
-} CCL_SEQSEL_t;
+    CCL_SEQSEL0_DISABLE_gc = (0x00<<0),  /* Sequential logic disabled */
+    CCL_SEQSEL0_DFF_gc = (0x01<<0),  /* D FlipFlop */
+    CCL_SEQSEL0_JK_gc = (0x02<<0),  /* JK FlipFlop */
+    CCL_SEQSEL0_LATCH_gc = (0x03<<0),  /* D Latch */
+    CCL_SEQSEL0_RS_gc = (0x04<<0),  /* RS Latch */
+} CCL_SEQSEL0_t;
+
+/* Sequential Selection select */
+typedef enum CCL_SEQSEL1_enum
+{
+    CCL_SEQSEL1_DISABLE_gc = (0x00<<0),  /* Sequential logic disabled */
+    CCL_SEQSEL1_DFF_gc = (0x01<<0),  /* D FlipFlop */
+    CCL_SEQSEL1_JK_gc = (0x02<<0),  /* JK FlipFlop */
+    CCL_SEQSEL1_LATCH_gc = (0x03<<0),  /* D Latch */
+    CCL_SEQSEL1_RS_gc = (0x04<<0),  /* RS Latch */
+} CCL_SEQSEL1_t;
 
 /*
 --------------------------------------------------------------------------
@@ -599,7 +605,7 @@ typedef struct CLKCTRL_struct
     register8_t reserved_0x16;
     register8_t reserved_0x17;
     register8_t OSC32KCTRLA;  /* OSC32K Control A */
-    register8_t OSC32KCALIB;  /* OSC32K Calibration */
+    register8_t reserved_0x19;
     register8_t reserved_0x1A;
     register8_t reserved_0x1B;
     register8_t XOSC32KCTRLA;  /* XOSC32K Control A */
@@ -799,7 +805,6 @@ typedef enum EVSYS_GENERATOR_enum
     EVSYS_GENERATOR_CCL_LUT1_gc = (0x11<<0),  /* Configurable Custom Logic LUT1 */
     EVSYS_GENERATOR_CCL_LUT2_gc = (0x12<<0),  /* Configurable Custom Logic LUT2 */
     EVSYS_GENERATOR_CCL_LUT3_gc = (0x13<<0),  /* Configurable Custom Logic LUT3 */
-    EVSYS_GENERATOR_OSC_TEST_gc = (0x02<<0),  /* Oscillator test event */
     EVSYS_GENERATOR_AC0_OUT_gc = (0x20<<0),  /* Analog Comparator 0 out */
     EVSYS_GENERATOR_ADC0_COMP_gc = (0x24<<0),  /* ADC 0 Comparator Event */
     EVSYS_GENERATOR_PORT0_PIN0_gc = (0x40<<0),  /* Port 0 Pin 0 */
@@ -826,8 +831,8 @@ typedef enum EVSYS_GENERATOR_enum
     EVSYS_GENERATOR_SPI0_SCK_gc = (0x68<<0),  /* SPI 0 Sclock */
     EVSYS_GENERATOR_RTC_CMP_gc = (0x07<<0),  /* Real Time Counter compare */
     EVSYS_GENERATOR_RTC_PIT0_gc = (0x08<<0),  /* Periodic Interrupt Timer output 0 */
-    EVSYS_GENERATOR_TCA0_OVF_gc = (0x80<<0),  /* Timer/Counter A0 overflow */
-    EVSYS_GENERATOR_TCA0_ERR_gc = (0x81<<0),  /* Timer/Counter A0 error */
+    EVSYS_GENERATOR_TCA0_OVF_LUNF_gc = (0x80<<0),  /* Timer/Counter A0 overflow / low byte underflow */
+    EVSYS_GENERATOR_TCA0_HUNF_gc = (0x81<<0),  /* Timer/Counter A0 high byte underflow (split mode) */
     EVSYS_GENERATOR_TCA0_CMP0_gc = (0x84<<0),  /* Timer/Counter A0 compare 0 */
     EVSYS_GENERATOR_TCA0_CMP1_gc = (0x85<<0),  /* Timer/Counter A0 compare 1 */
     EVSYS_GENERATOR_TCA0_CMP2_gc = (0x86<<0),  /* Timer/Counter A0 compare 2 */
@@ -866,12 +871,11 @@ typedef struct FUSE_struct
     register8_t BODCFG;  /* BOD Configuration */
     register8_t OSCCFG;  /* Oscillator Configuration */
     register8_t reserved_0x03;
-    register8_t TCD0CFG;  /* TCD0 Configuration */
+    register8_t reserved_0x04;
     register8_t SYSCFG0;  /* System Configuration 0 */
     register8_t SYSCFG1;  /* System Configuration 1 */
     register8_t APPEND;  /* Application Code Section End */
     register8_t BOOTEND;  /* Boot Section End */
-    register8_t reserved_0x09;
 } FUSE_t;
 
 
@@ -936,17 +940,15 @@ typedef enum PERIOD_enum
 /* Reset Pin Configuration select */
 typedef enum RSTPINCFG_enum
 {
-    RSTPINCFG_GPIO_gc = (0x00<<2),  /* GPIO mode */
-    RSTPINCFG_UPDI_gc = (0x01<<2),  /* UPDI mode */
-    RSTPINCFG_RST_gc = (0x02<<2),  /* Reset mode */
-    RSTPINCFG_PDIRST_gc = (0x03<<2),  /* PDI on PDI pad, reset on alternative reset pad */
+    RSTPINCFG_GPIO_gc = (0x00<<3),  /* GPIO mode */
+    RSTPINCFG_RST_gc = (0x01<<3),  /* Reset mode */
 } RSTPINCFG_t;
 
 /* BOD Sample Frequency select */
 typedef enum SAMPFREQ_enum
 {
     SAMPFREQ_1KHZ_gc = (0x00<<4),  /* 1kHz sampling frequency */
-    SAMPFREQ_125HZ_gc = (0x01<<4),  /* 125kHz sampling frequency */
+    SAMPFREQ_125HZ_gc = (0x01<<4),  /* 125Hz sampling frequency */
 } SAMPFREQ_t;
 
 /* BOD Operation in Sleep Mode select */
@@ -1006,90 +1008,6 @@ typedef enum LB_enum
     LB_RWLOCK_gc = (0x3A<<0),  /* Read and write lock */
     LB_NOLOCK_gc = (0xC5<<0),  /* No locks */
 } LB_t;
-
-/*
---------------------------------------------------------------------------
-NVMBIST - BIST in the NVMCTRL module
---------------------------------------------------------------------------
-*/
-
-/* BIST in the NVMCTRL module */
-typedef struct NVMBIST_struct
-{
-    register8_t CTRLA;  /* Control A */
-    register8_t ADDRPAT;  /* Address pattern */
-    register8_t DATAPAT;  /* Data pattern */
-    register8_t STATUS;  /* Status */
-    _WORDREGISTER(CNT);  /*  */
-    _DWORDREGISTER(END);  /*  */
-    register8_t reserved_0x0A;
-    register8_t reserved_0x0B;
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
-} NVMBIST_t;
-
-/* Address mode select */
-typedef enum NVMBIST_AMODE_enum
-{
-    NVMBIST_AMODE_NORMAL_gc = (0x00<<4),  /* No special address pattern */
-    NVMBIST_AMODE_COMPLEMENT_gc = (0x04<<4),  /* Post complement address */
-} NVMBIST_AMODE_t;
-
-/* Command select */
-typedef enum NVMBIST_CMD_enum
-{
-    NVMBIST_CMD_NOCMD_gc = (0x00<<0),  /* No effect */
-    NVMBIST_CMD_START_gc = (0x01<<0),  /* Start BIST testing */
-    NVMBIST_CMD_RESTART_gc = (0x02<<0),  /* Re-start BIST testing */
-    NVMBIST_CMD_BREAK_gc = (0x03<<0),  /* Stop BIST and go to BREAK state */
-} NVMBIST_CMD_t;
-
-/* Data check pattern select */
-typedef enum NVMBIST_PATTERN_enum
-{
-    NVMBIST_PATTERN_ZEROES_gc = (0x00<<0),  /* All flash programmed */
-    NVMBIST_PATTERN_CHECK_gc = (0x01<<0),  /* Physical checkerboard in flash */
-    NVMBIST_PATTERN_INVCHECK_gc = (0x02<<0),  /* Inverse physical checkerboard in flash */
-    NVMBIST_PATTERN_ONES_gc = (0x03<<0),  /* All flash unprogrammed */
-} NVMBIST_PATTERN_t;
-
-/* FSM State select */
-typedef enum NVMBIST_STATE_enum
-{
-    NVMBIST_STATE_IDLE_gc = (0x00<<0),  /* Reset state */
-    NVMBIST_STATE_BREAK_gc = (0x01<<0),  /* Break command used */
-    NVMBIST_STATE_FAILED0_gc = (0x04<<0),  /* Test failed, data from last address */
-    NVMBIST_STATE_FAILED1_gc = (0x05<<0),  /* Test failed, data from address-1 */
-    NVMBIST_STATE_FAILED2_gc = (0x06<<0),  /* Test failed, data from address-2 */
-    NVMBIST_STATE_SUCCESS_gc = (0x07<<0),  /* Test success */
-    NVMBIST_STATE_START0_gc = (0x08<<0),  /* Startup, fetching first data */
-    NVMBIST_STATE_START1_gc = (0x09<<0),  /* Startup, fetching second data */
-    NVMBIST_STATE_RESTART0_gc = (0x0A<<0),  /* Re-start from BREAK or FAILED2 */
-    NVMBIST_STATE_RESTART1_gc = (0x0B<<0),  /* Re-start from FAILED1 */
-    NVMBIST_STATE_RUNNING_gc = (0x0C<<0),  /* Test running */
-    NVMBIST_STATE_FINISH0_gc = (0x0E<<0),  /* Check last word */
-    NVMBIST_STATE_FINISH1_gc = (0x0F<<0),  /* Count faults in last word */
-} NVMBIST_STATE_t;
-
-/* X address mode select */
-typedef enum NVMBIST_XMODE_enum
-{
-    NVMBIST_XMODE_STATIC_gc = (0x00<<0),  /* X static */
-    NVMBIST_XMODE_CARRY_gc = (0x01<<0),  /* Carry/borrow from Y */
-    NVMBIST_XMODE_INC_gc = (0x02<<0),  /* X increment each cycle */
-    NVMBIST_XMODE_DEC_gc = (0x03<<0),  /* X decrement each cycle */
-} NVMBIST_XMODE_t;
-
-/* Y address mode select */
-typedef enum NVMBIST_YMODE_enum
-{
-    NVMBIST_YMODE_STATIC_gc = (0x00<<2),  /* Y static */
-    NVMBIST_YMODE_CARRY_gc = (0x01<<2),  /* Carry/borrow from X */
-    NVMBIST_YMODE_INC_gc = (0x02<<2),  /* Y increment each cycle */
-    NVMBIST_YMODE_DEC_gc = (0x03<<2),  /* Y decrement each cycle */
-} NVMBIST_YMODE_t;
 
 /*
 --------------------------------------------------------------------------
@@ -1259,7 +1177,7 @@ typedef enum PORTMUX_USART1_enum
 typedef enum PORTMUX_USART2_enum
 {
     PORTMUX_USART2_DEFAULT_gc = (0x00<<4),  /* USART2 on PF[3:0] */
-    PORTMUX_USART2_ALT1_gc = (0x01<<4),  /* USART2 on PF[5:4] */
+    PORTMUX_USART2_ALT1_gc = (0x01<<4),  /* USART2 on PF[6:4] */
     PORTMUX_USART2_NONE_gc = (0x03<<4),  /* Not connected to any pins */
 } PORTMUX_USART2_t;
 
@@ -1302,7 +1220,7 @@ typedef struct RTC_struct
     register8_t INTFLAGS;  /* Interrupt Flags */
     register8_t TEMP;  /* Temporary */
     register8_t DBGCTRL;  /* Debug control */
-    register8_t reserved_0x06;
+    register8_t CALIB;  /* Calibration */
     register8_t CLKSEL;  /* Clock Select */
     _WORDREGISTER(CNT);  /* Counter */
     _WORDREGISTER(PER);  /* Period */
@@ -1829,7 +1747,7 @@ TWI - Two-Wire Interface
 typedef struct TWI_struct
 {
     register8_t CTRLA;  /* Control A */
-    register8_t BRIDGECTRL;  /* Bridge Control */
+    register8_t DUALCTRL;  /* Dual Control */
     register8_t DBGCTRL;  /* Debug Control Register */
     register8_t MCTRLA;  /* Master Control A */
     register8_t MCTRLB;  /* Master Control B */
@@ -1936,6 +1854,15 @@ typedef struct USART_struct
     register8_t RXPLCTRL;  /* IRCOM Receiver Pulse Length Control */
     register8_t reserved_0x0F;
 } USART_t;
+
+/* Auto Baud Window select */
+typedef enum USART_ABW_enum
+{
+    USART_ABW_WDW0_gc = (0x00<<6),  /* 18% tolerance */
+    USART_ABW_WDW1_gc = (0x01<<6),  /* 15% tolerance */
+    USART_ABW_WDW2_gc = (0x02<<6),  /* 21% tolerance */
+    USART_ABW_WDW3_gc = (0x03<<6),  /* 25% tolerance */
+} USART_ABW_t;
 
 /* Character Size select */
 typedef enum USART_CHSIZE_enum
@@ -2102,6 +2029,7 @@ typedef enum VREF_AC0REFSEL_enum
     VREF_AC0REFSEL_2V5_gc = (0x02<<0),  /* Voltage reference at 2.5V */
     VREF_AC0REFSEL_4V34_gc = (0x03<<0),  /* Voltage reference at 4.34V */
     VREF_AC0REFSEL_1V5_gc = (0x04<<0),  /* Voltage reference at 1.5V */
+    VREF_AC0REFSEL_AVDD_gc = (0x07<<0),  /* AVDD */
 } VREF_AC0REFSEL_t;
 
 /* ADC0 reference select select */
@@ -2177,7 +2105,6 @@ IO Module Instances. Mapped to memory.
 #define CLKCTRL           (*(CLKCTRL_t *) 0x0060) /* Clock controller */
 #define BOD                   (*(BOD_t *) 0x0080) /* Bod interface */
 #define VREF                 (*(VREF_t *) 0x00A0) /* Voltage reference */
-#define NVMBIST           (*(NVMBIST_t *) 0x00C0) /* BIST in the NVMCTRL module */
 #define WDT                   (*(WDT_t *) 0x0100) /* Watch-Dog Timer */
 #define CPUINT             (*(CPUINT_t *) 0x0110) /* Interrupt Controller */
 #define CRCSCAN           (*(CRCSCAN_t *) 0x0120) /* CRCSCAN */
@@ -2273,7 +2200,6 @@ IO Module Instances. Mapped to memory.
 
 /* CPU - CPU */
 #define CPU_CCP  _SFR_MEM8(0x0034)
-#define CPU_RAMPZ  _SFR_MEM8(0x003B)
 #define CPU_SPL  _SFR_MEM8(0x003D)
 #define CPU_SPH  _SFR_MEM8(0x003E)
 #define CPU_SREG  _SFR_MEM8(0x003F)
@@ -2297,7 +2223,6 @@ IO Module Instances. Mapped to memory.
 #define CLKCTRL_OSC20MCALIBA  _SFR_MEM8(0x0071)
 #define CLKCTRL_OSC20MCALIBB  _SFR_MEM8(0x0072)
 #define CLKCTRL_OSC32KCTRLA  _SFR_MEM8(0x0078)
-#define CLKCTRL_OSC32KCALIB  _SFR_MEM8(0x0079)
 #define CLKCTRL_XOSC32KCTRLA  _SFR_MEM8(0x007C)
 
 
@@ -2313,21 +2238,6 @@ IO Module Instances. Mapped to memory.
 /* VREF - Voltage reference */
 #define VREF_CTRLA  _SFR_MEM8(0x00A0)
 #define VREF_CTRLB  _SFR_MEM8(0x00A1)
-
-
-/* NVMBIST - BIST in the NVMCTRL module */
-#define NVMBIST_CTRLA  _SFR_MEM8(0x00C0)
-#define NVMBIST_ADDRPAT  _SFR_MEM8(0x00C1)
-#define NVMBIST_DATAPAT  _SFR_MEM8(0x00C2)
-#define NVMBIST_STATUS  _SFR_MEM8(0x00C3)
-#define NVMBIST_CNT  _SFR_MEM16(0x00C4)
-#define NVMBIST_CNTL  _SFR_MEM8(0x00C4)
-#define NVMBIST_CNTH  _SFR_MEM8(0x00C5)
-#define NVMBIST_END  _SFR_MEM32(0x00C6)
-#define NVMBIST_END0  _SFR_MEM8(0x00C6)
-#define NVMBIST_END1  _SFR_MEM8(0x00C7)
-#define NVMBIST_END2  _SFR_MEM8(0x00C8)
-#define NVMBIST_END3  _SFR_MEM8(0x00C9)
 
 
 /* WDT - Watch-Dog Timer */
@@ -2355,6 +2265,7 @@ IO Module Instances. Mapped to memory.
 #define RTC_INTFLAGS  _SFR_MEM8(0x0143)
 #define RTC_TEMP  _SFR_MEM8(0x0144)
 #define RTC_DBGCTRL  _SFR_MEM8(0x0145)
+#define RTC_CALIB  _SFR_MEM8(0x0146)
 #define RTC_CLKSEL  _SFR_MEM8(0x0147)
 #define RTC_CNT  _SFR_MEM16(0x0148)
 #define RTC_CNTL  _SFR_MEM8(0x0148)
@@ -2409,6 +2320,7 @@ IO Module Instances. Mapped to memory.
 /* CCL - Configurable Custom Logic */
 #define CCL_CTRLA  _SFR_MEM8(0x01C0)
 #define CCL_SEQCTRL0  _SFR_MEM8(0x01C1)
+#define CCL_SEQCTRL1  _SFR_MEM8(0x01C2)
 #define CCL_INTCTRL0  _SFR_MEM8(0x01C5)
 #define CCL_INTFLAGS  _SFR_MEM8(0x01C7)
 #define CCL_LUT0CTRLA  _SFR_MEM8(0x01C8)
@@ -2663,7 +2575,7 @@ IO Module Instances. Mapped to memory.
 
 /* TWI (TWI0) - Two-Wire Interface */
 #define TWI0_CTRLA  _SFR_MEM8(0x08A0)
-#define TWI0_BRIDGECTRL  _SFR_MEM8(0x08A1)
+#define TWI0_DUALCTRL  _SFR_MEM8(0x08A1)
 #define TWI0_DBGCTRL  _SFR_MEM8(0x08A2)
 #define TWI0_MCTRLA  _SFR_MEM8(0x08A3)
 #define TWI0_MCTRLB  _SFR_MEM8(0x08A4)
@@ -2839,7 +2751,6 @@ IO Module Instances. Mapped to memory.
 #define FUSE_WDTCFG  _SFR_MEM8(0x1280)
 #define FUSE_BODCFG  _SFR_MEM8(0x1281)
 #define FUSE_OSCCFG  _SFR_MEM8(0x1282)
-#define FUSE_TCD0CFG  _SFR_MEM8(0x1284)
 #define FUSE_SYSCFG0  _SFR_MEM8(0x1285)
 #define FUSE_SYSCFG1  _SFR_MEM8(0x1286)
 #define FUSE_APPEND  _SFR_MEM8(0x1287)
@@ -3197,14 +3108,24 @@ IO Module Instances. Mapped to memory.
 #define CCL_RUNSTDBY_bp  6  /* Run in Standby bit position. */
 
 /* CCL.SEQCTRL0  bit masks and bit positions */
-#define CCL_SEQSEL_gm  0x07  /* Sequential Selection group mask. */
-#define CCL_SEQSEL_gp  0  /* Sequential Selection group position. */
-#define CCL_SEQSEL0_bm  (1<<0)  /* Sequential Selection bit 0 mask. */
-#define CCL_SEQSEL0_bp  0  /* Sequential Selection bit 0 position. */
-#define CCL_SEQSEL1_bm  (1<<1)  /* Sequential Selection bit 1 mask. */
-#define CCL_SEQSEL1_bp  1  /* Sequential Selection bit 1 position. */
-#define CCL_SEQSEL2_bm  (1<<2)  /* Sequential Selection bit 2 mask. */
-#define CCL_SEQSEL2_bp  2  /* Sequential Selection bit 2 position. */
+#define CCL_SEQSEL0_gm  0x07  /* Sequential Selection group mask. */
+#define CCL_SEQSEL0_gp  0  /* Sequential Selection group position. */
+#define CCL_SEQSEL00_bm  (1<<0)  /* Sequential Selection bit 0 mask. */
+#define CCL_SEQSEL00_bp  0  /* Sequential Selection bit 0 position. */
+#define CCL_SEQSEL01_bm  (1<<1)  /* Sequential Selection bit 1 mask. */
+#define CCL_SEQSEL01_bp  1  /* Sequential Selection bit 1 position. */
+#define CCL_SEQSEL02_bm  (1<<2)  /* Sequential Selection bit 2 mask. */
+#define CCL_SEQSEL02_bp  2  /* Sequential Selection bit 2 position. */
+
+/* CCL.SEQCTRL1  bit masks and bit positions */
+#define CCL_SEQSEL1_gm  0x07  /* Sequential Selection group mask. */
+#define CCL_SEQSEL1_gp  0  /* Sequential Selection group position. */
+#define CCL_SEQSEL10_bm  (1<<0)  /* Sequential Selection bit 0 mask. */
+#define CCL_SEQSEL10_bp  0  /* Sequential Selection bit 0 position. */
+#define CCL_SEQSEL11_bm  (1<<1)  /* Sequential Selection bit 1 mask. */
+#define CCL_SEQSEL11_bp  1  /* Sequential Selection bit 1 position. */
+#define CCL_SEQSEL12_bm  (1<<2)  /* Sequential Selection bit 2 mask. */
+#define CCL_SEQSEL12_bp  2  /* Sequential Selection bit 2 position. */
 
 /* CCL.INTCTRL0  bit masks and bit positions */
 #define CCL_INTMODE0_gm  0x03  /* Interrupt Mode for LUT0 group mask. */
@@ -3407,8 +3328,6 @@ IO Module Instances. Mapped to memory.
 #define CLKCTRL_CAL20M5_bp  5  /* Calibration bit 5 position. */
 #define CLKCTRL_CAL20M6_bm  (1<<6)  /* Calibration bit 6 mask. */
 #define CLKCTRL_CAL20M6_bp  6  /* Calibration bit 6 position. */
-#define CLKCTRL_CALSEL20M_bm  0x80  /* Calibration freq select bit mask. */
-#define CLKCTRL_CALSEL20M_bp  7  /* Calibration freq select bit position. */
 
 /* CLKCTRL.OSC20MCALIBB  bit masks and bit positions */
 #define CLKCTRL_TEMPCAL20M_gm  0x0F  /* Oscillator temperature coefficient group mask. */
@@ -3426,22 +3345,6 @@ IO Module Instances. Mapped to memory.
 
 /* CLKCTRL.OSC32KCTRLA  bit masks and bit positions */
 /* CLKCTRL_RUNSTDBY  is already defined. */
-
-/* CLKCTRL.OSC32KCALIB  bit masks and bit positions */
-#define CLKCTRL_CAL32K_gm  0x3F  /* Calibration group mask. */
-#define CLKCTRL_CAL32K_gp  0  /* Calibration group position. */
-#define CLKCTRL_CAL32K0_bm  (1<<0)  /* Calibration bit 0 mask. */
-#define CLKCTRL_CAL32K0_bp  0  /* Calibration bit 0 position. */
-#define CLKCTRL_CAL32K1_bm  (1<<1)  /* Calibration bit 1 mask. */
-#define CLKCTRL_CAL32K1_bp  1  /* Calibration bit 1 position. */
-#define CLKCTRL_CAL32K2_bm  (1<<2)  /* Calibration bit 2 mask. */
-#define CLKCTRL_CAL32K2_bp  2  /* Calibration bit 2 position. */
-#define CLKCTRL_CAL32K3_bm  (1<<3)  /* Calibration bit 3 mask. */
-#define CLKCTRL_CAL32K3_bp  3  /* Calibration bit 3 position. */
-#define CLKCTRL_CAL32K4_bm  (1<<4)  /* Calibration bit 4 mask. */
-#define CLKCTRL_CAL32K4_bp  4  /* Calibration bit 4 position. */
-#define CLKCTRL_CAL32K5_bm  (1<<5)  /* Calibration bit 5 mask. */
-#define CLKCTRL_CAL32K5_bp  5  /* Calibration bit 5 position. */
 
 /* CLKCTRL.XOSC32KCTRLA  bit masks and bit positions */
 #define CLKCTRL_ENABLE_bm  0x01  /* Enable bit mask. */
@@ -3476,7 +3379,6 @@ IO Module Instances. Mapped to memory.
 #define CPU_CCP6_bp  6  /* CCP signature bit 6 position. */
 #define CPU_CCP7_bm  (1<<7)  /* CCP signature bit 7 mask. */
 #define CPU_CCP7_bp  7  /* CCP signature bit 7 position. */
-
 
 
 
@@ -3786,33 +3688,11 @@ IO Module Instances. Mapped to memory.
 #define FUSE_OSCLOCK_bm  0x80  /* Oscillator Lock bit mask. */
 #define FUSE_OSCLOCK_bp  7  /* Oscillator Lock bit position. */
 
-/* FUSE.TCD0CFG  bit masks and bit positions */
-#define FUSE_CMPA_bm  0x01  /* Compare A Default Output Value bit mask. */
-#define FUSE_CMPA_bp  0  /* Compare A Default Output Value bit position. */
-#define FUSE_CMPB_bm  0x02  /* Compare B Default Output Value bit mask. */
-#define FUSE_CMPB_bp  1  /* Compare B Default Output Value bit position. */
-#define FUSE_CMPC_bm  0x04  /* Compare C Default Output Value bit mask. */
-#define FUSE_CMPC_bp  2  /* Compare C Default Output Value bit position. */
-#define FUSE_CMPD_bm  0x08  /* Compare D Default Output Value bit mask. */
-#define FUSE_CMPD_bp  3  /* Compare D Default Output Value bit position. */
-#define FUSE_CMPAEN_bm  0x10  /* Compare A Output Enable bit mask. */
-#define FUSE_CMPAEN_bp  4  /* Compare A Output Enable bit position. */
-#define FUSE_CMPBEN_bm  0x20  /* Compare B Output Enable bit mask. */
-#define FUSE_CMPBEN_bp  5  /* Compare B Output Enable bit position. */
-#define FUSE_CMPCEN_bm  0x40  /* Compare C Output Enable bit mask. */
-#define FUSE_CMPCEN_bp  6  /* Compare C Output Enable bit position. */
-#define FUSE_CMPDEN_bm  0x80  /* Compare D Output Enable bit mask. */
-#define FUSE_CMPDEN_bp  7  /* Compare D Output Enable bit position. */
-
 /* FUSE.SYSCFG0  bit masks and bit positions */
 #define FUSE_EESAVE_bm  0x01  /* EEPROM Save bit mask. */
 #define FUSE_EESAVE_bp  0  /* EEPROM Save bit position. */
-#define FUSE_RSTPINCFG_gm  0x0C  /* Reset Pin Configuration group mask. */
-#define FUSE_RSTPINCFG_gp  2  /* Reset Pin Configuration group position. */
-#define FUSE_RSTPINCFG0_bm  (1<<2)  /* Reset Pin Configuration bit 0 mask. */
-#define FUSE_RSTPINCFG0_bp  2  /* Reset Pin Configuration bit 0 position. */
-#define FUSE_RSTPINCFG1_bm  (1<<3)  /* Reset Pin Configuration bit 1 mask. */
-#define FUSE_RSTPINCFG1_bp  3  /* Reset Pin Configuration bit 1 position. */
+#define FUSE_RSTPINCFG_bm  0x08  /* Reset Pin Configuration bit mask. */
+#define FUSE_RSTPINCFG_bp  3  /* Reset Pin Configuration bit position. */
 #define FUSE_CRCSRC_gm  0xC0  /* CRC Source group mask. */
 #define FUSE_CRCSRC_gp  6  /* CRC Source group position. */
 #define FUSE_CRCSRC0_bm  (1<<6)  /* CRC Source bit 0 mask. */
@@ -3856,139 +3736,6 @@ IO Module Instances. Mapped to memory.
 #define LOCKBIT_LB6_bp  6  /* Lock Bits bit 6 position. */
 #define LOCKBIT_LB7_bm  (1<<7)  /* Lock Bits bit 7 mask. */
 #define LOCKBIT_LB7_bp  7  /* Lock Bits bit 7 position. */
-
-/* NVMBIST - BIST in the NVMCTRL module */
-/* NVMBIST.CTRLA  bit masks and bit positions */
-#define NVMBIST_CMD_gm  0x07  /* Command group mask. */
-#define NVMBIST_CMD_gp  0  /* Command group position. */
-#define NVMBIST_CMD0_bm  (1<<0)  /* Command bit 0 mask. */
-#define NVMBIST_CMD0_bp  0  /* Command bit 0 position. */
-#define NVMBIST_CMD1_bm  (1<<1)  /* Command bit 1 mask. */
-#define NVMBIST_CMD1_bp  1  /* Command bit 1 position. */
-#define NVMBIST_CMD2_bm  (1<<2)  /* Command bit 2 mask. */
-#define NVMBIST_CMD2_bp  2  /* Command bit 2 position. */
-#define NVMBIST_SAF_bm  0x08  /* Stop at fault bit mask. */
-#define NVMBIST_SAF_bp  3  /* Stop at fault bit position. */
-
-/* NVMBIST.ADDRPAT  bit masks and bit positions */
-#define NVMBIST_XMODE_gm  0x03  /* X address mode group mask. */
-#define NVMBIST_XMODE_gp  0  /* X address mode group position. */
-#define NVMBIST_XMODE0_bm  (1<<0)  /* X address mode bit 0 mask. */
-#define NVMBIST_XMODE0_bp  0  /* X address mode bit 0 position. */
-#define NVMBIST_XMODE1_bm  (1<<1)  /* X address mode bit 1 mask. */
-#define NVMBIST_XMODE1_bp  1  /* X address mode bit 1 position. */
-#define NVMBIST_YMODE_gm  0x0C  /* Y address mode group mask. */
-#define NVMBIST_YMODE_gp  2  /* Y address mode group position. */
-#define NVMBIST_YMODE0_bm  (1<<2)  /* Y address mode bit 0 mask. */
-#define NVMBIST_YMODE0_bp  2  /* Y address mode bit 0 position. */
-#define NVMBIST_YMODE1_bm  (1<<3)  /* Y address mode bit 1 mask. */
-#define NVMBIST_YMODE1_bp  3  /* Y address mode bit 1 position. */
-#define NVMBIST_AMODE_gm  0x70  /* Address mode group mask. */
-#define NVMBIST_AMODE_gp  4  /* Address mode group position. */
-#define NVMBIST_AMODE0_bm  (1<<4)  /* Address mode bit 0 mask. */
-#define NVMBIST_AMODE0_bp  4  /* Address mode bit 0 position. */
-#define NVMBIST_AMODE1_bm  (1<<5)  /* Address mode bit 1 mask. */
-#define NVMBIST_AMODE1_bp  5  /* Address mode bit 1 position. */
-#define NVMBIST_AMODE2_bm  (1<<6)  /* Address mode bit 2 mask. */
-#define NVMBIST_AMODE2_bp  6  /* Address mode bit 2 position. */
-
-/* NVMBIST.DATAPAT  bit masks and bit positions */
-#define NVMBIST_PATTERN_gm  0x03  /* Data check pattern group mask. */
-#define NVMBIST_PATTERN_gp  0  /* Data check pattern group position. */
-#define NVMBIST_PATTERN0_bm  (1<<0)  /* Data check pattern bit 0 mask. */
-#define NVMBIST_PATTERN0_bp  0  /* Data check pattern bit 0 position. */
-#define NVMBIST_PATTERN1_bm  (1<<1)  /* Data check pattern bit 1 mask. */
-#define NVMBIST_PATTERN1_bp  1  /* Data check pattern bit 1 position. */
-
-/* NVMBIST.STATUS  bit masks and bit positions */
-#define NVMBIST_STATE_gm  0x0F  /* FSM State group mask. */
-#define NVMBIST_STATE_gp  0  /* FSM State group position. */
-#define NVMBIST_STATE0_bm  (1<<0)  /* FSM State bit 0 mask. */
-#define NVMBIST_STATE0_bp  0  /* FSM State bit 0 position. */
-#define NVMBIST_STATE1_bm  (1<<1)  /* FSM State bit 1 mask. */
-#define NVMBIST_STATE1_bp  1  /* FSM State bit 1 position. */
-#define NVMBIST_STATE2_bm  (1<<2)  /* FSM State bit 2 mask. */
-#define NVMBIST_STATE2_bp  2  /* FSM State bit 2 position. */
-#define NVMBIST_STATE3_bm  (1<<3)  /* FSM State bit 3 mask. */
-#define NVMBIST_STATE3_bp  3  /* FSM State bit 3 position. */
-
-/* NVMBIST.CNT  bit masks and bit positions */
-#define NVMBIST_CNT_gm  0x7FF  /* Faults counter group mask. */
-#define NVMBIST_CNT_gp  0  /* Faults counter group position. */
-#define NVMBIST_CNT0_bm  (1<<0)  /* Faults counter bit 0 mask. */
-#define NVMBIST_CNT0_bp  0  /* Faults counter bit 0 position. */
-#define NVMBIST_CNT1_bm  (1<<1)  /* Faults counter bit 1 mask. */
-#define NVMBIST_CNT1_bp  1  /* Faults counter bit 1 position. */
-#define NVMBIST_CNT2_bm  (1<<2)  /* Faults counter bit 2 mask. */
-#define NVMBIST_CNT2_bp  2  /* Faults counter bit 2 position. */
-#define NVMBIST_CNT3_bm  (1<<3)  /* Faults counter bit 3 mask. */
-#define NVMBIST_CNT3_bp  3  /* Faults counter bit 3 position. */
-#define NVMBIST_CNT4_bm  (1<<4)  /* Faults counter bit 4 mask. */
-#define NVMBIST_CNT4_bp  4  /* Faults counter bit 4 position. */
-#define NVMBIST_CNT5_bm  (1<<5)  /* Faults counter bit 5 mask. */
-#define NVMBIST_CNT5_bp  5  /* Faults counter bit 5 position. */
-#define NVMBIST_CNT6_bm  (1<<6)  /* Faults counter bit 6 mask. */
-#define NVMBIST_CNT6_bp  6  /* Faults counter bit 6 position. */
-#define NVMBIST_CNT7_bm  (1<<7)  /* Faults counter bit 7 mask. */
-#define NVMBIST_CNT7_bp  7  /* Faults counter bit 7 position. */
-#define NVMBIST_CNT8_bm  (1<<8)  /* Faults counter bit 8 mask. */
-#define NVMBIST_CNT8_bp  8  /* Faults counter bit 8 position. */
-#define NVMBIST_CNT9_bm  (1<<9)  /* Faults counter bit 9 mask. */
-#define NVMBIST_CNT9_bp  9  /* Faults counter bit 9 position. */
-#define NVMBIST_CNT10_bm  (1<<10)  /* Faults counter bit 10 mask. */
-#define NVMBIST_CNT10_bp  10  /* Faults counter bit 10 position. */
-
-/* NVMBIST.END  bit masks and bit positions */
-#define NVMBIST_END_gm  0xFFFFFF  /*  group mask. */
-#define NVMBIST_END_gp  0  /*  group position. */
-#define NVMBIST_END0_bm  (1<<0)  /*  bit 0 mask. */
-#define NVMBIST_END0_bp  0  /*  bit 0 position. */
-#define NVMBIST_END1_bm  (1<<1)  /*  bit 1 mask. */
-#define NVMBIST_END1_bp  1  /*  bit 1 position. */
-#define NVMBIST_END2_bm  (1<<2)  /*  bit 2 mask. */
-#define NVMBIST_END2_bp  2  /*  bit 2 position. */
-#define NVMBIST_END3_bm  (1<<3)  /*  bit 3 mask. */
-#define NVMBIST_END3_bp  3  /*  bit 3 position. */
-#define NVMBIST_END4_bm  (1<<4)  /*  bit 4 mask. */
-#define NVMBIST_END4_bp  4  /*  bit 4 position. */
-#define NVMBIST_END5_bm  (1<<5)  /*  bit 5 mask. */
-#define NVMBIST_END5_bp  5  /*  bit 5 position. */
-#define NVMBIST_END6_bm  (1<<6)  /*  bit 6 mask. */
-#define NVMBIST_END6_bp  6  /*  bit 6 position. */
-#define NVMBIST_END7_bm  (1<<7)  /*  bit 7 mask. */
-#define NVMBIST_END7_bp  7  /*  bit 7 position. */
-#define NVMBIST_END8_bm  (1<<8)  /*  bit 8 mask. */
-#define NVMBIST_END8_bp  8  /*  bit 8 position. */
-#define NVMBIST_END9_bm  (1<<9)  /*  bit 9 mask. */
-#define NVMBIST_END9_bp  9  /*  bit 9 position. */
-#define NVMBIST_END10_bm  (1<<10)  /*  bit 10 mask. */
-#define NVMBIST_END10_bp  10  /*  bit 10 position. */
-#define NVMBIST_END11_bm  (1<<11)  /*  bit 11 mask. */
-#define NVMBIST_END11_bp  11  /*  bit 11 position. */
-#define NVMBIST_END12_bm  (1<<12)  /*  bit 12 mask. */
-#define NVMBIST_END12_bp  12  /*  bit 12 position. */
-#define NVMBIST_END13_bm  (1<<13)  /*  bit 13 mask. */
-#define NVMBIST_END13_bp  13  /*  bit 13 position. */
-#define NVMBIST_END14_bm  (1<<14)  /*  bit 14 mask. */
-#define NVMBIST_END14_bp  14  /*  bit 14 position. */
-#define NVMBIST_END15_bm  (1<<15)  /*  bit 15 mask. */
-#define NVMBIST_END15_bp  15  /*  bit 15 position. */
-#define NVMBIST_END16_bm  (1<<16)  /*  bit 16 mask. */
-#define NVMBIST_END16_bp  16  /*  bit 16 position. */
-#define NVMBIST_END17_bm  (1<<17)  /*  bit 17 mask. */
-#define NVMBIST_END17_bp  17  /*  bit 17 position. */
-#define NVMBIST_END18_bm  (1<<18)  /*  bit 18 mask. */
-#define NVMBIST_END18_bp  18  /*  bit 18 position. */
-#define NVMBIST_END19_bm  (1<<19)  /*  bit 19 mask. */
-#define NVMBIST_END19_bp  19  /*  bit 19 position. */
-#define NVMBIST_END20_bm  (1<<20)  /*  bit 20 mask. */
-#define NVMBIST_END20_bp  20  /*  bit 20 position. */
-#define NVMBIST_END21_bm  (1<<21)  /*  bit 21 mask. */
-#define NVMBIST_END21_bp  21  /*  bit 21 position. */
-#define NVMBIST_END22_bm  (1<<22)  /*  bit 22 mask. */
-#define NVMBIST_END22_bp  22  /*  bit 22 position. */
-#define NVMBIST_END23_bm  (1<<23)  /*  bit 23 mask. */
-#define NVMBIST_END23_bp  23  /*  bit 23 position. */
 
 /* NVMCTRL - Non-volatile Memory Controller */
 /* NVMCTRL.CTRLA  bit masks and bit positions */
@@ -4252,6 +3999,26 @@ IO Module Instances. Mapped to memory.
 /* RTC.DBGCTRL  bit masks and bit positions */
 #define RTC_DBGRUN_bm  0x01  /* Run in debug bit mask. */
 #define RTC_DBGRUN_bp  0  /* Run in debug bit position. */
+
+/* RTC.CALIB  bit masks and bit positions */
+#define RTC_ERROR_gm  0x7F  /* Error Correction Value group mask. */
+#define RTC_ERROR_gp  0  /* Error Correction Value group position. */
+#define RTC_ERROR0_bm  (1<<0)  /* Error Correction Value bit 0 mask. */
+#define RTC_ERROR0_bp  0  /* Error Correction Value bit 0 position. */
+#define RTC_ERROR1_bm  (1<<1)  /* Error Correction Value bit 1 mask. */
+#define RTC_ERROR1_bp  1  /* Error Correction Value bit 1 position. */
+#define RTC_ERROR2_bm  (1<<2)  /* Error Correction Value bit 2 mask. */
+#define RTC_ERROR2_bp  2  /* Error Correction Value bit 2 position. */
+#define RTC_ERROR3_bm  (1<<3)  /* Error Correction Value bit 3 mask. */
+#define RTC_ERROR3_bp  3  /* Error Correction Value bit 3 position. */
+#define RTC_ERROR4_bm  (1<<4)  /* Error Correction Value bit 4 mask. */
+#define RTC_ERROR4_bp  4  /* Error Correction Value bit 4 position. */
+#define RTC_ERROR5_bm  (1<<5)  /* Error Correction Value bit 5 mask. */
+#define RTC_ERROR5_bp  5  /* Error Correction Value bit 5 position. */
+#define RTC_ERROR6_bm  (1<<6)  /* Error Correction Value bit 6 mask. */
+#define RTC_ERROR6_bp  6  /* Error Correction Value bit 6 position. */
+#define RTC_SIGN_bm  0x80  /* Error Correction Sign Bit bit mask. */
+#define RTC_SIGN_bp  7  /* Error Correction Sign Bit bit position. */
 
 /* RTC.CLKSEL  bit masks and bit positions */
 #define RTC_CLKSEL_gm  0x03  /* Clock Select group mask. */
@@ -4673,9 +4440,9 @@ IO Module Instances. Mapped to memory.
 #define TWI_SDASETUP_bm  0x10  /* SDA Setup Time bit mask. */
 #define TWI_SDASETUP_bp  4  /* SDA Setup Time bit position. */
 
-/* TWI.BRIDGECTRL  bit masks and bit positions */
-#define TWI_ENABLE_bm  0x01  /* Bridge Enable bit mask. */
-#define TWI_ENABLE_bp  0  /* Bridge Enable bit position. */
+/* TWI.DUALCTRL  bit masks and bit positions */
+#define TWI_ENABLE_bm  0x01  /* Dual Control Enable bit mask. */
+#define TWI_ENABLE_bp  0  /* Dual Control Enable bit position. */
 /* TWI_FMPEN  is already defined. */
 /* TWI_SDAHOLD  is already defined. */
 
@@ -4914,6 +4681,13 @@ IO Module Instances. Mapped to memory.
 #define USART_CMODE1_bp  7  /* Communication Mode bit 1 position. */
 
 
+/* USART.CTRLD  bit masks and bit positions */
+#define USART_ABW_gm  0xC0  /* Auto Baud Window group mask. */
+#define USART_ABW_gp  6  /* Auto Baud Window group position. */
+#define USART_ABW0_bm  (1<<6)  /* Auto Baud Window bit 0 mask. */
+#define USART_ABW0_bp  6  /* Auto Baud Window bit 0 position. */
+#define USART_ABW1_bm  (1<<7)  /* Auto Baud Window bit 1 mask. */
+#define USART_ABW1_bp  7  /* Auto Baud Window bit 1 position. */
 
 /* USART.DBGCTRL  bit masks and bit positions */
 #define USART_DBGRUN_bm  0x01  /* Debug Run bit mask. */
@@ -5075,8 +4849,6 @@ IO Module Instances. Mapped to memory.
 #define VREF_AC0REFEN_bp  0  /* AC0 DACREF reference enable bit position. */
 #define VREF_ADC0REFEN_bm  0x02  /* ADC0 reference enable bit mask. */
 #define VREF_ADC0REFEN_bp  1  /* ADC0 reference enable bit position. */
-#define VREF_NVMREFEN_bm  0x04  /* NVM reference enable bit mask. */
-#define VREF_NVMREFEN_bp  2  /* NVM reference enable bit position. */
 
 /* WDT - Watch-Dog Timer */
 /* WDT.CTRLA  bit masks and bit positions */
@@ -5154,20 +4926,20 @@ IO Module Instances. Mapped to memory.
 #define PORTA_PORT_vect      _VECTOR(6)  /*  */
 
 /* TCA0 interrupt vectors */
-#define TCA0_OVF_vect_num  7
-#define TCA0_OVF_vect      _VECTOR(7)  /*  */
 #define TCA0_LUNF_vect_num  7
 #define TCA0_LUNF_vect      _VECTOR(7)  /*  */
+#define TCA0_OVF_vect_num  7
+#define TCA0_OVF_vect      _VECTOR(7)  /*  */
 #define TCA0_HUNF_vect_num  8
 #define TCA0_HUNF_vect      _VECTOR(8)  /*  */
 #define TCA0_LCMP0_vect_num  9
 #define TCA0_LCMP0_vect      _VECTOR(9)  /*  */
 #define TCA0_CMP0_vect_num  9
 #define TCA0_CMP0_vect      _VECTOR(9)  /*  */
-#define TCA0_LCMP1_vect_num  10
-#define TCA0_LCMP1_vect      _VECTOR(10)  /*  */
 #define TCA0_CMP1_vect_num  10
 #define TCA0_CMP1_vect      _VECTOR(10)  /*  */
+#define TCA0_LCMP1_vect_num  10
+#define TCA0_LCMP1_vect      _VECTOR(10)  /*  */
 #define TCA0_CMP2_vect_num  11
 #define TCA0_CMP2_vect      _VECTOR(11)  /*  */
 #define TCA0_LCMP2_vect_num  11
@@ -5259,13 +5031,24 @@ IO Module Instances. Mapped to memory.
 
 /* ========== Constants ========== */
 
-#define DATAMEM_START     (0x0000)
-#define DATAMEM_SIZE      (49152)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define DATAMEM_START     (0x0000)
+#  define DATAMEM_SIZE      (49152)
+#else
+#  define DATAMEM_START     (0x0000U)
+#  define DATAMEM_SIZE      (49152U)
+#endif
 #define DATAMEM_END       (DATAMEM_START + DATAMEM_SIZE - 1)
 
-#define EEPROM_START     (0x1400)
-#define EEPROM_SIZE      (256)
-#define EEPROM_PAGE_SIZE (64)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define EEPROM_START     (0x1400)
+#  define EEPROM_SIZE      (256)
+#  define EEPROM_PAGE_SIZE (64)
+#else
+#  define EEPROM_START     (0x1400U)
+#  define EEPROM_SIZE      (256U)
+#  define EEPROM_PAGE_SIZE (64U)
+#endif
 #define EEPROM_END       (EEPROM_START + EEPROM_SIZE - 1)
 
 /* Added MAPPED_EEPROM segment names for avr-libc */
@@ -5274,53 +5057,112 @@ IO Module Instances. Mapped to memory.
 #define MAPPED_EEPROM_PAGE_SIZE (EEPROM_PAGE_SIZE)
 #define MAPPED_EEPROM_END       (MAPPED_EEPROM_START + MAPPED_EEPROM_SIZE - 1)
 
-#define FUSES_START     (0x1280)
-#define FUSES_SIZE      (10)
-#define FUSES_PAGE_SIZE (64)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define FUSES_START     (0x1280)
+#  define FUSES_SIZE      (10)
+#  define FUSES_PAGE_SIZE (64)
+#else
+#  define FUSES_START     (0x1280U)
+#  define FUSES_SIZE      (10U)
+#  define FUSES_PAGE_SIZE (64U)
+#endif
 #define FUSES_END       (FUSES_START + FUSES_SIZE - 1)
 
-#define INTERNAL_SRAM_START     (0x2800)
-#define INTERNAL_SRAM_SIZE      (6144)
-#define INTERNAL_SRAM_PAGE_SIZE (0)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define INTERNAL_SRAM_START     (0x2800)
+#  define INTERNAL_SRAM_SIZE      (6144)
+#  define INTERNAL_SRAM_PAGE_SIZE (0)
+#else
+#  define INTERNAL_SRAM_START     (0x2800U)
+#  define INTERNAL_SRAM_SIZE      (6144U)
+#  define INTERNAL_SRAM_PAGE_SIZE (0U)
+#endif
 #define INTERNAL_SRAM_END       (INTERNAL_SRAM_START + INTERNAL_SRAM_SIZE - 1)
 
-#define IO_START     (0x0000)
-#define IO_SIZE      (4352)
-#define IO_PAGE_SIZE (0)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define IO_START     (0x0000)
+#  define IO_SIZE      (4352)
+#  define IO_PAGE_SIZE (0)
+#else
+#  define IO_START     (0x0000U)
+#  define IO_SIZE      (4352U)
+#  define IO_PAGE_SIZE (0U)
+#endif
 #define IO_END       (IO_START + IO_SIZE - 1)
 
-#define LOCKBITS_START     (0x128A)
-#define LOCKBITS_SIZE      (1)
-#define LOCKBITS_PAGE_SIZE (64)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define LOCKBITS_START     (0x128A)
+#  define LOCKBITS_SIZE      (1)
+#  define LOCKBITS_PAGE_SIZE (64)
+#else
+#  define LOCKBITS_START     (0x128AU)
+#  define LOCKBITS_SIZE      (1U)
+#  define LOCKBITS_PAGE_SIZE (64U)
+#endif
 #define LOCKBITS_END       (LOCKBITS_START + LOCKBITS_SIZE - 1)
 
-#define MAPPED_PROGMEM_START     (0x4000)
-#define MAPPED_PROGMEM_SIZE      (49152)
-#define MAPPED_PROGMEM_PAGE_SIZE (128)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define MAPPED_PROGMEM_START     (0x4000)
+#  define MAPPED_PROGMEM_SIZE      (49152)
+#  define MAPPED_PROGMEM_PAGE_SIZE (128)
+#else
+#  define MAPPED_PROGMEM_START     (0x4000U)
+#  define MAPPED_PROGMEM_SIZE      (49152U)
+#  define MAPPED_PROGMEM_PAGE_SIZE (128U)
+#endif
 #define MAPPED_PROGMEM_END       (MAPPED_PROGMEM_START + MAPPED_PROGMEM_SIZE - 1)
 
-#define PROD_SIGNATURES_START     (0x1103)
-#define PROD_SIGNATURES_SIZE      (125)
-#define PROD_SIGNATURES_PAGE_SIZE (128)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define PROD_SIGNATURES_START     (0x1103)
+#  define PROD_SIGNATURES_SIZE      (125)
+#  define PROD_SIGNATURES_PAGE_SIZE (128)
+#else
+#  define PROD_SIGNATURES_START     (0x1103U)
+#  define PROD_SIGNATURES_SIZE      (125U)
+#  define PROD_SIGNATURES_PAGE_SIZE (128U)
+#endif
 #define PROD_SIGNATURES_END       (PROD_SIGNATURES_START + PROD_SIGNATURES_SIZE - 1)
 
-#define SIGNATURES_START     (0x1100)
-#define SIGNATURES_SIZE      (3)
-#define SIGNATURES_PAGE_SIZE (128)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define SIGNATURES_START     (0x1100)
+#  define SIGNATURES_SIZE      (3)
+#  define SIGNATURES_PAGE_SIZE (128)
+#else
+#  define SIGNATURES_START     (0x1100U)
+#  define SIGNATURES_SIZE      (3U)
+#  define SIGNATURES_PAGE_SIZE (128U)
+#endif
 #define SIGNATURES_END       (SIGNATURES_START + SIGNATURES_SIZE - 1)
 
-#define USER_SIGNATURES_START     (0x1300)
-#define USER_SIGNATURES_SIZE      (64)
-#define USER_SIGNATURES_PAGE_SIZE (64)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define USER_SIGNATURES_START     (0x1300)
+#  define USER_SIGNATURES_SIZE      (64)
+#  define USER_SIGNATURES_PAGE_SIZE (64)
+#else
+#  define USER_SIGNATURES_START     (0x1300U)
+#  define USER_SIGNATURES_SIZE      (64U)
+#  define USER_SIGNATURES_PAGE_SIZE (64U)
+#endif
 #define USER_SIGNATURES_END       (USER_SIGNATURES_START + USER_SIGNATURES_SIZE - 1)
 
-#define PROGMEM_START     (0x0000)
-#define PROGMEM_SIZE      (49152)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define PROGMEM_START     (0x0000)
+#  define PROGMEM_SIZE      (49152)
+#else
+#  define PROGMEM_START     (0x0000U)
+#  define PROGMEM_SIZE      (49152U)
+#endif
 #define PROGMEM_END       (PROGMEM_START + PROGMEM_SIZE - 1)
 
-#define PROGMEM_START     (0x0000)
-#define PROGMEM_SIZE      (49152)
-#define PROGMEM_PAGE_SIZE (128)
+#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
+#  define PROGMEM_START     (0x0000)
+#  define PROGMEM_SIZE      (49152)
+#  define PROGMEM_PAGE_SIZE (128)
+#else
+#  define PROGMEM_START     (0x0000U)
+#  define PROGMEM_SIZE      (49152U)
+#  define PROGMEM_PAGE_SIZE (128U)
+#endif
 #define PROGMEM_END       (PROGMEM_START + PROGMEM_SIZE - 1)
 
 #define FLASHSTART   PROGMEM_START
@@ -5335,62 +5177,7 @@ IO Module Instances. Mapped to memory.
 /* ========== Fuses ========== */
 #define FUSE_MEMORY_SIZE 9
 
-/* Fuse Byte 0 Reserved */
-
-/* Fuse Byte 1 Reserved */
-
-/* Fuse Byte 2 Reserved */
-
-/* Fuse Byte 3 Reserved */
-
-/* Fuse Byte 4 Reserved */
-
-/* Fuse Byte 5 Reserved */
-
-/* Fuse Byte 6 Reserved */
-
-/* Fuse Byte 7 */
-
-/* Fuse Byte 8 */
-#define FUSE_SLEEP0  (unsigned char)~_BV(0)  /* BOD Operation in Sleep Mode Bit 0 */
-#define FUSE_SLEEP1  (unsigned char)~_BV(1)  /* BOD Operation in Sleep Mode Bit 1 */
-#define FUSE_ACTIVE0  (unsigned char)~_BV(2)  /* BOD Operation in Active Mode Bit 0 */
-#define FUSE_ACTIVE1  (unsigned char)~_BV(3)  /* BOD Operation in Active Mode Bit 1 */
-#define FUSE_SAMPFREQ  (unsigned char)~_BV(4)  /* BOD Sample Frequency */
-#define FUSE_LVL0  (unsigned char)~_BV(5)  /* BOD Level Bit 0 */
-#define FUSE_LVL1  (unsigned char)~_BV(6)  /* BOD Level Bit 1 */
-#define FUSE_LVL2  (unsigned char)~_BV(7)  /* BOD Level Bit 2 */
-
-/* Fuse Byte 9 */
-
-/* Fuse Byte 10 */
-#define FUSE_FREQSEL0  (unsigned char)~_BV(0)  /* Frequency Select Bit 0 */
-#define FUSE_FREQSEL1  (unsigned char)~_BV(1)  /* Frequency Select Bit 1 */
-#define FUSE_OSCLOCK  (unsigned char)~_BV(7)  /* Oscillator Lock */
-
-/* Fuse Byte 11 */
-#define FUSE_EESAVE  (unsigned char)~_BV(0)  /* EEPROM Save */
-#define FUSE_RSTPINCFG0  (unsigned char)~_BV(2)  /* Reset Pin Configuration Bit 0 */
-#define FUSE_RSTPINCFG1  (unsigned char)~_BV(3)  /* Reset Pin Configuration Bit 1 */
-#define FUSE_CRCSRC0  (unsigned char)~_BV(6)  /* CRC Source Bit 0 */
-#define FUSE_CRCSRC1  (unsigned char)~_BV(7)  /* CRC Source Bit 1 */
-
-/* Fuse Byte 12 */
-#define FUSE_SUT0  (unsigned char)~_BV(0)  /* Startup Time Bit 0 */
-#define FUSE_SUT1  (unsigned char)~_BV(1)  /* Startup Time Bit 1 */
-#define FUSE_SUT2  (unsigned char)~_BV(2)  /* Startup Time Bit 2 */
-
-/* Fuse Byte 13 */
-#define FUSE_CMPA  (unsigned char)~_BV(0)  /* Compare A Default Output Value */
-#define FUSE_CMPB  (unsigned char)~_BV(1)  /* Compare B Default Output Value */
-#define FUSE_CMPC  (unsigned char)~_BV(2)  /* Compare C Default Output Value */
-#define FUSE_CMPD  (unsigned char)~_BV(3)  /* Compare D Default Output Value */
-#define FUSE_CMPAEN  (unsigned char)~_BV(4)  /* Compare A Output Enable */
-#define FUSE_CMPBEN  (unsigned char)~_BV(5)  /* Compare B Output Enable */
-#define FUSE_CMPCEN  (unsigned char)~_BV(6)  /* Compare C Output Enable */
-#define FUSE_CMPDEN  (unsigned char)~_BV(7)  /* Compare D Output Enable */
-
-/* Fuse Byte 14 */
+/* Fuse Byte 0 (WDTCFG) */
 #define FUSE_PERIOD0  (unsigned char)~_BV(0)  /* Watchdog Timeout Period Bit 0 */
 #define FUSE_PERIOD1  (unsigned char)~_BV(1)  /* Watchdog Timeout Period Bit 1 */
 #define FUSE_PERIOD2  (unsigned char)~_BV(2)  /* Watchdog Timeout Period Bit 2 */
@@ -5399,6 +5186,54 @@ IO Module Instances. Mapped to memory.
 #define FUSE_WINDOW1  (unsigned char)~_BV(5)  /* Watchdog Window Timeout Period Bit 1 */
 #define FUSE_WINDOW2  (unsigned char)~_BV(6)  /* Watchdog Window Timeout Period Bit 2 */
 #define FUSE_WINDOW3  (unsigned char)~_BV(7)  /* Watchdog Window Timeout Period Bit 3 */
+#define FUSE0_DEFAULT  (0x0)
+#define FUSE_WDTCFG_DEFAULT  (0x0)
+
+/* Fuse Byte 1 (BODCFG) */
+#define FUSE_SLEEP0  (unsigned char)~_BV(0)  /* BOD Operation in Sleep Mode Bit 0 */
+#define FUSE_SLEEP1  (unsigned char)~_BV(1)  /* BOD Operation in Sleep Mode Bit 1 */
+#define FUSE_ACTIVE0  (unsigned char)~_BV(2)  /* BOD Operation in Active Mode Bit 0 */
+#define FUSE_ACTIVE1  (unsigned char)~_BV(3)  /* BOD Operation in Active Mode Bit 1 */
+#define FUSE_SAMPFREQ  (unsigned char)~_BV(4)  /* BOD Sample Frequency */
+#define FUSE_LVL0  (unsigned char)~_BV(5)  /* BOD Level Bit 0 */
+#define FUSE_LVL1  (unsigned char)~_BV(6)  /* BOD Level Bit 1 */
+#define FUSE_LVL2  (unsigned char)~_BV(7)  /* BOD Level Bit 2 */
+#define FUSE1_DEFAULT  (0x0)
+#define FUSE_BODCFG_DEFAULT  (0x0)
+
+/* Fuse Byte 2 (OSCCFG) */
+#define FUSE_FREQSEL0  (unsigned char)~_BV(0)  /* Frequency Select Bit 0 */
+#define FUSE_FREQSEL1  (unsigned char)~_BV(1)  /* Frequency Select Bit 1 */
+#define FUSE_OSCLOCK  (unsigned char)~_BV(7)  /* Oscillator Lock */
+#define FUSE2_DEFAULT  (0x2)
+#define FUSE_OSCCFG_DEFAULT  (0x2)
+
+/* Fuse Byte 3 Reserved */
+
+/* Fuse Byte 4 Reserved */
+
+/* Fuse Byte 5 (SYSCFG0) */
+#define FUSE_EESAVE  (unsigned char)~_BV(0)  /* EEPROM Save */
+#define FUSE_RSTPINCFG  (unsigned char)~_BV(3)  /* Reset Pin Configuration */
+#define FUSE_CRCSRC0  (unsigned char)~_BV(6)  /* CRC Source Bit 0 */
+#define FUSE_CRCSRC1  (unsigned char)~_BV(7)  /* CRC Source Bit 1 */
+#define FUSE5_DEFAULT  (0xc4)
+#define FUSE_SYSCFG0_DEFAULT  (0xc4)
+
+/* Fuse Byte 6 (SYSCFG1) */
+#define FUSE_SUT0  (unsigned char)~_BV(0)  /* Startup Time Bit 0 */
+#define FUSE_SUT1  (unsigned char)~_BV(1)  /* Startup Time Bit 1 */
+#define FUSE_SUT2  (unsigned char)~_BV(2)  /* Startup Time Bit 2 */
+#define FUSE6_DEFAULT  (0x7)
+#define FUSE_SYSCFG1_DEFAULT  (0x7)
+
+/* Fuse Byte 7 (APPEND) */
+#define FUSE7_DEFAULT  (0x0)
+#define FUSE_APPEND_DEFAULT  (0x0)
+
+/* Fuse Byte 8 (BOOTEND) */
+#define FUSE8_DEFAULT  (0x0)
+#define FUSE_BOOTEND_DEFAULT  (0x0)
 
 /* ========== Lock Bits ========== */
 #define __LOCK_BITS_EXIST
