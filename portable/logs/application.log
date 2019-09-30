@@ -162,3 +162,427 @@
 2019-09-17T15:52:41.501Z INFO c.a.u.n.FileDownloader:210 [LibraryManager Update Thread] No need to download using cached file: FileCached{eTag='6408e22f2fcad88d8b6243bba1f86427', lastETag='6408e22f2fcad88d8b6243bba1f86427', remoteURL='https://downloads.arduino.cc/libraries/library_index.json.sig', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.sig', md5='MD5:6408e22f2fcad88d8b6243bba1f86427', createdAt='2019-09-17T17:50:48.565', cacheControl=CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
 2019-09-17T15:52:41.502Z INFO c.a.u.n.FileDownloader:174 [LibraryManager Update Thread] The file will be taken from the cache Optional[F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.sig]
 2019-09-17T15:52:41.643Z INFO c.a.c.DownloadableContributionsDownloader:222 [LibraryManager Update Thread] Signature verified. url=https://downloads.arduino.cc/libraries/library_index.json.sig, signature url=https://downloads.arduino.cc/libraries/library_index.json.sig, file to verify=C:\TEMP\library_index.json6388727869572216785.tmp, signature file=C:\TEMP\library_index.json.sig4636906446456876417.tmp
+2019-09-24T21:39:42.047Z INFO c.a.c.p.ContributionInstaller:305 [ContributionManager Update Thread] Start download and signature check of=[http://arduino.esp8266.com/stable/package_esp8266com_index.json, http://digistump.com/package_digistump_index.json, https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, https://dl.espressif.com/dl/package_esp32_index.json, https://downloads.arduino.cc/packages/package_index.json]
+2019-09-24T21:39:42.188Z INFO c.a.u.n.FileDownloaderCache:92 [ContributionManager Update Thread] Cache folder F:\Logiciels\ArduinoTechnoEduc\portable\cache
+2019-09-24T21:39:42.328Z INFO c.a.u.n.FileDownloaderCache:112 [ContributionManager Update Thread] Number of file already in the cache 7
+2019-09-24T21:39:42.422Z INFO c.a.u.n.FileDownloaderCache:149 [ContributionManager Update Thread] Get file cached is expire true, exist true, info FileCached{eTag='5ce2f8ab-115d5', lastETag='null', remoteURL='http://arduino.esp8266.com/stable/package_esp8266com_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\arduino.esp8266.com\stable\package_esp8266com_index.json', md5='MD5:d165e6a6192899211268f6ca7d5d9cd2', createdAt='2019-09-17T17:49:49.127', cacheControl=CacheControl{maxAge=600, isMustRevalidate=false, isNoCache=false, isNoStore=false}} 
+2019-09-24T21:39:42.515Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:42.671Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to http://arduino.esp8266.com/stable/package_esp8266com_index.json, method=HEAD, request id=8079B070FF0D4CA3
+2019-09-24T21:39:42.905Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="http://arduino.esp8266.com/stable/package_esp8266com_index.json", method=HEAD, response code=200, request id=8079B070FF0D4CA3, headers={null=[HTTP/1.1 200 OK], X-Cache=[HIT], Server=[GitHub.com], Access-Control-Allow-Origin=[*], Connection=[keep-alive], Last-Modified=[Mon, 20 May 2019 18:57:47 GMT], X-Proxy-Cache=[HIT], Date=[Tue, 24 Sep 2019 21:39:43 GMT], X-Timer=[S1569361183.080762,VS0,VE0], Via=[1.1 varnish], Accept-Ranges=[bytes, bytes], Cache-Control=[max-age=600], ETag=["5ce2f8ab-115d5"], X-Served-By=[cache-cdg20721-CDG], Vary=[Accept-Encoding], Expires=[Mon, 16 Sep 2019 20:23:54 GMT], Content-Length=[71125], X-Cache-Hits=[0], X-Fastly-Request-ID=[1f41d434a9e9579c3e2bcfea27fc741687394317], Age=[350], X-GitHub-Request-Id=[2546:2D29:28B343:34D3D4:5D7FED34], Content-Type=[application/json; charset=utf-8]}
+2019-09-24T21:39:42.905Z INFO c.a.u.n.FileDownloaderCache:160 [ContributionManager Update Thread] Update cached info of http://arduino.esp8266.com/stable/package_esp8266com_index.json, createdAt 2019-09-17T17:49:49.127, previous eTag 5ce2f8ab-115d5, last eTag 5ce2f8ab-115d5, cache control header CacheControl{maxAge=600, isMustRevalidate=false, isNoCache=false, isNoStore=false} 
+2019-09-24T21:39:43.061Z INFO c.a.u.n.FileDownloaderCache:226 [ContributionManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:39:43.155Z INFO c.a.u.n.FileDownloader:210 [ContributionManager Update Thread] No need to download using cached file: FileCached{eTag='5ce2f8ab-115d5', lastETag='5ce2f8ab-115d5', remoteURL='http://arduino.esp8266.com/stable/package_esp8266com_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\arduino.esp8266.com\stable\package_esp8266com_index.json', md5='MD5:d165e6a6192899211268f6ca7d5d9cd2', createdAt='2019-09-24T23:39:42.905', cacheControl=CacheControl{maxAge=600, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:39:43.155Z INFO c.a.u.n.FileDownloader:174 [ContributionManager Update Thread] The file will be taken from the cache Optional[F:\Logiciels\ArduinoTechnoEduc\portable\cache\arduino.esp8266.com\stable\package_esp8266com_index.json]
+2019-09-24T21:39:43.170Z INFO c.a.c.DownloadableContributionsDownloader:194 [ContributionManager Update Thread] The domain is not selected to verify the signature. domain list: [downloads.arduino.cc], url: http://arduino.esp8266.com/stable/package_esp8266com_index.json
+2019-09-24T21:39:43.264Z INFO c.a.c.DownloadableContributionsDownloader:173 [ContributionManager Update Thread] The domain is not selected to verify the signature. will be copied into this path F:\Logiciels\ArduinoTechnoEduc\portable\package_esp8266com_index.json, packageIndex url: http://arduino.esp8266.com/stable/package_esp8266com_index.json
+2019-09-24T21:39:43.264Z INFO c.a.c.p.ContributionInstaller:305 [ContributionManager Update Thread] Start download and signature check of=[http://arduino.esp8266.com/stable/package_esp8266com_index.json, http://digistump.com/package_digistump_index.json, https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, https://dl.espressif.com/dl/package_esp32_index.json, https://downloads.arduino.cc/packages/package_index.json]
+2019-09-24T21:39:43.264Z INFO c.a.u.n.FileDownloaderCache:149 [ContributionManager Update Thread] Get file cached is expire true, exist true, info FileCached{eTag='a1119dfeb7c1a9f5021790e5b4e828c78c44dbe5', lastETag='null', remoteURL='http://digistump.com/package_digistump_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\digistump.com\package_digistump_index.json', md5='MD5:c43814fed1b4ea761ebe078a082d2d51', createdAt='2019-09-17T17:49:52.606', cacheControl=CacheControl{maxAge=300, isMustRevalidate=false, isNoCache=false, isNoStore=false}} 
+2019-09-24T21:39:43.264Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:43.264Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to http://digistump.com/package_digistump_index.json, method=HEAD, request id=91D1F4D815F54C2D
+2019-09-24T21:39:43.623Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="http://digistump.com/package_digistump_index.json", method=HEAD, response code=302, request id=91D1F4D815F54C2D, headers={Keep-Alive=[timeout=2, max=100], X-Frame-Options=[SAMEORIGIN], null=[HTTP/1.1 302 Found], Server=[Apache], Connection=[Keep-Alive], Date=[Tue, 24 Sep 2019 21:39:37 GMT], Content-Type=[text/html; charset=iso-8859-1], Location=[https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json]}
+2019-09-24T21:39:43.623Z INFO c.a.u.n.HttpConnectionManager:159 [ContributionManager Update Thread] The response code was a 301,302 so try again with the new URL https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
+2019-09-24T21:39:43.623Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:45.198Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json, method=HEAD, request id=ED7F88A292CE4D44
+2019-09-24T21:39:46.197Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json", method=HEAD, response code=200, request id=ED7F88A292CE4D44, headers={null=[HTTP/1.1 200 OK], Access-Control-Allow-Origin=[*], Source-Age=[168], X-Timer=[S1569361186.375301,VS0,VE0], X-Frame-Options=[deny], Strict-Transport-Security=[max-age=31536000], X-Served-By=[cache-cdg20780-CDG], Content-Security-Policy=[default-src 'none'; style-src 'unsafe-inline'; sandbox], Content-Length=[28225], X-XSS-Protection=[1; mode=block], X-Geo-Block-List=[], X-GitHub-Request-Id=[34AC:3E39:159AD:1CE1E:5D8A8C79], Content-Type=[text/plain; charset=utf-8], X-Cache=[HIT], X-Content-Type-Options=[nosniff], Connection=[keep-alive], Date=[Tue, 24 Sep 2019 21:39:46 GMT], Via=[1.1 varnish], Accept-Ranges=[bytes, bytes], Cache-Control=[max-age=300], ETag=["a1119dfeb7c1a9f5021790e5b4e828c78c44dbe5"], Vary=[Authorization,Accept-Encoding], Expires=[Tue, 24 Sep 2019 21:44:46 GMT], X-Cache-Hits=[0], X-Fastly-Request-ID=[acbf912550a85b0d2cf615f0885efbe34fb0eb94]}
+2019-09-24T21:39:46.197Z INFO c.a.u.n.FileDownloaderCache:160 [ContributionManager Update Thread] Update cached info of http://digistump.com/package_digistump_index.json, createdAt 2019-09-17T17:49:52.606, previous eTag a1119dfeb7c1a9f5021790e5b4e828c78c44dbe5, last eTag a1119dfeb7c1a9f5021790e5b4e828c78c44dbe5, cache control header CacheControl{maxAge=300, isMustRevalidate=false, isNoCache=false, isNoStore=false} 
+2019-09-24T21:39:46.197Z INFO c.a.u.n.FileDownloaderCache:226 [ContributionManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:39:46.384Z INFO c.a.u.n.FileDownloader:210 [ContributionManager Update Thread] No need to download using cached file: FileCached{eTag='a1119dfeb7c1a9f5021790e5b4e828c78c44dbe5', lastETag='a1119dfeb7c1a9f5021790e5b4e828c78c44dbe5', remoteURL='http://digistump.com/package_digistump_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\digistump.com\package_digistump_index.json', md5='MD5:c43814fed1b4ea761ebe078a082d2d51', createdAt='2019-09-24T23:39:46.197', cacheControl=CacheControl{maxAge=300, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:39:46.384Z INFO c.a.u.n.FileDownloader:174 [ContributionManager Update Thread] The file will be taken from the cache Optional[F:\Logiciels\ArduinoTechnoEduc\portable\cache\digistump.com\package_digistump_index.json]
+2019-09-24T21:39:46.384Z INFO c.a.c.DownloadableContributionsDownloader:194 [ContributionManager Update Thread] The domain is not selected to verify the signature. domain list: [downloads.arduino.cc], url: http://digistump.com/package_digistump_index.json
+2019-09-24T21:39:46.384Z INFO c.a.c.DownloadableContributionsDownloader:173 [ContributionManager Update Thread] The domain is not selected to verify the signature. will be copied into this path F:\Logiciels\ArduinoTechnoEduc\portable\package_digistump_index.json, packageIndex url: http://digistump.com/package_digistump_index.json
+2019-09-24T21:39:46.384Z INFO c.a.c.p.ContributionInstaller:305 [ContributionManager Update Thread] Start download and signature check of=[http://arduino.esp8266.com/stable/package_esp8266com_index.json, http://digistump.com/package_digistump_index.json, https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, https://dl.espressif.com/dl/package_esp32_index.json, https://downloads.arduino.cc/packages/package_index.json]
+2019-09-24T21:39:46.384Z INFO c.a.u.n.FileDownloaderCache:149 [ContributionManager Update Thread] Get file cached is expire true, exist true, info FileCached{eTag='3f083ba9fa57fa0eeaea1d4f699079c7f4aeb83e', lastETag='null', remoteURL='https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\github.com\stm32duino\BoardManagerFiles\raw\master\STM32\package_stm_index.json', md5='MD5:f147f9badad41aaece2f6cf6d090b392', createdAt='2019-09-17T17:49:53.386', cacheControl=CacheControl{maxAge=300, isMustRevalidate=false, isNoCache=false, isNoStore=false}} 
+2019-09-24T21:39:46.384Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:46.384Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, method=HEAD, request id=83F8D28C27634393
+2019-09-24T21:39:46.899Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json", method=HEAD, response code=200, request id=83F8D28C27634393, headers={null=[HTTP/1.1 200 OK], Access-Control-Allow-Origin=[*], Source-Age=[0], X-Timer=[S1569361187.992232,VS0,VE93], X-Frame-Options=[deny], Strict-Transport-Security=[max-age=31536000], X-Served-By=[cache-cdg20780-CDG], Content-Security-Policy=[default-src 'none'; style-src 'unsafe-inline'; sandbox], Content-Length=[61771], X-XSS-Protection=[1; mode=block], X-Geo-Block-List=[], X-GitHub-Request-Id=[E2F0:17D8:3EE06:4F98A:5D8A8D22], Content-Type=[text/plain; charset=utf-8], X-Cache=[MISS], X-Content-Type-Options=[nosniff], Connection=[keep-alive], Date=[Tue, 24 Sep 2019 21:39:47 GMT], Via=[1.1 varnish], Accept-Ranges=[bytes, bytes], Cache-Control=[max-age=300], ETag=["e3190103251e7cca762065f5241f2d01512d669a"], Vary=[Authorization,Accept-Encoding], Expires=[Tue, 24 Sep 2019 21:44:47 GMT], X-Cache-Hits=[0], X-Fastly-Request-ID=[8cfa48859ee357582187862232289a1de4ee39da]}
+2019-09-24T21:39:46.899Z INFO c.a.u.n.FileDownloaderCache:160 [ContributionManager Update Thread] Update cached info of https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, createdAt 2019-09-17T17:49:53.386, previous eTag 3f083ba9fa57fa0eeaea1d4f699079c7f4aeb83e, last eTag e3190103251e7cca762065f5241f2d01512d669a, cache control header CacheControl{maxAge=300, isMustRevalidate=false, isNoCache=false, isNoStore=false} 
+2019-09-24T21:39:46.914Z INFO c.a.u.n.FileDownloaderCache:226 [ContributionManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:39:47.070Z INFO c.a.u.n.FileDownloader:210 [ContributionManager Update Thread] No need to download using cached file: FileCached{eTag='3f083ba9fa57fa0eeaea1d4f699079c7f4aeb83e', lastETag='e3190103251e7cca762065f5241f2d01512d669a', remoteURL='https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\github.com\stm32duino\BoardManagerFiles\raw\master\STM32\package_stm_index.json', md5='MD5:f147f9badad41aaece2f6cf6d090b392', createdAt='2019-09-24T23:39:46.899', cacheControl=CacheControl{maxAge=300, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:39:47.070Z DEBUG c.a.u.n.FileDownloaderCache:299 [ContributionManager Update Thread] The file "F:\Logiciels\ArduinoTechnoEduc\portable\cache\github.com\stm32duino\BoardManagerFiles\raw\master\STM32\package_stm_index.json" is changed last ETag != now Etag (e3190103251e7cca762065f5241f2d01512d669a!=3f083ba9fa57fa0eeaea1d4f699079c7f4aeb83e)
+2019-09-24T21:39:47.070Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:47.070Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, method=GET, request id=D601E00F5735400B
+2019-09-24T21:39:47.507Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json", method=GET, response code=206, request id=D601E00F5735400B, headers={null=[HTTP/1.1 206 Partial Content], Access-Control-Allow-Origin=[*], Content-Range=[bytes 0-61770/61771], Source-Age=[1], X-Timer=[S1569361188.693719,VS0,VE0], X-Frame-Options=[deny], Strict-Transport-Security=[max-age=31536000], X-Served-By=[cache-cdg20780-CDG], Content-Security-Policy=[default-src 'none'; style-src 'unsafe-inline'; sandbox], Content-Length=[61771], X-XSS-Protection=[1; mode=block], X-Geo-Block-List=[], X-GitHub-Request-Id=[E2F0:17D8:3EE06:4F98A:5D8A8D22], Content-Type=[text/plain; charset=utf-8], X-Cache=[HIT], X-Content-Type-Options=[nosniff], Connection=[keep-alive], Date=[Tue, 24 Sep 2019 21:39:47 GMT], Via=[1.1 varnish], Accept-Ranges=[bytes, bytes], Cache-Control=[max-age=300], ETag=["e3190103251e7cca762065f5241f2d01512d669a"], Vary=[Authorization,Accept-Encoding], Expires=[Tue, 24 Sep 2019 21:44:47 GMT], X-Cache-Hits=[0], X-Fastly-Request-ID=[7ee83ba8d3f43738cab6523c2724e9349297e2c8]}
+2019-09-24T21:39:47.741Z INFO c.a.u.n.FileDownloaderCache:343 [ContributionManager Update Thread] Update cache file: FileCached{eTag='e3190103251e7cca762065f5241f2d01512d669a', lastETag='e3190103251e7cca762065f5241f2d01512d669a', remoteURL='https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\github.com\stm32duino\BoardManagerFiles\raw\master\STM32\package_stm_index.json', md5='MD5:6db532ecb2dac41f47704106cfccf7db', createdAt='2019-09-24T23:39:47.741', cacheControl=CacheControl{maxAge=300, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:39:47.757Z INFO c.a.u.n.FileDownloaderCache:226 [ContributionManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:39:47.757Z INFO c.a.c.DownloadableContributionsDownloader:194 [ContributionManager Update Thread] The domain is not selected to verify the signature. domain list: [downloads.arduino.cc], url: https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json
+2019-09-24T21:39:47.772Z INFO c.a.c.DownloadableContributionsDownloader:173 [ContributionManager Update Thread] The domain is not selected to verify the signature. will be copied into this path F:\Logiciels\ArduinoTechnoEduc\portable\package_stm_index.json, packageIndex url: https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json
+2019-09-24T21:39:47.772Z INFO c.a.c.p.ContributionInstaller:305 [ContributionManager Update Thread] Start download and signature check of=[http://arduino.esp8266.com/stable/package_esp8266com_index.json, http://digistump.com/package_digistump_index.json, https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, https://dl.espressif.com/dl/package_esp32_index.json, https://downloads.arduino.cc/packages/package_index.json]
+2019-09-24T21:39:47.772Z INFO c.a.u.n.FileDownloaderCache:149 [ContributionManager Update Thread] Get file cached is expire true, exist false, info FileCached{eTag='null', lastETag='null', remoteURL='https://dl.espressif.com/dl/package_esp32_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\dl.espressif.com\dl\package_esp32_index.json', md5='null', createdAt='2019-09-24T23:39:47.772', cacheControl=null} 
+2019-09-24T21:39:47.772Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:47.772Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to https://dl.espressif.com/dl/package_esp32_index.json, method=HEAD, request id=5098506AD566408F
+2019-09-24T21:39:48.724Z ERROR c.a.u.n.FileDownloader:199 [ContributionManager Update Thread] The request stop
+javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1946) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:316) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:310) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1639) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.downloadIndexAndSignature(DownloadableContributionsDownloader.java:160) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.packages.ContributionInstaller.updateIndex(ContributionInstaller.java:306) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.packages.ui.ContributionManagerUI.lambda$onUpdatePressed$1(ContributionManagerUI.java:146) ~[pde.jar:?]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_191]
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	... 21 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:233) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:141) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:80) ~[?:1.8.0_191]
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	... 21 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Tue Sep 24 13:47:32 CEST 2019
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274) ~[?:1.8.0_191]
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:233) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:141) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:80) ~[?:1.8.0_191]
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	... 21 more
+2019-09-24T21:39:48.755Z ERROR c.a.c.DownloadableContributionsDownloader:176 [ContributionManager Update Thread] Cannot download the package index from https://dl.espressif.com/dl/package_esp32_index.json the package will be discard
+java.lang.Exception: Erreur durant le téléchargement de https://dl.espressif.com/dl/package_esp32_index.json
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:144) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.downloadIndexAndSignature(DownloadableContributionsDownloader.java:160) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.packages.ContributionInstaller.updateIndex(ContributionInstaller.java:306) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.packages.ui.ContributionManagerUI.lambda$onUpdatePressed$1(ContributionManagerUI.java:146) ~[pde.jar:?]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_191]
+Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1946) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:316) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:310) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1639) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	... 4 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	... 4 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:233) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:141) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:80) ~[?:1.8.0_191]
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	... 4 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Tue Sep 24 13:47:32 CEST 2019
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274) ~[?:1.8.0_191]
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:233) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:141) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:80) ~[?:1.8.0_191]
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	... 4 more
+2019-09-24T21:39:48.755Z ERROR c.a.c.p.ContributionInstaller:308 [ContributionManager Update Thread] Erreur durant le téléchargement de https://dl.espressif.com/dl/package_esp32_index.json
+java.lang.Exception: Erreur durant le téléchargement de https://dl.espressif.com/dl/package_esp32_index.json
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:144) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.downloadIndexAndSignature(DownloadableContributionsDownloader.java:160) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.packages.ContributionInstaller.updateIndex(ContributionInstaller.java:306) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.packages.ui.ContributionManagerUI.lambda$onUpdatePressed$1(ContributionManagerUI.java:146) ~[pde.jar:?]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_191]
+Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1946) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:316) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:310) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1639) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	... 4 more
+Caused by: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:362) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	... 4 more
+Caused by: java.security.cert.CertPathValidatorException: validity check failed
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:135) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:233) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:141) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:80) ~[?:1.8.0_191]
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	... 4 more
+Caused by: java.security.cert.CertificateExpiredException: NotAfter: Tue Sep 24 13:47:32 CEST 2019
+	at sun.security.x509.CertificateValidity.valid(CertificateValidity.java:274) ~[?:1.8.0_191]
+	at sun.security.x509.X509CertImpl.checkValidity(X509CertImpl.java:629) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.BasicChecker.verifyValidity(BasicChecker.java:190) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.BasicChecker.check(BasicChecker.java:144) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXMasterCertPathValidator.validate(PKIXMasterCertPathValidator.java:125) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:233) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.validate(PKIXCertPathValidator.java:141) ~[?:1.8.0_191]
+	at sun.security.provider.certpath.PKIXCertPathValidator.engineValidate(PKIXCertPathValidator.java:80) ~[?:1.8.0_191]
+	at java.security.cert.CertPathValidator.validate(CertPathValidator.java:292) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.doValidate(PKIXValidator.java:357) ~[?:1.8.0_191]
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:270) ~[?:1.8.0_191]
+	at sun.security.validator.Validator.validate(Validator.java:262) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229) ~[?:1.8.0_191]
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:124) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1621) ~[?:1.8.0_191]
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:223) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:1037) ~[?:1.8.0_191]
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:965) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1064) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1367) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1395) ~[?:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1379) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185) ~[?:1.8.0_191]
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:162) ~[?:1.8.0_191]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:150) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.HttpConnectionManager.makeConnection(HttpConnectionManager.java:106) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.updateCacheInfo(FileDownloaderCache.java:184) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloaderCache.getFileCached(FileDownloaderCache.java:153) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.downloadFile(FileDownloader.java:167) ~[arduino-core.jar:?]
+	at cc.arduino.utils.network.FileDownloader.download(FileDownloader.java:129) ~[arduino-core.jar:?]
+	at cc.arduino.contributions.DownloadableContributionsDownloader.download(DownloadableContributionsDownloader.java:142) ~[arduino-core.jar:?]
+	... 4 more
+2019-09-24T21:39:48.755Z INFO c.a.c.p.ContributionInstaller:305 [ContributionManager Update Thread] Start download and signature check of=[http://arduino.esp8266.com/stable/package_esp8266com_index.json, http://digistump.com/package_digistump_index.json, https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, https://dl.espressif.com/dl/package_esp32_index.json, https://downloads.arduino.cc/packages/package_index.json]
+2019-09-24T21:39:48.755Z INFO c.a.u.n.FileDownloaderCache:149 [ContributionManager Update Thread] Get file cached is expire true, exist true, info FileCached{eTag='00c5a36e840f86f40b64c0bd4db99eec', lastETag='null', remoteURL='https://downloads.arduino.cc/packages/package_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\packages\package_index.json', md5='MD5:00c5a36e840f86f40b64c0bd4db99eec', createdAt='2019-09-17T17:49:56.444', cacheControl=CacheControl{maxAge=3600, isMustRevalidate=false, isNoCache=false, isNoStore=false}} 
+2019-09-24T21:39:48.755Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:48.755Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to https://downloads.arduino.cc/packages/package_index.json, method=HEAD, request id=A94AC5AA12F24A70
+2019-09-24T21:39:49.036Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="https://downloads.arduino.cc/packages/package_index.json", method=HEAD, response code=206, request id=A94AC5AA12F24A70, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[RefreshHit from cloudfront], Server=[cloudflare], CF-Ray=[51b7e9c83ed2b7d5-CDG], Content-Range=[bytes 0-276720/276721], X-Amz-Cf-Pop=[CDG3-C1], Connection=[keep-alive], Last-Modified=[Fri, 20 Sep 2019 09:21:23 GMT], x-amz-version-id=[pTmWyHUF2odbXt9qv2xGdWmSxt7f0h0p], Date=[Tue, 24 Sep 2019 21:39:49 GMT], Via=[1.1 880c8b2fd269bd7da77c5b0af696cfdc.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=3600], ETag=["e5333ff208bec8f067589a99b43a1285"], X-Amz-Cf-Id=[2__1-Zu91lLn05cNTj1j81zljcGwoF9_E4m-Sj-zJQOZOjrW05H0Mw==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=d5b488c6e426340b010f53fb6bb2e7bac1569361189; expires=Wed, 23-Sep-20 21:39:49 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Tue, 24 Sep 2019 22:39:49 GMT], Content-Length=[276721], Age=[1479], Expect-CT=[max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"], Content-Type=[application/json]}
+2019-09-24T21:39:49.036Z INFO c.a.u.n.FileDownloaderCache:160 [ContributionManager Update Thread] Update cached info of https://downloads.arduino.cc/packages/package_index.json, createdAt 2019-09-17T17:49:56.444, previous eTag 00c5a36e840f86f40b64c0bd4db99eec, last eTag e5333ff208bec8f067589a99b43a1285, cache control header CacheControl{maxAge=3600, isMustRevalidate=false, isNoCache=false, isNoStore=false} 
+2019-09-24T21:39:49.036Z INFO c.a.u.n.FileDownloaderCache:226 [ContributionManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:39:49.208Z INFO c.a.u.n.FileDownloader:210 [ContributionManager Update Thread] No need to download using cached file: FileCached{eTag='00c5a36e840f86f40b64c0bd4db99eec', lastETag='e5333ff208bec8f067589a99b43a1285', remoteURL='https://downloads.arduino.cc/packages/package_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\packages\package_index.json', md5='MD5:00c5a36e840f86f40b64c0bd4db99eec', createdAt='2019-09-24T23:39:49.036', cacheControl=CacheControl{maxAge=3600, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:39:49.208Z DEBUG c.a.u.n.FileDownloaderCache:299 [ContributionManager Update Thread] The file "F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\packages\package_index.json" is changed last ETag != now Etag (e5333ff208bec8f067589a99b43a1285!=00c5a36e840f86f40b64c0bd4db99eec)
+2019-09-24T21:39:49.208Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:49.208Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to https://downloads.arduino.cc/packages/package_index.json, method=GET, request id=5480886AD2B24ACF
+2019-09-24T21:39:49.286Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="https://downloads.arduino.cc/packages/package_index.json", method=GET, response code=206, request id=5480886AD2B24ACF, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[RefreshHit from cloudfront], Server=[cloudflare], CF-Ray=[51b7e9c9f89bb7d5-CDG], Content-Range=[bytes 0-276720/276721], X-Amz-Cf-Pop=[CDG3-C1], Connection=[keep-alive], Last-Modified=[Fri, 20 Sep 2019 09:21:23 GMT], x-amz-version-id=[pTmWyHUF2odbXt9qv2xGdWmSxt7f0h0p], Date=[Tue, 24 Sep 2019 21:39:49 GMT], Via=[1.1 880c8b2fd269bd7da77c5b0af696cfdc.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=3600], ETag=["e5333ff208bec8f067589a99b43a1285"], X-Amz-Cf-Id=[2__1-Zu91lLn05cNTj1j81zljcGwoF9_E4m-Sj-zJQOZOjrW05H0Mw==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=d5b488c6e426340b010f53fb6bb2e7bac1569361189; expires=Wed, 23-Sep-20 21:39:49 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Tue, 24 Sep 2019 22:39:49 GMT], Content-Length=[276721], Age=[1479], Expect-CT=[max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"], Content-Type=[application/json]}
+2019-09-24T21:39:49.613Z INFO c.a.u.n.FileDownloaderCache:343 [ContributionManager Update Thread] Update cache file: FileCached{eTag='e5333ff208bec8f067589a99b43a1285', lastETag='e5333ff208bec8f067589a99b43a1285', remoteURL='https://downloads.arduino.cc/packages/package_index.json', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\packages\package_index.json', md5='MD5:e5333ff208bec8f067589a99b43a1285', createdAt='2019-09-24T23:39:49.613', cacheControl=CacheControl{maxAge=3600, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:39:49.613Z INFO c.a.u.n.FileDownloaderCache:226 [ContributionManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:39:49.629Z INFO c.a.u.n.FileDownloaderCache:149 [ContributionManager Update Thread] Get file cached is expire true, exist true, info FileCached{eTag='ac2faa3ae871cce2e44c22ad84af89c7', lastETag='null', remoteURL='https://downloads.arduino.cc/packages/package_index.json.sig', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\packages\package_index.json.sig', md5='MD5:ac2faa3ae871cce2e44c22ad84af89c7', createdAt='2019-09-17T17:49:56.6', cacheControl=CacheControl{maxAge=3600, isMustRevalidate=false, isNoCache=false, isNoStore=false}} 
+2019-09-24T21:39:49.629Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:49.629Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to https://downloads.arduino.cc/packages/package_index.json.sig, method=HEAD, request id=5FE2975844244C00
+2019-09-24T21:39:49.691Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="https://downloads.arduino.cc/packages/package_index.json.sig", method=HEAD, response code=206, request id=5FE2975844244C00, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[RefreshHit from cloudfront], Server=[cloudflare], CF-Ray=[51b7e9cc8af1b7d5-CDG], Content-Range=[bytes 0-542/543], X-Amz-Cf-Pop=[LHR3-C1], Connection=[keep-alive], Last-Modified=[Fri, 20 Sep 2019 09:21:23 GMT], x-amz-version-id=[3eJ6EEhq0jfn8zB4397nJiiAD4oEQMIW], Date=[Tue, 24 Sep 2019 21:39:49 GMT], Via=[1.1 e72282a38ed8303004dbeb48a5b8fbb5.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=3600], ETag=["330f326540998b47fa4d733ed5f6eef9"], X-Amz-Cf-Id=[qUDgTcHq4ZhQfUoN98CD8vaMh0jbyYbtXbbgyxUdhK8wa8VyyHHVqQ==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=d5b488c6e426340b010f53fb6bb2e7bac1569361189; expires=Wed, 23-Sep-20 21:39:49 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Tue, 24 Sep 2019 22:39:49 GMT], Content-Length=[543], Age=[1478], Expect-CT=[max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"], Content-Type=[application/pgp-signature]}
+2019-09-24T21:39:49.691Z INFO c.a.u.n.FileDownloaderCache:160 [ContributionManager Update Thread] Update cached info of https://downloads.arduino.cc/packages/package_index.json.sig, createdAt 2019-09-17T17:49:56.6, previous eTag ac2faa3ae871cce2e44c22ad84af89c7, last eTag 330f326540998b47fa4d733ed5f6eef9, cache control header CacheControl{maxAge=3600, isMustRevalidate=false, isNoCache=false, isNoStore=false} 
+2019-09-24T21:39:49.691Z INFO c.a.u.n.FileDownloaderCache:226 [ContributionManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:39:49.691Z INFO c.a.u.n.FileDownloader:210 [ContributionManager Update Thread] No need to download using cached file: FileCached{eTag='ac2faa3ae871cce2e44c22ad84af89c7', lastETag='330f326540998b47fa4d733ed5f6eef9', remoteURL='https://downloads.arduino.cc/packages/package_index.json.sig', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\packages\package_index.json.sig', md5='MD5:ac2faa3ae871cce2e44c22ad84af89c7', createdAt='2019-09-24T23:39:49.691', cacheControl=CacheControl{maxAge=3600, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:39:49.691Z DEBUG c.a.u.n.FileDownloaderCache:299 [ContributionManager Update Thread] The file "F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\packages\package_index.json.sig" is changed last ETag != now Etag (330f326540998b47fa4d733ed5f6eef9!=ac2faa3ae871cce2e44c22ad84af89c7)
+2019-09-24T21:39:49.691Z DEBUG c.a.u.n.HttpConnectionManager:125 [ContributionManager Update Thread] Using proxy DIRECT
+2019-09-24T21:39:49.691Z INFO c.a.u.n.HttpConnectionManager:148 [ContributionManager Update Thread] Connect to https://downloads.arduino.cc/packages/package_index.json.sig, method=GET, request id=5E7BC6DD4F304A75
+2019-09-24T21:39:49.754Z INFO c.a.u.n.HttpConnectionManager:152 [ContributionManager Update Thread] Request complete URL="https://downloads.arduino.cc/packages/package_index.json.sig", method=GET, response code=206, request id=5E7BC6DD4F304A75, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[RefreshHit from cloudfront], Server=[cloudflare], CF-Ray=[51b7e9ccfb51b7d5-CDG], Content-Range=[bytes 0-542/543], X-Amz-Cf-Pop=[LHR3-C1], Connection=[keep-alive], Last-Modified=[Fri, 20 Sep 2019 09:21:23 GMT], x-amz-version-id=[3eJ6EEhq0jfn8zB4397nJiiAD4oEQMIW], Date=[Tue, 24 Sep 2019 21:39:49 GMT], Via=[1.1 e72282a38ed8303004dbeb48a5b8fbb5.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=3600], ETag=["330f326540998b47fa4d733ed5f6eef9"], X-Amz-Cf-Id=[qUDgTcHq4ZhQfUoN98CD8vaMh0jbyYbtXbbgyxUdhK8wa8VyyHHVqQ==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=d5b488c6e426340b010f53fb6bb2e7bac1569361189; expires=Wed, 23-Sep-20 21:39:49 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Tue, 24 Sep 2019 22:39:49 GMT], Content-Length=[543], Age=[1478], Expect-CT=[max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"], Content-Type=[application/pgp-signature]}
+2019-09-24T21:39:49.769Z INFO c.a.u.n.FileDownloaderCache:343 [ContributionManager Update Thread] Update cache file: FileCached{eTag='330f326540998b47fa4d733ed5f6eef9', lastETag='330f326540998b47fa4d733ed5f6eef9', remoteURL='https://downloads.arduino.cc/packages/package_index.json.sig', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\packages\package_index.json.sig', md5='MD5:330f326540998b47fa4d733ed5f6eef9', createdAt='2019-09-24T23:39:49.769', cacheControl=CacheControl{maxAge=3600, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:39:49.769Z INFO c.a.u.n.FileDownloaderCache:226 [ContributionManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:39:49.769Z INFO c.a.c.DownloadableContributionsDownloader:222 [ContributionManager Update Thread] Signature verified. url=https://downloads.arduino.cc/packages/package_index.json.sig, signature url=https://downloads.arduino.cc/packages/package_index.json.sig, file to verify=C:\TEMP\package_index.json2955701691077893449.tmp, signature file=C:\TEMP\package_index.json.sig6665029388653365556.tmp
+2019-09-24T21:39:49.785Z INFO c.a.c.p.ContributionInstaller:314 [ContributionManager Update Thread] Downloaded package index URL=[http://arduino.esp8266.com/stable/package_esp8266com_index.json, http://digistump.com/package_digistump_index.json, https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json, https://dl.espressif.com/dl/package_esp32_index.json, https://downloads.arduino.cc/packages/package_index.json]
+2019-09-24T21:39:49.785Z INFO c.a.c.p.ContributionInstaller:324 [ContributionManager Update Thread] Check unknown files. Additional package index folder files=[package_esp8266com_index.json, package_digistump_index.json, package_stm_index.json, package_esp32_index.json, package_index.json], Additional package index url downloaded=[F:\Logiciels\ArduinoTechnoEduc\portable\package_digistump_index.json, F:\Logiciels\ArduinoTechnoEduc\portable\package_esp32_index.json, F:\Logiciels\ArduinoTechnoEduc\portable\package_esp8266com_index.json, F:\Logiciels\ArduinoTechnoEduc\portable\package_stm_index.json]
+2019-09-24T21:40:46.865Z INFO c.a.u.n.FileDownloaderCache:149 [LibraryManager Update Thread] Get file cached is expire true, exist true, info FileCached{eTag='3b82d88c6bcc01ff0c214419161c4130', lastETag='null', remoteURL='https://downloads.arduino.cc/libraries/library_index.json.gz', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.gz', md5='MD5:3b82d88c6bcc01ff0c214419161c4130', createdAt='2019-09-17T17:50:48.331', cacheControl=CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false}} 
+2019-09-24T21:40:46.865Z DEBUG c.a.u.n.HttpConnectionManager:125 [LibraryManager Update Thread] Using proxy DIRECT
+2019-09-24T21:40:46.865Z INFO c.a.u.n.HttpConnectionManager:148 [LibraryManager Update Thread] Connect to https://downloads.arduino.cc/libraries/library_index.json.gz, method=HEAD, request id=FA14CEE32FD84FC2
+2019-09-24T21:40:47.099Z INFO c.a.u.n.HttpConnectionManager:152 [LibraryManager Update Thread] Request complete URL="https://downloads.arduino.cc/libraries/library_index.json.gz", method=HEAD, response code=206, request id=FA14CEE32FD84FC2, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[Miss from cloudfront], Server=[cloudflare], CF-Ray=[51b7eb332a4c3c7b-CDG], Content-Range=[bytes 0-999092/999093], X-Amz-Cf-Pop=[FRA50-C1], Connection=[keep-alive], Last-Modified=[Tue, 24 Sep 2019 21:31:09 GMT], x-amz-version-id=[fz31j4CtGMUsktTskpQfzwQ1GmGtdXyO], Date=[Tue, 24 Sep 2019 21:40:47 GMT], Via=[1.1 d55780b776b171387055eca956ae29a9.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=14400], ETag=["7cdfe400a153b61a90c008f3ac47b509"], X-Amz-Cf-Id=[mvVV2yJhiPcUZkXhe6WEQAYQqXFIPIQjTmliOxA-wWJ3XlNbKGpGhw==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=dfc96d25cb632ec6615ea7663f5100f4e1569361247; expires=Wed, 23-Sep-20 21:40:47 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Wed, 25 Sep 2019 01:40:47 GMT], Content-Length=[999093], Age=[571], Expect-CT=[max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"], Content-Type=[application/json]}
+2019-09-24T21:40:47.099Z INFO c.a.u.n.FileDownloaderCache:160 [LibraryManager Update Thread] Update cached info of https://downloads.arduino.cc/libraries/library_index.json.gz, createdAt 2019-09-17T17:50:48.331, previous eTag 3b82d88c6bcc01ff0c214419161c4130, last eTag 7cdfe400a153b61a90c008f3ac47b509, cache control header CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false} 
+2019-09-24T21:40:47.099Z INFO c.a.u.n.FileDownloaderCache:226 [LibraryManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:40:47.349Z INFO c.a.u.n.FileDownloader:210 [LibraryManager Update Thread] No need to download using cached file: FileCached{eTag='3b82d88c6bcc01ff0c214419161c4130', lastETag='7cdfe400a153b61a90c008f3ac47b509', remoteURL='https://downloads.arduino.cc/libraries/library_index.json.gz', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.gz', md5='MD5:3b82d88c6bcc01ff0c214419161c4130', createdAt='2019-09-24T23:40:47.099', cacheControl=CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:40:47.349Z DEBUG c.a.u.n.FileDownloaderCache:299 [LibraryManager Update Thread] The file "F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.gz" is changed last ETag != now Etag (7cdfe400a153b61a90c008f3ac47b509!=3b82d88c6bcc01ff0c214419161c4130)
+2019-09-24T21:40:47.349Z DEBUG c.a.u.n.HttpConnectionManager:125 [LibraryManager Update Thread] Using proxy DIRECT
+2019-09-24T21:40:47.349Z INFO c.a.u.n.HttpConnectionManager:148 [LibraryManager Update Thread] Connect to https://downloads.arduino.cc/libraries/library_index.json.gz, method=GET, request id=C70505B29A824AA3
+2019-09-24T21:40:47.411Z INFO c.a.u.n.HttpConnectionManager:152 [LibraryManager Update Thread] Request complete URL="https://downloads.arduino.cc/libraries/library_index.json.gz", method=GET, response code=206, request id=C70505B29A824AA3, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[Miss from cloudfront], Server=[cloudflare], CF-Ray=[51b7eb355b5d3c7b-CDG], Content-Range=[bytes 0-999092/999093], X-Amz-Cf-Pop=[FRA50-C1], Connection=[keep-alive], Last-Modified=[Tue, 24 Sep 2019 21:31:09 GMT], x-amz-version-id=[fz31j4CtGMUsktTskpQfzwQ1GmGtdXyO], Date=[Tue, 24 Sep 2019 21:40:47 GMT], Via=[1.1 d55780b776b171387055eca956ae29a9.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=14400], ETag=["7cdfe400a153b61a90c008f3ac47b509"], X-Amz-Cf-Id=[mvVV2yJhiPcUZkXhe6WEQAYQqXFIPIQjTmliOxA-wWJ3XlNbKGpGhw==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=dfc96d25cb632ec6615ea7663f5100f4e1569361247; expires=Wed, 23-Sep-20 21:40:47 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Wed, 25 Sep 2019 01:40:47 GMT], Content-Length=[999093], Age=[571], Expect-CT=[max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"], Content-Type=[application/json]}
+2019-09-24T21:40:48.223Z INFO c.a.u.n.FileDownloaderCache:343 [LibraryManager Update Thread] Update cache file: FileCached{eTag='7cdfe400a153b61a90c008f3ac47b509', lastETag='7cdfe400a153b61a90c008f3ac47b509', remoteURL='https://downloads.arduino.cc/libraries/library_index.json.gz', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.gz', md5='MD5:7cdfe400a153b61a90c008f3ac47b509', createdAt='2019-09-24T23:40:48.223', cacheControl=CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:40:48.223Z INFO c.a.u.n.FileDownloaderCache:226 [LibraryManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:40:48.332Z INFO c.a.u.n.FileDownloaderCache:149 [LibraryManager Update Thread] Get file cached is expire true, exist true, info FileCached{eTag='6408e22f2fcad88d8b6243bba1f86427', lastETag='null', remoteURL='https://downloads.arduino.cc/libraries/library_index.json.sig', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.sig', md5='MD5:6408e22f2fcad88d8b6243bba1f86427', createdAt='2019-09-17T17:50:48.565', cacheControl=CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false}} 
+2019-09-24T21:40:48.332Z DEBUG c.a.u.n.HttpConnectionManager:125 [LibraryManager Update Thread] Using proxy DIRECT
+2019-09-24T21:40:48.332Z INFO c.a.u.n.HttpConnectionManager:148 [LibraryManager Update Thread] Connect to https://downloads.arduino.cc/libraries/library_index.json.sig, method=HEAD, request id=6755041BC9234BD6
+2019-09-24T21:40:48.394Z INFO c.a.u.n.HttpConnectionManager:152 [LibraryManager Update Thread] Request complete URL="https://downloads.arduino.cc/libraries/library_index.json.sig", method=HEAD, response code=206, request id=6755041BC9234BD6, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[Miss from cloudfront], Server=[cloudflare], CF-Ray=[51b7eb3b6eb23c7b-CDG], Content-Range=[bytes 0-542/543], X-Amz-Cf-Pop=[FRA50-C1], Connection=[keep-alive], Last-Modified=[Tue, 24 Sep 2019 21:31:09 GMT], x-amz-version-id=[2qGxacIgvq7APfXRmQkqB3mPUSHlc8Uu], Date=[Tue, 24 Sep 2019 21:40:48 GMT], Via=[1.1 ba77f90aac0ddbc2c4c2c02062fac762.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=14400], ETag=["0b7bad2841e8bfb5c9896fbb0add4f59"], X-Amz-Cf-Id=[6xgBB8YKhZiJTd52ZEu4NGS7py-bQWG08hCGxIZUpftx9ZmA3sxE4w==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=d8ab09a7bc592dc18b4a638d303aad5151569361248; expires=Wed, 23-Sep-20 21:40:48 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Wed, 25 Sep 2019 01:40:48 GMT], Content-Length=[543], Age=[523], Expect-CT=[max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"], Content-Type=[application/pgp-signature]}
+2019-09-24T21:40:48.394Z INFO c.a.u.n.FileDownloaderCache:160 [LibraryManager Update Thread] Update cached info of https://downloads.arduino.cc/libraries/library_index.json.sig, createdAt 2019-09-17T17:50:48.565, previous eTag 6408e22f2fcad88d8b6243bba1f86427, last eTag 0b7bad2841e8bfb5c9896fbb0add4f59, cache control header CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false} 
+2019-09-24T21:40:48.394Z INFO c.a.u.n.FileDownloaderCache:226 [LibraryManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:40:48.394Z INFO c.a.u.n.FileDownloader:210 [LibraryManager Update Thread] No need to download using cached file: FileCached{eTag='6408e22f2fcad88d8b6243bba1f86427', lastETag='0b7bad2841e8bfb5c9896fbb0add4f59', remoteURL='https://downloads.arduino.cc/libraries/library_index.json.sig', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.sig', md5='MD5:6408e22f2fcad88d8b6243bba1f86427', createdAt='2019-09-24T23:40:48.394', cacheControl=CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:40:48.394Z DEBUG c.a.u.n.FileDownloaderCache:299 [LibraryManager Update Thread] The file "F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.sig" is changed last ETag != now Etag (0b7bad2841e8bfb5c9896fbb0add4f59!=6408e22f2fcad88d8b6243bba1f86427)
+2019-09-24T21:40:48.394Z DEBUG c.a.u.n.HttpConnectionManager:125 [LibraryManager Update Thread] Using proxy DIRECT
+2019-09-24T21:40:48.394Z INFO c.a.u.n.HttpConnectionManager:148 [LibraryManager Update Thread] Connect to https://downloads.arduino.cc/libraries/library_index.json.sig, method=GET, request id=3618D1735BFC4566
+2019-09-24T21:40:48.457Z INFO c.a.u.n.HttpConnectionManager:152 [LibraryManager Update Thread] Request complete URL="https://downloads.arduino.cc/libraries/library_index.json.sig", method=GET, response code=206, request id=3618D1735BFC4566, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[Miss from cloudfront], Server=[cloudflare], CF-Ray=[51b7eb3bdefd3c7b-CDG], Content-Range=[bytes 0-542/543], X-Amz-Cf-Pop=[FRA50-C1], Connection=[keep-alive], Last-Modified=[Tue, 24 Sep 2019 21:31:09 GMT], x-amz-version-id=[2qGxacIgvq7APfXRmQkqB3mPUSHlc8Uu], Date=[Tue, 24 Sep 2019 21:40:48 GMT], Via=[1.1 ba77f90aac0ddbc2c4c2c02062fac762.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=14400], ETag=["0b7bad2841e8bfb5c9896fbb0add4f59"], X-Amz-Cf-Id=[6xgBB8YKhZiJTd52ZEu4NGS7py-bQWG08hCGxIZUpftx9ZmA3sxE4w==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=d8ab09a7bc592dc18b4a638d303aad5151569361248; expires=Wed, 23-Sep-20 21:40:48 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Wed, 25 Sep 2019 01:40:48 GMT], Content-Length=[543], Age=[523], Expect-CT=[max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"], Content-Type=[application/pgp-signature]}
+2019-09-24T21:40:48.472Z INFO c.a.u.n.FileDownloaderCache:343 [LibraryManager Update Thread] Update cache file: FileCached{eTag='0b7bad2841e8bfb5c9896fbb0add4f59', lastETag='0b7bad2841e8bfb5c9896fbb0add4f59', remoteURL='https://downloads.arduino.cc/libraries/library_index.json.sig', localPath='F:\Logiciels\ArduinoTechnoEduc\portable\cache\downloads.arduino.cc\libraries\library_index.json.sig', md5='MD5:0b7bad2841e8bfb5c9896fbb0add4f59', createdAt='2019-09-24T23:40:48.457', cacheControl=CacheControl{maxAge=14400, isMustRevalidate=false, isNoCache=false, isNoStore=false}}
+2019-09-24T21:40:48.472Z INFO c.a.u.n.FileDownloaderCache:226 [LibraryManager Update Thread] Update cache file info in F:\Logiciels\ArduinoTechnoEduc\portable\cache\cache.json, number of cached files is 7
+2019-09-24T21:40:48.613Z INFO c.a.c.DownloadableContributionsDownloader:222 [LibraryManager Update Thread] Signature verified. url=https://downloads.arduino.cc/libraries/library_index.json.sig, signature url=https://downloads.arduino.cc/libraries/library_index.json.sig, file to verify=C:\TEMP\library_index.json3922129585601082715.tmp, signature file=C:\TEMP\library_index.json.sig6991248620305210666.tmp
+2019-09-24T21:41:44.944Z INFO c.a.u.n.FileDownloaderCache:131 [LibraryManager Installer Thread] The cache is not enable.
+2019-09-24T21:41:44.944Z DEBUG c.a.u.n.HttpConnectionManager:125 [LibraryManager Installer Thread] Using proxy DIRECT
+2019-09-24T21:41:44.944Z INFO c.a.u.n.HttpConnectionManager:148 [LibraryManager Installer Thread] Connect to http://downloads.arduino.cc/libraries/github.com/miguelbalboa/MFRC522-1.4.5.zip, method=GET, request id=DC0B356354B34191
+2019-09-24T21:41:45.116Z INFO c.a.u.n.HttpConnectionManager:152 [LibraryManager Installer Thread] Request complete URL="http://downloads.arduino.cc/libraries/github.com/miguelbalboa/MFRC522-1.4.5.zip", method=GET, response code=206, request id=DC0B356354B34191, headers={null=[HTTP/1.1 206 Partial Content], X-Cache=[Miss from cloudfront], Server=[cloudflare], CF-Ray=[51b7ec9ddba5cd7b-CDG], Content-Range=[bytes 0-1157317/1157318], X-Amz-Cf-Pop=[CDG3-C2], Connection=[keep-alive], Last-Modified=[Tue, 24 Sep 2019 14:31:43 GMT], x-amz-version-id=[FY_3glA0M5QriVlOYCV8zAdI1beDckLj], Date=[Tue, 24 Sep 2019 21:41:45 GMT], Via=[1.1 ed56cfaa883e0c10b610c3cdd45acb40.cloudfront.net (CloudFront)], x-amz-replication-status=[COMPLETED], CF-Cache-Status=[HIT], Cache-Control=[public, max-age=14400], ETag=["8f93c0358daea03a52a13acc8668bf41"], X-Amz-Cf-Id=[OU3Ja6P3oKCFYYlQYrcIqP9XlEfEFHK-WMdMmVHXWLZ1f7kwdTtmAg==], Vary=[Accept-Encoding], Set-Cookie=[__cfduid=d50759018e9996dbf68e3820dbd0d55fa1569361305; expires=Wed, 23-Sep-20 21:41:45 GMT; path=/; domain=.arduino.cc; HttpOnly], Expires=[Wed, 25 Sep 2019 01:41:45 GMT], Content-Length=[1157318], Age=[25166], Content-Type=[application/zip]}
