@@ -1953,23 +1953,28 @@
 		</block>
 		<block type="RFID_code_acces" colour="#9BACB4">
 			<value name="VAL1">
-				<shadow type="text">
-					<field name="TEXT">1</field>
+				<shadow type="math_number">
+					<field name="NUM">1</field>
 				</shadow>
 			</value>
 			<value name="VAL2">
-				<shadow type="text">
-					<field name="TEXT">1</field>
+				<shadow type="math_number">
+					<field name="NUM">1</field>
 				</shadow>
 			</value>
 			<value name="VAL3">
-				<shadow type="text">
-					<field name="TEXT">1</field>
+				<shadow type="math_number">
+					<field name="NUM">1</field>
 				</shadow>
 			</value>
 			<value name="VAL4">
-				<shadow type="text">
-					<field name="TEXT">1</field>
+				<shadow type="math_number">
+					<field name="NUM">1</field>
+				</shadow>
+			</value>
+			<value name="VAL5">
+				<shadow type="math_number">
+					<field name="NUM">1</field>
 				</shadow>
 			</value>
 		</block>
@@ -3291,9 +3296,9 @@
 		<category name="CAT_PEGUINO_IN" colour="#9CEEFF">
 			<block type="peguino_sensors_pir_motion_sensor"></block>
 			<block type="peguino_sensors_button"></block>
-			<block type="peguino_sensors_dht_read"></block>
-			<block type="peguino_sensors_EMETTEUR_IR"></block>
-			<block type="peguino_sensors_RECEPTEUR_IR"></block>
+			<block type="peguino_sensors_dht_read_UnoNano"></block>
+			<!-- <block type="peguino_sensors_EMETTEUR_IR"></block> -->
+			<!-- <block type="peguino_sensors_RECEPTEUR_IR"></block> -->
 			<block type="peguino_sensors_ldr"></block>
 			<block type="peguino_sensors_rotary_angle"></block>
 			<block type="peguino_sensors_ultrasonic_ranger"></block>
@@ -3320,4 +3325,41 @@
 		</category>
 		<sep></sep>
     </category>
+	<!--20191010-->
+	<category name="CAT_COG" colour="#0084ad">
+		<category name="CAT_MICROSAURUS" colour="#0084ad">
+			<block type="ms_init_wav"></block>
+			<block type="ms_play_wav"></block>
+			<block type="ms_IR_receiver"></block>
+			<block type="ms_IR_checker"></block>
+			<!--<block type="ms_IR_recv_flag"></block>-->
+			<block type="ms_IR_get_code"></block>
+			<!--<block type="ms_IR_reset_flag"></block>-->
+			<block type="ms_action_stop"></block>
+			<block type="ms_action_fwrd"></block>
+			<block type="ms_action_bwrd"></block>
+			<block type="ms_action_ltrn"></block>
+			<block type="ms_action_rtrn"></block>
+		</category>
+		<category name="CAT_MICROMACHINE" colour="#0084ad">
+			<block type="mm_init_wav"></block>
+			<block type="mm_play_wav"></block>
+			<block type="ms_IR_receiver"></block>
+			<block type="ms_IR_checker"></block>
+			<block type="ms_IR_get_code"></block>
+			<block type="mm_action_init"></block>
+			<block type="mm_servo_drive"></block>
+			<block type="mm_action_stop"></block>
+			<block type="mm_action_fwrd"></block>
+			<block type="mm_action_bwrd"></block>
+			<block type="mm_action_ltrn"></block>
+			<block type="mm_action_rtrn"></block>
+			<block type="mm_action_left"></block>
+			<block type="mm_action_rght"></block>
+			<block type="mm_action_free"></block>
+			<block type="mm_array_declare"></block>
+			<block type="mm_array_create_with"></block>
+		</category>
+	</category>
+	<!--20191010-->
 </toolbox>
