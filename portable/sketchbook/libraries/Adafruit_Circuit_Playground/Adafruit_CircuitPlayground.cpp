@@ -67,7 +67,14 @@ bool Adafruit_CircuitPlayground::begin(uint8_t brightness) {
   strip.updateLength(10);
   strip.setPin(CPLAY_NEOPIXELPIN);
 
-  lis = Adafruit_CPlay_LIS3DH(CPLAY_LIS3DH_CS);
+#ifdef __AVR__ // Circuit Playground 'classic'
+  lis = Adafruit_CPlay_LIS3DH(CPLAY_LIS3DH_CS, &SPI); // SPI
+#elif defined(ARDUINO_NRF52840_CIRCUITPLAY)
+  lis = Adafruit_CPlay_LIS3DH(&Wire1); // i2c on wire1
+#else // samd21
+  lis = Adafruit_CPlay_LIS3DH(&Wire1); // i2c on wire1
+#endif
+
   mic = Adafruit_CPlay_Mic();
 
   strip.begin();
@@ -306,8 +313,7 @@ float Adafruit_CircuitPlayground::motionZ(void) {
 /**************************************************************************/
 float Adafruit_CircuitPlayground::temperature(void) {
    // Thermistor test
-  float reading;
-
+  double reading;
   reading = analogRead(CPLAY_THERMISTORPIN);
 
   //Serial.print("Thermistor reading: "); Serial.println(reading);
@@ -318,7 +324,7 @@ float Adafruit_CircuitPlayground::temperature(void) {
 
   //Serial.print("Thermistor resistance: "); Serial.println(reading);
 
-  float steinhart;
+  double steinhart;
   steinhart = reading / THERMISTORNOMINAL;     // (R/Ro)
   steinhart = log(steinhart);                  // ln(R/Ro)
   steinhart /= BCOEFFICIENT;                   // 1/B * ln(R/Ro)
@@ -366,7 +372,6 @@ uint32_t Adafruit_CircuitPlayground::colorWheel(uint8_t WheelPos) {
     @param red the pointer to where the red component should be stored.
     @param green the pointer to where the green component should be stored.
     @param blue the pointer to where the blue component should be stored.
-    @returns the components of the detected colors in the passed pointers.
 */
 /**************************************************************************/
 void Adafruit_CircuitPlayground::senseColor(uint8_t& red, uint8_t& green, uint8_t& blue) {
