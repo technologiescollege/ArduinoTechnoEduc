@@ -1,94 +1,94 @@
 {
   "files" : [ {
-    "remoteURL" : "http://digistump.com/package_digistump_index.json",
-    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\digistump.com\\package_digistump_index.json",
-    "eTag" : "3009e1bba719e09eddff682075ef35d04153edb11434f8ea074cd562e9955fb6",
-    "md5" : "MD5:c43814fed1b4ea761ebe078a082d2d51",
-    "createdAt" : "2019-11-04T23:31:36.737",
-    "cacheControl" : {
-      "maxAge" : 300,
-      "mustRevalidate" : false,
-      "noCache" : false,
-      "noStore" : false
-    },
-    "expires" : "2019-11-04T23:36:36.737"
-  }, {
     "remoteURL" : "http://arduino.esp8266.com/stable/package_esp8266com_index.json",
     "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\arduino.esp8266.com\\stable\\package_esp8266com_index.json",
-    "eTag" : "5ce2f8ab-115d5",
-    "md5" : "MD5:d165e6a6192899211268f6ca7d5d9cd2",
-    "createdAt" : "2019-11-04T23:31:28.926",
+    "eTag" : "5df791da-17703",
+    "md5" : "MD5:a9929e8b3fedc7ab81c08fe649bfd402",
+    "createdAt" : "2019-12-19T21:42:30.971",
     "cacheControl" : {
       "maxAge" : 600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-11-04T23:41:28.926"
+    "expires" : "2019-12-19T21:52:30.971"
   }, {
-    "remoteURL" : "https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json",
-    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\github.com\\stm32duino\\BoardManagerFiles\\raw\\master\\STM32\\package_stm_index.json",
-    "eTag" : "59e247c9c308323f570b43c458b5d15c24789348b3f622183f3ff05d89b04dfc",
-    "md5" : "MD5:6db532ecb2dac41f47704106cfccf7db",
-    "createdAt" : "2019-11-04T23:31:38.321",
+    "remoteURL" : "http://digistump.com/package_digistump_index.json",
+    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\digistump.com\\package_digistump_index.json",
+    "eTag" : "3009e1bba719e09eddff682075ef35d04153edb11434f8ea074cd562e9955fb6",
+    "md5" : "MD5:c43814fed1b4ea761ebe078a082d2d51",
+    "createdAt" : "2019-12-19T21:42:45.035",
     "cacheControl" : {
       "maxAge" : 300,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-11-04T23:36:38.321"
+    "expires" : "2019-12-19T21:47:45.035"
+  }, {
+    "remoteURL" : "https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json",
+    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\github.com\\stm32duino\\BoardManagerFiles\\raw\\master\\STM32\\package_stm_index.json",
+    "eTag" : "59e247c9c308323f570b43c458b5d15c24789348b3f622183f3ff05d89b04dfc",
+    "md5" : "MD5:6db532ecb2dac41f47704106cfccf7db",
+    "createdAt" : "2019-12-19T21:42:45.862",
+    "cacheControl" : {
+      "maxAge" : 300,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2019-12-19T21:47:45.862"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.gz",
     "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.gz",
-    "eTag" : "7c7b791f81b80fbea4bf8f695ceaf6e5",
-    "md5" : "MD5:7c7b791f81b80fbea4bf8f695ceaf6e5",
-    "createdAt" : "2019-11-04T23:32:04.072",
+    "eTag" : "44bd9e08322040998104a7cf351a16b5",
+    "md5" : "MD5:44bd9e08322040998104a7cf351a16b5",
+    "createdAt" : "2019-12-19T21:45:52.512",
     "cacheControl" : {
       "maxAge" : 14400,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-11-05T03:32:04.072"
-  }, {
-    "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.sig",
-    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.sig",
-    "eTag" : "f4aef6f407d5dc3ded57c953259fe739",
-    "md5" : "MD5:f4aef6f407d5dc3ded57c953259fe739",
-    "createdAt" : "2019-11-04T23:32:04.322",
-    "cacheControl" : {
-      "maxAge" : 14400,
-      "mustRevalidate" : false,
-      "noCache" : false,
-      "noStore" : false
-    },
-    "expires" : "2019-11-05T03:32:04.322"
+    "expires" : "2019-12-20T01:45:52.512"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json.sig",
     "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json.sig",
-    "eTag" : "1c9d2516d2205eb4ce157521f0e5f8ae",
-    "md5" : "MD5:1c9d2516d2205eb4ce157521f0e5f8ae",
-    "createdAt" : "2019-11-04T23:31:42",
+    "eTag" : "b814a9bfa6aff7d1fd7b726bc9b82e65",
+    "md5" : "MD5:b814a9bfa6aff7d1fd7b726bc9b82e65",
+    "createdAt" : "2019-12-19T21:42:49.653",
     "cacheControl" : {
       "maxAge" : 3600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-11-05T00:31:42"
+    "expires" : "2019-12-19T22:42:49.653"
+  }, {
+    "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.sig",
+    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.sig",
+    "eTag" : "3d326f2b3226f16321dd058486e24f20",
+    "md5" : "MD5:3d326f2b3226f16321dd058486e24f20",
+    "createdAt" : "2019-12-19T21:45:53.62",
+    "cacheControl" : {
+      "maxAge" : 14400,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2019-12-20T01:45:53.620"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json",
     "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json",
-    "eTag" : "669db8ca08188a51f9b7d2fe0b74c3d0",
-    "md5" : "MD5:669db8ca08188a51f9b7d2fe0b74c3d0",
-    "createdAt" : "2019-11-04T23:31:41.85",
+    "eTag" : "73baa021173bb69af7582a0257fc13f3",
+    "md5" : "MD5:73baa021173bb69af7582a0257fc13f3",
+    "createdAt" : "2019-12-19T21:42:49.45",
     "cacheControl" : {
       "maxAge" : 3600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-11-05T00:31:41.850"
+    "expires" : "2019-12-19T22:42:49.450"
   } ]
 }

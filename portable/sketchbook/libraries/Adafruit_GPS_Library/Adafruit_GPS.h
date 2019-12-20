@@ -29,13 +29,14 @@
 #define USE_SW_SERIAL ///< comment this out if you don't want to include software serial in the library
 #define GPS_DEFAULT_I2C_ADDR 0x10  ///< The default address for I2C transport of GPS data
 #define GPS_MAX_I2C_TRANSFER 32  ///< The max number of bytes we'll try to read at once
+#define GPS_MAX_SPI_TRANSFER 100  ///< The max number of bytes we'll try to read at once
 
 #include "Arduino.h"
 #if (defined(__AVR__) || defined(ESP8266)) && defined(USE_SW_SERIAL)
   #include <SoftwareSerial.h>
 #endif
 #include <Wire.h>
-
+#include <SPI.h>
 
 /**************************************************************************/
 /**
@@ -66,6 +67,7 @@
 #define PMTK_SET_NMEA_OUTPUT_GSAONLY "$PMTK314,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29"  ///< turn on just the GPGSA
 #define PMTK_SET_NMEA_OUTPUT_GSVONLY "$PMTK314,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0*29"  ///< turn on just the GPGSV
 #define PMTK_SET_NMEA_OUTPUT_RMCGGA  "$PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*28"  ///< turn on GPRMC and GPGGA
+#define PMTK_SET_NMEA_OUTPUT_RMCGGAGSA  "$PMTK314,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29"  ///< turn on GPRMC, GPGGA and GPGSA
 #define PMTK_SET_NMEA_OUTPUT_ALLDATA "$PMTK314,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0*28"  ///< turn on ALL THE DATA
 #define PMTK_SET_NMEA_OUTPUT_OFF     "$PMTK314,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*28"  ///< turn off output
 
@@ -111,6 +113,7 @@ class Adafruit_GPS : public Print{
 #endif
   Adafruit_GPS(HardwareSerial *ser); // Constructor when using HardwareSerial
   Adafruit_GPS(TwoWire *theWire); // Constructor when using I2C
+  Adafruit_GPS(SPIClass *theSPI, int8_t cspin); // Constructor when using SPI
 
   char *lastNMEA(void);
   boolean newNMEAreceived();
@@ -159,11 +162,14 @@ class Adafruit_GPS : public Print{
   float angle;              ///< Course in degrees from true north
   float magvariation;       ///< Magnetic variation in degrees (vs. true north)
   float HDOP;               ///< Horizontal Dilution of Precision - relative accuracy of horizontal position
+  float VDOP;               ///< Vertical Dilution of Precision - relative accuracy of vertical position
+  float PDOP;               ///< Position Dilution of Precision - Complex maths derives a simple, single number for each kind of DOP
   char lat;                 ///< N/S
   char lon;                 ///< E/W
   char mag;                 ///< Magnetic variation direction
   boolean fix;              ///< Have a fix?
   uint8_t fixquality;       ///< Fix quality (0, 1, 2 = Invalid, GPS, DGPS)
+  uint8_t fixquality_3d;    ///< 3D fix quality (1, 3, 3 = Nofix, 2D fix, 3D fix)
   uint8_t satellites;       ///< Number of satellites in use
 
   boolean waitForSentence(const char *wait, uint8_t max = MAXWAITSENTENCE, boolean usingInterrupts = false);
@@ -189,8 +195,8 @@ class Adafruit_GPS : public Print{
   void parseLon(char *);
   boolean parseLonDir(char *);
   boolean parseFix(char *);
-  // Make all of these times far in the past by setting them near the middle of the 
-  // millis() range. Timing assumes that sentences are parsed promptly. 
+  // Make all of these times far in the past by setting them near the middle of the
+  // millis() range. Timing assumes that sentences are parsed promptly.
   uint32_t lastFix = 2000000000L;		// millis() when last fix received
   uint32_t lastTime = 2000000000L;    // millis() when last time received
   uint32_t lastDate = 2000000000L;    // millis() when last date received
@@ -204,9 +210,13 @@ class Adafruit_GPS : public Print{
 #endif
   HardwareSerial *gpsHwSerial;
   TwoWire *gpsI2C;
+  SPIClass *gpsSPI;
+  int8_t gpsSPI_cs = -1;
+  SPISettings gpsSPI_settings = SPISettings(1000000, MSBFIRST, SPI_MODE0); // default
+  char _spibuffer[GPS_MAX_SPI_TRANSFER]; // for when we write data, we need to read it too!
   uint8_t _i2caddr;
   char _i2cbuffer[GPS_MAX_I2C_TRANSFER];
-  int8_t _i2cbuff_max = -1, _i2cbuff_idx = 0;
+  int8_t _buff_max = -1, _buff_idx = 0;
   char last_char = 0;
 };
 /**************************************************************************/
