@@ -1,94 +1,94 @@
 {
   "files" : [ {
-    "remoteURL" : "http://digistump.com/package_digistump_index.json",
-    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\digistump.com\\package_digistump_index.json",
-    "eTag" : "3009e1bba719e09eddff682075ef35d04153edb11434f8ea074cd562e9955fb6",
-    "md5" : "MD5:c43814fed1b4ea761ebe078a082d2d51",
-    "createdAt" : "2019-12-31T12:18:47.279",
-    "cacheControl" : {
-      "maxAge" : 300,
-      "mustRevalidate" : false,
-      "noCache" : false,
-      "noStore" : false
-    },
-    "expires" : "2019-12-31T12:23:47.279"
-  }, {
     "remoteURL" : "http://arduino.esp8266.com/stable/package_esp8266com_index.json",
     "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\arduino.esp8266.com\\stable\\package_esp8266com_index.json",
     "eTag" : "5df791da-17703",
     "md5" : "MD5:a9929e8b3fedc7ab81c08fe649bfd402",
-    "createdAt" : "2019-12-31T12:18:43.957",
+    "createdAt" : "2020-01-21T17:01:20.462",
     "cacheControl" : {
       "maxAge" : 600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-12-31T12:28:43.957"
+    "expires" : "2020-01-21T17:11:20.462"
   }, {
-    "remoteURL" : "https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json",
-    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\github.com\\stm32duino\\BoardManagerFiles\\raw\\master\\STM32\\package_stm_index.json",
-    "eTag" : "a0468fb1901c6f5a0929c6dd8f17061885f8605263b61feb1783f474f124cbcb",
-    "md5" : "MD5:91e701dd46f0ab008ace17002b7f6aeb",
-    "createdAt" : "2019-12-31T12:18:49.136",
+    "remoteURL" : "http://digistump.com/package_digistump_index.json",
+    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\digistump.com\\package_digistump_index.json",
+    "eTag" : "W/0255acd66af7347c624022737262ba0a40630ff98ad7c1a22579a23ffc88da81",
+    "md5" : "MD5:c43814fed1b4ea761ebe078a082d2d51",
+    "createdAt" : "2020-01-21T17:01:24.908",
     "cacheControl" : {
       "maxAge" : 300,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-12-31T12:23:49.136"
+    "expires" : "2020-01-21T17:06:24.908"
+  }, {
+    "remoteURL" : "https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json",
+    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\github.com\\stm32duino\\BoardManagerFiles\\raw\\master\\STM32\\package_stm_index.json",
+    "eTag" : "W/69842f48f1abefdfedaa0523419f70649f5f3e75e02361427af22e3ad99f40fa",
+    "md5" : "MD5:91e701dd46f0ab008ace17002b7f6aeb",
+    "createdAt" : "2020-01-21T17:01:26.218",
+    "cacheControl" : {
+      "maxAge" : 300,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-01-21T17:06:26.218"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.gz",
     "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.gz",
-    "eTag" : "7ffe0c0c0002dc2a5476a7843b3fe1c8",
-    "md5" : "MD5:7ffe0c0c0002dc2a5476a7843b3fe1c8",
-    "createdAt" : "2019-12-31T12:19:23.478",
+    "eTag" : "5acfebd90f3d277d5f5a6d3227309639",
+    "md5" : "MD5:5acfebd90f3d277d5f5a6d3227309639",
+    "createdAt" : "2020-01-21T17:01:46.826",
     "cacheControl" : {
       "maxAge" : 14400,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-12-31T16:19:23.478"
-  }, {
-    "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.sig",
-    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.sig",
-    "eTag" : "5d8ac4ae9afcfab18f3af32b113271e8",
-    "md5" : "MD5:5d8ac4ae9afcfab18f3af32b113271e8",
-    "createdAt" : "2019-12-31T12:19:24.039",
-    "cacheControl" : {
-      "maxAge" : 14400,
-      "mustRevalidate" : false,
-      "noCache" : false,
-      "noStore" : false
-    },
-    "expires" : "2019-12-31T16:19:24.039"
+    "expires" : "2020-01-21T21:01:46.826"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json.sig",
     "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json.sig",
-    "eTag" : "b814a9bfa6aff7d1fd7b726bc9b82e65",
-    "md5" : "MD5:b814a9bfa6aff7d1fd7b726bc9b82e65",
-    "createdAt" : "2019-12-31T12:18:52.069",
+    "eTag" : "1234dad6ed8ab96de8e8b7c531a9796e",
+    "md5" : "MD5:1234dad6ed8ab96de8e8b7c531a9796e",
+    "createdAt" : "2020-01-21T17:01:30.04",
     "cacheControl" : {
       "maxAge" : 3600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-12-31T13:18:52.069"
+    "expires" : "2020-01-21T18:01:30.040"
+  }, {
+    "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.sig",
+    "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.sig",
+    "eTag" : "a7214e2c98be78b190fa0a3c41339ed7",
+    "md5" : "MD5:a7214e2c98be78b190fa0a3c41339ed7",
+    "createdAt" : "2020-01-21T17:01:47.2",
+    "cacheControl" : {
+      "maxAge" : 14400,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-01-21T21:01:47.200"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json",
     "localPath" : "F:\\Logiciels\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json",
-    "eTag" : "73baa021173bb69af7582a0257fc13f3",
-    "md5" : "MD5:73baa021173bb69af7582a0257fc13f3",
-    "createdAt" : "2019-12-31T12:18:51.741",
+    "eTag" : "d84d45d86449339504f80e08416722b1",
+    "md5" : "MD5:d84d45d86449339504f80e08416722b1",
+    "createdAt" : "2020-01-21T17:01:29.822",
     "cacheControl" : {
       "maxAge" : 3600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2019-12-31T13:18:51.741"
+    "expires" : "2020-01-21T18:01:29.822"
   } ]
 }
