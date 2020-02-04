@@ -1,0 +1,72 @@
+#######################################
+# Syntax Coloring Map For uStepper S-lite
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+uStepperSLite 	KEYWORD1
+uStepperEncoder	KEYWORD1
+i2cMaster	KEYWORD1
+i2cSlave	KEYWORD1
+TMC2208	KEYWORD1
+uStepperServo	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+getAngle	KEYWORD2
+getSpeed	KEYWORD2
+getStrength	KEYWORD2
+getAgc	KEYWORD2
+detectMagnet	KEYWORD2
+getAngleMoved	KEYWORD2
+getAngleMovedRaw	KEYWORD2
+setHome	KEYWORD2
+setMaxAcceleration	KEYWORD2
+setMaxVelocity	KEYWORD2
+runContinous	KEYWORD2
+moveSteps	KEYWORD2
+hardStop	KEYWORD2
+softStop	KEYWORD2
+stop	KEYWORD2
+setup	KEYWORD2
+getCurrentDirection	KEYWORD2	
+getMotorState	KEYWORD2
+getStepsSinceReset	KEYWORD2
+setHoldCurrent	KEYWORD2
+setRunCurrent	KEYWORD2
+moveToAngle	KEYWORD2
+moveAngle	KEYWORD2
+moveToEnd	KEYWORD2
+isStalled	KEYWORD2
+detectStall	KEYWORD2
+readByte	KEYWORD2
+writeByte	KEYWORD2
+getStatus	KEYWORD2
+begin	KEYWORD2
+getStepsSinceReset	KEYWORD2
+encoder	KEYWORD2
+setCurrent	KEYWORD2
+disableDriver	KEYWORD2
+enableDriver	KEYWORD2
+setCurrent	KEYWORD2
+setHoldCurrent	KEYWORD2
+setRunCurrent	KEYWORD2
+setVelocity	KEYWORD2
+invertDirection	KEYWORD2
+setMinimumPulse	KEYWORD2
+setMaximumPulse	KEYWORD2
+refresh	KEYWORD2
+write	KEYWORD2
+PID	KEYWORD2
+DROPIN	KEYWORD2
+NORMAL	KEYWORD2
+CW	KEYWORD2
+CCW	KEYWORD2
+SIXTEEN	KEYWORD2
+EIGHT	KEYWORD2
+QUARTER	KEYWORD2
+HALF	KEYWORD2
+FULL	KEYWORD2
