@@ -1,0 +1,107 @@
+{
+  "files" : [ {
+    "remoteURL" : "http://arduino.esp8266.com/stable/package_esp8266com_index.json",
+    "localPath" : "F:\\arduino-1.8.12\\portable\\cache\\arduino.esp8266.com\\stable\\package_esp8266com_index.json",
+    "eTag" : "5df791da-17703",
+    "md5" : "MD5:a9929e8b3fedc7ab81c08fe649bfd402",
+    "createdAt" : "2020-02-24T12:01:21.964",
+    "cacheControl" : {
+      "maxAge" : 600,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-02-24T12:11:21.964"
+  }, {
+    "remoteURL" : "http://digistump.com/package_digistump_index.json",
+    "localPath" : "F:\\arduino-1.8.12\\portable\\cache\\digistump.com\\package_digistump_index.json",
+    "eTag" : "W/0255acd66af7347c624022737262ba0a40630ff98ad7c1a22579a23ffc88da81",
+    "md5" : "MD5:c43814fed1b4ea761ebe078a082d2d51",
+    "createdAt" : "2020-02-24T12:01:23.976",
+    "cacheControl" : {
+      "maxAge" : 300,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-02-24T12:06:23.976"
+  }, {
+    "remoteURL" : "https://raw.githubusercontent.com/uStepper/uStepperHardware/master/package_ustepper_index.json",
+    "localPath" : "F:\\arduino-1.8.12\\portable\\cache\\raw.githubusercontent.com\\uStepper\\uStepperHardware\\master\\package_ustepper_index.json",
+    "eTag" : "W/be55aa186e625909ace4f9943c8dc8c1fbb38a377a4de981065751e8c65ab817",
+    "md5" : "MD5:e0e59a262cfe4854817c087aec3a08db",
+    "createdAt" : "2020-02-24T12:01:24.226",
+    "cacheControl" : {
+      "maxAge" : 300,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-02-24T12:06:24.226"
+  }, {
+    "remoteURL" : "https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json",
+    "localPath" : "F:\\arduino-1.8.12\\portable\\cache\\github.com\\stm32duino\\BoardManagerFiles\\raw\\master\\STM32\\package_stm_index.json",
+    "eTag" : "W/69842f48f1abefdfedaa0523419f70649f5f3e75e02361427af22e3ad99f40fa",
+    "md5" : "MD5:91e701dd46f0ab008ace17002b7f6aeb",
+    "createdAt" : "2020-02-24T12:01:24.85",
+    "cacheControl" : {
+      "maxAge" : 300,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-02-24T12:06:24.850"
+  }, {
+    "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.gz",
+    "localPath" : "F:\\arduino-1.8.12\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.gz",
+    "eTag" : "36884319254988cad806978a3f1cf35d",
+    "md5" : "MD5:36884319254988cad806978a3f1cf35d",
+    "createdAt" : "2020-02-24T12:01:44.958",
+    "cacheControl" : {
+      "maxAge" : 14400,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-02-24T16:01:44.958"
+  }, {
+    "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json.sig",
+    "localPath" : "F:\\arduino-1.8.12\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json.sig",
+    "eTag" : "412471cb6ed03a383595234a61559d5b",
+    "md5" : "MD5:412471cb6ed03a383595234a61559d5b",
+    "createdAt" : "2020-02-24T12:01:27.751",
+    "cacheControl" : {
+      "maxAge" : 3600,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-02-24T13:01:27.751"
+  }, {
+    "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.sig",
+    "localPath" : "F:\\arduino-1.8.12\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.sig",
+    "eTag" : "a546f0fcf9d2aa2202d3d63ba54423a0",
+    "md5" : "MD5:a546f0fcf9d2aa2202d3d63ba54423a0",
+    "createdAt" : "2020-02-24T12:01:45.27",
+    "cacheControl" : {
+      "maxAge" : 14400,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-02-24T16:01:45.270"
+  }, {
+    "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json",
+    "localPath" : "F:\\arduino-1.8.12\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json",
+    "eTag" : "d84d45d86449339504f80e08416722b1",
+    "md5" : "MD5:d84d45d86449339504f80e08416722b1",
+    "createdAt" : "2020-02-24T12:01:27.595",
+    "cacheControl" : {
+      "maxAge" : 3600,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2020-02-24T13:01:27.595"
+  } ]
+}

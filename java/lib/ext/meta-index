@@ -21,14 +21,51 @@ sun/util
 jdk/nashorn
 META-INF/services/javax.script.ScriptEngineFactory
 jdk/internal
-! sunec.jar
+# sunec.jar
 sun/security
-! sunjce_provider.jar
+META-INF/ORACLE_J.RSA
+META-INF/ORACLE_J.SF
+# sunjce_provider.jar
 com/sun/crypto/
-! sunmscapi.jar
+META-INF/ORACLE_J.RSA
+META-INF/ORACLE_J.SF
+# sunmscapi.jar
 sun/security
-! sunpkcs11.jar
+META-INF/ORACLE_J.RSA
+META-INF/ORACLE_J.SF
+# sunpkcs11.jar
 sun/security
+META-INF/ORACLE_J.RSA
+META-INF/ORACLE_J.SF
 # zipfs.jar
 META-INF/services/java.nio.file.spi.FileSystemProvider
 com/sun/nio/
+# jfxrt.jar
+META-INF/INDEX.LIST
+com/sun/deploy/uitoolkit/impl/fx/
+com/sun/glass/events/
+com/sun/glass/ui/
+com/sun/glass/utils/
+com/sun/javafx/
+com/sun/media/jfxmedia/
+com/sun/media/jfxmediaimpl/
+com/sun/openpisces/
+com/sun/pisces/
+com/sun/prism/
+com/sun/scenario/
+com/sun/webkit/
+javafx/animation/
+javafx/application/
+javafx/beans/
+javafx/collections/
+javafx/concurrent/
+javafx/css/
+javafx/embed/swing/
+javafx/event/
+javafx/fxml/
+javafx/geometry/
+javafx/print/
+javafx/scene/
+javafx/stage/
+javafx/util/
+netscape/javascript/
