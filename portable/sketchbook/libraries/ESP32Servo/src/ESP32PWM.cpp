@@ -67,19 +67,22 @@ int ESP32PWM::allocatenext(double freq) {
 				//Serial.println("Free channel timer "+String(i)+" at freq "+String(freq)+" remaining "+String(4-timerCount[i]));
 
 				timerNum = i;
-				int myTimerNumber = timerAndIndexToChannel(timerNum,
-						timerCount[timerNum]);
-				if (myTimerNumber >= 0) {
-					pwmChannel = myTimerNumber;
-// 					Serial.println(
+				for (int index=0; index<4; ++index)
+				{
+					int myTimerNumber = timerAndIndexToChannel(timerNum,index);
+					if ((myTimerNumber >= 0)  && (!ChannelUsed[myTimerNumber]))
+					{
+						pwmChannel = myTimerNumber;
+// 						Serial.println(
 // 							"PWM on ledc channel #" + String(pwmChannel)
 // 									+ " using 'timer " + String(timerNum)
 // 									+ "' to freq " + String(freq) + "Hz");
-					ChannelUsed[pwmChannel] = this;
-					timerCount[timerNum]++;
-					PWMCount++;
-					myFreq = freq;
-					return pwmChannel;
+						ChannelUsed[pwmChannel] = this;
+						timerCount[timerNum]++;
+						PWMCount++;
+						myFreq = freq;
+						return pwmChannel;
+					}
 				}
 			} else {
 //				if(timerFreqSet[i]>0)

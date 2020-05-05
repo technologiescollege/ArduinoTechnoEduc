@@ -1,4 +1,4 @@
-# Adafruit VEML6070 Library [![Build Status](https://travis-ci.com/adafruit/Adafruit_VEML6070.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_VEML6070)
+# Adafruit VEML6070 Library [![Build Status](https://github.com/adafruit/Adafruit_VEML6070/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_VEML6070/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_VEML6070/html/index.html)
 
 <img src="https://cdn-shop.adafruit.com/970x728/2899-00.jpg" height="300"/>
 
