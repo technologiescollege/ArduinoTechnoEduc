@@ -1,0 +1,4 @@
+sync.ffs_db
+*.ffs_db
+.sync*
+.owncloud*
