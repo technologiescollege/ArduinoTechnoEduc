@@ -131,6 +131,7 @@ BlocklyDuino.renderSupervisionContent = function() {
 	}
 
 	Code.initLanguageSupervision();	
+	jscolor.installByClassName("jscolor");
 	$.getScript("./tools/supervision/s2aio_iot.js" );
 };
 

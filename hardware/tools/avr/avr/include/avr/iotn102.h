@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2018 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
+ * Copyright (C) 2020 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

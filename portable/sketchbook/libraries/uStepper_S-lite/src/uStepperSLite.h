@@ -1,11 +1,11 @@
 /********************************************************************************************
 * 	 	File: 		uStepperSLite.h 														*
-*		Version:    1.0.0                                           						*
-*      	Date: 		April 29th, 2019 	                                    				*
+*		Version:    1.1.0                                           						*
+*      	Date: 		June 14, 2020 	                                    					*
 *      	Author: 	Thomas Hørring Olsen                                   					*
 *                                                   										*	
 *********************************************************************************************
-*	(C) 2019																				*
+*	(C) 2020																				*
 *																							*
 *	uStepper ApS																			*
 *	www.ustepper.com 																		*
@@ -61,7 +61,7 @@
 *	- Search for "uStepper S-lite", in the top right corner of the "Library Manager" window
 *	- Install uStepper S-lite library 
 *	
-*	The library is tested with Arduino IDE 1.8.5
+*	The library is tested with Arduino IDE 1.8.12
 *	
 *	\warning MAC users should be aware, that OSX does NOT include FTDI VCP drivers, needed to upload sketches to the uStepper S-lite, by default. This driver should be 
 *	downloaded and installed from FTDI's website:
@@ -83,7 +83,7 @@
 *
 *	\par Copyright
 *
-*	(C)2019 uStepper ApS	
+*	(C) 2020 uStepper ApS	
 *																	
 *	www.ustepper.com 																	
 *
@@ -106,6 +106,9 @@
 *
 *	\author Thomas Hørring Olsen (thomas@ustepper.com)
 *	\par Change Log
+*	\version 1.1.0:
+*	- Fixed problem with deceleration not being used on stop and change of speed
+*	- Added functionality to choose between hard stop and soft stop (hardStop() and softStop())
 * 	\version 1.0.0:
 *	- Fixed dropin and PID
 *	- Complete rewrite of step generation algorithm, to increase performance and accuracy
@@ -710,7 +713,7 @@ public:
 	
 
 	/**
-	 * @brief      Stop the motor without deceleration !!! DEPRECATED !!!
+	 * @brief      Stop the motor without deceleration
 	 *
 	 *             This function will stop any ongoing motor movement, without
 	 *             any deceleration phase. If the motor is rotation at a
@@ -722,11 +725,11 @@ public:
 	 * @param      holdMode  -	can be set to "HARD" for brake mode or "SOFT" for
 	 *                       freewheel mode (without the quotes).
 	 */
-	void hardStop(bool holdMode) __attribute__ ((deprecated("Function only here for compatibility with old code. this function is replaced by 'stop(bool brake)'")));
+	void hardStop(bool holdMode = BRAKEON);
 	
 
 	/**
-	 * @brief      Stop the motor with deceleration !!! DEPRECATED !!!
+	 * @brief      Stop the motor with deceleration
 	 *
 	 *             This function stops any ongoing motor movement, with a
 	 *             deceleration phase. This will take longer for the motor to
@@ -739,7 +742,7 @@ public:
 	 * @param      holdMode  -	can be set to "HARD" for brake mode or "SOFT" for
 	 *                       freewheel mode (without the quotes).
 	 */
-	void softStop(bool holdMode) __attribute__ ((deprecated("Function only here for compatibility with old code. this function is replaced by 'stop(bool brake)'")));
+	void softStop(bool holdMode = BRAKEON);
 	
 
 	/**

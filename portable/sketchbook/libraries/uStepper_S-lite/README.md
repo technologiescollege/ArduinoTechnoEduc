@@ -1,7 +1,7 @@
 # uStepper S-lite
 
 The library contains support for driving the stepper, reading out encoder data. A few examples are included to show the functionality of the library.
-The library is supported and tested with in Arduino IDE 1.8.5.
+The library is supported and tested with in Arduino IDE 1.8.12.
 
 For more information, visit www.ustepper.com
 
@@ -64,6 +64,10 @@ https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vc
 - none
 
 ## Change Log
+1.1.0:
+
+- Fixed problem with deceleration not being used on stop and change of speed
+- Added functionality to choose between hard stop and soft stop (hardStop() and softStop())
 
 1.0.0:
 

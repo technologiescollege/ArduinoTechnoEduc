@@ -3,6 +3,11 @@ int APin = 13;
 ESP32PWM pwm;
 int freq = 1000;
 void setup() {
+	// Allow allocation of all timers
+	ESP32PWM::allocateTimer(0);
+	ESP32PWM::allocateTimer(1);
+	ESP32PWM::allocateTimer(2);
+	ESP32PWM::allocateTimer(3);
 	Serial.begin(115200);
 	pwm.attachPin(APin, freq, 10); // 1KHz 8 bit
 

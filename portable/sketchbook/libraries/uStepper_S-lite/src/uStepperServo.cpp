@@ -1,9 +1,9 @@
 /********************************************************************************************
 *       File:       uStepperServo.cpp                                                       *
-*       Version:    1.0.0                                                                   *
-*       Date:       April 29th, 2019                                                         *
-*       Author:     Thomas Hørring Olsen                                                    *
-*                                                                                           *   
+*		Version:    1.1.0                                           						*
+*      	Date: 		June 14, 2020 	                                    					*
+*      	Author: 	Thomas Hørring Olsen                                   					*
+*                                                   										*
 *********************************************************************************************
 *                       uStepperServo class                                                 *
 *                                                                                           *
@@ -70,7 +70,7 @@
 *   After this, the library is ready to control the Servo!                                  *
 *                                                                                           *
 *********************************************************************************************
-*   (C) 2019                                                                                *
+*   (C) 2020                                                                                *
 *                                                                                           *
 *   uStepper ApS                                                                            *
 *   www.ustepper.com                                                                        *

@@ -73,6 +73,14 @@ public:
 
 	//Timer data
 	static int timerAndIndexToChannel(int timer, int index);
+	/**
+	 * allocateTimer
+	 * @param a timer number 0-3 indicating which timer to allocate in this library
+	 * Switch to explicate allocation mode
+	 *
+	 */
+	static void allocateTimer(int timerNumber);
+	static bool explicateAllocationMode;
 	int getTimer() {
 		return timerNum;
 	}

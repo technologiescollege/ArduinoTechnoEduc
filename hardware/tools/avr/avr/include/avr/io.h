@@ -613,6 +613,14 @@
 #  include <avr/iotn11.h>
 #elif defined (__AVR_M3000__)
 #  include <avr/iom3000.h>
+#elif defined (__AVR_AVR128DA64__)
+#  include <avr/ioavr128da64.h>
+#elif defined (__AVR_AVR128DA48__)
+#  include <avr/ioavr128da48.h>
+#elif defined (__AVR_AVR128DA32__)
+#  include <avr/ioavr128da32.h>
+#elif defined (__AVR_AVR128DA28__)
+#  include <avr/ioavr128da28.h>
 #elif defined (__AVR_ATtiny817__)
 #  include <avr/iotn817.h>
 #elif defined (__AVR_ATtiny816__)
@@ -643,8 +651,6 @@
 #  include <avr/iotn3217.h>
 #elif defined (__AVR_ATtiny3216__)
 #  include <avr/iotn3216.h>
-#elif defined (__AVR_ATtiny3214__)
-#  include <avr/iotn3214.h>
 #elif defined (__AVR_ATtiny214__)
 #  include <avr/iotn214.h>
 #elif defined (__AVR_ATtiny212__)
@@ -653,6 +659,12 @@
 #  include <avr/iotn204.h>
 #elif defined (__AVR_ATtiny202__)
 #  include <avr/iotn202.h>
+#elif defined (__AVR_ATtiny1627__)
+#  include <avr/iotn1627.h>
+#elif defined (__AVR_ATtiny1626__)
+#  include <avr/iotn1626.h>
+#elif defined (__AVR_ATtiny1624__)
+#  include <avr/iotn1624.h>
 #elif defined (__AVR_ATtiny1617__)
 #  include <avr/iotn1617.h>
 #elif defined (__AVR_ATtiny1616__)

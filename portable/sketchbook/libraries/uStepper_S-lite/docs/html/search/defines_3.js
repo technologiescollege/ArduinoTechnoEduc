@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['decel',['DECEL',['../uStepperSLite_8h.html#a8e111344ca6ef978238061294b46c5f9',1,'uStepperSLite.h']]],
-  ['deltaangletorpm',['DELTAANGLETORPM',['../uStepperSLite_8h.html#ade62fa75519737a38997e04dea204a4d',1,'uStepperSLite.h']]],
-  ['deltaangletostepspersecond',['DELTAANGLETOSTEPSPERSECOND',['../uStepperSLite_8h.html#a3ed80633d9346ac9d83d8171bef93843',1,'uStepperSLite.h']]],
-  ['dropin',['DROPIN',['../uStepperSLite_8h.html#a7f68cacd85ea12b3b1818171d902aa76',1,'uStepperSLite.h']]]
+  ['read_299',['READ',['../i2cMaster_8h.html#ada74e7db007a68e763f20c17f2985356',1,'i2cMaster.h']]],
+  ['repstart_300',['REPSTART',['../i2cMaster_8h.html#a819db82b3595334312089eb4340ef80d',1,'i2cMaster.h']]],
+  ['rxaddrack_301',['RXADDRACK',['../i2cMaster_8h.html#a3c946fae086c9d624c8a65315fb9435a',1,'i2cMaster.h']]]
 ];

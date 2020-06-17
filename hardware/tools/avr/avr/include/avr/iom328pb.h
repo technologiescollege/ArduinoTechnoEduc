@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2018 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
+ * Copyright (C) 2020 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -551,6 +551,8 @@
 #define ADC3D   3
 #define ADC4D   4
 #define ADC5D   5
+#define ADC6D   6
+#define ADC7D   7
 
 #define DIDR1   _SFR_MEM8(0x7F)
 #define AIN0D   0

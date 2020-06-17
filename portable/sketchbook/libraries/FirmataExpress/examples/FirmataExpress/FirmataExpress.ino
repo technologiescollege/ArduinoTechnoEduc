@@ -12,7 +12,9 @@
   Copyright (C) 2010-2011 Paul Stoffregen.  All rights reserved.
   Copyright (C) 2009 Shigeru Kobayashi.  All rights reserved.
   Copyright (C) 2009-2016 Jeff Hoefs.  All rights reserved.
-  Copyright (C) 2018-2019 Alan Yorinks. All Rights Reserved.
+  Copyright (C) 2018-2020 Alan Yorinks. All Rights Reserved.
+
+  DHT Humidity/Temperature Sensor Support based on work provided by Martyn Wheeler
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -23,13 +25,13 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   General Public License for more details.
 
- You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
- along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
+  along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   See file LICENSE.txt for further information on licensing terms.
 
-  Last updated January 9, 2019
+  Last updated May 10, 2020
 */
 
 #include <Servo.h>
@@ -37,8 +39,9 @@
 #include <FirmataExpress.h>
 #include <Ultrasonic.h>
 #include <Stepper.h>
+#if defined(__AVR__)
 #include <avr/wdt.h>
-
+#endif
 
 #define ARDUINO_INSTANCE_ID         1
 
@@ -60,17 +63,26 @@
 #define INTER_PING_INTERVAL 40 // 40 ms.
 
 // SYSEX command sub specifiers
+
+#if defined(__AVR__)
 #define TONE_TONE 0
 #define TONE_NO_TONE 1
+#endif
 
 #define STEPPER_CONFIGURE 0
 #define STEPPER_STEP 1
 #define STEPPER_LIBRARY_VERSION 2
 
+// DHT Sensor definitions
+#define DHT_INTER_PING_INTERVAL 2000 // 2000 ms.
+#define DHTLIB_ERROR_TIMEOUT    -2
+#define DHTLIB_ERROR_CHECKSUM   -1
+#define DHTLIB_OK                0
+#define DHTLIB_TIMEOUT (F_CPU/40000)
 
 /*==============================================================================
- * GLOBAL VARIABLES
- *============================================================================*/
+   GLOBAL VARIABLES
+  ============================================================================*/
 
 #ifdef FIRMATA_SERIAL_FEATURE
 SerialFirmata serialFeature;
@@ -90,8 +102,10 @@ byte portConfigInputs[TOTAL_PORTS]; // each bit: 1 = pin in INPUT, 0 = anything 
 unsigned long currentMillis;        // store the current value from millis()
 unsigned long previousMillis;       // for comparison with currentMillis
 unsigned int samplingInterval = 19; // how often to run the main loop (in ms)
-unsigned long previousKeepAliveMillis = 0;
-unsigned int keepAliveInterval = 0;
+#if defined(__AVR__)
+  unsigned long previousKeepAliveMillis = 0;
+  unsigned int keepAliveInterval = 0;
+#endif
 
 /* i2c data */
 struct i2c_device_info {
@@ -144,7 +158,6 @@ byte wireRead(void)
 }
 
 // Ping variables
-
 int numLoops = 0 ;
 int pingLoopCounter = 0 ;
 
@@ -165,13 +178,27 @@ byte sonarMSB, sonarLSB ;
 
 
 // Stepper Motor
-
 Stepper *stepper = NULL;
 
+// DHT sensors
+int numActiveDHTs = 0 ; // number of sonars attached
+uint8_t DHT_PinNumbers[MAX_DHTS] ;
+uint8_t DHT_WakeUpDelay[MAX_DHTS] ;
+uint8_t DHT_TYPE[MAX_DHTS] ;
+
+uint8_t nextDHT = 0 ; // index into dht[] for next device
+uint8_t currentDHT = 0;            // Keeps track of which sensor is active.
+
+int dhtNumLoops = 0;
+int dhtLoopCounter = 0;
+//int ActiveDHT = 0 ; // number of DHT attached
+//uint8_t _pin;
+// uint8_t _wakeupDelay;
+uint8_t _bits[5];  // buffer to receive data
 
 /*==============================================================================
- * FUNCTIONS
- *============================================================================*/
+   FUNCTIONS
+  ============================================================================*/
 
 void attachServo(byte pin, int minPulse, int maxPulse)
 {
@@ -284,13 +311,13 @@ void outputPort(byte portNumber, byte portValue, byte forceSend)
 }
 
 /* -----------------------------------------------------------------------------
- * check all the active digital inputs for change of state, then add any events
- * to the Serial output queue using Serial.print() */
+   check all the active digital inputs for change of state, then add any events
+   to the Serial output queue using Serial.print() */
 void checkDigitalInputs(void)
 {
   /* Using non-looping code allows constants to be given to readPort().
-   * The compiler will apply substantial optimizations if the inputs
-   * to readPort() are compile-time constants. */
+     The compiler will apply substantial optimizations if the inputs
+     to readPort() are compile-time constants. */
   if (TOTAL_PORTS > 0 && reportPINs[0]) outputPort(0, readPort(0, portConfigInputs[0]), false);
   if (TOTAL_PORTS > 1 && reportPINs[1]) outputPort(1, readPort(1, portConfigInputs[1]), false);
   if (TOTAL_PORTS > 2 && reportPINs[2]) outputPort(2, readPort(2, portConfigInputs[2]), false);
@@ -311,8 +338,8 @@ void checkDigitalInputs(void)
 
 // -----------------------------------------------------------------------------
 /* sets the pin mode to the correct state and sets the relevant bits in the
- * two bit-arrays that track Digital I/O and PWM status
- */
+   two bit-arrays that track Digital I/O and PWM status
+*/
 void setPinModeCallback(byte pin, int mode)
 {
 
@@ -409,11 +436,16 @@ void setPinModeCallback(byte pin, int mode)
       serialFeature.handlePinMode(pin, PIN_MODE_SERIAL);
 #endif
       break;
+#if defined(__AVR__)
     case PIN_MODE_TONE:
       Firmata.setPinMode(pin, PIN_MODE_TONE);
       break ;
+#endif
     case PIN_MODE_SONAR:
       Firmata.setPinMode(pin, PIN_MODE_SONAR);
+      break ;
+    case PIN_MODE_DHT:
+      Firmata.setPinMode(pin, PIN_MODE_DHT);
       break ;
     case PIN_MODE_STEPPER:
       Firmata.setPinMode(pin, PIN_MODE_STEPPER);
@@ -426,11 +458,11 @@ void setPinModeCallback(byte pin, int mode)
 }
 
 /*
- * Sets the value of an individual pin. Useful if you want to set a pin value but
- * are not tracking the digital port state.
- * Can only be used on pins configured as OUTPUT.
- * Cannot be used to enable pull-ups on Digital INPUT pins.
- */
+   Sets the value of an individual pin. Useful if you want to set a pin value but
+   are not tracking the digital port state.
+   Can only be used on pins configured as OUTPUT.
+   Cannot be used to enable pull-ups on Digital INPUT pins.
+*/
 void setPinValueCallback(byte pin, int value)
 {
   if (pin < TOTAL_PINS && IS_PIN_DIGITAL(pin)) {
@@ -496,7 +528,7 @@ void digitalWriteCallback(byte port, int value)
 
 // -----------------------------------------------------------------------------
 /* sets bits in a bit array (int) to toggle the reporting of the analogIns
- */
+*/
 //void FirmataClass::setAnalogPinReporting(byte pin, byte state) {
 //}
 void reportAnalogCallback(byte analogPin, int value)
@@ -537,8 +569,8 @@ void reportDigitalCallback(byte port, int value)
 }
 
 /*==============================================================================
- * SYSEX-BASED commands
- *============================================================================*/
+   SYSEX-BASED commands
+  ============================================================================*/
 
 void sysexCallback(byte command, byte argc, byte *argv)
 {
@@ -548,17 +580,17 @@ void sysexCallback(byte command, byte argc, byte *argv)
   byte data;
   int slaveRegister;
   unsigned int delayTime;
-  byte pin ;// used for tone
+  byte pin ;
   int frequency ;
   int duration ;
 
   switch (command) {
 
     case RU_THERE:
-        Firmata.write(START_SYSEX);
-        Firmata.write((byte)I_AM_HERE);
-        Firmata.write((byte)ARDUINO_INSTANCE_ID);
-        Firmata.write(END_SYSEX);
+      Firmata.write(START_SYSEX);
+      Firmata.write((byte)I_AM_HERE);
+      Firmata.write((byte)ARDUINO_INSTANCE_ID);
+      Firmata.write(END_SYSEX);
       break ;
 
     case I2C_REQUEST:
@@ -686,10 +718,12 @@ void sysexCallback(byte command, byte argc, byte *argv)
         }
       }
       break;
+#if defined(__AVR__)
     case KEEP_ALIVE:
       keepAliveInterval = argv[0] + (argv[1] << 7);
       previousKeepAliveMillis = millis();
       break;
+#endif
     case SAMPLING_INTERVAL:
       if (argc > 1) {
         samplingInterval = argv[0] + (argv[1] << 7);
@@ -698,6 +732,8 @@ void sysexCallback(byte command, byte argc, byte *argv)
         }
         /* calculate number of loops per ping */
         numLoops = INTER_PING_INTERVAL / samplingInterval ;
+        /* calculate number of loops between each sample of DHT data */
+        dhtNumLoops = DHT_INTER_PING_INTERVAL / samplingInterval ;
       }
       else {
         //Firmata.sendString("Not enough data");
@@ -726,8 +762,10 @@ void sysexCallback(byte command, byte argc, byte *argv)
           Firmata.write(1);
           Firmata.write((byte)PIN_MODE_SONAR);
           Firmata.write(1);
+#if defined(__AVR__)
           Firmata.write((byte)PIN_MODE_TONE);
           Firmata.write(1);
+#endif
         }
         if (IS_PIN_ANALOG(pin)) {
           Firmata.write(PIN_MODE_ANALOG);
@@ -782,6 +820,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
 #endif
       break;
 
+#if defined(__AVR__)
     case TONE_DATA:
       byte toneCommand, pin;
       int frequency, duration;
@@ -799,7 +838,7 @@ void sysexCallback(byte command, byte argc, byte *argv)
         noTone(pin);
       }
       break ;
-
+#endif
     // arg0 = trigger pin
     // arg1 = echo pin
     // arg2 = timeout_lsb
@@ -891,12 +930,65 @@ void sysexCallback(byte command, byte argc, byte *argv)
         Firmata.sendString("STEPPER CONFIG Error: UNKNOWN STEPPER COMMAND");
       }
       break ;
+    case DHT_CONFIG:
+      int DHT_Pin = argv[0] ;
+      int DHT_type = argv[1];
+
+      if ( numActiveDHTs < MAX_DHTS)
+      {
+        if (DHT_type == 22)
+        {
+          DHT_WakeUpDelay[numActiveDHTs] = 1;
+        }
+        else if (DHT_type == 11)
+        {
+          DHT_WakeUpDelay[numActiveDHTs] = 18;
+        }
+        else
+        {
+          Firmata.sendString("ERROR: UNKNOWN SENSOR TYPE, VALID SENSORS ARE 11, 22");
+          break;
+        }
+        // test the sensor
+        DHT_PinNumbers[numActiveDHTs] = DHT_Pin ;
+        DHT_TYPE[numActiveDHTs] = DHT_type;
+
+        setPinModeCallback(DHT_Pin, PIN_MODE_DHT);
+        int rv = readDhtSensor(numActiveDHTs);
+        if (rv == DHTLIB_OK)
+        {
+          numActiveDHTs++ ;
+          dhtNumLoops = dhtNumLoops / numActiveDHTs ;
+          // all okay
+        }
+        else
+        {
+          // send the message back with an error status
+          Firmata.write(START_SYSEX);
+          Firmata.write(DHT_DATA) ;
+          Firmata.write(DHT_Pin) ;
+          Firmata.write(DHT_type) ;
+          for (uint8_t i = 0; i < sizeof(_bits) - 1; ++i) {
+            Firmata.write(_bits[i] & 0x7f);
+            Firmata.write(_bits[i] >> 7 & 0x7f);
+          }
+          Firmata.write(abs(rv));
+          Firmata.write(1);
+          Firmata.write(END_SYSEX);
+        }
+        break ;
+      }
+      else {
+        Firmata.sendString("DHT_CONFIG Error: Exceeded number of supported DHT devices");
+      }
+      break;
+
   }
 }
 
 /*==============================================================================
- * SETUP()
- *============================================================================*/
+   SETUP()
+  ============================================================================*/
 
 void systemResetCallback()
 {
@@ -926,9 +1018,11 @@ void systemResetCallback()
       // turns off pullup, configures everything
       setPinModeCallback(i, PIN_MODE_ANALOG);
     }
+#if defined(__AVR__)
     else if ( IS_PIN_TONE(i)) {
       noTone(i) ;
     }
+#endif
     else {
       // sets the output to 0, configures portConfigInputs
       setPinModeCallback(i, OUTPUT);
@@ -952,14 +1046,17 @@ void systemResetCallback()
   detachedServoCount = 0;
   servoCount = 0;
 
+  // stop pinging DHT
+  numActiveDHTs = 0;
+
   /* send digital inputs to set the initial state on the host computer,
-   * since once in the loop(), this firmware will only send on change */
+    since once in the loop(), this firmware will only send on change */
   /*
-  TODO: this can never execute, since no pins default to digital input
+    TODO: this can never execute, since no pins default to digital input
         but it will be needed when/if we support EEPROM stored config
-  for (byte i=0; i < TOTAL_PORTS; i++) {
+    for (byte i=0; i < TOTAL_PORTS; i++) {
     outputPort(i, readPort(i, portConfigInputs[i]), true);
-  }
+    }
   */
   isResetting = false;
 }
@@ -992,18 +1089,18 @@ void setup()
 }
 
 /*==============================================================================
- * LOOP()
- *============================================================================*/
+   LOOP()
+  ============================================================================*/
 void loop()
 {
   byte pin, analogPin;
 
   /* DIGITALREAD - as fast as possible, check for changes and output them to the
-   * FTDI buffer using Serial.print()  */
+     FTDI buffer using Serial.print()  */
   checkDigitalInputs();
 
   /* STREAMREAD - processing incoming messagse as soon as possible, while still
-   * checking digital inputs.  */
+     checking digital inputs.  */
   while (Firmata.available())
     Firmata.processInput();
 
@@ -1037,6 +1134,43 @@ void loop()
       }
     }
 
+    if ( dhtLoopCounter++ > dhtNumLoops)
+    {
+      if (numActiveDHTs)
+      {
+        int rv = readDhtSensor(nextDHT);
+
+        uint8_t current_pin = DHT_PinNumbers[nextDHT] ;
+        uint8_t current_type = DHT_TYPE[nextDHT] ;
+        dhtLoopCounter = 0 ;
+        currentDHT = nextDHT ;
+        if ( nextDHT++ >= numActiveDHTs - 1)
+        {
+          nextDHT = 0 ;
+        }
+
+        if (rv == DHTLIB_OK) {
+          // TEST CHECKSUM
+          uint8_t sum = _bits[0] + _bits[1] + _bits[2] + _bits[3];
+          if (_bits[4] != sum)
+          {
+            rv = -1;
+          }
+        }
+        // send the message back with an error status
+        Firmata.write(START_SYSEX);
+        Firmata.write(DHT_DATA) ;
+        Firmata.write(current_pin) ;
+        Firmata.write(current_type) ;
+        for (uint8_t i = 0; i < sizeof(_bits) - 1; ++i) {
+          Firmata.write(_bits[i] );
+         // Firmata.write(_bits[i] ;
+        }
+        Firmata.write(abs(rv));
+        Firmata.write(0);
+        Firmata.write(END_SYSEX);
+      }
+    }
 
     /* ANALOGREAD - do all analogReads() at the configured sampling interval */
     for (pin = 0; pin < TOTAL_PINS; pin++) {
@@ -1054,6 +1188,7 @@ void loop()
       }
     }
 
+#if defined(__AVR__)
     if ( keepAliveInterval ) {
       currentMillis = millis();
       if (currentMillis - previousKeepAliveMillis > keepAliveInterval * 1000) {
@@ -1064,6 +1199,7 @@ void loop()
           ;
       }
     }
+#endif
   }
 
 #ifdef FIRMATA_SERIAL_FEATURE
@@ -1079,4 +1215,69 @@ void printData(char * id,  long data)
   myString.toCharArray(myArray, 64) ;
   Firmata.sendString(id) ;
   Firmata.sendString(myArray);
+}
+
+// The following function i staken from https://github.com/RobTillaart/Arduino/tree/master/libraries/DHTNEW
+// Thanks to the original authors
+int readDhtSensor(int index)
+{
+  // INIT BUFFERVAR TO RECEIVE DATA
+  uint8_t mask = 128;
+  uint8_t idx = 0;
+
+  // EMPTY BUFFER
+  //  memset(_bits, 0, sizeof(_bits));
+  for (uint8_t i = 0; i < 5; i++) _bits[i] = 0;
+  uint8_t pin = DHT_PinNumbers[index] ;
+  uint8_t wakeupDelay = DHT_WakeUpDelay[index] ;
+
+  // REQUEST SAMPLE
+  pinMode(pin, OUTPUT);
+  digitalWrite(pin, LOW);
+  delay(wakeupDelay);
+  pinMode(pin, INPUT);
+  delayMicroseconds(40);
+
+  // GET ACKNOWLEDGE or TIMEOUT
+  uint16_t loopCnt = DHTLIB_TIMEOUT;
+  while (digitalRead(pin) == LOW)
+  {
+    if (--loopCnt == 0) return DHTLIB_ERROR_TIMEOUT;
+  }
+
+  loopCnt = DHTLIB_TIMEOUT;
+  while (digitalRead(pin) == HIGH)
+  {
+    if (--loopCnt == 0) return DHTLIB_ERROR_TIMEOUT;
+  }
+
+  // READ THE OUTPUT - 40 BITS => 5 BYTES
+  for (uint8_t i = 40; i != 0; i--)
+  {
+    loopCnt = DHTLIB_TIMEOUT;
+    while (digitalRead(pin) == LOW)
+    {
+      if (--loopCnt == 0) return DHTLIB_ERROR_TIMEOUT;
+    }
+
+    uint32_t t = micros();
+
+    loopCnt = DHTLIB_TIMEOUT;
+    while (digitalRead(pin) == HIGH)
+    {
+      if (--loopCnt == 0) return DHTLIB_ERROR_TIMEOUT;
+    }
+
+    if ((micros() - t) > 40)
+    {
+      _bits[idx] |= mask;
+    }
+    mask >>= 1;
+    if (mask == 0)   // next byte?
+    {
+      mask = 128;
+      idx++;
+    }
+  }
+  return DHTLIB_OK;
 }

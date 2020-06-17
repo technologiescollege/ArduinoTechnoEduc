@@ -53,6 +53,11 @@ int val;    // variable to read the value from the analog pin
 
 void setup()
 {
+	// Allow allocation of all timers
+	ESP32PWM::allocateTimer(0);
+	ESP32PWM::allocateTimer(1);
+	ESP32PWM::allocateTimer(2);
+	ESP32PWM::allocateTimer(3);
   myservo.setPeriodHertz(50);// Standard 50hz servo
   myservo.attach(servoPin, 500, 2400);   // attaches the servo on pin 18 to the servo object
                                          // using SG90 servo min/max of 500us and 2400us

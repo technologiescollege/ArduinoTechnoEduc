@@ -56,6 +56,11 @@ int servo5Pin = 4;
 int pos = 0;      // position in degrees
 ESP32PWM pwm;
 void setup() {
+	// Allow allocation of all timers
+	ESP32PWM::allocateTimer(0);
+	ESP32PWM::allocateTimer(1);
+	ESP32PWM::allocateTimer(2);
+	ESP32PWM::allocateTimer(3);
 	Serial.begin(115200);
 	servo1.setPeriodHertz(50);      // Standard 50hz servo
 	servo2.setPeriodHertz(50);      // Standard 50hz servo

@@ -1,5 +1,8 @@
 #include "Adafruit_Si7021.h"
 
+bool enableHeater = false;
+uint8_t loopCnt = 0;
+
 Adafruit_Si7021 sensor = Adafruit_Si7021();
 
 void setup() {
@@ -44,4 +47,18 @@ void loop() {
   Serial.print("\tTemperature: ");
   Serial.println(sensor.readTemperature(), 2);
   delay(1000);
+
+  // Toggle heater enabled state every 30 seconds
+  // An ~1.8 degC temperature increase can be noted when heater is enabled
+  if (++loopCnt == 30) {
+    enableHeater = !enableHeater;
+    sensor.heater(enableHeater);
+    Serial.print("Heater Enabled State: ");
+    if (sensor.isHeaterEnabled())
+      Serial.println("ENABLED");
+    else
+      Serial.println("DISABLED");
+       
+    loopCnt = 0;
+  }
 }

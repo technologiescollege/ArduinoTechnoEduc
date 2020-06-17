@@ -255,6 +255,29 @@ void Adafruit_Si7021::readSerialNumber() {
  */
 si_sensorType Adafruit_Si7021::getModel() { return _model; }
 
+/*!
+ *  @brief  Enable/Disable sensor heater
+ */
+void Adafruit_Si7021::heater(bool h) {
+  uint8_t regValue = _readRegister8(SI7021_READRHT_REG_CMD);
+
+  if (h) {
+    regValue |= (1 << (SI7021_REG_HTRE_BIT));
+  } else {
+    regValue &= ~(1 << (SI7021_REG_HTRE_BIT));
+  }
+  _writeRegister8(SI7021_WRITERHT_REG_CMD, regValue);
+}
+
+/*!
+ *  @brief  Return sensor heater state
+ *  @return heater state (TRUE = enabled, FALSE = disabled)
+ */
+bool Adafruit_Si7021::isHeaterEnabled() {
+  uint8_t regValue = _readRegister8(SI7021_READRHT_REG_CMD);
+  return (bool)bitRead(regValue, SI7021_REG_HTRE_BIT);
+}
+
 /*******************************************************************/
 
 void Adafruit_Si7021::_writeRegister8(uint8_t reg, uint8_t value) {

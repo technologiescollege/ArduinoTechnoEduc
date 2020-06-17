@@ -45,6 +45,9 @@
 *asm_rmw:
 	%{mrmw}
 
+*asm_gccisr:
+	%{!mno-gas-isr-prologues: -mgcc-isr}
+
 *asm_errata_skip:
 	%{!mskip-bug: -mno-skip-bug}
 
@@ -64,7 +67,7 @@
 
 
 *self_spec:
-	%{!mmcu=avr*: %<mmcu=* -mmcu=avr5} %<mshort-calls %<msp8
+	%<mmcu=* -mmcu=avr5 %<mshort-calls %<msp8
 
 # AVR-LibC's avr/io.h uses the device specifying macro to determine
 # the name of the device header.  For example, -mmcu=atmega8a triggers

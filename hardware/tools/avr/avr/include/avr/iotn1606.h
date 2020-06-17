@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (C) 2018 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
+ * Copyright (C) 2020 Atmel Corporation, a wholly owned subsidiary of Microchip Technology Inc.
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -105,11 +105,9 @@ AC - Analog Comparator
 typedef struct AC_struct
 {
     register8_t CTRLA;  /* Control A */
-    register8_t reserved_0x01;
+    register8_t reserved_1[1];
     register8_t MUXCTRLA;  /* Mux Control A */
-    register8_t reserved_0x03;
-    register8_t reserved_0x04;
-    register8_t reserved_0x05;
+    register8_t reserved_2[3];
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t STATUS;  /* Status */
 } AC_t;
@@ -164,20 +162,19 @@ typedef struct ADC_struct
     register8_t CTRLE;  /* Control E */
     register8_t SAMPCTRL;  /* Sample Control */
     register8_t MUXPOS;  /* Positive mux input */
-    register8_t reserved_0x07;
+    register8_t reserved_1[1];
     register8_t COMMAND;  /* Command */
     register8_t EVCTRL;  /* Event Control */
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t INTFLAGS;  /* Interrupt Flags */
     register8_t DBGCTRL;  /* Debug Control */
     register8_t TEMP;  /* Temporary Data */
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
+    register8_t reserved_2[2];
     _WORDREGISTER(RES);  /* ADC Accumulator Result */
     _WORDREGISTER(WINLT);  /* Window comparator low threshold */
     _WORDREGISTER(WINHT);  /* Window comparator high threshold */
     register8_t CALIB;  /* Calibration */
-    register8_t reserved_0x17;
+    register8_t reserved_3[1];
 } ADC_t;
 
 /* Automatic Sampling Delay Variation select */
@@ -286,20 +283,12 @@ typedef struct BOD_struct
 {
     register8_t CTRLA;  /* Control A */
     register8_t CTRLB;  /* Control B */
-    register8_t reserved_0x02;
-    register8_t reserved_0x03;
-    register8_t reserved_0x04;
-    register8_t reserved_0x05;
-    register8_t reserved_0x06;
-    register8_t reserved_0x07;
+    register8_t reserved_1[6];
     register8_t VLMCTRLA;  /* Voltage level monitor Control */
     register8_t INTCTRL;  /* Voltage level monitor interrupt Control */
     register8_t INTFLAGS;  /* Voltage level monitor interrupt Flags */
     register8_t STATUS;  /* Voltage level monitor status */
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
+    register8_t reserved_2[4];
 } BOD_t;
 
 /* Operation in active mode select */
@@ -315,12 +304,7 @@ typedef enum BOD_ACTIVE_enum
 typedef enum BOD_LVL_enum
 {
     BOD_LVL_BODLEVEL0_gc = (0x00<<0),  /* 1.8 V */
-    BOD_LVL_BODLEVEL1_gc = (0x01<<0),  /* 2.1 V */
     BOD_LVL_BODLEVEL2_gc = (0x02<<0),  /* 2.6 V */
-    BOD_LVL_BODLEVEL3_gc = (0x03<<0),  /* 2.9 V */
-    BOD_LVL_BODLEVEL4_gc = (0x04<<0),  /* 3.3 V */
-    BOD_LVL_BODLEVEL5_gc = (0x05<<0),  /* 3.7 V */
-    BOD_LVL_BODLEVEL6_gc = (0x06<<0),  /* 4.0 V */
     BOD_LVL_BODLEVEL7_gc = (0x07<<0),  /* 4.2 V */
 } BOD_LVL_t;
 
@@ -366,9 +350,7 @@ typedef struct CCL_struct
 {
     register8_t CTRLA;  /* Control Register A */
     register8_t SEQCTRL0;  /* Sequential Control 0 */
-    register8_t reserved_0x02;
-    register8_t reserved_0x03;
-    register8_t reserved_0x04;
+    register8_t reserved_1[3];
     register8_t LUT0CTRLA;  /* LUT Control 0 A */
     register8_t LUT0CTRLB;  /* LUT Control 0 B */
     register8_t LUT0CTRLC;  /* LUT Control 0 C */
@@ -377,57 +359,7 @@ typedef struct CCL_struct
     register8_t LUT1CTRLB;  /* LUT Control 1 B */
     register8_t LUT1CTRLC;  /* LUT Control 1 C */
     register8_t TRUTH1;  /* Truth 1 */
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
-    register8_t reserved_0x10;
-    register8_t reserved_0x11;
-    register8_t reserved_0x12;
-    register8_t reserved_0x13;
-    register8_t reserved_0x14;
-    register8_t reserved_0x15;
-    register8_t reserved_0x16;
-    register8_t reserved_0x17;
-    register8_t reserved_0x18;
-    register8_t reserved_0x19;
-    register8_t reserved_0x1A;
-    register8_t reserved_0x1B;
-    register8_t reserved_0x1C;
-    register8_t reserved_0x1D;
-    register8_t reserved_0x1E;
-    register8_t reserved_0x1F;
-    register8_t reserved_0x20;
-    register8_t reserved_0x21;
-    register8_t reserved_0x22;
-    register8_t reserved_0x23;
-    register8_t reserved_0x24;
-    register8_t reserved_0x25;
-    register8_t reserved_0x26;
-    register8_t reserved_0x27;
-    register8_t reserved_0x28;
-    register8_t reserved_0x29;
-    register8_t reserved_0x2A;
-    register8_t reserved_0x2B;
-    register8_t reserved_0x2C;
-    register8_t reserved_0x2D;
-    register8_t reserved_0x2E;
-    register8_t reserved_0x2F;
-    register8_t reserved_0x30;
-    register8_t reserved_0x31;
-    register8_t reserved_0x32;
-    register8_t reserved_0x33;
-    register8_t reserved_0x34;
-    register8_t reserved_0x35;
-    register8_t reserved_0x36;
-    register8_t reserved_0x37;
-    register8_t reserved_0x38;
-    register8_t reserved_0x39;
-    register8_t reserved_0x3A;
-    register8_t reserved_0x3B;
-    register8_t reserved_0x3C;
-    register8_t reserved_0x3D;
-    register8_t reserved_0x3E;
-    register8_t reserved_0x3F;
+    register8_t reserved_2[51];
 } CCL_t;
 
 /* Edge Detection Enable select */
@@ -518,34 +450,13 @@ typedef struct CLKCTRL_struct
     register8_t MCLKCTRLB;  /* MCLK Control B */
     register8_t MCLKLOCK;  /* MCLK Lock */
     register8_t MCLKSTATUS;  /* MCLK Status */
-    register8_t reserved_0x04;
-    register8_t reserved_0x05;
-    register8_t reserved_0x06;
-    register8_t reserved_0x07;
-    register8_t reserved_0x08;
-    register8_t reserved_0x09;
-    register8_t reserved_0x0A;
-    register8_t reserved_0x0B;
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
+    register8_t reserved_1[12];
     register8_t OSC20MCTRLA;  /* OSC20M Control A */
     register8_t OSC20MCALIBA;  /* OSC20M Calibration A */
     register8_t OSC20MCALIBB;  /* OSC20M Calibration B */
-    register8_t reserved_0x13;
-    register8_t reserved_0x14;
-    register8_t reserved_0x15;
-    register8_t reserved_0x16;
-    register8_t reserved_0x17;
+    register8_t reserved_2[5];
     register8_t OSC32KCTRLA;  /* OSC32K Control A */
-    register8_t reserved_0x19;
-    register8_t reserved_0x1A;
-    register8_t reserved_0x1B;
-    register8_t reserved_0x1C;
-    register8_t reserved_0x1D;
-    register8_t reserved_0x1E;
-    register8_t reserved_0x1F;
+    register8_t reserved_3[7];
 } CLKCTRL_t;
 
 /* clock select select */
@@ -614,17 +525,8 @@ typedef struct CRCSCAN_struct
     register8_t CTRLA;  /* Control A */
     register8_t CTRLB;  /* Control B */
     register8_t STATUS;  /* Status */
-    register8_t reserved_0x03;
+    register8_t reserved_1[1];
 } CRCSCAN_t;
-
-/* CRC Flash Access Mode select */
-typedef enum CRCSCAN_MODE_enum
-{
-    CRCSCAN_MODE_PRIORITY_gc = (0x00<<4),  /* Priority to flash */
-    CRCSCAN_MODE_RESERVED_gc = (0x01<<4),  /* Reserved */
-    CRCSCAN_MODE_BACKGROUND_gc = (0x02<<4),  /* Lowest priority to flash */
-    CRCSCAN_MODE_CONTINUOUS_gc = (0x03<<4),  /* Continuous checks in background */
-} CRCSCAN_MODE_t;
 
 /* CRC Source select */
 typedef enum CRCSCAN_SRC_enum
@@ -647,20 +549,9 @@ typedef struct EVSYS_struct
     register8_t SYNCSTROBE;  /* Synchronous Channel Strobe */
     register8_t ASYNCCH0;  /* Asynchronous Channel 0 Generator Selection */
     register8_t ASYNCCH1;  /* Asynchronous Channel 1 Generator Selection */
-    register8_t reserved_0x04;
-    register8_t reserved_0x05;
-    register8_t reserved_0x06;
-    register8_t reserved_0x07;
-    register8_t reserved_0x08;
-    register8_t reserved_0x09;
+    register8_t reserved_1[6];
     register8_t SYNCCH0;  /* Synchronous Channel 0 Generator Selection */
-    register8_t reserved_0x0B;
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
-    register8_t reserved_0x10;
-    register8_t reserved_0x11;
+    register8_t reserved_2[7];
     register8_t ASYNCUSER0;  /* Asynchronous User Ch 0 Input Selection - TCB0 */
     register8_t ASYNCUSER1;  /* Asynchronous User Ch 1 Input Selection - ADC0 */
     register8_t ASYNCUSER2;  /* Asynchronous User Ch 2 Input Selection - CCL LUT0 Event 0 */
@@ -674,39 +565,10 @@ typedef struct EVSYS_struct
     register8_t ASYNCUSER10;  /* Asynchronous User Ch 10 Input Selection - Event Out 2 */
     register8_t ASYNCUSER11;  /* Asynchronous User Ch 11 Input Selection - TCB1 */
     register8_t ASYNCUSER12;  /* Asynchronous User Ch 12 Input Selection - ADC1 */
-    register8_t reserved_0x1F;
-    register8_t reserved_0x20;
-    register8_t reserved_0x21;
+    register8_t reserved_3[3];
     register8_t SYNCUSER0;  /* Synchronous User Ch 0 - TCA0 */
     register8_t SYNCUSER1;  /* Synchronous User Ch 1 - USART0 */
-    register8_t reserved_0x24;
-    register8_t reserved_0x25;
-    register8_t reserved_0x26;
-    register8_t reserved_0x27;
-    register8_t reserved_0x28;
-    register8_t reserved_0x29;
-    register8_t reserved_0x2A;
-    register8_t reserved_0x2B;
-    register8_t reserved_0x2C;
-    register8_t reserved_0x2D;
-    register8_t reserved_0x2E;
-    register8_t reserved_0x2F;
-    register8_t reserved_0x30;
-    register8_t reserved_0x31;
-    register8_t reserved_0x32;
-    register8_t reserved_0x33;
-    register8_t reserved_0x34;
-    register8_t reserved_0x35;
-    register8_t reserved_0x36;
-    register8_t reserved_0x37;
-    register8_t reserved_0x38;
-    register8_t reserved_0x39;
-    register8_t reserved_0x3A;
-    register8_t reserved_0x3B;
-    register8_t reserved_0x3C;
-    register8_t reserved_0x3D;
-    register8_t reserved_0x3E;
-    register8_t reserved_0x3F;
+    register8_t reserved_4[28];
 } EVSYS_t;
 
 /* Asynchronous Channel 0 Generator Selection select */
@@ -930,8 +792,7 @@ typedef struct FUSE_struct
     register8_t WDTCFG;  /* Watchdog Configuration */
     register8_t BODCFG;  /* BOD Configuration */
     register8_t OSCCFG;  /* Oscillator Configuration */
-    register8_t reserved_0x03;
-    register8_t TCD0CFG;  /* TCD0 Configuration */
+    register8_t reserved_1[2];
     register8_t SYSCFG0;  /* System Configuration 0 */
     register8_t SYSCFG1;  /* System Configuration 1 */
     register8_t APPEND;  /* Application Code Section End */
@@ -971,12 +832,7 @@ typedef enum FREQSEL_enum
 typedef enum LVL_enum
 {
     LVL_BODLEVEL0_gc = (0x00<<5),  /* 1.8 V */
-    LVL_BODLEVEL1_gc = (0x01<<5),  /* 2.1 V */
     LVL_BODLEVEL2_gc = (0x02<<5),  /* 2.6 V */
-    LVL_BODLEVEL3_gc = (0x03<<5),  /* 2.9 V */
-    LVL_BODLEVEL4_gc = (0x04<<5),  /* 3.3 V */
-    LVL_BODLEVEL5_gc = (0x05<<5),  /* 3.7 V */
-    LVL_BODLEVEL6_gc = (0x06<<5),  /* 4.0 V */
     LVL_BODLEVEL7_gc = (0x07<<5),  /* 4.2 V */
 } LVL_t;
 
@@ -1083,15 +939,10 @@ typedef struct NVMCTRL_struct
     register8_t STATUS;  /* Status */
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t INTFLAGS;  /* Interrupt Flags */
-    register8_t reserved_0x05;
+    register8_t reserved_1[1];
     _WORDREGISTER(DATA);  /* Data */
     _WORDREGISTER(ADDR);  /* Address */
-    register8_t reserved_0x0A;
-    register8_t reserved_0x0B;
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
+    register8_t reserved_2[6];
 } NVMCTRL_t;
 
 /* Command select */
@@ -1126,12 +977,7 @@ typedef struct PORT_struct
     register8_t OUTTGL;  /* Output Value Toggle */
     register8_t IN;  /* Input Value */
     register8_t INTFLAGS;  /* Interrupt Flags */
-    register8_t reserved_0x0A;
-    register8_t reserved_0x0B;
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
+    register8_t reserved_1[6];
     register8_t PIN0CTRL;  /* Pin 0 Control */
     register8_t PIN1CTRL;  /* Pin 1 Control */
     register8_t PIN2CTRL;  /* Pin 2 Control */
@@ -1140,14 +986,7 @@ typedef struct PORT_struct
     register8_t PIN5CTRL;  /* Pin 5 Control */
     register8_t PIN6CTRL;  /* Pin 6 Control */
     register8_t PIN7CTRL;  /* Pin 7 Control */
-    register8_t reserved_0x18;
-    register8_t reserved_0x19;
-    register8_t reserved_0x1A;
-    register8_t reserved_0x1B;
-    register8_t reserved_0x1C;
-    register8_t reserved_0x1D;
-    register8_t reserved_0x1E;
-    register8_t reserved_0x1F;
+    register8_t reserved_2[8];
 } PORT_t;
 
 /* Input/Sense Configuration select */
@@ -1174,18 +1013,7 @@ typedef struct PORTMUX_struct
     register8_t CTRLB;  /* Port Multiplexer Control B */
     register8_t CTRLC;  /* Port Multiplexer Control C */
     register8_t CTRLD;  /* Port Multiplexer Control D */
-    register8_t reserved_0x04;
-    register8_t reserved_0x05;
-    register8_t reserved_0x06;
-    register8_t reserved_0x07;
-    register8_t reserved_0x08;
-    register8_t reserved_0x09;
-    register8_t reserved_0x0A;
-    register8_t reserved_0x0B;
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
+    register8_t reserved_1[12];
 } PORTMUX_t;
 
 /* Configurable Custom Logic LUT0 select */
@@ -1276,8 +1104,7 @@ typedef struct RSTCTRL_struct
 {
     register8_t RSTFR;  /* Reset Flags */
     register8_t SWRR;  /* Software Reset */
-    register8_t reserved_0x02;
-    register8_t reserved_0x03;
+    register8_t reserved_1[2];
 } RSTCTRL_t;
 
 
@@ -1296,29 +1123,19 @@ typedef struct RTC_struct
     register8_t INTFLAGS;  /* Interrupt Flags */
     register8_t TEMP;  /* Temporary */
     register8_t DBGCTRL;  /* Debug control */
-    register8_t reserved_0x06;
+    register8_t reserved_1[1];
     register8_t CLKSEL;  /* Clock Select */
     _WORDREGISTER(CNT);  /* Counter */
     _WORDREGISTER(PER);  /* Period */
     _WORDREGISTER(CMP);  /* Compare */
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
+    register8_t reserved_2[2];
     register8_t PITCTRLA;  /* PIT Control A */
     register8_t PITSTATUS;  /* PIT Status */
     register8_t PITINTCTRL;  /* PIT Interrupt Control */
     register8_t PITINTFLAGS;  /* PIT Interrupt Flags */
-    register8_t reserved_0x14;
+    register8_t reserved_3[1];
     register8_t PITDBGCTRL;  /* PIT Debug control */
-    register8_t reserved_0x16;
-    register8_t reserved_0x17;
-    register8_t reserved_0x18;
-    register8_t reserved_0x19;
-    register8_t reserved_0x1A;
-    register8_t reserved_0x1B;
-    register8_t reserved_0x1C;
-    register8_t reserved_0x1D;
-    register8_t reserved_0x1E;
-    register8_t reserved_0x1F;
+    register8_t reserved_4[10];
 } RTC_t;
 
 /* Clock Select select */
@@ -1393,57 +1210,14 @@ typedef struct SIGROW_struct
     register8_t SERNUM7;  /* Serial Number Byte 7 */
     register8_t SERNUM8;  /* Serial Number Byte 8 */
     register8_t SERNUM9;  /* Serial Number Byte 9 */
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
-    register8_t reserved_0x10;
-    register8_t reserved_0x11;
-    register8_t reserved_0x12;
-    register8_t reserved_0x13;
-    register8_t reserved_0x14;
-    register8_t reserved_0x15;
-    register8_t reserved_0x16;
-    register8_t reserved_0x17;
-    register8_t reserved_0x18;
-    register8_t reserved_0x19;
-    register8_t reserved_0x1A;
-    register8_t reserved_0x1B;
-    register8_t reserved_0x1C;
-    register8_t reserved_0x1D;
-    register8_t reserved_0x1E;
-    register8_t reserved_0x1F;
+    register8_t reserved_1[19];
     register8_t TEMPSENSE0;  /* Temperature Sensor Calibration Byte 0 */
     register8_t TEMPSENSE1;  /* Temperature Sensor Calibration Byte 1 */
     register8_t OSC16ERR3V;  /* OSC16 error at 3V */
     register8_t OSC16ERR5V;  /* OSC16 error at 5V */
     register8_t OSC20ERR3V;  /* OSC20 error at 3V */
     register8_t OSC20ERR5V;  /* OSC20 error at 5V */
-    register8_t reserved_0x26;
-    register8_t reserved_0x27;
-    register8_t reserved_0x28;
-    register8_t reserved_0x29;
-    register8_t reserved_0x2A;
-    register8_t reserved_0x2B;
-    register8_t reserved_0x2C;
-    register8_t reserved_0x2D;
-    register8_t reserved_0x2E;
-    register8_t reserved_0x2F;
-    register8_t reserved_0x30;
-    register8_t reserved_0x31;
-    register8_t reserved_0x32;
-    register8_t reserved_0x33;
-    register8_t reserved_0x34;
-    register8_t reserved_0x35;
-    register8_t reserved_0x36;
-    register8_t reserved_0x37;
-    register8_t reserved_0x38;
-    register8_t reserved_0x39;
-    register8_t reserved_0x3A;
-    register8_t reserved_0x3B;
-    register8_t reserved_0x3C;
-    register8_t reserved_0x3D;
-    register8_t reserved_0x3E;
-    register8_t reserved_0x3F;
+    register8_t reserved_2[26];
 } SIGROW_t;
 
 
@@ -1457,7 +1231,7 @@ SLPCTRL - Sleep Controller
 typedef struct SLPCTRL_struct
 {
     register8_t CTRLA;  /* Control */
-    register8_t reserved_0x01;
+    register8_t reserved_1[1];
 } SLPCTRL_t;
 
 /* Sleep mode select */
@@ -1485,9 +1259,7 @@ typedef struct SPI_struct
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t INTFLAGS;  /* Interrupt Flags */
     register8_t DATA;  /* Data */
-    register8_t reserved_0x05;
-    register8_t reserved_0x06;
-    register8_t reserved_0x07;
+    register8_t reserved_1[3];
 } SPI_t;
 
 /* SPI Mode select */
@@ -1517,38 +1289,10 @@ SYSCFG - System Configuration Registers
 /* System Configuration Registers */
 typedef struct SYSCFG_struct
 {
-    register8_t reserved_0x00;
+    register8_t reserved_1[1];
     register8_t REVID;  /* Revision ID */
     register8_t EXTBRK;  /* External Break */
-    register8_t reserved_0x03;
-    register8_t reserved_0x04;
-    register8_t reserved_0x05;
-    register8_t reserved_0x06;
-    register8_t reserved_0x07;
-    register8_t reserved_0x08;
-    register8_t reserved_0x09;
-    register8_t reserved_0x0A;
-    register8_t reserved_0x0B;
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
-    register8_t reserved_0x10;
-    register8_t reserved_0x11;
-    register8_t reserved_0x12;
-    register8_t reserved_0x13;
-    register8_t reserved_0x14;
-    register8_t reserved_0x15;
-    register8_t reserved_0x16;
-    register8_t reserved_0x17;
-    register8_t reserved_0x18;
-    register8_t reserved_0x19;
-    register8_t reserved_0x1A;
-    register8_t reserved_0x1B;
-    register8_t reserved_0x1C;
-    register8_t reserved_0x1D;
-    register8_t reserved_0x1E;
-    register8_t reserved_0x1F;
+    register8_t reserved_2[29];
 } SYSCFG_t;
 
 
@@ -1569,53 +1313,26 @@ typedef struct TCA_SINGLE_struct
     register8_t CTRLESET;  /* Control E Set */
     register8_t CTRLFCLR;  /* Control F Clear */
     register8_t CTRLFSET;  /* Control F Set */
-    register8_t reserved_0x08;
+    register8_t reserved_1[1];
     register8_t EVCTRL;  /* Event Control */
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t INTFLAGS;  /* Interrupt Flags */
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
+    register8_t reserved_2[2];
     register8_t DBGCTRL;  /* Degbug Control */
     register8_t TEMP;  /* Temporary data for 16-bit Access */
-    register8_t reserved_0x10;
-    register8_t reserved_0x11;
-    register8_t reserved_0x12;
-    register8_t reserved_0x13;
-    register8_t reserved_0x14;
-    register8_t reserved_0x15;
-    register8_t reserved_0x16;
-    register8_t reserved_0x17;
-    register8_t reserved_0x18;
-    register8_t reserved_0x19;
-    register8_t reserved_0x1A;
-    register8_t reserved_0x1B;
-    register8_t reserved_0x1C;
-    register8_t reserved_0x1D;
-    register8_t reserved_0x1E;
-    register8_t reserved_0x1F;
+    register8_t reserved_3[16];
     _WORDREGISTER(CNT);  /* Count */
-    register8_t reserved_0x22;
-    register8_t reserved_0x23;
-    register8_t reserved_0x24;
-    register8_t reserved_0x25;
+    register8_t reserved_4[4];
     _WORDREGISTER(PER);  /* Period */
     _WORDREGISTER(CMP0);  /* Compare 0 */
     _WORDREGISTER(CMP1);  /* Compare 1 */
     _WORDREGISTER(CMP2);  /* Compare 2 */
-    register8_t reserved_0x2E;
-    register8_t reserved_0x2F;
-    register8_t reserved_0x30;
-    register8_t reserved_0x31;
-    register8_t reserved_0x32;
-    register8_t reserved_0x33;
-    register8_t reserved_0x34;
-    register8_t reserved_0x35;
+    register8_t reserved_5[8];
     _WORDREGISTER(PERBUF);  /* Period Buffer */
     _WORDREGISTER(CMP0BUF);  /* Compare 0 Buffer */
     _WORDREGISTER(CMP1BUF);  /* Compare 1 Buffer */
     _WORDREGISTER(CMP2BUF);  /* Compare 2 Buffer */
-    register8_t reserved_0x3E;
-    register8_t reserved_0x3F;
+    register8_t reserved_6[2];
 } TCA_SINGLE_t;
 
 
@@ -1628,38 +1345,15 @@ typedef struct TCA_SPLIT_struct
     register8_t CTRLD;  /* Control D */
     register8_t CTRLECLR;  /* Control E Clear */
     register8_t CTRLESET;  /* Control E Set */
-    register8_t reserved_0x06;
-    register8_t reserved_0x07;
-    register8_t reserved_0x08;
-    register8_t reserved_0x09;
+    register8_t reserved_1[4];
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t INTFLAGS;  /* Interrupt Flags */
-    register8_t reserved_0x0C;
-    register8_t reserved_0x0D;
+    register8_t reserved_2[2];
     register8_t DBGCTRL;  /* Degbug Control */
-    register8_t reserved_0x0F;
-    register8_t reserved_0x10;
-    register8_t reserved_0x11;
-    register8_t reserved_0x12;
-    register8_t reserved_0x13;
-    register8_t reserved_0x14;
-    register8_t reserved_0x15;
-    register8_t reserved_0x16;
-    register8_t reserved_0x17;
-    register8_t reserved_0x18;
-    register8_t reserved_0x19;
-    register8_t reserved_0x1A;
-    register8_t reserved_0x1B;
-    register8_t reserved_0x1C;
-    register8_t reserved_0x1D;
-    register8_t reserved_0x1E;
-    register8_t reserved_0x1F;
+    register8_t reserved_3[17];
     register8_t LCNT;  /* Low Count */
     register8_t HCNT;  /* High Count */
-    register8_t reserved_0x22;
-    register8_t reserved_0x23;
-    register8_t reserved_0x24;
-    register8_t reserved_0x25;
+    register8_t reserved_4[4];
     register8_t LPER;  /* Low Period */
     register8_t HPER;  /* High Period */
     register8_t LCMP0;  /* Low Compare */
@@ -1668,24 +1362,7 @@ typedef struct TCA_SPLIT_struct
     register8_t HCMP1;  /* High Compare */
     register8_t LCMP2;  /* Low Compare */
     register8_t HCMP2;  /* High Compare */
-    register8_t reserved_0x2E;
-    register8_t reserved_0x2F;
-    register8_t reserved_0x30;
-    register8_t reserved_0x31;
-    register8_t reserved_0x32;
-    register8_t reserved_0x33;
-    register8_t reserved_0x34;
-    register8_t reserved_0x35;
-    register8_t reserved_0x36;
-    register8_t reserved_0x37;
-    register8_t reserved_0x38;
-    register8_t reserved_0x39;
-    register8_t reserved_0x3A;
-    register8_t reserved_0x3B;
-    register8_t reserved_0x3C;
-    register8_t reserved_0x3D;
-    register8_t reserved_0x3E;
-    register8_t reserved_0x3F;
+    register8_t reserved_5[18];
 } TCA_SPLIT_t;
 
 
@@ -1778,8 +1455,7 @@ typedef struct TCB_struct
 {
     register8_t CTRLA;  /* Control A */
     register8_t CTRLB;  /* Control Register B */
-    register8_t reserved_0x02;
-    register8_t reserved_0x03;
+    register8_t reserved_1[2];
     register8_t EVCTRL;  /* Event Control */
     register8_t INTCTRL;  /* Interrupt Control */
     register8_t INTFLAGS;  /* Interrupt Flags */
@@ -1788,8 +1464,7 @@ typedef struct TCB_struct
     register8_t TEMP;  /* Temporary Value */
     _WORDREGISTER(CNT);  /* Count */
     _WORDREGISTER(CCMP);  /* Compare or Capture */
-    register8_t reserved_0x0E;
-    register8_t reserved_0x0F;
+    register8_t reserved_2[2];
 } TCB_t;
 
 /* Clock Select select */
@@ -1823,7 +1498,7 @@ TWI - Two-Wire Interface
 typedef struct TWI_struct
 {
     register8_t CTRLA;  /* Control A */
-    register8_t reserved_0x01;
+    register8_t reserved_1[1];
     register8_t DBGCTRL;  /* Debug Control Register */
     register8_t MCTRLA;  /* Master Control A */
     register8_t MCTRLB;  /* Master Control B */
@@ -1837,7 +1512,7 @@ typedef struct TWI_struct
     register8_t SADDR;  /* Slave Address */
     register8_t SDATA;  /* Slave Data */
     register8_t SADDRMASK;  /* Slave Address Mask */
-    register8_t reserved_0x0F;
+    register8_t reserved_2[1];
 } TWI_t;
 
 /* Acknowledge Action select */
@@ -1923,12 +1598,12 @@ typedef struct USART_struct
     register8_t CTRLB;  /* Control B */
     register8_t CTRLC;  /* Control C */
     _WORDREGISTER(BAUD);  /* Baud Rate */
-    register8_t reserved_0x0A;
+    register8_t reserved_1[1];
     register8_t DBGCTRL;  /* Debug Control */
     register8_t EVCTRL;  /* Event Control */
     register8_t TXPLCTRL;  /* IRCOM Transmitter Pulse Length Control */
     register8_t RXPLCTRL;  /* IRCOM Receiver Pulse Length Control */
-    register8_t reserved_0x0F;
+    register8_t reserved_2[1];
 } USART_t;
 
 /* Character Size select */
@@ -2054,8 +1729,7 @@ typedef struct VREF_struct
 {
     register8_t CTRLA;  /* Control A */
     register8_t CTRLB;  /* Control B */
-    register8_t reserved_0x02;
-    register8_t reserved_0x03;
+    register8_t reserved_1[2];
 } VREF_t;
 
 /* ADC0 reference select select */
@@ -2578,7 +2252,6 @@ IO Module Instances. Mapped to memory.
 #define FUSE_WDTCFG  _SFR_MEM8(0x1280)
 #define FUSE_BODCFG  _SFR_MEM8(0x1281)
 #define FUSE_OSCCFG  _SFR_MEM8(0x1282)
-#define FUSE_TCD0CFG  _SFR_MEM8(0x1284)
 #define FUSE_SYSCFG0  _SFR_MEM8(0x1285)
 #define FUSE_SYSCFG1  _SFR_MEM8(0x1286)
 #define FUSE_APPEND  _SFR_MEM8(0x1287)
@@ -3148,12 +2821,6 @@ IO Module Instances. Mapped to memory.
 #define CRCSCAN_SRC0_bp  0  /* CRC Source bit 0 position. */
 #define CRCSCAN_SRC1_bm  (1<<1)  /* CRC Source bit 1 mask. */
 #define CRCSCAN_SRC1_bp  1  /* CRC Source bit 1 position. */
-#define CRCSCAN_MODE_gm  0x30  /* CRC Flash Access Mode group mask. */
-#define CRCSCAN_MODE_gp  4  /* CRC Flash Access Mode group position. */
-#define CRCSCAN_MODE0_bm  (1<<4)  /* CRC Flash Access Mode bit 0 mask. */
-#define CRCSCAN_MODE0_bp  4  /* CRC Flash Access Mode bit 0 position. */
-#define CRCSCAN_MODE1_bm  (1<<5)  /* CRC Flash Access Mode bit 1 mask. */
-#define CRCSCAN_MODE1_bp  5  /* CRC Flash Access Mode bit 1 position. */
 
 /* CRCSCAN.STATUS  bit masks and bit positions */
 #define CRCSCAN_BUSY_bm  0x01  /* CRC Busy bit mask. */
@@ -3580,24 +3247,6 @@ IO Module Instances. Mapped to memory.
 #define FUSE_FREQSEL1_bp  1  /* Frequency Select bit 1 position. */
 #define FUSE_OSCLOCK_bm  0x80  /* Oscillator Lock bit mask. */
 #define FUSE_OSCLOCK_bp  7  /* Oscillator Lock bit position. */
-
-/* FUSE.TCD0CFG  bit masks and bit positions */
-#define FUSE_CMPA_bm  0x01  /* Compare A Default Output Value bit mask. */
-#define FUSE_CMPA_bp  0  /* Compare A Default Output Value bit position. */
-#define FUSE_CMPB_bm  0x02  /* Compare B Default Output Value bit mask. */
-#define FUSE_CMPB_bp  1  /* Compare B Default Output Value bit position. */
-#define FUSE_CMPC_bm  0x04  /* Compare C Default Output Value bit mask. */
-#define FUSE_CMPC_bp  2  /* Compare C Default Output Value bit position. */
-#define FUSE_CMPD_bm  0x08  /* Compare D Default Output Value bit mask. */
-#define FUSE_CMPD_bp  3  /* Compare D Default Output Value bit position. */
-#define FUSE_CMPAEN_bm  0x10  /* Compare A Output Enable bit mask. */
-#define FUSE_CMPAEN_bp  4  /* Compare A Output Enable bit position. */
-#define FUSE_CMPBEN_bm  0x20  /* Compare B Output Enable bit mask. */
-#define FUSE_CMPBEN_bp  5  /* Compare B Output Enable bit position. */
-#define FUSE_CMPCEN_bm  0x40  /* Compare C Output Enable bit mask. */
-#define FUSE_CMPCEN_bp  6  /* Compare C Output Enable bit position. */
-#define FUSE_CMPDEN_bm  0x80  /* Compare D Output Enable bit mask. */
-#define FUSE_CMPDEN_bp  7  /* Compare D Output Enable bit position. */
 
 /* FUSE.SYSCFG0  bit masks and bit positions */
 #define FUSE_EESAVE_bm  0x01  /* EEPROM Save bit mask. */
@@ -4723,10 +4372,10 @@ IO Module Instances. Mapped to memory.
 #define TCA0_OVF_vect      _VECTOR(8)  /*  */
 #define TCA0_HUNF_vect_num  9
 #define TCA0_HUNF_vect      _VECTOR(9)  /*  */
-#define TCA0_LCMP0_vect_num  10
-#define TCA0_LCMP0_vect      _VECTOR(10)  /*  */
 #define TCA0_CMP0_vect_num  10
 #define TCA0_CMP0_vect      _VECTOR(10)  /*  */
+#define TCA0_LCMP0_vect_num  10
+#define TCA0_LCMP0_vect      _VECTOR(10)  /*  */
 #define TCA0_CMP1_vect_num  11
 #define TCA0_CMP1_vect      _VECTOR(11)  /*  */
 #define TCA0_LCMP1_vect_num  11
@@ -4794,7 +4443,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define EEPROM_START     (0x1400U)
 #  define EEPROM_SIZE      (256U)
-  #define EEPROM_PAGE_SIZE (32U)
+#  define EEPROM_PAGE_SIZE (32U)
 #endif
 #define EEPROM_END       (EEPROM_START + EEPROM_SIZE - 1)
 
@@ -4811,7 +4460,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define FUSES_START     (0x1280U)
 #  define FUSES_SIZE      (10U)
-  #define FUSES_PAGE_SIZE (32U)
+#  define FUSES_PAGE_SIZE (32U)
 #endif
 #define FUSES_END       (FUSES_START + FUSES_SIZE - 1)
 
@@ -4822,7 +4471,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define INTERNAL_SRAM_START     (0x3C00U)
 #  define INTERNAL_SRAM_SIZE      (1024U)
-  #define INTERNAL_SRAM_PAGE_SIZE (0U)
+#  define INTERNAL_SRAM_PAGE_SIZE (0U)
 #endif
 #define INTERNAL_SRAM_END       (INTERNAL_SRAM_START + INTERNAL_SRAM_SIZE - 1)
 
@@ -4833,7 +4482,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define IO_START     (0x0000U)
 #  define IO_SIZE      (4352U)
-  #define IO_PAGE_SIZE (0U)
+#  define IO_PAGE_SIZE (0U)
 #endif
 #define IO_END       (IO_START + IO_SIZE - 1)
 
@@ -4844,7 +4493,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define LOCKBITS_START     (0x128AU)
 #  define LOCKBITS_SIZE      (1U)
-  #define LOCKBITS_PAGE_SIZE (32U)
+#  define LOCKBITS_PAGE_SIZE (32U)
 #endif
 #define LOCKBITS_END       (LOCKBITS_START + LOCKBITS_SIZE - 1)
 
@@ -4855,7 +4504,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define MAPPED_PROGMEM_START     (0x8000U)
 #  define MAPPED_PROGMEM_SIZE      (16384U)
-  #define MAPPED_PROGMEM_PAGE_SIZE (64U)
+#  define MAPPED_PROGMEM_PAGE_SIZE (64U)
 #endif
 #define MAPPED_PROGMEM_END       (MAPPED_PROGMEM_START + MAPPED_PROGMEM_SIZE - 1)
 
@@ -4866,7 +4515,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define PROD_SIGNATURES_START     (0x1103U)
 #  define PROD_SIGNATURES_SIZE      (61U)
-  #define PROD_SIGNATURES_PAGE_SIZE (64U)
+#  define PROD_SIGNATURES_PAGE_SIZE (64U)
 #endif
 #define PROD_SIGNATURES_END       (PROD_SIGNATURES_START + PROD_SIGNATURES_SIZE - 1)
 
@@ -4877,7 +4526,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define SIGNATURES_START     (0x1100U)
 #  define SIGNATURES_SIZE      (3U)
-  #define SIGNATURES_PAGE_SIZE (64U)
+#  define SIGNATURES_PAGE_SIZE (64U)
 #endif
 #define SIGNATURES_END       (SIGNATURES_START + SIGNATURES_SIZE - 1)
 
@@ -4888,18 +4537,9 @@ IO Module Instances. Mapped to memory.
 #else
 #  define USER_SIGNATURES_START     (0x1300U)
 #  define USER_SIGNATURES_SIZE      (32U)
-  #define USER_SIGNATURES_PAGE_SIZE (32U)
+#  define USER_SIGNATURES_PAGE_SIZE (32U)
 #endif
 #define USER_SIGNATURES_END       (USER_SIGNATURES_START + USER_SIGNATURES_SIZE - 1)
-
-#if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
-#  define PROGMEM_START     (0x0000)
-#  define PROGMEM_SIZE      (16384)
-#else
-#  define PROGMEM_START     (0x0000U)
-#  define PROGMEM_SIZE      (16384U)
-#endif
-#define PROGMEM_END       (PROGMEM_START + PROGMEM_SIZE - 1)
 
 #if (defined(__ASSEMBLER__) || defined(__IAR_SYSTEMS_ASM__))
 #  define PROGMEM_START     (0x0000)
@@ -4908,7 +4548,7 @@ IO Module Instances. Mapped to memory.
 #else
 #  define PROGMEM_START     (0x0000U)
 #  define PROGMEM_SIZE      (16384U)
-  #define PROGMEM_PAGE_SIZE (64U)
+#  define PROGMEM_PAGE_SIZE (64U)
 #endif
 #define PROGMEM_END       (PROGMEM_START + PROGMEM_SIZE - 1)
 
@@ -4922,66 +4562,56 @@ IO Module Instances. Mapped to memory.
 
 
 /* ========== Fuses ========== */
-#define FUSE_MEMORY_SIZE 9
+#define FUSE_MEMORY_SIZE 10
 
 /* Fuse Byte 0 (WDTCFG) */
-#define FUSE_PERIOD0  (unsigned char)~_BV(0)  /* Watchdog Timeout Period Bit 0 */
-#define FUSE_PERIOD1  (unsigned char)~_BV(1)  /* Watchdog Timeout Period Bit 1 */
-#define FUSE_PERIOD2  (unsigned char)~_BV(2)  /* Watchdog Timeout Period Bit 2 */
-#define FUSE_PERIOD3  (unsigned char)~_BV(3)  /* Watchdog Timeout Period Bit 3 */
-#define FUSE_WINDOW0  (unsigned char)~_BV(4)  /* Watchdog Window Timeout Period Bit 0 */
-#define FUSE_WINDOW1  (unsigned char)~_BV(5)  /* Watchdog Window Timeout Period Bit 1 */
-#define FUSE_WINDOW2  (unsigned char)~_BV(6)  /* Watchdog Window Timeout Period Bit 2 */
-#define FUSE_WINDOW3  (unsigned char)~_BV(7)  /* Watchdog Window Timeout Period Bit 3 */
+#define FUSE_PERIOD0  (unsigned char)_BV(0)  /* Watchdog Timeout Period Bit 0 */
+#define FUSE_PERIOD1  (unsigned char)_BV(1)  /* Watchdog Timeout Period Bit 1 */
+#define FUSE_PERIOD2  (unsigned char)_BV(2)  /* Watchdog Timeout Period Bit 2 */
+#define FUSE_PERIOD3  (unsigned char)_BV(3)  /* Watchdog Timeout Period Bit 3 */
+#define FUSE_WINDOW0  (unsigned char)_BV(4)  /* Watchdog Window Timeout Period Bit 0 */
+#define FUSE_WINDOW1  (unsigned char)_BV(5)  /* Watchdog Window Timeout Period Bit 1 */
+#define FUSE_WINDOW2  (unsigned char)_BV(6)  /* Watchdog Window Timeout Period Bit 2 */
+#define FUSE_WINDOW3  (unsigned char)_BV(7)  /* Watchdog Window Timeout Period Bit 3 */
 #define FUSE0_DEFAULT  (0x0)
 #define FUSE_WDTCFG_DEFAULT  (0x0)
 
 /* Fuse Byte 1 (BODCFG) */
-#define FUSE_SLEEP0  (unsigned char)~_BV(0)  /* BOD Operation in Sleep Mode Bit 0 */
-#define FUSE_SLEEP1  (unsigned char)~_BV(1)  /* BOD Operation in Sleep Mode Bit 1 */
-#define FUSE_ACTIVE0  (unsigned char)~_BV(2)  /* BOD Operation in Active Mode Bit 0 */
-#define FUSE_ACTIVE1  (unsigned char)~_BV(3)  /* BOD Operation in Active Mode Bit 1 */
-#define FUSE_SAMPFREQ  (unsigned char)~_BV(4)  /* BOD Sample Frequency */
-#define FUSE_LVL0  (unsigned char)~_BV(5)  /* BOD Level Bit 0 */
-#define FUSE_LVL1  (unsigned char)~_BV(6)  /* BOD Level Bit 1 */
-#define FUSE_LVL2  (unsigned char)~_BV(7)  /* BOD Level Bit 2 */
+#define FUSE_SLEEP0  (unsigned char)_BV(0)  /* BOD Operation in Sleep Mode Bit 0 */
+#define FUSE_SLEEP1  (unsigned char)_BV(1)  /* BOD Operation in Sleep Mode Bit 1 */
+#define FUSE_ACTIVE0  (unsigned char)_BV(2)  /* BOD Operation in Active Mode Bit 0 */
+#define FUSE_ACTIVE1  (unsigned char)_BV(3)  /* BOD Operation in Active Mode Bit 1 */
+#define FUSE_SAMPFREQ  (unsigned char)_BV(4)  /* BOD Sample Frequency */
+#define FUSE_LVL0  (unsigned char)_BV(5)  /* BOD Level Bit 0 */
+#define FUSE_LVL1  (unsigned char)_BV(6)  /* BOD Level Bit 1 */
+#define FUSE_LVL2  (unsigned char)_BV(7)  /* BOD Level Bit 2 */
 #define FUSE1_DEFAULT  (0x0)
 #define FUSE_BODCFG_DEFAULT  (0x0)
 
 /* Fuse Byte 2 (OSCCFG) */
-#define FUSE_FREQSEL0  (unsigned char)~_BV(0)  /* Frequency Select Bit 0 */
-#define FUSE_FREQSEL1  (unsigned char)~_BV(1)  /* Frequency Select Bit 1 */
-#define FUSE_OSCLOCK  (unsigned char)~_BV(7)  /* Oscillator Lock */
+#define FUSE_FREQSEL0  (unsigned char)_BV(0)  /* Frequency Select Bit 0 */
+#define FUSE_FREQSEL1  (unsigned char)_BV(1)  /* Frequency Select Bit 1 */
+#define FUSE_OSCLOCK  (unsigned char)_BV(7)  /* Oscillator Lock */
 #define FUSE2_DEFAULT  (0x2)
 #define FUSE_OSCCFG_DEFAULT  (0x2)
 
 /* Fuse Byte 3 Reserved */
 
-/* Fuse Byte 4 (TCD0CFG) */
-#define FUSE_CMPA  (unsigned char)~_BV(0)  /* Compare A Default Output Value */
-#define FUSE_CMPB  (unsigned char)~_BV(1)  /* Compare B Default Output Value */
-#define FUSE_CMPC  (unsigned char)~_BV(2)  /* Compare C Default Output Value */
-#define FUSE_CMPD  (unsigned char)~_BV(3)  /* Compare D Default Output Value */
-#define FUSE_CMPAEN  (unsigned char)~_BV(4)  /* Compare A Output Enable */
-#define FUSE_CMPBEN  (unsigned char)~_BV(5)  /* Compare B Output Enable */
-#define FUSE_CMPCEN  (unsigned char)~_BV(6)  /* Compare C Output Enable */
-#define FUSE_CMPDEN  (unsigned char)~_BV(7)  /* Compare D Output Enable */
-#define FUSE4_DEFAULT  (0x0)
-#define FUSE_TCD0CFG_DEFAULT  (0x0)
+/* Fuse Byte 4 Reserved */
 
 /* Fuse Byte 5 (SYSCFG0) */
-#define FUSE_EESAVE  (unsigned char)~_BV(0)  /* EEPROM Save */
-#define FUSE_RSTPINCFG0  (unsigned char)~_BV(2)  /* Reset Pin Configuration Bit 0 */
-#define FUSE_RSTPINCFG1  (unsigned char)~_BV(3)  /* Reset Pin Configuration Bit 1 */
-#define FUSE_CRCSRC0  (unsigned char)~_BV(6)  /* CRC Source Bit 0 */
-#define FUSE_CRCSRC1  (unsigned char)~_BV(7)  /* CRC Source Bit 1 */
+#define FUSE_EESAVE  (unsigned char)_BV(0)  /* EEPROM Save */
+#define FUSE_RSTPINCFG0  (unsigned char)_BV(2)  /* Reset Pin Configuration Bit 0 */
+#define FUSE_RSTPINCFG1  (unsigned char)_BV(3)  /* Reset Pin Configuration Bit 1 */
+#define FUSE_CRCSRC0  (unsigned char)_BV(6)  /* CRC Source Bit 0 */
+#define FUSE_CRCSRC1  (unsigned char)_BV(7)  /* CRC Source Bit 1 */
 #define FUSE5_DEFAULT  (0xc4)
 #define FUSE_SYSCFG0_DEFAULT  (0xc4)
 
 /* Fuse Byte 6 (SYSCFG1) */
-#define FUSE_SUT0  (unsigned char)~_BV(0)  /* Startup Time Bit 0 */
-#define FUSE_SUT1  (unsigned char)~_BV(1)  /* Startup Time Bit 1 */
-#define FUSE_SUT2  (unsigned char)~_BV(2)  /* Startup Time Bit 2 */
+#define FUSE_SUT0  (unsigned char)_BV(0)  /* Startup Time Bit 0 */
+#define FUSE_SUT1  (unsigned char)_BV(1)  /* Startup Time Bit 1 */
+#define FUSE_SUT2  (unsigned char)_BV(2)  /* Startup Time Bit 2 */
 #define FUSE6_DEFAULT  (0x7)
 #define FUSE_SYSCFG1_DEFAULT  (0x7)
 
@@ -4995,6 +4625,10 @@ IO Module Instances. Mapped to memory.
 
 /* ========== Lock Bits ========== */
 #define __LOCK_BITS_EXIST
+#ifdef LOCKBITS_DEFAULT
+#undef LOCKBITS_DEFAULT
+#endif //LOCKBITS_DEFAULT
+#define LOCKBITS_DEFAULT  (0xc5)
 
 /* ========== Signature ========== */
 #define SIGNATURE_0 0x1E
