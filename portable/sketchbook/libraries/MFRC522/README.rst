@@ -25,14 +25,14 @@ Development
 
 **The development by owner miguelbalboa has ended**.
 
-**Feature status: complete freeze**; no function or API change
+**Feature status: complete freeze**; no function or API change.
 
-**Code status: paritial freeze**; just fixes/typos or documentation updates; *no* extentions for other boards; *no* new examples
+**Code status: partial freeze**; just fixes/typos or documentation updates; *no* extensions for other boards; *no* new examples.
 
-**Maintenance status: sporadically**
+**Maintenance status: sporadically**.
 
 **Why no further development?**
-This library has a long history and is used in many projects. This projects often do not document what version they use. Commiting changes maybe brake those old project and lead to bad experience (for beginners) and support request. For those reasons the library is in freeze mode. You can still commit typo, documentation or bug fixes.
+This library has a long history and is used in many projects. These projects often do not document what version they use. Committing changes might break those old projects and lead to bad experiences (for beginners) and support requests. For these reasons the library is in freeze mode. You can still commit typo, documentation or bug fixes.
 
 
 .. _before buy:
@@ -71,7 +71,6 @@ What works and not?
   #. Communication with smart phone, not `supported by hardware`_.
   #. Card emulation, not `supported by hardware`_.
   #. Use of IRQ pin. But there is a proof-of-concept example.
-  #. With Arduino Yun see `#111 <https://github.com/miguelbalboa/rfid/issues/111>`_, not supported by software.
   #. With Intel Galileo (Gen2) see `#310 <https://github.com/miguelbalboa/rfid/issues/310>`__, not supported by software.
   #. Power reduction modes `#269 <https://github.com/miguelbalboa/rfid/issues/269>`_, not supported by software.
   #. I2C instead of SPI `#240 <https://github.com/miguelbalboa/rfid/issues/240>`_, not supported by software.
@@ -151,28 +150,30 @@ The following table shows the typical pin layout used:
 | SPI SCK   | SCK      | 13 / ICSP-3 | 52      | D13     | ICSP-3          | 15        | 1      | 21     | 13     |
 +-----------+----------+-------------+---------+---------+-----------------+-----------+--------+--------+--------+
 
-+-----------+---------------+
-|           | ESP8266       |
-|           +---------------+
-|           | Wemos D1 mini |
-+-----------+---------------+
-| Signal    | Pin           |
-+===========+===============+
-| RST/Reset | D3            |
-+-----------+---------------+
-| SPI SS    | D8            |
-+-----------+---------------+
-| SPI MOSI  | D7            |
-+-----------+---------------+
-| SPI MISO  | D6            |
-+-----------+---------------+
-| SPI SCK   | D5            |
-+-----------+---------------+
++-----------+---------------+---------+
+|           | ESP8266       | Arduino |
+|           +---------------+---------+
+|           | Wemos D1 mini | Yun [4]_|
++-----------+---------------+---------+
+| Signal    | Pin           | Pin     |
++===========+===============+=========+
+| RST/Reset | D3            | Pin9    |
++-----------+---------------+---------+
+| SPI SS    | D8            | Pin10   |
++-----------+---------------+---------+
+| SPI MOSI  | D7            | ICSP4   |
++-----------+---------------+---------+
+| SPI MISO  | D6            | ICSP1   |
++-----------+---------------+---------+
+| SPI SCK   | D5            | ICSP3   |
++-----------+---------------+---------+
 
 .. [1] Configurable, typically defined as RST_PIN in sketch/program.
 .. [2] Configurable, typically defined as SS_PIN in sketch/program.
 .. [3] The SDA pin might be labeled SS on some/older MFRC522 boards. 
+.. [4] Source: https://github.com/miguelbalboa/rfid/issues/111#issuecomment-420433658 .
 
+Important: If your micro controller supports multiple SPI interfaces, the library only uses the **default (first) SPI** of the Arduino framework.
 
 .. _hardware:
 Hardware
@@ -248,7 +249,7 @@ Troubleshooting
   #. Check your pin settings/variables in the code, see `Pin Layout`_ .
   #. Check your pin header soldering. Maybe you have cold solder joints.
   #. Check voltage. Most breakouts work with 3.3V.
-  #. SPI only works with 3.3V, most breakouts seem 5V tollerant, but try a level shifter.
+  #. SPI only works with 3.3V, most breakouts seem 5V tolerant, but try a level shifter.
   #. SPI does not like long connections. Try shorter connections.
   #. SPI does not like prototyping boards. Try soldered connections.
   #. According to reports #101, #126 and #131, there may be a problem with the soldering on the MFRC522 breakout. You could fix this on your own.
@@ -360,7 +361,7 @@ by Søren Thing Andersen (from http://access.thing.dk).
 It has been extended with functionality to alter sector 0 on Chinese UID changeable MIFARE card in Oct 2014 by Tom Clement (from http://tomclement.nl).
 
 Maintained by miguelbalboa until 2016.
-Maintained by Rotzbua from 2016 until 2018.
+Maintained by Rotzbua from 2016 until 2020.
 
 
 .. _arduino: https://arduino.cc/
