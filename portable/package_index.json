@@ -6576,6 +6576,61 @@
           ]
         },
         {
+          "name": "fwupdater",
+          "version": "0.0.8",
+          "systems": [
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/FirmwareUpdater-0.0.8-linux32.tar.bz2",
+              "archiveFileName": "FirmwareUpdater-0.0.8-linux32.tar.bz2",
+              "checksum": "SHA-256:e1f43aa225e6e2ad1f2bccc07898ddb439e980905385a8d7e0615f804a69eee8",
+              "size": "20137214"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/FirmwareUpdater-0.0.8-linux64.tar.bz2",
+              "archiveFileName": "FirmwareUpdater-0.0.8-linux64.tar.bz2",
+              "checksum": "SHA-256:423f67767d5b861a3c39ca6f6a18b2358a30b76bdc3d3d3d870e102b2b2271a8",
+              "size": "20167410"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://downloads.arduino.cc/tools/FirmwareUpdater_0.0.8_Windows_64bit.zip",
+              "archiveFileName": "FirmwareUpdater_0.0.8_Windows_64bit.zip",
+              "checksum": "SHA-256:c3386fdc440638186541f92f920462865308e0f5dde9f45e4dd1c35d2570b808",
+              "size": "13645709"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://downloads.arduino.cc/tools/FirmwareUpdater_0.0.8_Windows_32bit.zip",
+              "archiveFileName": "FirmwareUpdater_0.0.8_Windows_32bit.zip",
+              "checksum": "SHA-256:dc3ce2e824b2f8ab6ee4c7d2f836311450d60825db95cbb51eeb076a28a1e2af",
+              "size": "13578670"
+            },
+            {
+              "host": "i386-apple-darwin11",
+              "url": "http://downloads.arduino.cc/tools/FirmwareUpdater-0.0.8-osx.tar.bz2",
+              "archiveFileName": "FirmwareUpdater-0.0.8-osx.tar.bz2",
+              "checksum": "SHA-256:635cbe786cd11ead26e5af0662991d8c3b647469f1874195eeb7f1dba5530b39",
+              "size": "20091397"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/tools/FirmwareUpdater-0.0.8-linuxarm.tar.bz2",
+              "archiveFileName": "FirmwareUpdater-0.0.8-linuxarm.tar.bz2",
+              "checksum": "SHA-256:c027389528e9b04d622167943fe04badbd2f63923f08cc1b22935e5158b2545b",
+              "size": "19984154"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/FirmwareUpdater-0.0.8-linuxarm64.tar.bz2",
+              "archiveFileName": "FirmwareUpdater-0.0.8-linuxarm64.tar.bz2",
+              "checksum": "SHA-256:b6846bb84034e6a8486ce3165dabeb9b32b4fd3804639cd6137a37a00d0157c8",
+              "size": "19952489"
+            }
+          ]
+        },
+        {
           "name": "nrf5x-cl-tools",
           "version": "9.3.1",
           "systems": [
