@@ -278,6 +278,13 @@ bool Adafruit_Si7021::isHeaterEnabled() {
   return (bool)bitRead(regValue, SI7021_REG_HTRE_BIT);
 }
 
+/*!
+ *  @brief  Set the sensor heater heat level
+ */
+void Adafruit_Si7021::setHeatLevel(uint8_t level) {
+  _writeRegister8(SI7021_WRITEHEATER_REG_CMD, level);
+}
+
 /*******************************************************************/
 
 void Adafruit_Si7021::_writeRegister8(uint8_t reg, uint8_t value) {

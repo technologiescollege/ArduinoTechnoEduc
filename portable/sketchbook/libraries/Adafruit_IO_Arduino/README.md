@@ -2,11 +2,11 @@
 
 [![Build Status](https://github.com/adafruit/Adafruit_IO_Arduino/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_IO_Arduino/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_IO_Arduino/html/index.html)
 
-[![Discord](https://img.shields.io/discord/327254708534116352.svg)](https://discord.gg/nBQh6qu)
+[![Discord](https://img.shields.io/discord/327254708534116352.svg)](https://adafru.it/discord)
 
 ![AIOArduino](https://cdn-learn.adafruit.com/assets/assets/000/057/496/original/adafruit_io_AIOA.png?1531335660)
 
-This library provides a simple device independent interface for interacting with [Adafruit IO](https://io.adafruit.com) using Arduino. It allows you to switch between WiFi (ESP8266, ESP32, AirLift, WINC1500, & WICED), Cellular (32u4 FONA), and Ethernet (Ethernet FeatherWing)
+This library provides a simple device independent interface for interacting with [Adafruit IO](https://io.adafruit.com) using Arduino. It allows you to switch between WiFi (ESP8266, ESP32, ESP32-S2, Airlift, WINC1500, & WICED), Cellular (32u4 FONA), and Ethernet (Ethernet FeatherWing).
 
 ## Documentation
 
