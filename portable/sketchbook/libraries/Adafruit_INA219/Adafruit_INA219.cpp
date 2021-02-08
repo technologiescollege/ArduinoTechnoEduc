@@ -41,12 +41,19 @@ Adafruit_INA219::Adafruit_INA219(uint8_t addr) {
 }
 
 /*!
+ *  @brief INA219 class destructor
+ */
+Adafruit_INA219::~Adafruit_INA219() { delete i2c_dev; }
+
+/*!
  *  @brief  Sets up the HW (defaults to 32V and 2A for calibration values)
  *  @param theWire the TwoWire object to use
  *  @return true: success false: Failed to start I2C
  */
 bool Adafruit_INA219::begin(TwoWire *theWire) {
-  i2c_dev = new Adafruit_I2CDevice(ina219_i2caddr, theWire);
+  if (!i2c_dev) {
+    i2c_dev = new Adafruit_I2CDevice(ina219_i2caddr, theWire);
+  }
 
   if (!i2c_dev->begin()) {
     return false;
@@ -72,7 +79,7 @@ int16_t Adafruit_INA219::getBusVoltage_raw() {
 
   Adafruit_BusIO_Register bus_voltage_reg =
       Adafruit_BusIO_Register(i2c_dev, INA219_REG_BUSVOLTAGE, 2, MSBFIRST);
-  bus_voltage_reg.read(&value);
+  _success = bus_voltage_reg.read(&value);
 
   // Shift to the right 3 to drop CNVR and OVF and multiply by LSB
   return (int16_t)((value >> 3) * 4);
@@ -86,7 +93,7 @@ int16_t Adafruit_INA219::getShuntVoltage_raw() {
   uint16_t value;
   Adafruit_BusIO_Register shunt_voltage_reg =
       Adafruit_BusIO_Register(i2c_dev, INA219_REG_SHUNTVOLTAGE, 2, MSBFIRST);
-  shunt_voltage_reg.read(&value);
+  _success = shunt_voltage_reg.read(&value);
   return value;
 }
 
@@ -108,7 +115,7 @@ int16_t Adafruit_INA219::getCurrent_raw() {
   // Now we can safely read the CURRENT register!
   Adafruit_BusIO_Register current_reg =
       Adafruit_BusIO_Register(i2c_dev, INA219_REG_CURRENT, 2, MSBFIRST);
-  current_reg.read(&value);
+  _success = current_reg.read(&value);
   return value;
 }
 
@@ -130,7 +137,7 @@ int16_t Adafruit_INA219::getPower_raw() {
   // Now we can safely read the POWER register!
   Adafruit_BusIO_Register power_reg =
       Adafruit_BusIO_Register(i2c_dev, INA219_REG_POWER, 2, MSBFIRST);
-  power_reg.read(&value);
+  _success = power_reg.read(&value);
   return value;
 }
 
@@ -262,7 +269,7 @@ void Adafruit_INA219::setCalibration_32V_2A() {
                     INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
   Adafruit_BusIO_Register config_reg =
       Adafruit_BusIO_Register(i2c_dev, INA219_REG_CONFIG, 2, MSBFIRST);
-  config_reg.write(config, 2);
+  _success = config_reg.write(config, 2);
 }
 
 /*!
@@ -277,9 +284,9 @@ void Adafruit_INA219::powerSave(bool on) {
   Adafruit_BusIO_RegisterBits mode_bits =
       Adafruit_BusIO_RegisterBits(&config_reg, 3, 0);
   if (on) {
-    mode_bits.write(INA219_CONFIG_MODE_POWERDOWN);
+    _success = mode_bits.write(INA219_CONFIG_MODE_POWERDOWN);
   } else {
-    mode_bits.write(INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS);
+    _success = mode_bits.write(INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS);
   }
 }
 
@@ -373,7 +380,7 @@ void Adafruit_INA219::setCalibration_32V_1A() {
                     INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
   Adafruit_BusIO_Register config_reg =
       Adafruit_BusIO_Register(i2c_dev, INA219_REG_CONFIG, 2, MSBFIRST);
-  config_reg.write(config, 2);
+  _success = config_reg.write(config, 2);
 }
 
 /*!
@@ -465,5 +472,15 @@ void Adafruit_INA219::setCalibration_16V_400mA() {
 
   Adafruit_BusIO_Register config_reg =
       Adafruit_BusIO_Register(i2c_dev, INA219_REG_CONFIG, 2, MSBFIRST);
-  config_reg.write(config, 2);
+  _success = config_reg.write(config, 2);
 }
+
+/*!
+ *  @brief  Provides the the underlying return value from the last operation
+ *          called on the device.
+ *  @return true: Last operation was successful false: Last operation failed
+ *  @note   For function calls that have intermediary device operations,
+ *          e.g. calibration before read/write, only the final operation's
+ *          result is stored.
+ */
+bool Adafruit_INA219::success() { return _success; }

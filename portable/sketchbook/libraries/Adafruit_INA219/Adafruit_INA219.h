@@ -149,6 +149,7 @@ enum {
 class Adafruit_INA219 {
 public:
   Adafruit_INA219(uint8_t addr = INA219_ADDRESS);
+  ~Adafruit_INA219();
   bool begin(TwoWire *theWire = &Wire);
   void setCalibration_32V_2A();
   void setCalibration_32V_1A();
@@ -158,9 +159,12 @@ public:
   float getCurrent_mA();
   float getPower_mW();
   void powerSave(bool on);
+  bool success();
 
 private:
   Adafruit_I2CDevice *i2c_dev = NULL;
+
+  bool _success;
 
   uint8_t ina219_i2caddr = -1;
   uint32_t ina219_calValue;

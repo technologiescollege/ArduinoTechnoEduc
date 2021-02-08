@@ -2,8 +2,8 @@
    "packages":[
       {
          "name": "uStepper",
-         "maintainer": "ON Development IVS",		  
-         "websiteURL": "https://www.on-development.com",
+         "maintainer": "uStepper ApS",		  
+         "websiteURL": "https://www.ustepper.com",
          "email": "administration@ustepper.com",
 		 "help": {
         	"online": "https://www.ustepper.com"
@@ -175,7 +175,26 @@
 			   "toolsDependencies":
 				[				
 				]
-			}
+			},
+			{
+				"name": "uStepper",
+				"architecture": "avr",
+				"version": "2.2.1",
+				"category": "uStepper",
+				"url": "https://github.com/uStepper/uStepperHardware/blob/master/releases/uStepperHardware_2.2.1.zip?raw=true",
+				"checksum": "SHA-256:44a072da1c875e0a589e4c49ad4e88b1b4f2e5dd42ce7389b1185c0980e7b894",
+				"archiveFileName": "uStepperHardware_2.2.1.zip",
+				"size": "290291", 
+				"boards":
+				 [
+				   { "name": "uStepper" },
+				   { "name": "uStepper S-lite" },
+				   { "name": "uStepperS" }
+					],
+				"toolsDependencies":
+				 [				
+				 ]
+			 }
 	     ],      	
 		 "tools":
 		  [		
