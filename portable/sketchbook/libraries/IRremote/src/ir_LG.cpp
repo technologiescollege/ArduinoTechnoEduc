@@ -29,7 +29,7 @@
  *
  ************************************************************************************
  */
-#include "IRremote.h"
+#include "IRremoteInt.h"
 
 //==============================================================================
 //                               L       GGGG
@@ -75,7 +75,7 @@ void IRsend::sendLGRepeat() {
     mark(LG_HEADER_MARK);
     space(LG_REPEAT_HEADER_SPACE);
     mark(LG_BIT_MARK);
-    space(0); // Always end with the LED off
+    ledOff(); // Always end with the LED off
     interrupts();
 }
 
@@ -83,7 +83,7 @@ void IRsend::sendLGRepeat() {
  * Repeat commands should be sent in a 110 ms raster.
  * There is NO delay after the last sent repeat!
  */
-void IRsend::sendLG(uint8_t aAddress, uint16_t aCommand, uint8_t aNumberOfRepeats, bool aIsRepeat) {
+void IRsend::sendLG(uint8_t aAddress, uint16_t aCommand, uint_fast8_t aNumberOfRepeats, bool aIsRepeat) {
     uint32_t tRawData = ((uint32_t) aAddress << (LG_COMMAND_BITS + LG_CHECKSUM_BITS)) | (aCommand << LG_CHECKSUM_BITS);
     /*
      * My guess of the checksum
@@ -101,7 +101,7 @@ void IRsend::sendLG(uint8_t aAddress, uint16_t aCommand, uint8_t aNumberOfRepeat
 /*
  * Here you can put your raw data, even one with "wrong" parity
  */
-void IRsend::sendLGRaw(uint32_t aRawData, uint8_t aNumberOfRepeats, bool aIsRepeat) {
+void IRsend::sendLGRaw(uint32_t aRawData, uint_fast8_t aNumberOfRepeats, bool aIsRepeat) {
     if (aIsRepeat) {
         sendLGRepeat();
         return;
@@ -115,11 +115,11 @@ void IRsend::sendLGRaw(uint32_t aRawData, uint8_t aNumberOfRepeats, bool aIsRepe
     space(LG_HEADER_SPACE);
 
     // MSB first
-    sendPulseDistanceWidthData(LG_BIT_MARK, LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, aRawData, LG_BITS, MSB_FIRST, SEND_STOP_BIT);
+    sendPulseDistanceWidthData(LG_BIT_MARK, LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, aRawData, LG_BITS, PROTOCOL_IS_MSB_FIRST, SEND_STOP_BIT);
 
     interrupts();
 
-    for (uint8_t i = 0; i < aNumberOfRepeats; ++i) {
+    for (uint_fast8_t i = 0; i < aNumberOfRepeats; ++i) {
         // send repeat in a 110 ms raster
         if (i == 0) {
             delay((LG_REPEAT_PERIOD - LG_AVERAGE_DURATION) / 1000);
@@ -134,7 +134,7 @@ void IRsend::sendLGRaw(uint32_t aRawData, uint8_t aNumberOfRepeats, bool aIsRepe
 //+=============================================================================
 // LGs has a repeat like NEC
 //
-#if defined(USE_STANDARD_DECODE)
+#if !defined(USE_OLD_DECODE)
 /*
  * First check for right data length
  * Next check start bit
@@ -219,8 +219,6 @@ bool IRrecv::decodeLG() {
 }
 #else
 
-#warning "Old decoder function decodeLG() is enabled. Enable USE_STANDARD_DECODE on line 34 of IRremote.h to enable new version of decodeLG() instead."
-
 //+=============================================================================
 bool IRrecv::decodeLG() {
     unsigned int offset = 1; // Skip first space
@@ -274,7 +272,7 @@ void IRsend::sendLG(unsigned long data, int nbits) {
 //    mark(LG_BIT_MARK);
 
 // Data + stop bit
-    sendPulseDistanceWidthData(LG_BIT_MARK, LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, data, nbits, MSB_FIRST, SEND_STOP_BIT);
+    sendPulseDistanceWidthData(LG_BIT_MARK, LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, data, nbits, PROTOCOL_IS_MSB_FIRST, SEND_STOP_BIT);
 
 }
 

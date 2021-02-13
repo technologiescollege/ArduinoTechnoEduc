@@ -27,21 +27,21 @@ Protocols can be switched off and on by changing the lines in *IRremote.h*:
 # [Wiki](https://github.com/z3t0/Arduino-IRremote/wiki)
 This is a quite old but maybe useful wiki for this library.
 
-# Converting your program to the 3.x version
+# Converting your 2.x program to the 3.x version
 - Now there is  an **IRreceiver** and **IRsender** object like the well known Arduino **Serial** object.
-- Just remove the line `IRrecv IrReceiver(IR_RECEIVE_PIN);` and/or `IRsend IrSender;` in your program, and replace all occurences of `IRrecv.` or `irrecv.` with `IrReceiver`.
+- Just remove the line `IRrecv IrReceiver(IR_RECEIVE_PIN);` and/or `IRsend IrSender;` in your program, and replace all occurrences of `IRrecv.` or `irrecv.` with `IrReceiver`.
+- Since the decoded values are now in `IrReceiver.decodedIRData` and not in `results` any more, remove the line `decode_results results` or similar.
 - Like for the Serial object, call [`IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);`](https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/examples/IRreceiveDemo/IRreceiveDemo.ino#L38) or `IrReceiver.begin(IR_RECEIVE_PIN, DISABLE_LED_FEEDBACK);` instead of the `IrReceiver.enableIRIn();` or `irrecv.enableIRIn();` in setup().
 - Old `decode(decode_results *aResults)` function is replaced by simple `decode()`. So if you have a statement `if(irrecv.decode(&results))` replace it with `if (IrReceiver.decode())`.
-- `results.value` moved to `IrReceiver.decodedIRData.decodedRawData`.
-- `results.decode_type` moved to `IrReceiver.decodedIRData.decodedRawData`.
+- The decoded result is now in in `IrReceiver.decodedIRData` and not in `results` any more, therefore replace any occurrences of `results.value`  and / or `results.decode_type` (and similar) to `IrReceiver.decodedIRData.decodedRawData` and / or `IrReceiver.decodedIRData.decodedRawData`.
 - Overflow, Repeat and other flags are now in [`IrReceiver.receivedIRData.flags`](https://github.com/Arduino-IRremote/Arduino-IRremote/blob/master/src/IRremote.h#L126).
-- Seldomly used: `results.rawbuf` and `results.rawlen` moved to `IrReceiver.decodedIRData.rawDataPtr->rawbuf` and `IrReceiver.decodedIRData.rawDataPtr->rawlen`.
-
-If you discover more changes, which should be documented, please send me a mail to armin.arduino@gmail.com.
+- Seldom used: `results.rawbuf` and `results.rawlen` must be replaced by `IrReceiver.decodedIRData.rawDataPtr->rawbuf` and `IrReceiver.decodedIRData.rawDataPtr->rawlen`.
+- The old functions `sendNEC()` and `sendJVC()` are deprecated and renamed to `sendNECMSB()` and `sendJVCMSB()` to make it clearer that they send data with MSB first, which is not the standard for NEC and JVC. Use them to send your **old 32 bit IR data codes**.
+In the new version you will send NEC commands not by 32 bit codes but by a (constant) 8 bit address and an 8 bit command.
 
 # FAQ
 - IR does not work right when I use Neopixels (aka WS2811/WS2812/WS2812B)<br/>
- Whether you use the Adafruit Neopixel lib, or FastLED, interrupts get disabled on many lower end CPUs like the basic Arduinos for longer than 50 µs.
+ Whether you use the Adafruit Neopixel lib, or FastLED, interrupts get disabled on many lower end CPUs like the basic Arduinos for longer than 50 Âµs.
 In turn, this stops the IR interrupt handler from running when it needs to. There are some solutions to this on some processors,
  [see this page from Marc MERLIN](http://marc.merlins.org/perso/arduino/post_2017-04-03_Arduino-328P-Uno-Teensy3_1-ESP8266-ESP32-IR-and-Neopixels.html)
 - The default IR timer on AVR's is timer 2. Since the **Arduino Tone library** as well as **analogWrite() for pin 3 and pin 11** requires timer 2,
@@ -81,9 +81,10 @@ Modify it by commenting them out or in, or change the values if applicable. Or d
 
 | Name | File | Default value | Description |
 |-|-|-|-|
-| `IR_INPUT_IS_ACTIVE_HIGH` | IRremoteint.h | disabled | Enable it if you use a RF receiver, which has an active HIGH output signal. |
-| `DEBUG` | IRremote.h | disabled | Enables lots of lovely debug output. |
-| `USE_NEC_STANDARD` | IRremote.h | disabled | Use LSB first, address/code schema for encoding. |
+| `EXCLUDE_EXOTIC_PROTOCOLS` | Before `#include <IRremote.h>` | disabled | If activated, BOSEWAVE, MAGIQUEST,WHYNTER and LEGO_PF are excluded in `decode()` and in sending with `IrSender.write()`. Saves up to 900 bytes program space. |
+| `MARK_EXCESS_MICROS` | Before `#include <IRremote.h>` | 20 | MARK_EXCESS_MICROS is subtracted from all marks and added to all spaces before decoding, to compensate for the signal forming of different IR receiver modules. |
+| `IR_INPUT_IS_ACTIVE_HIGH` | IRremoteInt.h | disabled | Enable it if you use a RF receiver, which has an active HIGH output signal. |
+| `DEBUG` | IRremote1.h | disabled | Enables lots of lovely debug output. |
 | `USE_NO_SEND_PWM` | IRremote.h | disabled | Use no carrier PWM, just simulate an active low receiver signal. |
 | `USE_SOFT_SEND_PWM` | IRremote.h | disabled | Use carrier PWM generation in software, instead of hardware PWM. |
 | `PULSE_CORRECTION_MICROS` | IRremote.h | 3 | If USE_SOFT_SEND_PWM, this amount is subtracted from the on-time of the pulses. |
@@ -127,10 +128,15 @@ If you are using Sloeber as your IDE, you can easily define global symbols with 
 - ESP32
 - [ESP8266 is supported in a fork](https://github.com/crankyoldgit/IRremoteESP8266) based on an old codebase. It works well given that perfectly timed sub millisecond interrupts are different on that chip.
 - Sparkfun Pro Micro
+- Nano Every, Uno WiFi Rev2, nRF5 BBC MicroBit, Nano33_BLE
 
 We are open to suggestions for adding support to new boards, however we highly recommend you contact your supplier first and ask them to provide support from their side.
 
 ## Hardware specifications
+The receiver sample interval is generated by a timer. 
+On many boards this must be a hardware timer, on some a software timer is available and used.<br/>
+The send PWM signal is generated by a hardware timer. The same timer as for the receiver is used.
+Since each hardware timer has its dedicated output pins, you must change timer to change PWN output.<br/>
 The timer and the pin usage can be adjusted in [IRremoteBoardDefs.h](src/private/IRremoteBoardDefs.h)
 
 | Board/CPU                                                                | IR-Send (PWM) Pin   | Timers            |
@@ -213,7 +219,7 @@ Check [here](https://github.com/z3t0/Arduino-IRremote/blob/master/Contributing.m
 Check [here](https://github.com/z3t0/Arduino-IRremote/blob/master/Contributors.md)
 
 # Contact
-Email: zetoslab@gmail.com
+Email: rafi@rafikhan.io
 Please only email me if it is more appropriate than creating an Issue / PR. I **will** not respond to requests for adding support for particular boards, unless of course you are the creator of the board and would like to cooperate on the project. I will also **ignore** any emails asking me to tell you how to implement your ideas. However, if you have a private inquiry that you would only apply to you and you would prefer it to be via email, by all means.
 
 # License

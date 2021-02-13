@@ -1,0 +1,28 @@
+  
+#######################################
+# Syntax Coloring Map For Grove Ranging sensor VL53L0X
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+KEYWORD1	Seeed_vl53l0x
+#######################################
+
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+KEYWORD2	VL53L0X_common_init
+KEYWORD2	VL53L0X_continuous_ranging_init
+KEYWORD2	VL53L0X_long_distance_ranging_init
+KEYWORD2	VL53L0X_high_accuracy_ranging_init
+KEYWORD2	VL53L0X_high_speed_ranging_init
+KEYWORD2	VL53L0X_single_ranging_init
+KEYWORD2	PerformContinuousRangingMeasurement
+KEYWORD2	PerformSingleRangingMeasurement
+#######################################
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################

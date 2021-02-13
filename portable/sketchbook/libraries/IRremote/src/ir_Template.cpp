@@ -51,7 +51,7 @@
  D. Further down in "Main class for sending IR", add:
  //......................................................................
  #if SEND_SHUZU
- void  sendShuzuStandard (uint16_t aAddress, uint8_t aCommand, uint8_t aNumberOfRepeats) ;
+ void  sendShuzuStandard (uint16_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats) ;
  #endif
 
  E. Save your changes and close the file
@@ -64,12 +64,10 @@
  if (decodeShuzu())  return true ;
  #endif
 
- B. In the function IRrecv::getProtocolString(), add
- #if DECODE_SHUZU
+ B. In the function getProtocolString(), add
  case SHUZU:
  return ("Shuzu");
  break;
- #endif
 
  C. Save your changes and close the file
 
@@ -127,7 +125,7 @@
  */
 
 //#define DEBUG // Activate this for lots of lovely debug output.
-#include "IRremote.h"
+#include "IRremoteInt.h"
 
 //#define SEND_SHUZU  1 // for testing
 //#define DECODE_SHUZU  1 // for testing
@@ -162,11 +160,11 @@
 
 //+=============================================================================
 //
-void IRsend::sendShuzu(uint16_t aAddress, uint8_t aCommand, uint8_t aNumberOfRepeats) {
+void IRsend::sendShuzu(uint16_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats) {
     // Set IR carrier frequency
     enableIROut(37); // 36.7kHz is the correct frequency
 
-    uint8_t tNumberOfCommands = aNumberOfRepeats + 1;
+    uint_fast8_t tNumberOfCommands = aNumberOfRepeats + 1;
     while (tNumberOfCommands > 0) {
 
         noInterrupts();
@@ -177,11 +175,11 @@ void IRsend::sendShuzu(uint16_t aAddress, uint8_t aCommand, uint8_t aNumberOfRep
 
         // Address (device and subdevice)
         sendPulseDistanceWidthData(SHUZU_BIT_MARK, SHUZU_ONE_SPACE, SHUZU_BIT_MARK, SHUZU_ZERO_SPACE, aAddress,
-        SHUZU_ADDRESS_BITS, LSB_FIRST); // false -> LSB first
+        SHUZU_ADDRESS_BITS, PROTOCOL_IS_LSB_FIRST); // false -> LSB first
 
         // Command + stop bit
         sendPulseDistanceWidthData(SHUZU_BIT_MARK, SHUZU_ONE_SPACE, SHUZU_BIT_MARK, SHUZU_ZERO_SPACE, aCommand,
-        SHUZU_COMMAND_BITS, LSB_FIRST, SEND_STOP_BIT); // false, true -> LSB first, stop bit
+        SHUZU_COMMAND_BITS, PROTOCOL_IS_LSB_FIRST, SEND_STOP_BIT); // false, true -> LSB first, stop bit
 
         interrupts();
 

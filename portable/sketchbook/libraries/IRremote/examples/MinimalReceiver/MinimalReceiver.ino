@@ -1,6 +1,8 @@
 /*
  *  MinimalReceiver.cpp
  *
+ *  Small memory footprint and no timer usage!
+ *
  *  Receives IR protocol data of NEC protocol using pin change interrupts.
  *  On complete received IR command the function handleReceivedIRData(uint16_t aAddress, uint8_t aCommand, bool isRepetition)
  *  is called in Interrupt context but with interrupts being enabled to enable use of delay() etc.
@@ -10,7 +12,7 @@
  *  !!!!!!!!!!!!!!!!!!!!!
  *
  *
- *  Copyright (C) 2021  Armin Joachimsmeyer
+ *  Copyright (C) 2020-2021  Armin Joachimsmeyer
  *  armin.joachimsmeyer@gmail.com
  *
  *  This file is part of IRMP https://github.com/ukw100/IRMP.
@@ -52,7 +54,7 @@
 
 #else
 #define IR_INPUT_PIN    2
-//#define DO_NOT_USE_FEEDBACK_LED_PIN
+//#define DO_NOT_USE_FEEDBACK_LED // activating saves 12 bytes
 #endif
 
 /*
@@ -68,8 +70,6 @@
 
 void setup()
 {
-    pinMode(LED_BUILTIN, OUTPUT);
-
     Serial.begin(115200);
 #if defined(__AVR_ATmega32U4__) || defined(SERIAL_USB) || defined(SERIAL_PORT_USBVIRTUAL) || defined(ARDUINO_attiny3217)
     delay(2000); // To be able to connect Serial monitor after reset or power up and before first printout
@@ -78,9 +78,9 @@ void setup()
 #if defined(ESP8266)
     Serial.println();
 #endif
-    Serial.println(F("START " __FILE__ " from " __DATE__));
+//    Serial.println(F("START " __FILE__ " from " __DATE__));
     initPCIInterruptForTinyReceiver();
-    Serial.println(F("Ready to receive NEC IR signals at pin " STR(IR_INPUT_PIN)));
+//    Serial.println(F("Ready to receive NEC IR signals at pin " STR(IR_INPUT_PIN)));
 }
 
 void loop()
@@ -108,6 +108,7 @@ void handleReceivedTinyIRData(uint16_t aAddress, uint8_t aCommand, bool isRepeat
     Serial.print(aAddress, HEX);
     Serial.print(F(" C=0x"));
     Serial.print(aCommand, HEX);
-    Serial.print(F(" R="));
-    Serial.println(isRepeat);
+//    Serial.print(F(" R="));
+//    Serial.print(isRepeat);
+    Serial.println();
 }
