@@ -7300,15 +7300,15 @@
               "host": "i686-mingw32",
               "url": "http://downloads.arduino.cc/tools/FirmwareUploader_0.1.3_Windows_32bit.zip",
               "archiveFileName": "FirmwareUploader_0.1.3_Windows_32bit.zip",
-              "checksum": "SHA-256:fd6eb93b2737ae3a49800d4f42abd7fa925e985b043d3a418412f26dc61b3baa",
-              "size": "16189555"
+              "checksum": "SHA-256:d23dd1ef5ea19b46633980b47964834d0718d11b375c64725b28d4e39660ff3c",
+              "size": "16139436"
             },
             {
               "host": "x86_64-mingw32",
               "url": "http://downloads.arduino.cc/tools/FirmwareUploader_0.1.3_Windows_64bit.zip",
               "archiveFileName": "FirmwareUploader_0.1.3_Windows_64bit.zip",
-              "checksum": "SHA-256:d23dd1ef5ea19b46633980b47964834d0718d11b375c64725b28d4e39660ff3c",
-              "size": "16139436"
+              "checksum": "SHA-256:fd6eb93b2737ae3a49800d4f42abd7fa925e985b043d3a418412f26dc61b3baa",
+              "size": "16189555"
             },
             {
               "host": "i386-apple-darwin11",
