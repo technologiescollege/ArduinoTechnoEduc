@@ -38,7 +38,7 @@
 //                              S  O   O  N  NN    Y
 //                          SSSS    OOO   N   N    Y
 //==============================================================================
-// see https://www.sbprojects.net/knowledge/ir/sirc.php - After counting 12 or 15 bits the receiver must wait at least 10ms to make sure that no more pulses follow.
+// see https://www.sbprojects.net/knowledge/ir/sirc.php
 // Here http://picprojects.org.uk/projects/sirc/ it is claimed, that many Sony remotes repeat each frame a minimum of 3 times
 
 // LSB first, start bit + 7 command + 5 to 13 address, no stop bit
@@ -58,12 +58,12 @@
 
 #define SONY_AVERAGE_DURATION   21000 // SONY_HEADER_MARK + SONY_SPACE  + 12 * 2,5 * SONY_UNIT  // 2.5 because we assume more zeros than ones
 #define SONY_REPEAT_PERIOD      45000 // Commands are repeated every 45 ms (measured from start to start) for as long as the key on the remote control is held down.
-#define SONY_REPEAT_SPACE       (SONY_REPEAT_PERIOD - SONY_AVERAGE_DURATION)
+#define SONY_REPEAT_SPACE       (SONY_REPEAT_PERIOD - SONY_AVERAGE_DURATION) // 24 ms
 
 /*
  * Repeat commands should be sent in a 45 ms raster.
  * There is NO delay after the last sent command / repeat!
- * @param send8AddressBits if false send only 5 address bits (standard is 12 bit SIRCS protocol)
+ * @param numberOfBits if == 20 send 13 address bits otherwise only 5 address bits
  */
 void IRsend::sendSony(uint16_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats, uint8_t numberOfBits) {
     // Set IR carrier frequency
@@ -72,23 +72,16 @@ void IRsend::sendSony(uint16_t aAddress, uint8_t aCommand, uint_fast8_t aNumberO
     uint_fast8_t tNumberOfCommands = aNumberOfRepeats + 1;
     while (tNumberOfCommands > 0) {
 
-        noInterrupts();
-
         // Header
         mark(SONY_HEADER_MARK);
         space(SONY_SPACE);
 
         // send 7 command bits LSB first
-        sendPulseDistanceWidthData(SONY_ONE_MARK, SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, aCommand, SONY_COMMAND_BITS, PROTOCOL_IS_LSB_FIRST);
-        // Address 16 bit LSB first
-        if (numberOfBits == SIRCS_20_PROTOCOL) {
-            sendPulseDistanceWidthData(SONY_ONE_MARK, SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, aAddress,
-                    (SONY_ADDRESS_BITS + SONY_EXTRA_BITS), PROTOCOL_IS_LSB_FIRST);
-        } else {
-            sendPulseDistanceWidthData(SONY_ONE_MARK, SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, aAddress, SONY_ADDRESS_BITS,
-            PROTOCOL_IS_LSB_FIRST);
-        }
-        interrupts();
+        sendPulseDistanceWidthData(SONY_ONE_MARK, SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, aCommand, SONY_COMMAND_BITS,
+        PROTOCOL_IS_LSB_FIRST);
+        // send 5, 8, 13 address bits LSB first
+        sendPulseDistanceWidthData(SONY_ONE_MARK, SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, aAddress,
+                (numberOfBits - SONY_COMMAND_BITS), PROTOCOL_IS_LSB_FIRST);
 
         tNumberOfCommands--;
         // skip last delay!
@@ -135,7 +128,7 @@ bool IRrecv::decodeSony() {
     // Success
 //    decodedIRData.flags = IRDATA_FLAGS_IS_LSB_FIRST; // Not required, since this is the start value
     uint8_t tCommand = decodedIRData.decodedRawData & 0x7F;  // first 7 bits
-    uint8_t tAddress = decodedIRData.decodedRawData >> 7;    // next 5 or 8 bits
+    uint16_t tAddress = decodedIRData.decodedRawData >> 7;    // next 5 or 8 or 13 bits
 
     /*
      *  Check for repeat
@@ -169,7 +162,7 @@ bool IRrecv::decodeSony() {
     if (results.rawbuf[0] < (SONY_DOUBLE_SPACE_USECS / MICROS_PER_TICK)) {
         DBG_PRINTLN("IR Gap found");
         results.bits = 0;
-        results.value = REPEAT;
+        results.value = 0xFFFFFFFF;
         decodedIRData.flags = IRDATA_FLAGS_IS_REPEAT;
         decodedIRData.protocol = UNKNOWN;
         return true;

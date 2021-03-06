@@ -48,11 +48,9 @@ SOFTWARE.
 
 #endif
 
-// Defined in ESP8266, not defined in AVR or Teensy, broken in ESP32.
-#if !defined(ESP8266)
-  #undef FPSTR
-  #define FPSTR(pstr_pointer) \
-      (reinterpret_cast<const __FlashStringHelper *>(pstr_pointer))
+// Defined in ESP8266 and ESP32, not defined in AVR or Teensy.
+#ifndef FPSTR
+  #define FPSTR(pstr) (reinterpret_cast<const __FlashStringHelper *>(pstr))
 #endif
 
 signed char sc = 4;
@@ -314,8 +312,6 @@ test(FCStringTest, compareToN) {
   assertLess(fa.compareToN(F("aa"), 2), 0);
 }
 
-#endif
-
 // ------------------------------------------------------
 // Test the various assertXxx() macros.
 // ------------------------------------------------------
@@ -531,6 +527,45 @@ test(flashString) {
   assertMoreOrEqual(hh, gg);
 }
 
+// ------------------------------------------------------
+// Test assertEqual() for pointers.
+// ------------------------------------------------------
+
+test(voidPointer) {
+  const int aa[] = {1, 2};
+  const long bb[] = {1, 2};
+  const char cc[] = "ab";
+  const int* dd = nullptr;
+
+  assertTrue(compareEqual(aa, aa));
+  assertFalse(compareEqual(aa, bb));
+  assertFalse(compareEqual(aa, cc));
+  assertFalse(compareEqual(aa, dd));
+
+  assertEqual(aa, aa);
+  assertNotEqual(aa, bb);
+  assertNotEqual(aa, cc);
+  assertNotEqual(aa, dd);
+}
+
+test(nullPointer) {
+  const int aa[] = {1, 2};
+  const long bb[] = {1, 2};
+  const int* dd = nullptr;
+
+  assertFalse(compareEqual(aa, nullptr));
+  assertFalse(compareEqual(bb, nullptr));
+  // assertFalse(compareEqual(cc, nullptr)); // ambiguous
+  assertTrue(compareEqual(dd, nullptr));
+
+  assertNotEqual(aa, nullptr);
+  assertNotEqual(bb, nullptr);
+  // assertNotEqual(cc, nullptr); // ambiguous
+  assertEqual(dd, nullptr);
+}
+
+#endif
+
 // -------------------------------------------------------------------------
 // Test the string_join() method.
 // -------------------------------------------------------------------------
@@ -566,7 +601,7 @@ class CustomOnceFixture: public TestOnce {
       TestOnce::teardown();
     }
 
-    void assertCommon(int m) {
+    void testCommon(int m) {
       assertLess(m, subject);
     }
 
@@ -578,7 +613,7 @@ class CustomOnceFixture: public TestOnce {
 };
 
 testF(CustomOnceFixture, common) {
-  assertCommon(5);
+  assertNoFatalFailure(testCommon(5));
   assertEqual(6, subject);
 }
 
@@ -593,7 +628,7 @@ class CustomAgainFixture: public TestAgain {
       TestAgain::teardown();
     }
 
-    void assertCommon(int m) {
+    void testCommon(int m) {
       assertLess(m, subject);
     }
 
@@ -601,7 +636,7 @@ class CustomAgainFixture: public TestAgain {
 };
 
 testingF(CustomAgainFixture, common) {
-  assertCommon(5);
+  assertNoFatalFailure(testCommon(5));
   assertEqual(6, subject);
   pass();
 }
@@ -614,7 +649,7 @@ testingF(CustomAgainFixture, common) {
 // because testingF() overrides an again() method which doesn't exist in
 // TestOnce.
 testingF(CustomOnceFixture, crossedOnce) {
-  assertCommon();
+  testCommon();
 }
 #endif
 
@@ -622,7 +657,7 @@ testingF(CustomOnceFixture, crossedOnce) {
 // Test a testF() macro with a TestAgain class. Should get compiler error
 // because testF() overrides a once() method which doesn't exist in TestAgain.
 testF(CustomAgainFixture, crossedAgain) {
-  assertCommon();
+  testCommon();
 }
 #endif
 
@@ -655,18 +690,18 @@ class CustomTestOnce: public TestOnce {
 CustomTestOnce myTestOnce1("customTestOnce1");
 CustomTestOnce myTestOnce2("customTestOnce2");
 
-#endif
+#endif // USE_AUNIT
 
 // ------------------------------------------------------
 // The main body.
 // ------------------------------------------------------
 
 void setup() {
-  #ifdef ARDUINO
+#ifdef ARDUINO
   delay(1000); // Wait for stability on some boards, otherwise garage on Serial
-  #endif
-  Serial.begin(115200); // ESP8266 default of 74880 not supported on Linux
-  while (! Serial); // Wait until Serial is ready - Leonardo/Micro
+#endif
+  SERIAL_PORT_MONITOR.begin(115200);
+  while (! SERIAL_PORT_MONITOR); // Wait until Serial is ready - Leonardo/Micro
 
 #if USE_AUNIT == 1
   // These are useful for debugging.

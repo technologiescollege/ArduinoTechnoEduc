@@ -71,7 +71,7 @@
 
 #define KASEIKYO_AVERAGE_DURATION   56000
 #define KASEIKYO_REPEAT_PERIOD      130000
-#define KASEIKYO_REPEAT_SPACE       (KASEIKYO_REPEAT_PERIOD - KASEIKYO_AVERAGE_DURATION)
+#define KASEIKYO_REPEAT_SPACE       (KASEIKYO_REPEAT_PERIOD - KASEIKYO_AVERAGE_DURATION) // 74 ms
 
 // for old decoder
 #define KASEIKYO_DATA_BITS          32
@@ -88,7 +88,6 @@ void IRsend::sendKaseikyo(uint16_t aAddress, uint8_t aCommand, uint_fast8_t aNum
     uint_fast8_t tNumberOfCommands = aNumberOfRepeats + 1;
     while (tNumberOfCommands > 0) {
 
-        noInterrupts();
         // Header
         mark(KASEIKYO_HEADER_MARK);
         space(KASEIKYO_HEADER_SPACE);
@@ -110,8 +109,6 @@ void IRsend::sendKaseikyo(uint16_t aAddress, uint8_t aCommand, uint_fast8_t aNum
         // Send address (device and subdevice) + command + parity + Stop bit
         sendPulseDistanceWidthData(KASEIKYO_BIT_MARK, KASEIKYO_ONE_SPACE, KASEIKYO_BIT_MARK, KASEIKYO_ZERO_SPACE, tSendValue.ULong,
         KASEIKYO_ADDRESS_BITS + KASEIKYO_VENDOR_ID_PARITY_BITS + KASEIKYO_COMMAND_BITS + KASEIKYO_PARITY_BITS, PROTOCOL_IS_LSB_FIRST, SEND_STOP_BIT);
-
-        interrupts();
 
         tNumberOfCommands--;
         // skip last delay!

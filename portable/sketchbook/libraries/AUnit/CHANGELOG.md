@@ -1,6 +1,58 @@
 # Changelog
 
 * Unreleased
+* 1.5.4 (2021-03-02)
+    * Implement `assertNoFatalFailure(statement)` macro to prevent continued
+      execution if `statement` contains assertion failures. Fixes
+      [Issue #11](https://github.com/bxparks/AUnit/issues/11).
+* 1.5.3 (2021-02-23)
+    * I botched the 1.5.2 release. Try again as 1.5.3.
+* 1.5.2 (2021-02-23)
+    * Convert `examples/AUnitPlatformIO/src/AUnitPlatformIO.ino` from
+      a symlink to a regular file. The Arduino Library Manager apparently does
+      not allow symlinks (see
+      https://github.com/arduino/Arduino/wiki/Library-Manager-FAQ). So when I
+      created the symlink at v1.3.1 on 2019-07-31, the Library Manager stopped
+      updating the library for almost 2 years, until I removed the symlink at
+      v1.5.2.
+    * No functional change in this release.
+* 1.5.1 (2021-01-22)
+    * Update UnixHostDuino 0.4 to EpoxyDuino 0.5.
+    * No functional change in this release.
+* 1.5 (2021-01-18)
+    * Add support for STM32duino.
+    * Blacklist megaAVR boards due to incompatibility with new Arduino API.
+      See Issue #56 (https://github.com/bxparks/AUnit/issues/56).
+    * Blacklist SAMD21 boards using `arduino:samd` core version >= 1.8.10
+      due to incompatibility with new Arduino API. See Issue #66
+      (https://github.com/bxparks/AUnit/issues/66).
+    * Enable `F()` for ESP8266 since
+      https://github.com/esp8266/Arduino/issues/3369 seems to have been fixed
+      some time ago.
+* 1.4.1 (2020-11-12)
+    * Add Table of Contents to README.md to help navigation.
+    * No functional change in this release.
+* 1.4 (2020-10-28)
+    * Support comparison of 2 arbitrary pointers using
+      `assertEqual(const void*, const void*)` and
+      `assertNotEqual(const void*, const void*)`. Fixes
+      [Issue #34](https://github.com/bxparks/AUnit/issues/34).
+    * Add GitHub Workflow Actions continuous integration for examples
+      and tests under `examples/` and `tests/`.
+* 1.3.3 (2020-09-15)
+    * Increase maximum allowed `setTimeout()` from 255 seconds to 65535 seconds
+      (18.2 hours). (See [Issue
+      #57](https://github.com/bxparks/AUnit/issues/57)).
+* 1.3.2 (2020-02-29)
+    * Fix typos in README.md. No functional change.
+* 1.3.1 (2019-07-31)
+    * Add `examples/AUnitPlatformIO` to verify that AUnit works on PlatformIO.
+    * Rename unitduino to UnixHostDuino and move to its own repository at
+      `https://github.com/bxparks/EpoxyDuino`.
+    * Add UnixHostDuino Makefile to all unit tests.
+    * Support SAMD21 and ATmega2560 boards.
+    * Call `exit(1)` upon failure or timeout, `exit(0)` upon success when using
+      UnixHostDuino (#51).
 * 1.3 (2019-06-15)
     * Remove direct creation of `String` object, removing last remaining dynamic
       allocation of heap memory from library.

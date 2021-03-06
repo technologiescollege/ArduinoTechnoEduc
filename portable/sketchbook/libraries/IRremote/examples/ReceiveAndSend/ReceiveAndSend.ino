@@ -83,7 +83,11 @@ void setup() {
 
     IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); // Start the receiver, enable feedback LED, take LED feedback pin from the internal boards definition
 
-    IrSender.begin(true); // Enable feedback LED,
+#if defined(USE_SOFT_SEND_PWM) || defined(USE_NO_SEND_PWM)
+    IrSender.begin(IR_SEND_PIN, true); // Specify send pin and enable feedback LED at default feedback LED pin
+#else
+    IrSender.begin(true); // Enable feedback LED at default feedback LED pin
+#endif
 
     pinMode(SEND_BUTTON_PIN, INPUT_PULLUP);
     pinMode(STATUS_PIN, OUTPUT);
@@ -165,9 +169,10 @@ void storeCode(IRData *aIRReceivedData) {
     sStoredIRData.receivedIRData = *aIRReceivedData;
 
     if (sStoredIRData.receivedIRData.protocol == UNKNOWN) {
-        Serial.print(F("Received unknown code saving "));
+        Serial.print(F("Received unknown code and store "));
         Serial.print(IrReceiver.results.rawlen - 1);
-        Serial.println(F(" TickCounts as raw "));
+        Serial.println(F(" timing entries as raw "));
+        IrReceiver.printIRResultRawFormatted(&Serial, true); // Output the results in RAW format
         sStoredIRData.rawCodeLength = IrReceiver.results.rawlen - 1;
         IrReceiver.compensateAndStoreIRResultInArray(sStoredIRData.rawCode);
     } else {

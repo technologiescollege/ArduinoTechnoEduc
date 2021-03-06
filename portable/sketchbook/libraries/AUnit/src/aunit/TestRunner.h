@@ -40,8 +40,11 @@ namespace aunit {
  */
 class TestRunner {
   public:
-    /** Integer type of the timeout parameter. Seconds. */
-    typedef uint8_t TimeoutType;
+    /**
+     * Integer type of the timeout parameter. Seconds. Default is
+     * kTimeoutDefault = 10
+     */
+    typedef uint16_t TimeoutType;
 
     /** Run all tests using the current runner. */
     static void run() { getRunner()->runTest(); }
@@ -105,7 +108,7 @@ class TestRunner {
      * Set test runner timeout across all tests, in seconds. Set to 0 for
      * infinite timeout. Useful for preventing testing() test cases that never
      * end. This is a timeout for the TestRunner itself, not for individual
-     * tests.
+     * tests. Upper limit is 65535 seconds (just over 18 hours).
      */
     static void setTimeout(TimeoutType seconds) {
       getRunner()->setRunnerTimeout(seconds);
@@ -170,19 +173,19 @@ class TestRunner {
     // The current test case is represented by a pointer to a pointer. This
     // allows treating the root node the same as all the other nodes, and
     // simplifies the code traversing the singly-linked list significantly.
-    Test** mCurrent;
+    Test** mCurrent = nullptr;
 
-    bool mIsResolved;
-    bool mIsSetup;
-    bool mIsRunning;
-    uint8_t mVerbosity;
-    uint16_t mCount;
-    uint16_t mPassedCount;
-    uint16_t mFailedCount;
-    uint16_t mSkippedCount;
-    uint16_t mExpiredCount;
-    uint16_t mStatusErrorCount;
-    TimeoutType mTimeout;
+    bool mIsResolved = false;
+    bool mIsSetup = false;
+    bool mIsRunning = false;
+    uint8_t mVerbosity = Verbosity::kDefault;
+    uint16_t mCount = 0;
+    uint16_t mPassedCount = 0;
+    uint16_t mFailedCount = 0;
+    uint16_t mSkippedCount = 0;
+    uint16_t mExpiredCount = 0;
+    uint16_t mStatusErrorCount = 0;
+    TimeoutType mTimeout = kTimeoutDefault;
     unsigned long mStartTime;
     unsigned long mEndTime;
 };

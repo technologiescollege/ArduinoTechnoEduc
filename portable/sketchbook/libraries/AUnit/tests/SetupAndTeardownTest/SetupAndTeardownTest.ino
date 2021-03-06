@@ -78,11 +78,17 @@ testingF(CustomAgain, expire) { expire(); }
 testingF(CustomAgain, excluded) { fail(); }
 
 void setup() {
-  #ifdef ARDUINO
+#ifdef ARDUINO
   delay(1000); // Wait for stability on some boards, otherwise garage on Serial
-  #endif
-  Serial.begin(115200); // ESP8266 default of 74880 not supported on Linux
-  while (! Serial); // Wait until Serial is ready - Leonardo/Micro
+#endif
+  SERIAL_PORT_MONITOR.begin(115200);
+  while (! SERIAL_PORT_MONITOR); // Wait until Serial is ready - Leonardo/Micro
+
+  SERIAL_PORT_MONITOR.println(F("This test should produce the following:"));
+  SERIAL_PORT_MONITOR.println(
+    F("2 passed, 2 failed, 4 skipped, 2 timed out, out of 10 test(s).")
+  );
+  SERIAL_PORT_MONITOR.println(F("----"));
 
   TestRunner::exclude("CustomOnce", "excluded");
   TestRunner::exclude("CustomAgain", "excluded");
@@ -90,8 +96,5 @@ void setup() {
 }
 
 void loop() {
-  // Should get something like:
-  // TestRunner summary:
-  //     2 passed, 2 failed, 4 skipped, 2 timed out, out of 10 test(s).
   TestRunner::run();
 }

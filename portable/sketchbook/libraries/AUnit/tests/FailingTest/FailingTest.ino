@@ -259,16 +259,19 @@ testing(fixture_slow_expire_monitor) {
 // -------------------------------------------------------------------------
 
 void setup() {
-  #ifdef ARDUINO
+#ifdef ARDUINO
   delay(1000); // Wait for stability on some boards, otherwise garage on Serial
-  #endif
-  Serial.begin(115200); // ESP8266 default of 74880 not supported on Linux
-  while (! Serial); // Wait until Serial is ready - Leonardo/Micro
+#endif
+  SERIAL_PORT_MONITOR.begin(115200);
+  while (! SERIAL_PORT_MONITOR); // Wait until Serial is ready - Leonardo/Micro
+
+  SERIAL_PORT_MONITOR.println(F("This test should produce the following:"));
+  SERIAL_PORT_MONITOR.println(
+    F("6 passed, 5 failed, 1 skipped, 4 timed out, out of 16 test(s).")
+  );
+  SERIAL_PORT_MONITOR.println(F("----"));
 }
 
 void loop() {
-  // Should get something like:
-  // TestRunner summary:
-  //    6 passed, 5 failed, 1 skipped, 4 timed out, out of 16 test(s).
   TestRunner::run();
 }

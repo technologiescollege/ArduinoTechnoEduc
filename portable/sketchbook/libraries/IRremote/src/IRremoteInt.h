@@ -33,10 +33,13 @@
 #define IRremoteInt_h
 
 #if ! defined(RAW_BUFFER_LENGTH)
-#define RAW_BUFFER_LENGTH  101  ///< Maximum length of raw duration buffer. Must be odd! 101 supports up to 48 bit codings.
+#define RAW_BUFFER_LENGTH  100  ///< Maximum length of raw duration buffer. Must be even. 100 supports up to 48 bit codings inclusive 1 start and 1 stop bit.
+#endif
+#if RAW_BUFFER_LENGTH % 2 == 1
+#error RAW_BUFFER_LENGTH must be even, since the array consists of space / mark pairs.
 #endif
 
-#define VERSION_IRREMOTE "3.0.1"
+#define VERSION_IRREMOTE "3.0.3"
 #define VERSION_IRREMOTE_MAJOR 3
 #define VERSION_IRREMOTE_MINOR 0
 /*
@@ -46,7 +49,7 @@
 #define ENABLE_LED_FEEDBACK true
 
 #define SEND_STOP_BIT true
-#define SEND_REPEAT_COMMAND true // used for e.g. NEC, where a repeat is different from just repeating the data.
+#define SEND_REPEAT_COMMAND true ///< used for e.g. NEC, where a repeat is different from just repeating the data.
 
 /*
  * Try to activate it, if you have legacy code to compile with version >= 3
@@ -63,6 +66,18 @@
 //------------------------------------------------------------------------------
 // Information for the Interrupt Service Routine
 //
+
+/**
+ * Minimum gap between IR transmissions, in microseconds
+ * Keep in mind that this is the delay between the end of the received command and the start of decoding
+ * and some of the protocols have gaps of around 20 ms.
+ */
+#if !defined(RECORD_GAP_MICROS)
+#define RECORD_GAP_MICROS   5000 // FREDRICH28AC header space is 9700, NEC header space is 4500
+#endif
+
+/** Minimum gap between IR transmissions, in MICROS_PER_TICK */
+#define RECORD_GAP_TICKS    (RECORD_GAP_MICROS / MICROS_PER_TICK) // 221 for 1100
 
 // ISR State-Machine : Receiver States
 #define IR_REC_STATE_IDLE      0
@@ -208,6 +223,7 @@ public:
      */
     void begin(uint8_t aReceivePin, bool aEnableLEDFeedback = false, uint8_t aLEDFeedbackPin = USE_DEFAULT_FEEDBACK_LED_PIN); // if aBlinkPin == 0 then take board default BLINKPIN
     void start(); // alias for enableIRIn
+    void start(uint16_t aMillisToAddToGapCounter);
     bool available();
     IRData* read(); // returns decoded data
     // write is a method of class IRsend below
@@ -227,6 +243,7 @@ public:
      * Useful info and print functions
      */
     void printIRResultShort(Print *aSerial);
+    void printIRResultMinimal(Print *aSerial);
     void printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsInsteadOfTicks = true);
     void printIRResultAsCVariables(Print *aSerial);
 
@@ -242,11 +259,11 @@ public:
     /*
      * The main decoding functions used by the individual decoders
      */
-    bool decodePulseDistanceData(uint8_t aNumberOfBits, uint8_t aStartOffset, uint16_t aBitMarkMicros,
-            uint16_t aOneSpaceMicros, uint16_t aZeroSpaceMicros, bool aMSBfirst);
+    bool decodePulseDistanceData(uint8_t aNumberOfBits, uint8_t aStartOffset, uint16_t aBitMarkMicros, uint16_t aOneSpaceMicros,
+            uint16_t aZeroSpaceMicros, bool aMSBfirst);
 
-    bool decodePulseWidthData(uint8_t aNumberOfBits, uint8_t aStartOffset, uint16_t aOneMarkMicros,
-            uint16_t aZeroMarkMicros, uint16_t aBitSpaceMicros, bool aMSBfirst);
+    bool decodePulseWidthData(uint8_t aNumberOfBits, uint8_t aStartOffset, uint16_t aOneMarkMicros, uint16_t aZeroMarkMicros,
+            uint16_t aBitSpaceMicros, bool aMSBfirst);
 
     bool decodeBiPhaseData(uint8_t aNumberOfBits, uint8_t aStartOffset, uint8_t aValueOfSpaceToMarkTransition,
             uint16_t aBiphaseTimeUnit);
@@ -316,14 +333,11 @@ void printIRResultShort(Print *aSerial, IRData *aIRDataPtr, uint16_t aLeadingSpa
 //#define USE_SOFT_SEND_PWM
 /**
  * If USE_SOFT_SEND_PWM, this amount is subtracted from the on-time of the pulses.
+ * It should be the time used for SENDPIN_OFF(sendPin) and the call to delayMicros()
  */
 #ifndef PULSE_CORRECTION_MICROS
 #define PULSE_CORRECTION_MICROS 3
 #endif
-/**
- * If USE_SOFT_SEND_PWM, use spin wait instead of delayMicros().
- */
-//#define USE_SPIN_WAIT
 /*
  * Just for better readability of code
  */
@@ -334,12 +348,14 @@ void printIRResultShort(Print *aSerial, IRData *aIRDataPtr, uint16_t aLeadingSpa
 class IRsend {
 public:
 #if defined(USE_SOFT_SEND_PWM) || defined(USE_NO_SEND_PWM)
-    IRsend(int pin = IR_SEND_PIN);
+    IRsend(uint8_t aSendPin = IR_SEND_PIN);
+    void setSendPin(uint8_t aSendPinNumber);
+    void begin(uint8_t aSendPin, bool aEnableLEDFeedback, uint8_t aLEDFeedbackPin = USE_DEFAULT_FEEDBACK_LED_PIN);
+
 #else
     IRsend();
-#endif
-
     void begin(bool aEnableLEDFeedback, uint8_t aLEDFeedbackPin = USE_DEFAULT_FEEDBACK_LED_PIN);
+#endif
 
     size_t write(IRData *aIRSendData, uint_fast8_t aNumberOfRepeats = NO_REPEATS);
 
@@ -349,8 +365,8 @@ public:
             unsigned int aZeroSpaceMicros, uint32_t aData, uint8_t aNumberOfBits, bool aMSBfirst, bool aSendStopBit = false);
     void sendBiphaseData(unsigned int aBiphaseTimeUnit, uint32_t aData, uint_fast8_t aNumberOfBits);
 
-    void mark(unsigned int timeMicros);
-    void space(unsigned int timeMicros);
+    void mark(unsigned int aMarkMicros);
+    void space(unsigned int aSpaceMicros);
     void ledOff();
 
 // 8 Bit array
@@ -437,19 +453,13 @@ public:
 
     uint8_t sendPin;
 
-#if defined(USE_SOFT_SEND_PWM) || defined(USE_NO_SEND_PWM)
-
-#  if defined(USE_SOFT_SEND_PWM)
+#if defined(USE_SOFT_SEND_PWM)
     unsigned int periodTimeMicros;
     unsigned int periodOnTimeMicros;
-
-    void sleepMicros(unsigned long us);
-    void sleepUntilMicros(unsigned long targetTime);
-#  endif
 #endif
 
 private:
-    void custom_delay_usec(unsigned long uSecs);
+    void customDelayMicroseconds(unsigned long aMicroseconds);
 };
 
 // The sender instance
@@ -486,12 +496,6 @@ extern IRsend IrSender;
 /** Upper tolerance for comparison of measured data */
 //#define UTOL            (1.0 + (TOLERANCE/100.))
 #define UTOL            (100 + TOLERANCE)
-
-/** Minimum gap between IR transmissions, in microseconds */
-#define RECORD_GAP_MICROS   5000 // NEC header space is 4500
-
-/** Minimum gap between IR transmissions, in MICROS_PER_TICK */
-#define RECORD_GAP_TICKS    (RECORD_GAP_MICROS / MICROS_PER_TICK)
 
 //#define TICKS_LOW(us)   ((int)(((us)*LTOL/MICROS_PER_TICK)))
 //#define TICKS_HIGH(us)  ((int)(((us)*UTOL/MICROS_PER_TICK + 1)))
