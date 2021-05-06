@@ -21,20 +21,17 @@ enum BlynkCmd
     BLYNK_CMD_LOGIN          = 2,
     BLYNK_CMD_PING           = 6,
 
-    BLYNK_CMD_TWEET          = 12,
-    BLYNK_CMD_EMAIL          = 13,
-    BLYNK_CMD_NOTIFY         = 14,
     BLYNK_CMD_BRIDGE         = 15,
     BLYNK_CMD_HARDWARE_SYNC  = 16,
     BLYNK_CMD_INTERNAL       = 17,
-    BLYNK_CMD_SMS            = 18,
     BLYNK_CMD_PROPERTY       = 19,
     BLYNK_CMD_HARDWARE       = 20,
     BLYNK_CMD_HW_LOGIN       = 29,
 
     BLYNK_CMD_REDIRECT       = 41,
     BLYNK_CMD_DEBUG_PRINT    = 55,
-    BLYNK_CMD_EVENT_LOG      = 64
+    BLYNK_CMD_EVENT_LOG      = 64,
+    BLYNK_CMD_EVENT_CLEAR    = 65
 };
 
 enum BlynkStatus
@@ -73,7 +70,9 @@ struct BlynkHeader
 }
 BLYNK_ATTR_PACKED;
 
-#if !defined(htons) && (defined(ARDUINO) || defined(ESP8266) || defined(PARTICLE) || defined(__MBED__))
+#if defined(ESP32)
+    #include <lwip/ip_addr.h>
+#elif !defined(htons) && (defined(ARDUINO) || defined(ESP8266) || defined(PARTICLE) || defined(__MBED__))
     #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
         #define htons(x) ( ((x)<<8) | (((x)>>8)&0xFF) )
         #define htonl(x) ( ((x)<<24 & 0xFF000000UL) | \
@@ -111,8 +110,10 @@ BLYNK_ATTR_PACKED;
 #define BLYNK_HW_VR BLYNK_STR_16('v','r')
 
 #define BLYNK_INT_RTC  BLYNK_STR_32('r','t','c',0)
+#define BLYNK_INT_UTC  BLYNK_STR_32('u','t','c',0)
 #define BLYNK_INT_OTA  BLYNK_STR_32('o','t','a',0)
 #define BLYNK_INT_ACON BLYNK_STR_32('a','c','o','n')
 #define BLYNK_INT_ADIS BLYNK_STR_32('a','d','i','s')
+#define BLYNK_INT_META BLYNK_STR_32('m','e','t','a')
 
 #endif

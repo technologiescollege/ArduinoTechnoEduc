@@ -15,13 +15,8 @@
 #error This code is intended to run on the ESP32 platform! Please check your Tools->Board setting.
 #endif
 
-#if defined(BLYNK_SSL_USE_LETSENCRYPT)
-  static const char BLYNK_DEFAULT_ROOT_CA[] =
-  #include <certs/letsencrypt_pem.h>
-#else
-  static const char BLYNK_DEFAULT_ROOT_CA[] =
-  #include <certs/blynkcloud_pem.h>
-#endif
+static const char BLYNK_DEFAULT_ROOT_CA[] =
+#include <certs/letsencrypt_pem.h>
 
 #include <BlynkApiArduino.h>
 #include <Blynk/BlynkProtocol.h>
@@ -80,6 +75,7 @@ public:
         BLYNK_LOG1(BLYNK_F("Connected to WiFi"));
 
         IPAddress myip = WiFi.localIP();
+        (void)myip; // Eliminate warnings about unused myip
         BLYNK_LOG_IP("IP: ", myip);
     }
 

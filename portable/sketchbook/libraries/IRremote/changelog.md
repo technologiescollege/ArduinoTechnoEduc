@@ -1,3 +1,34 @@
+# Changelog
+The latest version may not be released!
+## 3.2.1
+
+## 3.2.0
+- Fix for ESP32 send Error, removed `USE_SOFT_SEND_PWM` macro.
+- Added Onkyo protocol.
+- Support for old 2.x code by backwards compatible `decode(decode_results *aResults)` function.
+- Removed USE_OLD_DECODE macro and added NO_LEGACY_COMPATIBILITY macro.
+- Added ATtiny1604 support.
+- New SendAndReceive example.
+- Added ESP8266 support.
+- Extended DEBUG output
+
+## 3.1.0
+- Generation of PWM by software is active by default.
+- Removed decode_results results.
+- Renamed most irparams_struct values.
+- Fixed LG send bug and added unit test.
+- Replaced `#define DECODE_NEC 1/0` by defining/not defining.
+- Use LED_BUILTIN instead of FEEDBACK_LED if FeedbackLEDPin is 0.
+- Use F_CPU instead of SYSCLOCK.
+- Removed SENDPIN_ON and SENDPIN_OFF macros.
+
+- Refactored board specific code for timer and feedback LED.
+- Extracted common LED feedback functions and implemented feedback for send.
+- MATCH_MARK() etc. now available as matchMark().
+- Added STM32F1 by (by Roger Clark) support.
+- Added stm32 (by ST) support. Thanks to Paolo Malaspina.
+- Added ATtiny88 support.
+
 ## 3.0.2
 - Bug fix for USE_OLD_DECODE.
 - Increase RECORD_GAP_MICROS to 11000.
@@ -13,6 +44,7 @@
 - Fixed JVC repeat error.
 
 ## 3.0.0 + 3.0.1 2021/02
+- New LSB first decoders are default.
 - Added SendRaw with byte data.
 - Fixed resume bug if irparams.rawlen >= RAW_BUFFER_LENGTH. Thanks to Iosif Peterfi
 - Added `dumpPronto(String *aString, unsigned int frequency)` with String object as argument. Thanks to Iosif Peterfi
@@ -34,10 +66,9 @@
 - Changed License to MIT see https://github.com/Arduino-IRremote/Arduino-IRremote/issues/397.
 - Added ATtiny timer 1 support.
 - Changed wrong return code signature of decodePulseDistanceData() and its handling.
-- Removed Mitsubishi protocol, since the implementation is in contradiction with all documentation I could found and therefore supposed to be wrong.
-- Removed AIWA implementation, since it is only for 1 device and at least sending implemented wrong.
+- Removed Mitsubishi protocol, since the implementation is in contradiction with all documentation I found and therefore supposed to be wrong.
+- Removed AIWA implementation, since it is only for 1 device and at least the sending was implemented wrong.
 - Added Lego_PF decode.
-- Added new example IR2Keyboard.
 - Changed internal usage of custom_delay_usec.
 - Moved dump/print functions from example to irReceiver.
 - irPronto.cpp: Using Print instead of Stream saves 1020 bytes program memory. Changed from & to * parameter type to be more transparent and consistent with other code of IRremote.
@@ -65,7 +96,7 @@
 - NEC repeat implementation.
 - Formatting and changing `TIMER_CONFIG_KHZ` and `TIMER_CONFIG_NORMAL` macros to static functions.
 - Added `IRAM_ATTR` for ESP32 ISR.
-- Removed #define `HAS_AVR_INTERRUPT_H`.
+- Removed `#define HAS_AVR_INTERRUPT_H`.
 - Changed Receiver States. Now starting with 0.
 - Changed switch to if / else if in IRRemote.cpp because of ESP32 compiler bug.
 - Changed `DEBUG` handling since compiler warns about empty "IF" or "ELSE" statements in IRRemote.cpp.
@@ -84,7 +115,7 @@
 Changes from #283 by bengtmartensson
 - Added function sendRaw_P() for sending data from flash.
 Changes from #268 by adamlhumphreys
-- Optimized by reducing floating point operations as suggested by @madmalkav (#193).
+- Optimized by reducing floating point operations as suggested by madmalkav (#193).
 - Optimized with macros when using default `MICROS_PER_TICK` and `TOLERANCE`.
 - Made decodeHash as a settable protocol defined by `DECODE_HASH`.
 - Added Philips Extended RC-5 protocol support [PR #522] (https://github.com/Arduino-IRremote/Arduino-IRremote/pull/522)
@@ -150,7 +181,7 @@ Changes from #268 by adamlhumphreys
 - Fixed and Improved many coding errors
 - Fixed Aiwa RC-T501 Decoding
 - Fixed Interrupt on ATmega8
-- Switched to Stable Release of @PlatformIO
+- Switched to Stable Release of PlatformIO
 
 ### Additions
 - Added Aiwa RC-T501 Protocol

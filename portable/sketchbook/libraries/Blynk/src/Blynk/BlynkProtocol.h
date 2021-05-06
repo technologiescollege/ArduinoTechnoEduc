@@ -335,7 +335,10 @@ bool BlynkProtocol<Transp>::processInput(void)
         BlynkParam::iterator it = param.begin();
         if (it >= param.end())
             return false;
+
         strncpy(redir_serv, it.asStr(), 32);
+        redir_serv[31] = '\0';
+
         if (++it < param.end())
             redir_port = it.asLong();
         BLYNK_LOG4(BLYNK_F("Redirecting to "), redir_serv, ':', redir_port);
@@ -367,9 +370,11 @@ bool BlynkProtocol<Transp>::processInput(void)
 
         switch (cmd32) {
         case BLYNK_INT_RTC:  BlynkWidgetWriteInternalPinRTC(req, param2);    break;
+        case BLYNK_INT_UTC:  BlynkWidgetWriteInternalPinUTC(req, param2);    break;
         case BLYNK_INT_OTA:  BlynkWidgetWriteInternalPinOTA(req, param2);    break;
         case BLYNK_INT_ACON: BlynkWidgetWriteInternalPinACON(req, param2);   break;
         case BLYNK_INT_ADIS: BlynkWidgetWriteInternalPinADIS(req, param2);   break;
+        case BLYNK_INT_META: BlynkWidgetWriteInternalPinMETA(req, param2);   break;
 #ifdef BLYNK_DEBUG
         default:             BLYNK_LOG2(BLYNK_F("Invalid internal cmd:"), param.asStr());
 #endif
@@ -435,7 +440,7 @@ void BlynkProtocol<Transp>::sendCmd(uint8_t cmd, uint16_t id, const void* data, 
     }
 
 #if defined(BLYNK_MSG_LIMIT) && BLYNK_MSG_LIMIT > 0
-    if (cmd >= BLYNK_CMD_TWEET && cmd <= BLYNK_CMD_HARDWARE) {
+    if (cmd >= BLYNK_CMD_BRIDGE && cmd <= BLYNK_CMD_HARDWARE) {
         const millis_time_t allowed_time = BlynkMax(lastActivityOut, lastActivityIn) + 1000/BLYNK_MSG_LIMIT;
         int32_t wait_time = allowed_time - BlynkMillis();
         if (wait_time >= 0) {

@@ -761,7 +761,7 @@ Blockly.Msg.GROVE_LCD_RGB_CLEAR_HELPURL = "http://wiki.seeed.cc/Grove-LCD_RGB_Ba
 Blockly.Msg.GROVE_LCD_RGB_CLEAR_TEXT = "CLEAR Grove LCD RGB";
 Blockly.Msg.GROVE_LCD_RGB_CLEAR_TOOLTIP = "Effaçage de l'écran LCD";
 
-Blockly.Msg.GROVE_LCD_RGB_SCROLL_HELPURL = "http://wiki.seeed.cc/Grove-LCD_RGB_Backlight/";
+Blockly.Msg.GROVE_INOUT_BT_AT_HELPURL = "http://wiki.seeed.cc/Grove-LCD_RGB_Backlight/";
 Blockly.Msg.GROVE_LCD_RGB_SCROLL_TEXT = "TEXT SCROLLING";
 Blockly.Msg.GROVE_LCD_RGB_SCROLL_EFFECT = "Ecrit avec un ";
 Blockly.Msg.GROVE_LCD_RGB_SCROLL_EFFECT_FIELDDROPDOWN = [["défilement à gauche", "LEFT"], ["défilement à droite", "RIGHT"], ["défilement automatique", "AUTO"]];
@@ -804,6 +804,13 @@ Blockly.Msg.GROVE_FIN_COURSE_HELPURL = "http://www.technologieservices.fr/fr/a-a
 Blockly.Msg.GROVE_FIN_COURSE_TEXT = "l'état du capteur fin de course";
 Blockly.Msg.GROVE_FIN_COURSE_INPUT = "sur la broche";
 Blockly.Msg.GROVE_FIN_COURSE_TOOLTIP = "entrée numérique classique en lecture";
+
+//************************************** ajouté 05/05/2021 \lang\BlocklyArduino **********************************************************
+Blockly.Msg.GROVE_Capacitive_Touch_Keypad_HELPURL = "https://wiki.seeedstudio.com/Grove-12-Channel-Capacitive-Touch-Keypad-ATtiny1616-/#applications";
+Blockly.Msg.GROVE_Capacitive_Touch_Keypad_TEXT = "la valeur tapée sur le clavier";
+Blockly.Msg.GROVE_Capacitive_Touch_Keypad_INPUT1 = "connecté sur la broche (Rx)";
+Blockly.Msg.GROVE_Capacitive_Touch_Keypad_INPUT2 = "et sur la broche (Tx)";
+Blockly.Msg.GROVE_Capacitive_Touch_Keypad_TOOLTIP = "renvoie, par une communication série, la valeur tapée sur le clavier";
 
 //************************************** ajoute 16/03/2017 \lang\BlocklyArduino **********************************************************
 Blockly.Msg.GROVE_INOUT_BT_AT_HELPURL = "http://wiki.seeed.cc/Grove-Serial_Bluetooth_v3.0/";
@@ -2928,6 +2935,7 @@ Blockly.Msg.STENDHAL_INOUT_TEMP_INPUT = "connecté sur la broche N°";
 Blockly.Msg.STENDHAL_INOUT_TEMP_TOOLTIP = "capteur analogique, le bloc renvoie une valeur comprise entre 0 et 1023";
 Blockly.Msg.STENDHAL_INOUT_LIGHT_HELPURL = "";
 Blockly.Msg.STENDHAL_INOUT_LIGHT_TEXT = "la valeur analogique du capteur de lumière";
+Blockly.Msg.STENDHAL_INOUT_LIGHT_DIGITAL_TEXT = "l'état du capteur de lumière";
 Blockly.Msg.STENDHAL_INOUT_LIGHT_INPUT = "connecté sur la broche N°";
 Blockly.Msg.STENDHAL_INOUT_LIGHT_TOOLTIP = "capteur analogique, le bloc renvoie une valeur comprise entre 0 et 1023";
 Blockly.Msg.STENDHAL_INOUT_MOISTURE_HELPURL = "http://www.adafruit.com/";
@@ -2938,12 +2946,14 @@ Blockly.Msg.STENDHAL_INOUT_SOUND_HELPURL = "http://www.adafruit.com/";
 Blockly.Msg.STENDHAL_INOUT_SOUND_TEXT = "la valeur analogique du  capteur de son";
 Blockly.Msg.STENDHAL_INOUT_SOUND_INPUT = "connecté sur la broche N°";
 Blockly.Msg.STENDHAL_INOUT_SOUND_TOOLTIP = "capteur analogique, le bloc renvoie une valeur comprise entre 0 et 1023";
-Blockly.Msg.STENDHAL_INOUT_DS18B20_TEXT1 = "un capteur DS18B20";
-Blockly.Msg.STENDHAL_INOUT_DS18B20_INPUT1 = "est présent sur la broche";
-Blockly.Msg.STENDHAL_INOUT_DS18B20_INPUT2 = "à l'adresse";
-Blockly.Msg.STENDHAL_INOUT_DS18B20_TOOLTIP1 = "test si un capteur de température est présent, renvoie 'vrai' si présent";
+Blockly.Msg.STENDHAL_INOUT_DS18B20_TEXT1 = "capteurs DS18B20";
+Blockly.Msg.STENDHAL_INOUT_DS18B20_INPUT1 = "présents sur la broche";
+Blockly.Msg.STENDHAL_INOUT_DS18B20_INPUT2 = "nombre";
+Blockly.Msg.STENDHAL_INOUT_DS18B20_TOOLTIP1 = "initialise les capteurs en série sur une broche";
 Blockly.Msg.STENDHAL_INOUT_DS18B20_HELPURL = "https://www.carnetdumaker.net/articles/mesurer-une-temperature-avec-un-capteur-1-wire-ds18b20-et-une-carte-arduino-genuino/";
-Blockly.Msg.STENDHAL_INOUT_DS18B20_TEXT2 = "la valeur du capteur DS18B20";
+Blockly.Msg.STENDHAL_INOUT_DS18B20_TEXT2 = "attribuer à la variable";
+Blockly.Msg.STENDHAL_INOUT_DS18B20_INPUT3 = "la valeur du capteur sur la broche";
+Blockly.Msg.STENDHAL_INOUT_DS18B20_INPUT4 = "à la position";
 Blockly.Msg.STENDHAL_INOUT_DS18B20_TOOLTIP2 = "renvoie la valeur du capteur de température, en nombre flottant";
 Blockly.Msg.STENDHAL_INOUT_PIR_HELPURL = "http://www.adafruit.com/";
 Blockly.Msg.STENDHAL_INOUT_PIR_TEXT = "l'état du détecteur de mouvement";
