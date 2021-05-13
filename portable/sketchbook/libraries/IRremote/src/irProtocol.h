@@ -38,6 +38,8 @@
  */
 typedef enum {
     UNKNOWN = 0,
+    PULSE_DISTANCE,
+    PULSE_WIDTH,
     DENON,
     DISH,
     JVC,

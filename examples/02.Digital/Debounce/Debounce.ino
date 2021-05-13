@@ -6,7 +6,7 @@
   minimum delay between toggles to debounce the circuit (i.e. to ignore noise).
 
   The circuit:
-  - LED attached from pin 13 to ground
+  - LED attached from pin 13 to ground through 220 ohm resistor
   - pushbutton attached from pin 2 to +5V
   - 10 kilohm resistor attached from pin 2 to ground
 
@@ -24,7 +24,7 @@
 
   This example code is in the public domain.
 
-  http://www.arduino.cc/en/Tutorial/Debounce
+  https://www.arduino.cc/en/Tutorial/BuiltInExamples/Debounce
 */
 
 // constants won't change. They're used here to set pin numbers:

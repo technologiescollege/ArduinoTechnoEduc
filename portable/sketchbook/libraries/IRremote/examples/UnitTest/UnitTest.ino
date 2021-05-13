@@ -52,13 +52,14 @@
 #define DECODE_RC5
 #define DECODE_RC6
 #define DECODE_PANASONIC    // the same as DECODE_KASEIKYO
-#define DECODE_SAMSUNG
 #define DECODE_LG
 
+#define DECODE_DISTANCE     // universal decoder for pulse width or pulse distance protocols
 #define DECODE_HASH         // special decoder for all protocols
 #endif
 
 #if FLASHEND >= 0x7FFF      // Additional code for less equal than 32k flash, like ATmega328
+#define DECODE_SAMSUNG
 
 #define DECODE_BOSEWAVE
 #define DECODE_LEGO_PF
@@ -124,12 +125,14 @@ void setup() {
     Serial.print(F("Send signal mark duration is "));
     Serial.print(IrSender.periodOnTimeMicros);
     Serial.print(F(" us, pulse correction is "));
-    Serial.print((uint16_t) PULSE_CORRECTION_NANOS);
+    Serial.print(IrSender.getPulseCorrectionNanos());
     Serial.print(F(" ns, total period is "));
     Serial.print(IrSender.periodTimeMicros);
     Serial.println(F(" us"));
 
     // infos for receive
+    Serial.print(RECORD_GAP_MICROS);
+    Serial.println(F(" us is the (minimum) gap, after which the start of a new IR packet is assumed"));
     Serial.print(MARK_EXCESS_MICROS);
     Serial.println(F(" us are subtracted from all marks and added to all spaces for decoding"));
 #endif

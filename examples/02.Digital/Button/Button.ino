@@ -5,7 +5,7 @@
   when pressing a pushbutton attached to pin 2.
 
   The circuit:
-  - LED attached from pin 13 to ground
+  - LED attached from pin 13 to ground through 220 ohm resistor
   - pushbutton attached to pin 2 from +5V
   - 10K resistor attached to pin 2 from ground
 
@@ -19,7 +19,7 @@
 
   This example code is in the public domain.
 
-  http://www.arduino.cc/en/Tutorial/Button
+  https://www.arduino.cc/en/Tutorial/BuiltInExamples/Button
 */
 
 // constants won't change. They're used here to set pin numbers:

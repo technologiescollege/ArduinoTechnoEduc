@@ -45,6 +45,7 @@
  */
 #define MARK_EXCESS_MICROS    20 // recommended for the cheap VS1838 modules
 
+//#define RECORD_GAP_MICROS 12000 // Activate it for some LG air conditioner protocols
 #include <IRremote.h>
 
 //+=============================================================================
@@ -84,9 +85,11 @@ void loop() {
             Serial.println(F("Raw result in microseconds - with leading gap"));
             IrReceiver.printIRResultRawFormatted(&Serial, true);  // Output the results in RAW format
             Serial.println();                               // blank line between entries
-            Serial.println(F("Result as internal ticks (50 us) array - compensated with MARK_EXCESS_MICROS"));
+            Serial.print(F("Result as internal ticks (50 us) array - compensated with MARK_EXCESS_MICROS="));
+            Serial.println(MARK_EXCESS_MICROS);
             IrReceiver.compensateAndPrintIRResultAsCArray(&Serial, false); // Output the results as uint8_t source code array of ticks
-            Serial.println(F("Result as microseconds array - compensated with MARK_EXCESS_MICROS"));
+            Serial.print(F("Result as microseconds array - compensated with MARK_EXCESS_MICROS="));
+            Serial.println(MARK_EXCESS_MICROS);
             IrReceiver.compensateAndPrintIRResultAsCArray(&Serial, true); // Output the results as uint16_t source code array of micros
             IrReceiver.printIRResultAsCVariables(&Serial);  // Output address and data as source code variables
 

@@ -45,6 +45,7 @@
 //#define DISABLE_LED_FEEDBACK_FOR_RECEIVE // saves 108 bytes program space
 #if FLASHEND <= 0x1FFF
 #define EXCLUDE_EXOTIC_PROTOCOLS
+#define EXCLUDE_UNIVERSAL_PROTOCOLS
 #endif
 //#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 670 bytes program space if all other protocols are active
 //#define IR_MEASURE_TIMING
@@ -52,6 +53,8 @@
 // MARK_EXCESS_MICROS is subtracted from all marks and added to all spaces before decoding,
 // to compensate for the signal forming of different IR receiver modules.
 #define MARK_EXCESS_MICROS    20 // 20 is recommended for the cheap VS1838 modules
+
+//#define RECORD_GAP_MICROS 12000 // Activate it for some LG air conditioner protocols
 
 /*
  * First define macros for input and output pin etc.
@@ -108,6 +111,8 @@ void setup() {
 #endif
 
     // infos for receive
+    Serial.print(RECORD_GAP_MICROS);
+    Serial.println(F(" us is the (minimum) gap, after which the start of a new IR packet is assumed"));
     Serial.print(MARK_EXCESS_MICROS);
     Serial.println(F(" us are subtracted from all marks and added to all spaces for decoding"));
 }
@@ -150,13 +155,17 @@ void loop() {
         }
 
 #  if !defined(ESP32) && !defined(ESP8266) && !defined(NRF5)
-        /*
-         * Play tone, wait and restore IR timer
-         */
-        IrReceiver.stop();
-        tone(TONE_PIN, 2200, 10);
-        delay(8);
-        IrReceiver.start(8000); // to compensate for 11 ms stop of receiver. This enables a correct gap measurement.
+        if (IrReceiver.decodedIRData.protocol != UNKNOWN) {
+            /*
+             * Play tone, wait and restore IR timer, if a valid protocol was received
+             * Otherwise do not disturb the detection of the gap between transmissions. This will give
+             * the next printIRResult* call a chance to report about changing the RECORD_GAP_MICROS value.
+             */
+            IrReceiver.stop();
+            tone(TONE_PIN, 2200, 10);
+            delay(8);
+            IrReceiver.start(8000); // to compensate for 8 ms stop of receiver. This enables a correct gap measurement.
+        }
 #  endif
 #endif // FLASHEND > 0x1FFF
 
