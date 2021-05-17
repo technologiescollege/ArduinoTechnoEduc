@@ -3896,6 +3896,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.1.0",
+          "deprecated": true,
           "category": "Contributed",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.0.tar.bz2",
           "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.0.tar.bz2",
@@ -3905,6 +3906,9 @@
             "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -3928,6 +3932,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.1.1",
+          "deprecated": true,
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.1.tar.bz2",
           "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.1.tar.bz2",
@@ -3937,6 +3942,9 @@
             "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -3960,6 +3968,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.1.2",
+          "deprecated": true,
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.2.tar.bz2",
           "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.2.tar.bz2",
@@ -3969,6 +3978,9 @@
             "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -3992,6 +4004,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.1.3",
+          "deprecated": true,
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.3.tar.bz2",
           "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.3.tar.bz2",
@@ -4001,6 +4014,9 @@
             "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -4024,6 +4040,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.1.4",
+          "deprecated": true,
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.4.tar.bz2",
           "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.4.tar.bz2",
@@ -4033,6 +4050,9 @@
             "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -4056,6 +4076,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.1.5",
+          "deprecated": true,
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.5.tar.bz2",
           "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.5.tar.bz2",
@@ -4065,6 +4086,9 @@
             "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -4088,6 +4112,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.1.6",
+          "deprecated": true,
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.6.tar.bz2",
           "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.6.tar.bz2",
@@ -4097,6 +4122,9 @@
             "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -4120,6 +4148,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.3.0",
+          "deprecated": true,
           "category": "Contributed",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-mbed-1.3.0.tar.bz2",
           "archiveFileName": "ArduinoCore-mbed-1.3.0.tar.bz2",
@@ -4129,6 +4158,12 @@
             "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -4157,6 +4192,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.3.1",
+          "deprecated": true,
           "category": "Contributed",
           "url": "http://downloads.arduino.cc/cores/core-ArduinoCore-mbed-1.3.1.tar.bz2",
           "archiveFileName": "core-ArduinoCore-mbed-1.3.1.tar.bz2",
@@ -4166,6 +4202,12 @@
             "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -4194,6 +4236,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "1.3.2",
+          "deprecated": true,
           "category": "Contributed",
           "url": "http://downloads.arduino.cc/cores/core-ArduinoCore-mbed-1.3.2.tar.bz2",
           "archiveFileName": "core-ArduinoCore-mbed-1.3.2.tar.bz2",
@@ -4203,6 +4246,12 @@
             "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
           ],
           "toolsDependencies": [
             {
@@ -4231,6 +4280,7 @@
           "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
           "architecture": "mbed",
           "version": "2.0.0",
+          "deprecated": true,
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/ArduinoCore-mbed-2.0.0.tar.bz2",
           "archiveFileName": "ArduinoCore-mbed-2.0.0.tar.bz2",
@@ -4240,6 +4290,24 @@
             "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
           },
           "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            },
+            {
+              "name": "Arduino Nano 33 BLE Sense"
+            },
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Edge Control"
+            },
+            {
+              "name": "Raspberry Pi Pico"
+            },
+            {
+              "name": "Arduino Nano RP2040 Connect"
+            }
           ],
           "toolsDependencies": [
             {
@@ -4422,6 +4490,243 @@
               "packager": "arduino",
               "name": "openocd",
               "version": "0.11.0-arduino1"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.2",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
+          "architecture": "mbed",
+          "version": "2.1.0",
+          "deprecated": true,
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-mbed-2.1.0.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-2.1.0.tar.bz2",
+          "checksum": "SHA-256:6ec882fe5ea1728659f56373df2f06077d156517004b50502c836e68b9a9751a",
+          "size": "32179151",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            },
+            {
+              "name": "Arduino Nano 33 BLE Sense"
+            },
+            {
+              "name": "Arduino Nano RP2040 Connect"
+            },
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Edge Control"
+            },
+            {
+              "name": "Raspberry Pi Pico"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.2",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Edge Boards",
+          "architecture": "mbed_edge",
+          "version": "2.1.0",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-mbed-edge-2.1.0.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-edge-2.1.0.tar.bz2",
+          "checksum": "SHA-256:68591a6a901916cada4164f09ccd6e8a2e04b1f4244514bc8aeca5c170972b7d",
+          "size": "5195498",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Edge Control"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.2",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nano Boards",
+          "architecture": "mbed_nano",
+          "version": "2.1.0",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-mbed-nano-2.1.0.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nano-2.1.0.tar.bz2",
+          "checksum": "SHA-256:3b7362662254a4b7e2e06d7ddd9831820e4909787a7dce02fa8e9c653740b1a8",
+          "size": "6086135",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            },
+            {
+              "name": "Arduino Nano 33 BLE Sense"
+            },
+            {
+              "name": "Arduino Nano RP2040 Connect"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.2",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Portenta Boards",
+          "architecture": "mbed_portenta",
+          "version": "2.1.0",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-mbed-portenta-2.1.0.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-portenta-2.1.0.tar.bz2",
+          "checksum": "SHA-256:b74105f5b4c375dcbb095343aaf6d9adda2a1922f925b7b70e84588610f8aa3c",
+          "size": "25622118",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS RP2040 Boards",
+          "architecture": "mbed_rp2040",
+          "version": "2.1.0",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-mbed-RP2040-2.1.0.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-RP2040-2.1.0.tar.bz2",
+          "checksum": "SHA-256:f2732b910449a8ec1ff0a90e32b07276a5d082911a5c639452484ca853e05e9e",
+          "size": "3844940",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Raspberry Pi Pico"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
             },
             {
               "packager": "arduino",
@@ -6483,6 +6788,54 @@
               "host": "x86_64-linux-gnu",
               "archiveFileName": "openocd-0.11.0-arduino1-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2",
               "url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino1-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2"
+            }
+          ]
+        },
+        {
+          "name": "openocd",
+          "version": "0.11.0-arduino2",
+          "systems": [
+            {
+              "size": "1902818",
+              "checksum": "SHA-256:a1aa7f1435a61eafb72ee90722f2496d6a34a7a0f085d0315c2613e4a548b824",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "openocd-0.11.0-arduino2-static-aarch64-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-aarch64-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "1986716",
+              "checksum": "SHA-256:57041130160be086e69387cceb4616eefc9819a0ef75de1f7c11aea57fb92699",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "openocd-0.11.0-arduino2-static-arm-linux-gnueabihf.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-arm-linux-gnueabihf.tar.bz2"
+            },
+            {
+              "size": "1971364",
+              "checksum": "SHA-256:6f4a8b77c8076aa18afb8438472526dff8c0d161a3ca68d0326163b59fcab663",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "openocd-0.11.0-arduino2-static-i686-ubuntu12.04-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-i686-ubuntu12.04-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "2460087",
+              "checksum": "SHA-256:631010980f12b1e750c4c67ce012b31c5953caabf4d30607d806e3d2b717d4b8",
+              "host": "i686-mingw32",
+              "archiveFileName": "openocd-0.11.0-arduino2-static-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-i686-w64-mingw32.zip"
+            },
+            {
+              "size": "1893150",
+              "checksum": "SHA-256:280e7234eba84e830e92d791ebc685286f71d2bc1d3347f93605ef170d54fef4",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "openocd-0.11.0-arduino2-static-x86_64-apple-darwin13.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-x86_64-apple-darwin13.tar.bz2"
+            },
+            {
+              "size": "2052080",
+              "checksum": "SHA-256:4d19b6e3906de1434ec86841e0e3138235714c655d45f037c0fabfa5e5c0681b",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "openocd-0.11.0-arduino2-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2"
             }
           ]
         },
