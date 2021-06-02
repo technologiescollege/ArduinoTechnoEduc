@@ -1,0 +1,19 @@
+#######################################
+# Syntax Coloring Map For ArrowheadESP
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ArrowheadESP    KEYWORD1
+ArrowheadESPFS  KEYWORD1
+netInfo         KEYWORD1
+sslInfo         KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin KEYWORD2
+end KEYWORD2

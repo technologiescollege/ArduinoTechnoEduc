@@ -1,0 +1,7 @@
+{
+   "description": "mkspiffs-utility",
+   "name": "mkspiffs",
+   "system": [ "windows_x86" ],
+   "url": "https://github.com/earlephilhower/esp-quick-toolchain",
+   "version": "5.100200.210303"
+}

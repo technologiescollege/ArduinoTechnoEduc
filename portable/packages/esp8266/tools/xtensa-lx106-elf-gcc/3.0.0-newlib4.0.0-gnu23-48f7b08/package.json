@@ -1,0 +1,7 @@
+{
+   "description": "xtensa-gcc",
+   "name": "toolchain-xtensa",
+   "system": [ "windows_x86" ],
+   "url": "https://github.com/earlephilhower/esp-quick-toolchain",
+   "version": "5.100200.210303"
+}
