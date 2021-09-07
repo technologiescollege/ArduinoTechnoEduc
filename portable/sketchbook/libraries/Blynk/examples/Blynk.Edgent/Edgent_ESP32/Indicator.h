@@ -15,8 +15,9 @@ void indicator_run();
 #define BOARD_LED_IS_RGB
 #endif
 
-#define DIMM(x)    ((x)*(BOARD_LED_BRIGHTNESS)/255)
+#define DIMM(x)    ((uint32_t)(x)*(BOARD_LED_BRIGHTNESS)/255)
 #define RGB(r,g,b) (DIMM(r) << 16 | DIMM(g) << 8 | DIMM(b) << 0)
+#define TO_PWM(x)  ((uint32_t)(x)*(BOARD_PWM_MAX)/255)
 
 class Indicator {
 public:
@@ -31,6 +32,9 @@ public:
   };
 
   Indicator() {
+  }
+
+  void init() {
     m_Counter = 0;
     initLED();
   }
@@ -81,13 +85,13 @@ protected:
 #elif defined(BOARD_LED_PIN_R)     // Normal RGB LED (common anode or common cathode)
 
   void initLED() {
-    ledcAttachPin(BOARD_LED_PIN_R, LEDC_CHANNEL_1);
-    ledcAttachPin(BOARD_LED_PIN_G, LEDC_CHANNEL_2);
-    ledcAttachPin(BOARD_LED_PIN_B, LEDC_CHANNEL_3);
+    ledcAttachPin(BOARD_LED_PIN_R, BOARD_LEDC_CHANNEL_1);
+    ledcAttachPin(BOARD_LED_PIN_G, BOARD_LEDC_CHANNEL_2);
+    ledcAttachPin(BOARD_LED_PIN_B, BOARD_LEDC_CHANNEL_3);
 
-    ledcSetup(LEDC_CHANNEL_1, LEDC_BASE_FREQ, LEDC_TIMER_BITS);
-    ledcSetup(LEDC_CHANNEL_2, LEDC_BASE_FREQ, LEDC_TIMER_BITS);
-    ledcSetup(LEDC_CHANNEL_3, LEDC_BASE_FREQ, LEDC_TIMER_BITS);
+    ledcSetup(BOARD_LEDC_CHANNEL_1, BOARD_LEDC_BASE_FREQ, BOARD_LEDC_TIMER_BITS);
+    ledcSetup(BOARD_LEDC_CHANNEL_2, BOARD_LEDC_BASE_FREQ, BOARD_LEDC_TIMER_BITS);
+    ledcSetup(BOARD_LEDC_CHANNEL_3, BOARD_LEDC_BASE_FREQ, BOARD_LEDC_TIMER_BITS);
   }
 
   void setRGB(uint32_t color) {
@@ -95,34 +99,40 @@ protected:
     uint8_t g = (color & 0x00FF00) >> 8;
     uint8_t b = (color & 0x0000FF);
     #if BOARD_LED_INVERSE
-    ledcWrite(LEDC_CHANNEL_1, BOARD_PWM_MAX - r);
-    ledcWrite(LEDC_CHANNEL_2, BOARD_PWM_MAX - g);
-    ledcWrite(LEDC_CHANNEL_3, BOARD_PWM_MAX - b);
+    ledcWrite(BOARD_LEDC_CHANNEL_1, TO_PWM(255 - r));
+    ledcWrite(BOARD_LEDC_CHANNEL_2, TO_PWM(255 - g));
+    ledcWrite(BOARD_LEDC_CHANNEL_3, TO_PWM(255 - b));
     #else
-    ledcWrite(LEDC_CHANNEL_1, r);
-    ledcWrite(LEDC_CHANNEL_2, g);
-    ledcWrite(LEDC_CHANNEL_3, b);
+    ledcWrite(BOARD_LEDC_CHANNEL_1, TO_PWM(r));
+    ledcWrite(BOARD_LEDC_CHANNEL_2, TO_PWM(g));
+    ledcWrite(BOARD_LEDC_CHANNEL_3, TO_PWM(b));
     #endif
   }
 
 #elif defined(BOARD_LED_PIN)       // Single color LED
 
   void initLED() {
-    ledcSetup(LEDC_CHANNEL_1, LEDC_BASE_FREQ, LEDC_TIMER_BITS);
-    ledcAttachPin(BOARD_LED_PIN, LEDC_CHANNEL_1);
+    ledcSetup(BOARD_LEDC_CHANNEL_1, BOARD_LEDC_BASE_FREQ, BOARD_LEDC_TIMER_BITS);
+    ledcAttachPin(BOARD_LED_PIN, BOARD_LEDC_CHANNEL_1);
   }
 
   void setLED(uint32_t color) {
     #if BOARD_LED_INVERSE
-    ledcWrite(LEDC_CHANNEL_1, BOARD_PWM_MAX - color);
+    ledcWrite(BOARD_LEDC_CHANNEL_1, TO_PWM(255 - color));
     #else
-    ledcWrite(LEDC_CHANNEL_1, color);
+    ledcWrite(BOARD_LEDC_CHANNEL_1, TO_PWM(color));
     #endif
   }
 
 #else
 
   #warning Invalid LED configuration.
+
+  void initLED() {
+  }
+
+  void setLED(uint32_t color) {
+  }
 
 #endif
 
@@ -170,16 +180,16 @@ protected:
   template<typename T>
   uint32_t beatLED(uint32_t, const T& beat) {
     const uint8_t cnt = sizeof(beat)/sizeof(beat[0]);
-    setLED((m_Counter % 2 == 0) ? DIMM(BOARD_PWM_MAX) : 0);
+    setLED((m_Counter % 2 == 0) ? BOARD_LED_BRIGHTNESS : 0);
     uint32_t next = beat[m_Counter % cnt];
     m_Counter = (m_Counter+1) % cnt;
     return next;
   }
 
   uint32_t waveLED(uint32_t, unsigned breathePeriod) {
-    uint8_t brightness = (m_Counter < 128) ? m_Counter : 255 - m_Counter;
+    uint32_t brightness = (m_Counter < 128) ? m_Counter : 255 - m_Counter;
 
-    setLED(BOARD_PWM_MAX * (DIMM((float)brightness) / (BOARD_PWM_MAX/2)));
+    setLED(DIMM(brightness*2));
 
     // This function relies on the 8-bit, unsigned m_Counter rolling over.
     m_Counter = (m_Counter+1) % 256;
@@ -213,7 +223,27 @@ Indicator indicator;
   }
 
   void indicator_init() {
+    indicator.init();
     blinker.attach_ms(100, indicator_run);
+  }
+
+#elif defined(USE_PTHREAD)
+
+  #include <pthread.h>
+
+  pthread_t blinker;
+
+  void* indicator_thread(void*) {
+    while (true) {
+      uint32_t returnTime = indicator.run();
+      returnTime = BlynkMathClamp(returnTime, 1, 10000);
+      vTaskDelay(returnTime);
+    }
+  }
+
+  void indicator_init() {
+    indicator.init();
+    pthread_create(&blinker, NULL, indicator_thread, NULL);
   }
 
 #elif defined(USE_TIMER_ONE)
@@ -228,6 +258,7 @@ Indicator indicator;
   }
 
   void indicator_init() {
+    indicator.init();
     Timer1.initialize(100*1000);
     Timer1.attachInterrupt(indicator_run);
   }
@@ -244,8 +275,28 @@ Indicator indicator;
   }
 
   void indicator_init() {
+    indicator.init();
     Timer3.initialize(100*1000);
     Timer3.attachInterrupt(indicator_run);
+  }
+
+#elif defined(USE_TIMER_FIVE)
+
+  #include <Timer5.h>    // Library: https://github.com/michael71/Timer5
+
+  int indicator_counter = -1;
+  void indicator_run() {
+    indicator_counter -= 10;
+    if (indicator_counter < 0) {
+      indicator_counter = indicator.run();
+    }
+  }
+
+  void indicator_init() {
+    indicator.init();
+    MyTimer5.begin(1000/10);
+    MyTimer5.attachInterrupt(indicator_run);
+    MyTimer5.start();
   }
 
 #else

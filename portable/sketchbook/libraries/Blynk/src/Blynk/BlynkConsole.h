@@ -20,6 +20,10 @@
 #include <functional>
 #endif
 
+#ifdef BLYNK_CONSOLE_USE_STREAM
+#include <stdarg.h>
+#endif
+
 class BlynkConsole
 {
 private:
@@ -81,6 +85,22 @@ public:
 #endif
 
     }
+
+#ifdef BLYNK_CONSOLE_USE_STREAM
+    template <typename T>
+    void print(T val) {
+        stream->print(val);
+    }
+
+    void printf(char *fmt, ... ) {
+        char buf[256];
+        va_list args;
+        va_start (args, fmt);
+        vsnprintf(buf, sizeof(buf), fmt, args);
+        va_end (args);
+        stream->print(buf);
+    }
+#endif
 
     void addCommand(const char* cmd, HandlerSimp h) {
         if (commandsQty >= BLYNK_CONSOLE_MAX_COMMANDS) return;

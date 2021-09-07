@@ -4,6 +4,12 @@
 #include <ESP8266HTTPUpdateServer.h>
 #include <DNSServer.h>
 
+ESP8266WebServer server(80);
+ESP8266HTTPUpdateServer httpUpdater;
+DNSServer dnsServer;
+const byte DNS_PORT = 53;
+
+
 #ifdef BLYNK_USE_SPIFFS
   #include <FS.h>
 #else
@@ -46,7 +52,7 @@
     <tr><td><label for="ssid">WiFi SSID:</label></td>  <td><input type="text" name="ssid" length=64 required="required"></td></tr>
     <tr><td><label for="pass">Password:</label></td>   <td><input type="text" name="pass" length=64></td></tr>
     <tr><td><label for="blynk">Auth token:</label></td><td><input type="text" name="blynk" placeholder="a0b1c2d..." pattern="[-_a-zA-Z0-9]{32}" maxlength="32" required="required"></td></tr>
-    <tr><td><label for="host">Host:</label></td>       <td><input type="text" name="host" length=64></td></tr>
+    <tr><td><label for="host">Host:</label></td>       <td><input type="text" name="host" value="blynk.cloud" length=64></td></tr>
     <tr><td><label for="port_ssl">Port:</label></td>   <td><input type="number" name="port_ssl" value="443" min="1" max="65535"></td></tr>
     </table><br/>
     <input type="submit" value="Apply">
@@ -57,11 +63,6 @@
 )html";
 #endif
 
-ESP8266WebServer server(WIFI_AP_CONFIG_PORT);
-ESP8266HTTPUpdateServer httpUpdater;
-DNSServer dnsServer;
-const byte DNS_PORT = 53;
-
 void restartMCU() {
   ESP.restart();
   delay(10000);
@@ -71,14 +72,19 @@ void restartMCU() {
 
 
 void getWiFiName(char* buff, size_t len, bool withPrefix = true) {
-  uint32_t chipId = ESP.getChipId();
-  randomSeed(chipId);
-  const uint32_t unique = random(0xFFFFF);
+  byte mac[6] = { 0, };
+  WiFi.macAddress(mac);
+
+  uint32_t unique = 0;
+  for (int i=0; i<4; i++) {
+    unique = BlynkCRC32(&mac, sizeof(mac), unique);
+  }
+  unique &= 0xFFFFF;
 
   if (withPrefix) {
-    snprintf(buff, len, "Blynk %s-%05X", BLYNK_DEVICE_NAME, unique & 0xFFFFF);
+    snprintf(buff, len, "Blynk %s-%05X", BLYNK_DEVICE_NAME, unique);
   } else {
-    snprintf(buff, len, "%s-%05X", BLYNK_DEVICE_NAME, unique & 0xFFFFF);      
+    snprintf(buff, len, "%s-%05X", BLYNK_DEVICE_NAME, unique);
   }
 }
 
@@ -205,12 +211,11 @@ void enterConfigMode()
     getWiFiName(ssidBuff, sizeof(ssidBuff));
     char buff[512];
     snprintf(buff, sizeof(buff),
-      R"json({"board":"%s","tmpl_id":"%s","fw_type":"%s","fw_ver":"%s","hw_ver":"%s","ssid":"%s","bssid":"%s","last_error":%d,"wifi_scan":true,"static_ip":true})json",
+      R"json({"board":"%s","tmpl_id":"%s","fw_type":"%s","fw_ver":"%s","ssid":"%s","bssid":"%s","last_error":%d,"wifi_scan":true,"static_ip":true})json",
       BLYNK_DEVICE_NAME,
       tmpl ? tmpl : "Unknown",
       BLYNK_FIRMWARE_TYPE,
       BLYNK_FIRMWARE_VERSION,
-      BOARD_HARDWARE_VERSION,
       ssidBuff,
       WiFi.softAPmacAddress().c_str(),
       configStore.last_error
@@ -220,15 +225,16 @@ void enterConfigMode()
   server.on("/wifi_scan.json", []() {
     DEBUG_PRINT("Scanning networks...");
     int wifi_nets = WiFi.scanNetworks(true, true);
-    while (wifi_nets == -1) {
+    const uint32_t t = millis();
+    while (wifi_nets < 0 &&
+           millis() - t < 20000)
+    {
       delay(20);
       wifi_nets = WiFi.scanComplete();
     }
     DEBUG_PRINT(String("Found networks: ") + wifi_nets);
-    if (wifi_nets) {
-      server.setContentLength(CONTENT_LENGTH_UNKNOWN);
-      server.send(200, "application/json", "[\n");
-      
+
+    if (wifi_nets > 0) {
       // Sort networks
       int indices[wifi_nets];
       for (int i = 0; i < wifi_nets; i++) {
@@ -245,6 +251,9 @@ void enterConfigMode()
       wifi_nets = BlynkMin(15, wifi_nets); // Show top 15 networks
 
       // TODO: skip empty names
+      server.setContentLength(CONTENT_LENGTH_UNKNOWN);
+      server.send(200, "application/json", "[\n");
+
 
       char buff[256];
       for (int i = 0; i < wifi_nets; i++){
@@ -354,6 +363,7 @@ void enterConnectNet() {
   {
     delay(10);
     app_loop();
+
     if (!BlynkState::is(MODE_CONNECTING_NET)) {
       WiFi.disconnect();
       return;

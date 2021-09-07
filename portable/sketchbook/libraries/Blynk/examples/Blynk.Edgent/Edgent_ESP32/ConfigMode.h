@@ -7,6 +7,10 @@
 #include <nvs.h>
 #include <nvs_flash.h>
 
+WebServer server(80);
+DNSServer dnsServer;
+const byte DNS_PORT = 53;
+
 #ifdef BLYNK_USE_SPIFFS
   #include "SPIFFS.h"
 #else
@@ -49,7 +53,7 @@
     <tr><td><label for="ssid">WiFi SSID:</label></td>  <td><input type="text" name="ssid" length=64 required="required"></td></tr>
     <tr><td><label for="pass">Password:</label></td>   <td><input type="text" name="pass" length=64></td></tr>
     <tr><td><label for="blynk">Auth token:</label></td><td><input type="text" name="blynk" placeholder="a0b1c2d..." pattern="[-_a-zA-Z0-9]{32}" maxlength="32" required="required"></td></tr>
-    <tr><td><label for="host">Host:</label></td>       <td><input type="text" name="host" length=64></td></tr>
+    <tr><td><label for="host">Host:</label></td>       <td><input type="text" name="host" value="blynk.cloud" length=64></td></tr>
     <tr><td><label for="port_ssl">Port:</label></td>   <td><input type="number" name="port_ssl" value="443" min="1" max="65535"></td></tr>
     </table><br/>
     <input type="submit" value="Apply">
@@ -59,10 +63,6 @@
 </html>
 )html";
 #endif
-
-WebServer server(WIFI_AP_CONFIG_PORT);
-DNSServer dnsServer;
-const byte DNS_PORT = 53;
 
 static const char serverUpdateForm[] PROGMEM =
   R"(<html><body>
@@ -92,10 +92,12 @@ void getWiFiName(char* buff, size_t len, bool withPrefix = true) {
   for (int i=0; i<4; i++) {
     unique = BlynkCRC32(&chipId, sizeof(chipId), unique);
   }
+  unique &= 0xFFFFF;
+
   if (withPrefix) {
-    snprintf(buff, len, "Blynk %s-%05X", BLYNK_DEVICE_NAME, unique & 0xFFFFF);
+    snprintf(buff, len, "Blynk %s-%05X", BLYNK_DEVICE_NAME, unique);
   } else {
-    snprintf(buff, len, "%s-%05X", BLYNK_DEVICE_NAME, unique & 0xFFFFF);      
+    snprintf(buff, len, "%s-%05X", BLYNK_DEVICE_NAME, unique);
   }
 }
 
@@ -248,12 +250,11 @@ void enterConfigMode()
     getWiFiName(ssidBuff, sizeof(ssidBuff));
     char buff[512];
     snprintf(buff, sizeof(buff),
-      R"json({"board":"%s","tmpl_id":"%s","fw_type":"%s","fw_ver":"%s","hw_ver":"%s","ssid":"%s","bssid":"%s","last_error":%d,"wifi_scan":true,"static_ip":true})json",
+      R"json({"board":"%s","tmpl_id":"%s","fw_type":"%s","fw_ver":"%s","ssid":"%s","bssid":"%s","last_error":%d,"wifi_scan":true,"static_ip":true})json",
       BLYNK_DEVICE_NAME,
       tmpl ? tmpl : "Unknown",
       BLYNK_FIRMWARE_TYPE,
       BLYNK_FIRMWARE_VERSION,
-      BOARD_HARDWARE_VERSION,
       ssidBuff,
       WiFi.softAPmacAddress().c_str(),
       configStore.last_error
@@ -263,15 +264,16 @@ void enterConfigMode()
   server.on("/wifi_scan.json", []() {
     DEBUG_PRINT("Scanning networks...");
     int wifi_nets = WiFi.scanNetworks(true, true);
-    while (wifi_nets == -1) {
+    const uint32_t t = millis();
+    while (wifi_nets < 0 &&
+           millis() - t < 20000)
+    {
       delay(20);
       wifi_nets = WiFi.scanComplete();
     }
     DEBUG_PRINT(String("Found networks: ") + wifi_nets);
 
-    String result = "[\n";
-    if (wifi_nets) {
-      
+    if (wifi_nets > 0) {
       // Sort networks
       int indices[wifi_nets];
       for (int i = 0; i < wifi_nets; i++) {
@@ -288,6 +290,7 @@ void enterConfigMode()
       wifi_nets = BlynkMin(15, wifi_nets); // Show top 15 networks
 
       // TODO: skip empty names
+      String result = "[\n";
 
       char buff[256];
       for (int i = 0; i < wifi_nets; i++){
@@ -367,7 +370,6 @@ void enterConnectNet() {
   getWiFiName(ssidBuff, sizeof(ssidBuff));
   String hostname(ssidBuff);
   hostname.replace(" ", "-");
-
   WiFi.setHostname(hostname.c_str());
 
   if (configStore.getFlag(CONFIG_FLAG_STATIC_IP)) {
@@ -391,6 +393,7 @@ void enterConnectNet() {
   {
     delay(10);
     app_loop();
+
     if (!BlynkState::is(MODE_CONNECTING_NET)) {
       WiFi.disconnect();
       return;

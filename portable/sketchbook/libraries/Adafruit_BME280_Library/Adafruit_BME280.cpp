@@ -30,13 +30,11 @@
 
 #include "Adafruit_BME280.h"
 #include "Arduino.h"
-#include <SPI.h>
-#include <Wire.h>
 
 /*!
  *  @brief  class constructor
  */
-Adafruit_BME280::Adafruit_BME280() : _cs(-1), _mosi(-1), _miso(-1), _sck(-1) {}
+Adafruit_BME280::Adafruit_BME280() {}
 
 /*!
  *   @brief  class constructor if using hardware SPI
@@ -45,9 +43,8 @@ Adafruit_BME280::Adafruit_BME280() : _cs(-1), _mosi(-1), _miso(-1), _sck(-1) {}
  *           optional SPI object
  */
 Adafruit_BME280::Adafruit_BME280(int8_t cspin, SPIClass *theSPI) {
-  _cs = cspin;
-  _mosi = _miso = _sck = -1;
-  _spi = theSPI;
+  spi_dev = new Adafruit_SPIDevice(cspin, 1000000, SPI_BITORDER_MSBFIRST,
+                                   SPI_MODE0, theSPI);
 }
 
 /*!
@@ -58,10 +55,17 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, SPIClass *theSPI) {
  *   @param sckpin the SCK pin to use
  */
 Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
-                                 int8_t sckpin)
-    : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin) {}
+                                 int8_t sckpin) {
+  spi_dev = new Adafruit_SPIDevice(cspin, sckpin, misopin, mosipin);
+}
 
 Adafruit_BME280::~Adafruit_BME280(void) {
+  if (spi_dev) {
+    delete spi_dev;
+  }
+  if (i2c_dev) {
+    delete i2c_dev;
+  }
   if (temp_sensor) {
     delete temp_sensor;
   }
@@ -80,12 +84,19 @@ Adafruit_BME280::~Adafruit_BME280(void) {
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
-  bool status = false;
-  _i2caddr = addr;
-  _wire = theWire;
-  status = init();
-
-  return status;
+  if (spi_dev == NULL) {
+    // I2C mode
+    if (i2c_dev)
+      delete i2c_dev;
+    i2c_dev = new Adafruit_I2CDevice(addr, theWire);
+    if (!i2c_dev->begin())
+      return false;
+  } else {
+    // SPI mode
+    if (!spi_dev->begin())
+      return false;
+  }
+  return init();
 }
 
 /*!
@@ -93,24 +104,6 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::init() {
-  // init I2C or SPI sensor interface
-  if (_cs == -1) {
-    // I2C
-    _wire->begin();
-  } else {
-    digitalWrite(_cs, HIGH);
-    pinMode(_cs, OUTPUT);
-    if (_sck == -1) {
-      // hardware SPI
-      _spi->begin();
-    } else {
-      // software SPI
-      pinMode(_sck, OUTPUT);
-      pinMode(_mosi, OUTPUT);
-      pinMode(_miso, INPUT);
-    }
-  }
-
   // check if sensor, i.e. the chip ID is correct
   _sensorID = read8(BME280_REGISTER_CHIPID);
   if (_sensorID != 0x60)
@@ -161,6 +154,7 @@ void Adafruit_BME280::setSampling(sensor_mode mode,
   _humReg.osrs_h = humSampling;
   _configReg.filter = filter;
   _configReg.t_sb = duration;
+  _configReg.spi3w_en = 0;
 
   // making sure sensor is in sleep mode before setting configuration
   // as it otherwise may be ignored
@@ -175,49 +169,19 @@ void Adafruit_BME280::setSampling(sensor_mode mode,
 }
 
 /*!
- *   @brief  Encapsulate hardware and software SPI transfer into one
- * function
- *   @param x the data byte to transfer
- *   @returns the data byte read from the device
- */
-uint8_t Adafruit_BME280::spixfer(uint8_t x) {
-  // hardware SPI
-  if (_sck == -1)
-    return _spi->transfer(x);
-
-  // software SPI
-  uint8_t reply = 0;
-  for (int i = 7; i >= 0; i--) {
-    reply <<= 1;
-    digitalWrite(_sck, LOW);
-    digitalWrite(_mosi, x & (1 << i));
-    digitalWrite(_sck, HIGH);
-    if (digitalRead(_miso))
-      reply |= 1;
-  }
-  return reply;
-}
-
-/*!
  *   @brief  Writes an 8 bit value over I2C or SPI
  *   @param reg the register address to write to
  *   @param value the value to write to the register
  */
 void Adafruit_BME280::write8(byte reg, byte value) {
-  if (_cs == -1) {
-    _wire->beginTransmission((uint8_t)_i2caddr);
-    _wire->write((uint8_t)reg);
-    _wire->write((uint8_t)value);
-    _wire->endTransmission();
+  byte buffer[2];
+  buffer[1] = value;
+  if (i2c_dev) {
+    buffer[0] = reg;
+    i2c_dev->write(buffer, 2);
   } else {
-    if (_sck == -1)
-      _spi->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
-    digitalWrite(_cs, LOW);
-    spixfer(reg & ~0x80); // write, bit 7 low
-    spixfer(value);
-    digitalWrite(_cs, HIGH);
-    if (_sck == -1)
-      _spi->endTransaction(); // release the SPI bus
+    buffer[0] = reg & ~0x80;
+    spi_dev->write(buffer, 2);
   }
 }
 
@@ -227,25 +191,15 @@ void Adafruit_BME280::write8(byte reg, byte value) {
  *   @returns the data byte read from the device
  */
 uint8_t Adafruit_BME280::read8(byte reg) {
-  uint8_t value;
-
-  if (_cs == -1) {
-    _wire->beginTransmission((uint8_t)_i2caddr);
-    _wire->write((uint8_t)reg);
-    _wire->endTransmission();
-    _wire->requestFrom((uint8_t)_i2caddr, (byte)1);
-    value = _wire->read();
+  uint8_t buffer[1];
+  if (i2c_dev) {
+    buffer[0] = uint8_t(reg);
+    i2c_dev->write_then_read(buffer, 1, buffer, 1);
   } else {
-    if (_sck == -1)
-      _spi->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
-    digitalWrite(_cs, LOW);
-    spixfer(reg | 0x80); // read, bit 7 high
-    value = spixfer(0);
-    digitalWrite(_cs, HIGH);
-    if (_sck == -1)
-      _spi->endTransaction(); // release the SPI bus
+    buffer[0] = uint8_t(reg | 0x80);
+    spi_dev->write_then_read(buffer, 1, buffer, 1);
   }
-  return value;
+  return buffer[0];
 }
 
 /*!
@@ -254,26 +208,16 @@ uint8_t Adafruit_BME280::read8(byte reg) {
  *   @returns the 16 bit data value read from the device
  */
 uint16_t Adafruit_BME280::read16(byte reg) {
-  uint16_t value;
+  uint8_t buffer[2];
 
-  if (_cs == -1) {
-    _wire->beginTransmission((uint8_t)_i2caddr);
-    _wire->write((uint8_t)reg);
-    _wire->endTransmission();
-    _wire->requestFrom((uint8_t)_i2caddr, (byte)2);
-    value = (_wire->read() << 8) | _wire->read();
+  if (i2c_dev) {
+    buffer[0] = uint8_t(reg);
+    i2c_dev->write_then_read(buffer, 1, buffer, 2);
   } else {
-    if (_sck == -1)
-      _spi->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
-    digitalWrite(_cs, LOW);
-    spixfer(reg | 0x80); // read, bit 7 high
-    value = (spixfer(0) << 8) | spixfer(0);
-    digitalWrite(_cs, HIGH);
-    if (_sck == -1)
-      _spi->endTransaction(); // release the SPI bus
+    buffer[0] = uint8_t(reg | 0x80);
+    spi_dev->write_then_read(buffer, 1, buffer, 2);
   }
-
-  return value;
+  return uint16_t(buffer[0]) << 8 | uint16_t(buffer[1]);
 }
 
 /*!
@@ -308,37 +252,18 @@ int16_t Adafruit_BME280::readS16_LE(byte reg) {
  *   @returns the 24 bit data value read from the device
  */
 uint32_t Adafruit_BME280::read24(byte reg) {
-  uint32_t value;
+  uint8_t buffer[3];
 
-  if (_cs == -1) {
-    _wire->beginTransmission((uint8_t)_i2caddr);
-    _wire->write((uint8_t)reg);
-    _wire->endTransmission();
-    _wire->requestFrom((uint8_t)_i2caddr, (byte)3);
-
-    value = _wire->read();
-    value <<= 8;
-    value |= _wire->read();
-    value <<= 8;
-    value |= _wire->read();
+  if (i2c_dev) {
+    buffer[0] = uint8_t(reg);
+    i2c_dev->write_then_read(buffer, 1, buffer, 3);
   } else {
-    if (_sck == -1)
-      _spi->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
-    digitalWrite(_cs, LOW);
-    spixfer(reg | 0x80); // read, bit 7 high
-
-    value = spixfer(0);
-    value <<= 8;
-    value |= spixfer(0);
-    value <<= 8;
-    value |= spixfer(0);
-
-    digitalWrite(_cs, HIGH);
-    if (_sck == -1)
-      _spi->endTransaction(); // release the SPI bus
+    buffer[0] = uint8_t(reg | 0x80);
+    spi_dev->write_then_read(buffer, 1, buffer, 3);
   }
 
-  return value;
+  return uint32_t(buffer[0]) << 16 | uint32_t(buffer[1]) << 8 |
+         uint32_t(buffer[2]);
 }
 
 /*!
@@ -421,20 +346,16 @@ float Adafruit_BME280::readTemperature(void) {
     return NAN;
   adc_T >>= 4;
 
-  var1 = ((((adc_T >> 3) - ((int32_t)_bme280_calib.dig_T1 << 1))) *
-          ((int32_t)_bme280_calib.dig_T2)) >>
-         11;
-
-  var2 = (((((adc_T >> 4) - ((int32_t)_bme280_calib.dig_T1)) *
-            ((adc_T >> 4) - ((int32_t)_bme280_calib.dig_T1))) >>
-           12) *
-          ((int32_t)_bme280_calib.dig_T3)) >>
-         14;
+  var1 = (int32_t)((adc_T / 8) - ((int32_t)_bme280_calib.dig_T1 * 2));
+  var1 = (var1 * ((int32_t)_bme280_calib.dig_T2)) / 2048;
+  var2 = (int32_t)((adc_T / 16) - ((int32_t)_bme280_calib.dig_T1));
+  var2 = (((var2 * var2) / 4096) * ((int32_t)_bme280_calib.dig_T3)) / 16384;
 
   t_fine = var1 + var2 + t_fine_adjust;
 
-  float T = (t_fine * 5 + 128) >> 8;
-  return T / 100;
+  int32_t T = (t_fine * 5 + 128) / 256;
+
+  return (float)T / 100;
 }
 
 /*!
@@ -442,7 +363,7 @@ float Adafruit_BME280::readTemperature(void) {
  *   @returns the pressure value (in Pascal) read from the device
  */
 float Adafruit_BME280::readPressure(void) {
-  int64_t var1, var2, p;
+  int64_t var1, var2, var3, var4;
 
   readTemperature(); // must be done first to get t_fine
 
@@ -453,23 +374,27 @@ float Adafruit_BME280::readPressure(void) {
 
   var1 = ((int64_t)t_fine) - 128000;
   var2 = var1 * var1 * (int64_t)_bme280_calib.dig_P6;
-  var2 = var2 + ((var1 * (int64_t)_bme280_calib.dig_P5) << 17);
-  var2 = var2 + (((int64_t)_bme280_calib.dig_P4) << 35);
-  var1 = ((var1 * var1 * (int64_t)_bme280_calib.dig_P3) >> 8) +
-         ((var1 * (int64_t)_bme280_calib.dig_P2) << 12);
-  var1 =
-      (((((int64_t)1) << 47) + var1)) * ((int64_t)_bme280_calib.dig_P1) >> 33;
+  var2 = var2 + ((var1 * (int64_t)_bme280_calib.dig_P5) * 131072);
+  var2 = var2 + (((int64_t)_bme280_calib.dig_P4) * 34359738368);
+  var1 = ((var1 * var1 * (int64_t)_bme280_calib.dig_P3) / 256) +
+         ((var1 * ((int64_t)_bme280_calib.dig_P2) * 4096));
+  var3 = ((int64_t)1) * 140737488355328;
+  var1 = (var3 + var1) * ((int64_t)_bme280_calib.dig_P1) / 8589934592;
 
   if (var1 == 0) {
     return 0; // avoid exception caused by division by zero
   }
-  p = 1048576 - adc_P;
-  p = (((p << 31) - var2) * 3125) / var1;
-  var1 = (((int64_t)_bme280_calib.dig_P9) * (p >> 13) * (p >> 13)) >> 25;
-  var2 = (((int64_t)_bme280_calib.dig_P8) * p) >> 19;
 
-  p = ((p + var1 + var2) >> 8) + (((int64_t)_bme280_calib.dig_P7) << 4);
-  return (float)p / 256;
+  var4 = 1048576 - adc_P;
+  var4 = (((var4 * 2147483648) - var2) * 3125) / var1;
+  var1 = (((int64_t)_bme280_calib.dig_P9) * (var4 / 8192) * (var4 / 8192)) /
+         33554432;
+  var2 = (((int64_t)_bme280_calib.dig_P8) * var4) / 524288;
+  var4 = ((var4 + var1 + var2) / 256) + (((int64_t)_bme280_calib.dig_P7) * 16);
+
+  float P = var4 / 256.0;
+
+  return P;
 }
 
 /*!
@@ -477,37 +402,31 @@ float Adafruit_BME280::readPressure(void) {
  *  @returns the humidity value read from the device
  */
 float Adafruit_BME280::readHumidity(void) {
+  int32_t var1, var2, var3, var4, var5;
+
   readTemperature(); // must be done first to get t_fine
 
   int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
   if (adc_H == 0x8000) // value in case humidity measurement was disabled
     return NAN;
 
-  int32_t v_x1_u32r;
+  var1 = t_fine - ((int32_t)76800);
+  var2 = (int32_t)(adc_H * 16384);
+  var3 = (int32_t)(((int32_t)_bme280_calib.dig_H4) * 1048576);
+  var4 = ((int32_t)_bme280_calib.dig_H5) * var1;
+  var5 = (((var2 - var3) - var4) + (int32_t)16384) / 32768;
+  var2 = (var1 * ((int32_t)_bme280_calib.dig_H6)) / 1024;
+  var3 = (var1 * ((int32_t)_bme280_calib.dig_H3)) / 2048;
+  var4 = ((var2 * (var3 + (int32_t)32768)) / 1024) + (int32_t)2097152;
+  var2 = ((var4 * ((int32_t)_bme280_calib.dig_H2)) + 8192) / 16384;
+  var3 = var5 * var2;
+  var4 = ((var3 / 32768) * (var3 / 32768)) / 128;
+  var5 = var3 - ((var4 * ((int32_t)_bme280_calib.dig_H1)) / 16);
+  var5 = (var5 < 0 ? 0 : var5);
+  var5 = (var5 > 419430400 ? 419430400 : var5);
+  uint32_t H = (uint32_t)(var5 / 4096);
 
-  v_x1_u32r = (t_fine - ((int32_t)76800));
-
-  v_x1_u32r = (((((adc_H << 14) - (((int32_t)_bme280_calib.dig_H4) << 20) -
-                  (((int32_t)_bme280_calib.dig_H5) * v_x1_u32r)) +
-                 ((int32_t)16384)) >>
-                15) *
-               (((((((v_x1_u32r * ((int32_t)_bme280_calib.dig_H6)) >> 10) *
-                    (((v_x1_u32r * ((int32_t)_bme280_calib.dig_H3)) >> 11) +
-                     ((int32_t)32768))) >>
-                   10) +
-                  ((int32_t)2097152)) *
-                     ((int32_t)_bme280_calib.dig_H2) +
-                 8192) >>
-                14));
-
-  v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *
-                             ((int32_t)_bme280_calib.dig_H1)) >>
-                            4));
-
-  v_x1_u32r = (v_x1_u32r < 0) ? 0 : v_x1_u32r;
-  v_x1_u32r = (v_x1_u32r > 419430400) ? 419430400 : v_x1_u32r;
-  float h = (v_x1_u32r >> 12);
-  return h / 1024.0;
+  return (float)H / 1024.0;
 }
 
 /*!

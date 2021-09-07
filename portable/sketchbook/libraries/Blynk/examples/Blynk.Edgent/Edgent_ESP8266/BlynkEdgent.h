@@ -22,6 +22,7 @@ extern "C" {
 #include "ConfigMode.h"
 #include "Indicator.h"
 #include "OTA.h"
+#include "Console.h"
 
 inline
 void BlynkState::set(State m) {
@@ -39,7 +40,6 @@ void printDeviceBanner()
   Blynk.printBanner();
   DEBUG_PRINT("--------------------------");
   DEBUG_PRINT(String("Product:  ") + BLYNK_DEVICE_NAME);
-  DEBUG_PRINT(String("Hardware: ") + BOARD_HARDWARE_VERSION);
   DEBUG_PRINT(String("Firmware: ") + BLYNK_FIRMWARE_VERSION " (build " __DATE__ " " __TIME__ ")");
   if (configStore.getFlag(CONFIG_FLAG_VALID)) {
     DEBUG_PRINT(String("Token:    ...") + (configStore.cloudToken+28));
@@ -79,6 +79,7 @@ public:
     indicator_init();
     button_init();
     config_init();
+    console_init();
 
     printDeviceBanner();
 
@@ -110,9 +111,10 @@ public:
 };
 
 Edgent BlynkEdgent;
-BlynkTimer timer;
+BlynkTimer edgentTimer;
 
 void app_loop() {
-    timer.run();
+    edgentTimer.run();
+    edgentConsole.run();
 }
 
