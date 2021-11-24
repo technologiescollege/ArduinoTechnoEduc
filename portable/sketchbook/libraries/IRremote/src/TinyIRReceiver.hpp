@@ -1,5 +1,5 @@
 /*
- *  TinyIRReceiver.cpp.h
+ *  TinyIRReceiver.hpp
  *
  *  Receives IR protocol data of NEC protocol using pin change interrupts.
  *  NEC is the protocol of most cheap remote controls for Arduino.
@@ -34,8 +34,8 @@
  *
  */
 
-#ifndef TINY_IR_RECEIVER_CPP_H
-#define TINY_IR_RECEIVER_CPP_H
+#ifndef TINY_IR_RECEIVER_HPP
+#define TINY_IR_RECEIVER_HPP
 
 #include <Arduino.h>
 
@@ -57,11 +57,12 @@ TinyIRReceiverStruct TinyIRReceiverControl;
  * It is called every time a complete IR command or repeat was received.
  */
 #if defined(ESP8266)
-ICACHE_RAM_ATTR
+void ICACHE_RAM_ATTR handleReceivedIRData(uint16_t aAddress, uint8_t aCommand, bool isRepetition);
 #elif defined(ESP32)
-IRAM_ATTR
-#endif
+void IRAM_ATTR handleReceivedIRData(uint16_t aAddress, uint8_t aCommand, bool isRepetition);
+#else
 void handleReceivedIRData(uint16_t aAddress, uint8_t aCommand, bool isRepetition);
+#endif
 
 /**
  * The ISR of TinyIRRreceiver.
@@ -69,11 +70,13 @@ void handleReceivedIRData(uint16_t aAddress, uint8_t aCommand, bool isRepetition
  * 5 us + 3 us for push + pop for a 16MHz ATmega
  */
 #if defined(ESP8266)
-ICACHE_RAM_ATTR
+void ICACHE_RAM_ATTR IRPinChangeInterruptHandler(void)
 #elif defined(ESP32)
-IRAM_ATTR
+void IRAM_ATTR IRPinChangeInterruptHandler(void)
+#else
+void IRPinChangeInterruptHandler(void)
 #endif
-void IRPinChangeInterruptHandler(void) {
+        {
 #if defined(IR_MEASURE_TIMING) && defined(IR_TIMING_TEST_PIN)
     digitalWriteFast(IR_TIMING_TEST_PIN, HIGH); // 2 clock cycles
 #endif
@@ -205,7 +208,7 @@ void IRPinChangeInterruptHandler(void) {
                      * Address reduction to 8 bit
                      */
                     if (TinyIRReceiverControl.IRRawData.UByte.LowByte
-                            == (uint8_t) (~TinyIRReceiverControl.IRRawData.UByte.MidLowByte)) {
+                            == (uint8_t)(~TinyIRReceiverControl.IRRawData.UByte.MidLowByte)) {
                         // standard 8 bit address NEC protocol
                         TinyIRReceiverControl.IRRawData.UByte.MidLowByte = 0; // Address is the first 8 bit
                     }
@@ -236,17 +239,28 @@ void IRPinChangeInterruptHandler(void) {
 #endif
 }
 
+bool isTinyReceiverIdle() {
+    return (TinyIRReceiverControl.IRReceiverState == IR_RECEIVER_STATE_WAITING_FOR_START_MARK);
+}
+
 /**
- * Initializes hardware interrupt generation according to IR_INPUT_PIN or use attachInterrupt() function.
+ * Sets IR_INPUT_PIN mode to INPUT_PULLUP, if required, sets feedback LED output mode and call enablePCIInterruptForTinyReceiver()
  */
 void initPCIInterruptForTinyReceiver() {
-#if defined(IR_MEASURE_TIMING) && defined(IR_TIMING_TEST_PIN)
-    pinModeFast(IR_TIMING_TEST_PIN, OUTPUT);
-#endif
     pinModeFast(IR_INPUT_PIN, INPUT_PULLUP);
 
 #if !defined(DO_NOT_USE_FEEDBACK_LED) && defined(IR_FEEDBACK_LED_PIN)
     pinModeFast(IR_FEEDBACK_LED_PIN, OUTPUT);
+#endif
+    enablePCIInterruptForTinyReceiver();
+}
+
+/**
+ * Initializes hardware interrupt generation according to IR_INPUT_PIN or use attachInterrupt() function.
+ */
+void enablePCIInterruptForTinyReceiver() {
+#if defined(IR_MEASURE_TIMING) && defined(IR_TIMING_TEST_PIN)
+    pinModeFast(IR_TIMING_TEST_PIN, OUTPUT);
 #endif
 
 #if defined(__AVR_ATtiny1616__)  || defined(__AVR_ATtiny3216__) || defined(__AVR_ATtiny3217__)
@@ -338,6 +352,86 @@ void initPCIInterruptForTinyReceiver() {
 #endif // ! defined(__AVR__) || defined(TINY_RECEIVER_USE_ARDUINO_ATTACH_INTERRUPT)
 }
 
+void disablePCIInterruptForTinyReceiver() {
+#if defined(IR_MEASURE_TIMING) && defined(IR_TIMING_TEST_PIN)
+    pinModeFast(IR_TIMING_TEST_PIN, OUTPUT);
+#endif
+
+#if defined(__AVR_ATtiny1616__)  || defined(__AVR_ATtiny3216__) || defined(__AVR_ATtiny3217__)
+    detachInterrupt(IR_INPUT_PIN);
+
+#elif !defined(__AVR__) || defined(TINY_RECEIVER_USE_ARDUINO_ATTACH_INTERRUPT)
+    // costs 112 bytes FLASH + 4bytes RAM
+    detachInterrupt(digitalPinToInterrupt(IR_INPUT_PIN));
+#else
+#  if defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+    // clear interrupt bit
+    GIFR |= 1 << PCIF;
+    // disable interrupt on next change
+    GIMSK &= ~(1 << PCIE);
+
+#  elif defined(__AVR_ATtiny87__) || defined(__AVR_ATtiny167__)
+#    if defined(ARDUINO_AVR_DIGISPARKPRO)
+#      if (IR_INPUT_PIN == 3)
+    // clear interrupt bit
+    EIFR |= 1 << INTF0;
+    // disable interrupt on next change
+    EIMSK &= ~( 1 << INT0);
+#      elif (IR_INPUT_PIN == 9)
+    // clear interrupt bit
+    EIFR |= 1 << INTF1;
+    // disable interrupt on next change
+    EIMSK &= ~(1 << INT1);
+#      else
+#        error "IR_INPUT_PIN must be 9 or 3."
+#      endif // if (IR_INPUT_PIN == 9)
+
+#    else // defined(ARDUINO_AVR_DIGISPARKPRO)
+#      if (IR_INPUT_PIN == 14)
+    // clear interrupt bit
+    EIFR |= 1 << INTF0;
+    // disable interrupt on next change
+    EIMSK &= ~(1 << INT0);
+#      elif (IR_INPUT_PIN == 3)
+    // clear interrupt bit
+    EIFR |= 1 << INTF1;
+    // disable interrupt on next change
+    EIMSK &= ~(1 << INT1);
+#      else
+#        error "IR_INPUT_PIN must be 14 or 3."
+#      endif // if (IR_INPUT_PIN == 14)
+#    endif
+
+#  else // defined(__AVR_ATtiny25__)
+    /*
+     * ATmegas + ATtiny88 here
+     */
+#    if (IR_INPUT_PIN == 2)
+    // clear interrupt bit
+    EIFR |= 1 << INTF0;
+    // disable interrupt on next change
+    EIMSK &= ~(1 << INT0);
+#    elif (IR_INPUT_PIN == 3)
+    // clear interrupt bit
+    EIFR |= 1 << INTF1;
+    // disable interrupt on next change
+    EIMSK &= ~(1 << INT1);
+#    elif IR_INPUT_PIN == 4 || IR_INPUT_PIN == 5 || IR_INPUT_PIN == 6 || IR_INPUT_PIN == 7
+    //ATmega328 (Uno, Nano ) etc. disable pin change interrupt 20 to 23 for port PD4 to PD7 (Arduino pin 4 to 7)
+        PCICR &= ~(_BV(PCIE2));
+#    elif IR_INPUT_PIN == 8 || IR_INPUT_PIN == 9 || IR_INPUT_PIN == 10 || IR_INPUT_PIN == 11 || IR_INPUT_PIN == 12 || IR_INPUT_PIN == 13
+    //ATmega328 (Uno, Nano ) etc. disable pin change interrupt 0 to 5 for port PB0 to PB5 (Arduino pin 8 to 13)
+        PCICR &= ~(_BV(PCIE0));
+#    elif IR_INPUT_PIN == A0 || IR_INPUT_PIN == A1 || IR_INPUT_PIN == A2 || IR_INPUT_PIN == A3 || IR_INPUT_PIN == A4 || IR_INPUT_PIN == A5
+    //ATmega328 (Uno, Nano ) etc. disable pin change interrupt 8 to 13 for port PC0 to PC5 (Arduino pin A0 to A5)
+        PCICR &= ~(_BV(PCIE1));
+#    else
+#      error "IR_INPUT_PIN not allowed."
+#    endif // if (IR_INPUT_PIN == 2)
+#  endif // defined(__AVR_ATtiny25__)
+#endif // ! defined(__AVR__) || defined(TINY_RECEIVER_USE_ARDUINO_ATTACH_INTERRUPT)
+}
+
 /*
  * Specify the right INT0, INT1 or PCINT0 interrupt vector according to different pins and cores.
  * The default value of TINY_RECEIVER_USE_ARDUINO_ATTACH_INTERRUPT is set in TinyIRReceiver.h
@@ -383,4 +477,6 @@ ISR(PCINT1_vect)
 
 /** @}*/
 
-#endif // TINY_IR_RECEIVER_CPP_H
+#endif // TINY_IR_RECEIVER_HPP
+#pragma once
+

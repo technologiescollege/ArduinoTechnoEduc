@@ -1,5 +1,5 @@
 /*
- * IRReceive.cpp.h
+ * IRReceive.hpp
  * This file is exclusively included by IRremote.h to enable easy configuration of library switches
  *
  *  Contains all IRrecv class functions as well as other receiver related functions.
@@ -30,6 +30,8 @@
  *
  ************************************************************************************
  */
+#ifndef IR_RECEIVE_HPP
+#define IR_RECEIVE_HPP
 
 /** \addtogroup Receiving Receiving IR data for multiple protocols
  * @{
@@ -122,7 +124,7 @@ void IRrecv::start() {
  * Configures the timer and the state machine for IR reception.
  * @param aMicrosecondsToAddToGapCounter To compensate for microseconds the timer was stopped / disabled.
  */
-void IRrecv::start(uint16_t aMicrosecondsToAddToGapCounter) {
+void IRrecv::start(uint32_t aMicrosecondsToAddToGapCounter) {
     enableIRIn();
     noInterrupts();
     irparams.TickCounterForISR += aMicrosecondsToAddToGapCounter / MICROS_PER_TICK;
@@ -197,7 +199,7 @@ void IRrecv::resume() {
 void IRrecv::initDecodedIRData() {
 
     if (irparams.OverflowFlag) {
-        // Copy overflow flag to decodedIRData.flags
+        // Copy overflow flag to decodedIRData.flags and reset it
         irparams.OverflowFlag = false;
         irparams.rawlen = 0; // otherwise we have OverflowFlag again at next ISR call
         decodedIRData.flags = IRDATA_FLAGS_WAS_OVERFLOW;
@@ -689,8 +691,12 @@ bool IRrecv::decodeHash() {
     if (decodedIRData.rawDataPtr->rawlen < 6) {
         return false;
     }
-
-    for (unsigned int i = 1; (i + 2) < decodedIRData.rawDataPtr->rawlen; i++) {
+#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program space and speeds up ISR
+    uint8_t i;
+#else
+    uint16_t i;
+#endif
+    for (i = 1; (i + 2) < decodedIRData.rawDataPtr->rawlen; i++) {
         uint8_t value = compare(decodedIRData.rawDataPtr->rawbuf[i], decodedIRData.rawDataPtr->rawbuf[i + 2]);
         // Add value into the hash
         hash = (hash * FNV_PRIME_32) ^ value;
@@ -848,7 +854,7 @@ void CheckForRecordGapsMicros(Print *aSerial, IRData *aIRDataPtr) {
         aSerial->print(F(" but smaller than the minimal gap of "));
         aSerial->print(RECORD_GAP_MICROS_WARNING_THRESHOLD);
         aSerial->println(F(" known for a protocol."));
-        aSerial->println(F("Try to increase the RECORD_GAP_MICROS in IRremote.h."));
+        aSerial->println(F("If you get unexpected results, try to increase the RECORD_GAP_MICROS in IRremote.h."));
         aSerial->println();
     }
 }
@@ -859,6 +865,7 @@ void CheckForRecordGapsMicros(Print *aSerial, IRData *aIRDataPtr) {
  **********************************************************************************************************************/
 /**
  * Internal function to print decoded result and flags in one line.
+ * Ends with println().
  *
  * @param aSerial The Print object on which to write, for Arduino you can use &Serial.
  */
@@ -939,6 +946,8 @@ void printIRResultShort(Print *aSerial, IRData *aIRDataPtr, uint16_t aLeadingSpa
 
 /**
  * Function to print values and flags of IrReceiver.decodedIRData in one line.
+ * Ends with println().
+ *
  * @param aSerial The Print object on which to write, for Arduino you can use &Serial.
  */
 void IRrecv::printIRResultShort(Print *aSerial) {
@@ -947,6 +956,8 @@ void IRrecv::printIRResultShort(Print *aSerial) {
 
 /**
  * Function to print protocol number, address, command, raw data and repeat flag of IrReceiver.decodedIRData in one short line.
+ * Does not print a Newline / does not end with println().
+ *
  * @param aSerial The Print object on which to write, for Arduino you can use &Serial.
  */
 void IRrecv::printIRResultMinimal(Print *aSerial) {
@@ -981,6 +992,7 @@ void IRrecv::printIRResultMinimal(Print *aSerial) {
 
 /**
  * Dump out the timings in IrReceiver.decodedIRData.rawDataPtr->rawbuf[] array 8 values per line.
+ *
  * @param aSerial The Print object on which to write, for Arduino you can use &Serial.
  */
 void IRrecv::printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsInsteadOfTicks) {
@@ -1001,8 +1013,12 @@ void IRrecv::printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsI
     }
     aSerial->print(F("     -"));
     aSerial->println(tDurationMicros, DEC);
-
-    for (uint8_t i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
+#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program space and speeds up ISR
+    uint8_t i;
+#else
+    uint16_t i;
+#endif
+    for (i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
         if (aOutputMicrosecondsInsteadOfTicks) {
             tDurationMicros = decodedIRData.rawDataPtr->rawbuf[i] * MICROS_PER_TICK;
         } else {
@@ -1060,7 +1076,12 @@ void IRrecv::compensateAndPrintIRResultAsCArray(Print *aSerial, bool aOutputMicr
     aSerial->print(F("] = {"));    // Start declaration
 
 // Dump data
-    for (unsigned int i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
+#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program space and speeds up ISR
+    uint8_t i;
+#else
+    uint16_t i;
+#endif
+    for (i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
         uint32_t tDuration = decodedIRData.rawDataPtr->rawbuf[i] * MICROS_PER_TICK;
 
         if (i & 1) {
@@ -1105,8 +1126,13 @@ void IRrecv::compensateAndPrintIRResultAsCArray(Print *aSerial, bool aOutputMicr
  */
 void IRrecv::compensateAndStoreIRResultInArray(uint8_t *aArrayPtr) {
 
-// Store data, skip leading space
-    for (unsigned int i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
+// Store data, skip leading space#
+#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program space and speeds up ISR
+    uint8_t i;
+#else
+    uint16_t i;
+#endif
+    for (i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
         uint32_t tDuration = decodedIRData.rawDataPtr->rawbuf[i] * MICROS_PER_TICK;
         if (i & 1) {
             // Mark
@@ -1167,6 +1193,9 @@ const __FlashStringHelper* getProtocolString(decode_type_t aProtocol) {
         break;
     case LG:
         return (F("LG"));
+        break;
+    case LG2:
+        return (F("LG2"));
         break;
     case NEC:
         return (F("NEC"));
@@ -1303,7 +1332,7 @@ ISR () // for functions definitions which are called by separate (board specific
             irparams.TickCounterForISR = 0;// reset counter in both cases
         }
 
-    } else if (irparams.StateForISR == IR_REC_STATE_MARK) {  // Timing Mark
+    } else if (irparams.StateForISR == IR_REC_STATE_MARK) {  // Timing mark
         if (tIRInputLevel != INPUT_MARK) {   // Mark ended; Record time
 #if defined(IR_MEASURE_TIMING) && defined(IR_TIMING_TEST_PIN)
 //            digitalWriteFast(IR_TIMING_TEST_PIN, HIGH); // 2 clock cycles
@@ -1313,10 +1342,10 @@ ISR () // for functions definitions which are called by separate (board specific
             irparams.TickCounterForISR = 0;
         }
 
-    } else if (irparams.StateForISR == IR_REC_STATE_SPACE) {  // Timing Space
+    } else if (irparams.StateForISR == IR_REC_STATE_SPACE) {  // Timing space
         if (tIRInputLevel == INPUT_MARK) {  // Space just ended; Record time
             if (irparams.rawlen >= RAW_BUFFER_LENGTH) {
-                // Flag up a read OverflowFlag; Stop the State Machine
+                // Flag up a read OverflowFlag; Stop the state machine
                 irparams.OverflowFlag = true;
                 irparams.StateForISR = IR_REC_STATE_STOP;
             } else {
@@ -1493,3 +1522,5 @@ bool IRrecv::decode(decode_results *aResults) {
 #endif
 
 /** @}*/
+#endif // #ifndef IR_RECEIVE_HPP
+#pragma once

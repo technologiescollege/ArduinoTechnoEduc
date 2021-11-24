@@ -28,7 +28,7 @@
 #include "WProgram.h"
 #endif
 
-#include <Wire.h>
+#include <Adafruit_I2CDevice.h>
 
 #include "Adafruit_GFX.h"
 
@@ -64,8 +64,11 @@ public:
     @brief  Start I2C and initialize display state (blink off, full
             brightness).
     @param  _addr  I2C address.
+    @param  theWire  TwoWire bus reference to use.
+    @return  true if successful, otherwise false
+
   */
-  void begin(uint8_t _addr = 0x70);
+  bool begin(uint8_t _addr = 0x70, TwoWire *theWire = &Wire);
 
   /*!
     @brief  Set display brightness.
@@ -97,7 +100,7 @@ public:
   uint16_t displaybuffer[8]; ///< Raw display data
 
 protected:
-  uint8_t i2c_addr; ///< Device I2C address
+  Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
 };
 
 /*!
@@ -204,11 +207,7 @@ public:
   void drawPixel(int16_t x, int16_t y, uint16_t color);
 };
 
-#define DEC 10 ///< Print value in decimal format (base 10)
-#define HEX 16 ///< Print value in hexadecimal format (base 16)
-#define OCT 8  ///< Print value in octal format (base 8)
-#define BIN 2  ///< Print value in binary format (base 2)
-#define BYTE 0 ///< Issue 7-segment data as raw bits
+#define RAW_BITS 0 ///< Issue 7-segment data as raw bits
 
 /*!
     @brief  Class for 7-segment numeric displays.
@@ -221,25 +220,32 @@ public:
   Adafruit_7segment(void);
 
   /*!
-    @brief   Issue single digit to display.
-    @param   c  Digit to write (ASCII character, not numeric).
-    @return  1 if character written, else 0 (non-digit characters).
+    @brief   Issue single character to display.
+    @param   c Character to write (ASCII character, not numeric).
+    @return  1 if character written, else 0 (non-ASCII characters).
   */
-  size_t write(uint8_t c);
+  size_t write(char c);
+
+  /*!
+    @brief   Write characters from buffer to display.
+    @param   buffer Character array to write
+    @param   size   Number of characters to write
+    @return  Number of characters written
+  */
+  size_t write(const char *buffer, size_t size);
 
   /*!
     @brief  Print byte-size numeric value to 7-segment display.
     @param  c     Numeric value.
-    @param  base  Number base (default = BYTE = raw bits)
   */
-  void print(char c, int base = BYTE);
+  void print(char c);
 
   /*!
     @brief  Print unsigned byte-size numeric value to 7-segment display.
     @param  b     Numeric value.
-    @param  base  Number base (default = BYTE = raw bits)
+    @param  base  Number base (default = RAW_BITS = raw bits)
   */
-  void print(unsigned char b, int base = BYTE);
+  void print(unsigned char b, int base = RAW_BITS);
 
   /*!
     @brief  Print integer value to 7-segment display.
@@ -277,19 +283,30 @@ public:
   void print(double n, int digits = 2);
 
   /*!
+    @brief  Print from a String object to 7-segment display.
+    @param  c  String object, passed by reference.
+  */
+  void print(const String &c);
+
+  /*!
+    @brief  Print from a C-style string array to 7-segment display.
+    @param  c  Array of characters.
+  */
+  void print(const char c[]);
+
+  /*!
     @brief  Print byte-size numeric value w/newline to 7-segment display.
     @param  c     Numeric value.
-    @param  base  Number base (default = BYTE = raw bits)
   */
-  void println(char c, int base = BYTE);
+  void println(char c);
 
   /*!
     @brief  Print unsigned byte-size numeric value w/newline to 7-segment
             display.
     @param  b     Numeric value.
-    @param  base  Number base (default = BYTE = raw bits)
+    @param  base  Number base (default = RAW_BITS = raw bits)
   */
-  void println(unsigned char b, int base = BYTE);
+  void println(unsigned char b, int base = RAW_BITS);
 
   /*!
     @brief  Print integer value with newline to 7-segment display.
@@ -327,6 +344,18 @@ public:
   void println(double n, int digits = 2);
 
   /*!
+    @brief  Print from a String object w/newline to 7-segment display.
+    @param  c  String object, passed by reference.
+  */
+  void println(const String &c);
+
+  /*!
+    @brief  Print from a C-style string array w/newline to 7-segment display.
+    @param  c  Array of characters.
+  */
+  void println(const char c[]);
+
+  /*!
     @brief  Print newline to 7-segment display (rewind position to start).
   */
   void println(void);
@@ -345,6 +374,14 @@ public:
     @param  dot  If true, light corresponding decimal.
   */
   void writeDigitNum(uint8_t x, uint8_t num, bool dot = false);
+
+  /*!
+    @brief  Set specific digit # to a character value.
+    @param  x    Character position.
+    @param  c    Character (ASCII).
+    @param  dot  If true, light corresponding decimal.
+  */
+  void writeDigitAscii(uint8_t x, uint8_t c, bool dot = false);
 
   /*!
     @brief  Set or unset colon segment.

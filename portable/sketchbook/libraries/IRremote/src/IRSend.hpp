@@ -1,5 +1,5 @@
 /*
- * IRSend.cpp.h
+ * IRSend.hpp
  *
  *  Contains common functions for sending
  *
@@ -29,6 +29,8 @@
  *
  ************************************************************************************
  */
+#ifndef IR_SEND_HPP
+#define IR_SEND_HPP
 
 #include "IRremoteInt.h"
 //#include "digitalWriteFast.h"
@@ -74,7 +76,8 @@ void IRsend::begin(bool aEnableLEDFeedback, uint8_t aLEDFeedbackPin) {
     // must exclude cores by MCUdude, MEGATINYCORE, NRF5, SAMD and ESP32 because they do not use the -flto flag for compile
 #if (!defined(SEND_PWM_BY_TIMER) || defined(USE_NO_SEND_PWM)) \
         && !defined(SUPPRESS_ERROR_MESSAGE_FOR_BEGIN) \
-        && !(defined(NRF5) || defined(ARDUINO_ARCH_NRF52840)) && !defined(ARDUINO_ARCH_SAMD) \
+        && !(defined(NRF5) || defined(ARDUINO_ARCH_NRF52840)) \
+        && !defined(ARDUINO_ARCH_SAMD) && !defined(ARDUINO_ARCH_RP2040) \
         && !defined(ESP32) && !defined(ESP8266) && !defined(MEGATINYCORE) \
         && !defined(MINICORE) && !defined(MIGHTYCORE) && !defined(MEGACORE) && !defined(MAJORCORE) \
     && !(defined(__STM32F1__) || defined(ARDUINO_ARCH_STM32F1)) && !(defined(STM32F1xx) || defined(ARDUINO_ARCH_STM32))
@@ -85,14 +88,13 @@ void IRsend::begin(bool aEnableLEDFeedback, uint8_t aLEDFeedbackPin) {
      * I know now way to check for lto flag here.
      */
     UsageError(
-            "Error: You must use begin(<sendPin>, <EnableLEDFeedback>, <LEDFeedbackPin>) if SEND_PWM_BY_TIMER is not defined or USE_NO_SEND_PWM is defined or enable lto or activate the line #define SUPPRESS_ERROR_MESSAGE_FOR_BEGIN in IRremote.h.");
+            "Error: You must use begin(<sendPin>, <EnableLEDFeedback>, <LEDFeedbackPin>) if SEND_PWM_BY_TIMER is not defined or USE_NO_SEND_PWM is defined, OR enable lto or activate the line #define SUPPRESS_ERROR_MESSAGE_FOR_BEGIN in IRremote.h.");
 #endif
 
     setLEDFeedback(aLEDFeedbackPin, aEnableLEDFeedback);
 }
 
 /**
- * Deprecated function without send pin parameter
  * @param aIRSendData The values of protocol, address, command and repeat flag are taken for sending.
  * @param aNumberOfRepeats Number of repeats to send after the initial data.
  */
@@ -167,6 +169,18 @@ size_t IRsend::write(IRData *aIRSendData, uint_fast8_t aNumberOfRepeats) {
     } else if (tProtocol == RC6) {
         sendRC6(tAddress, tCommand, aNumberOfRepeats, !tSendRepeat); // No toggle for repeats
 
+    } else if (tProtocol == KASEIKYO_JVC) {
+        sendKaseikyo_JVC(tAddress, tCommand, aNumberOfRepeats);
+
+    } else if (tProtocol == KASEIKYO_DENON) {
+        sendKaseikyo_Denon(tAddress, tCommand, aNumberOfRepeats);
+
+    } else if (tProtocol == KASEIKYO_SHARP) {
+        sendKaseikyo_Sharp(tAddress, tCommand, aNumberOfRepeats);
+
+    } else if (tProtocol == KASEIKYO_MITSUBISHI) {
+        sendKaseikyo_Mitsubishi(tAddress, tCommand, aNumberOfRepeats);
+
     } else if (tProtocol == ONKYO) {
         sendOnkyo(tAddress, tCommand, aNumberOfRepeats, tSendRepeat);
 
@@ -186,7 +200,7 @@ size_t IRsend::write(IRData *aIRSendData, uint_fast8_t aNumberOfRepeats) {
 }
 
 /**
- * Function using an 16 byte timing array for every purpose.
+ * Function using an 16 byte microsecond timing array for every purpose.
  * Raw data starts with a Mark. No leading space as in received timing data!
  */
 void IRsend::sendRaw(const uint16_t aBufferWithMicroseconds[], uint_fast8_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz) {
@@ -209,7 +223,7 @@ void IRsend::sendRaw(const uint16_t aBufferWithMicroseconds[], uint_fast8_t aLen
 }
 
 /**
- * Function using an 8 byte timing array to save program space
+ * New function using an 8 byte tick timing array to save program space
  * Raw data starts with a Mark. No leading space as in received timing data!
  */
 void IRsend::sendRaw(const uint8_t aBufferWithTicks[], uint_fast8_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz) {
@@ -228,7 +242,7 @@ void IRsend::sendRaw(const uint8_t aBufferWithTicks[], uint_fast8_t aLengthOfBuf
 }
 
 /**
- * Function using an 16 byte timing array in FLASH for every purpose.
+ * Function using an 16 byte microsecond timing array in FLASH for every purpose.
  * Raw data starts with a Mark. No leading space as in received timing data!
  */
 void IRsend::sendRaw_P(const uint16_t aBufferWithMicroseconds[], uint_fast8_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz) {
@@ -254,7 +268,7 @@ void IRsend::sendRaw_P(const uint16_t aBufferWithMicroseconds[], uint_fast8_t aL
 }
 
 /**
- * Function using an 8 byte timing array in FLASH to save program space
+ * New function using an 8 byte tick timing array in FLASH to save program space
  * Raw data starts with a Mark. No leading space as in received timing data!
  */
 void IRsend::sendRaw_P(const uint8_t aBufferWithTicks[], uint_fast8_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz) {
@@ -374,7 +388,12 @@ void IRsend::mark(unsigned int aMarkMicros) {
     IRLedOff();
 
 #elif defined(USE_NO_SEND_PWM)
+#  if defined(USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN) && !defined(OUTPUT_OPEN_DRAIN)
+    pinMode(sendPin, OUTPUT); // active state for mimicking open drain
+#  else
     digitalWrite(sendPin, LOW); // Set output to active low.
+#  endif
+
     customDelayMicroseconds(aMarkMicros);
     IRLedOff();
 
@@ -386,11 +405,28 @@ void IRsend::mark(unsigned int aMarkMicros) {
 //        digitalToggleFast(IR_TIMING_TEST_PIN);
         // Output the PWM pulse
         noInterrupts(); // do not let interrupts extend the short on period
+#  if defined(USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN)
+#    if defined(OUTPUT_OPEN_DRAIN)
+        digitalWrite(sendPin, LOW); // active state for open drain
+#    else
+        pinMode(sendPin, OUTPUT); // active state for mimicking open drain
+//        digitalWrite(sendPin, LOW); // really needed ???
+#    endif
+#  else
         digitalWrite(sendPin, HIGH); // 4.3 us from do{ to pin setting
+#  endif
         delayMicroseconds(periodOnTimeMicros); // this is normally implemented by a blocking wait
 
         // Output the PWM pause
+#  if defined(USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN) && !defined(OUTPUT_OPEN_DRAIN)
+#    if defined(OUTPUT_OPEN_DRAIN)
+        digitalWrite(sendPin, HIGH); // inactive state for open drain
+#    else
+        pinMode(sendPin, INPUT); // inactive state for mimicking open drain
+#    endif
+#  else
         digitalWrite(sendPin, LOW);
+#  endif
         interrupts(); // Enable interrupts -to keep micros correct- for the longer off period 3.4 us until receive ISR is active (for 7 us + pop's)
         nextPeriodEnding += periodTimeMicros;
         do {
@@ -411,9 +447,22 @@ void IRsend::IRLedOff() {
 #if defined(SEND_PWM_BY_TIMER) || defined(ESP32)
     DISABLE_SEND_PWM_BY_TIMER; // Disable PWM output
 #elif defined(USE_NO_SEND_PWM)
+#  if defined(USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN) && !defined(OUTPUT_OPEN_DRAIN)
+    digitalWrite(sendPin, LOW); // prepare for all next active states.
+    pinMode(sendPin, INPUT); // inactive state for open drain
+#  else
     digitalWrite(sendPin, HIGH); // Set output to inactive high.
+#  endif
 #else
+#  if defined(USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN)
+#    if defined(OUTPUT_OPEN_DRAIN)
+    digitalWrite(sendPin, HIGH); // Set output to inactive high.
+#    else
+    pinMode(sendPin, INPUT); // inactive state to mimic open drain
+#    endif
+#  else
     digitalWrite(sendPin, LOW);
+#  endif
 #endif
 
     setFeedbackLED(false);
@@ -465,7 +514,13 @@ void IRsend::enableIROut(uint8_t aFrequencyKHz) {
     periodOnTimeMicros = (((periodTimeMicros * IR_SEND_DUTY_CYCLE) + 50 - (PULSE_CORRECTION_NANOS / 10)) / 100U); // +50 for rounding
 #endif
 
-    pinMode(sendPin, OUTPUT);
+#if defined(USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN)
+#  if defined(OUTPUT_OPEN_DRAIN)
+    pinMode(sendPin, OUTPUT_OPEN_DRAIN); // the only place where this mode is set for sendPin
+#  endif // the mode INPUT for mimicking open drain is set at IRLedOff()
+#else
+    pinMode(sendPin, OUTPUT); // the only place where this mode is set for sendPin
+#endif
     IRLedOff(); // When not sending, we want it low/inactive
 }
 
@@ -474,3 +529,5 @@ unsigned int IRsend::getPulseCorrectionNanos() {
 }
 
 /** @}*/
+#endif // IR_SEND_HPP
+#pragma once

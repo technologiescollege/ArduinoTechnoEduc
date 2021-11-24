@@ -1,5 +1,5 @@
 /**
- * @file IRFeedbackLED.cpp.h
+ * @file IRFeedbackLED.hpp
  *
  * @brief All Feedback LED specific functions are contained in this file.
  *
@@ -29,6 +29,8 @@
  *
  ************************************************************************************
  */
+#ifndef IR_FEEDBACK_LED_HPP
+#define IR_FEEDBACK_LED_HPP
 #include "private/IRFeedbackLEDDefs.h"
 
 /** \addtogroup FeedbackLEDFunctions Feedback LED functions
@@ -55,7 +57,7 @@ void setLEDFeedback(uint8_t aFeedbackLEDPin, bool aEnableLEDFeedback) {
 
     FeedbackLEDControl.LedFeedbackEnabled = aEnableLEDFeedback;
     if (aEnableLEDFeedback) {
-        if (aFeedbackLEDPin != 0) {
+        if (aFeedbackLEDPin != USE_DEFAULT_FEEDBACK_LED_PIN) {
             pinMode(aFeedbackLEDPin, OUTPUT);
 #ifdef LED_BUILTIN
         } else {
@@ -63,6 +65,13 @@ void setLEDFeedback(uint8_t aFeedbackLEDPin, bool aEnableLEDFeedback) {
 #endif
         }
     }
+}
+
+/*
+ * Direct replacement for blink13()
+ */
+void setLEDFeedback(bool aEnableLEDFeedback) {
+    setLEDFeedback(FeedbackLEDControl.FeedbackLEDPin, aEnableLEDFeedback);
 }
 
 void enableLEDFeedback() {
@@ -83,7 +92,7 @@ IRAM_ATTR
 void setFeedbackLED(bool aSwitchLedOn) {
     if (FeedbackLEDControl.LedFeedbackEnabled) {
         if (aSwitchLedOn) {
-            if (FeedbackLEDControl.FeedbackLEDPin != 0) {
+            if (FeedbackLEDControl.FeedbackLEDPin != USE_DEFAULT_FEEDBACK_LED_PIN) {
 #if defined(FEEDBACK_LED_IS_ACTIVE_LOW)
                 digitalWrite(FeedbackLEDControl.FeedbackLEDPin, LOW); // Turn user defined pin LED on
 #else
@@ -95,7 +104,7 @@ void setFeedbackLED(bool aSwitchLedOn) {
 #endif
             }
         } else {
-            if (FeedbackLEDControl.FeedbackLEDPin != 0) {
+            if (FeedbackLEDControl.FeedbackLEDPin != USE_DEFAULT_FEEDBACK_LED_PIN) {
 #if defined(FEEDBACK_LED_IS_ACTIVE_LOW)
                 digitalWrite(FeedbackLEDControl.FeedbackLEDPin, HIGH); // Turn user defined pin LED off
 #else
@@ -113,7 +122,7 @@ void setFeedbackLED(bool aSwitchLedOn) {
 /**
  * Old deprecated function name for setLEDFeedback() or enableLEDFeedback() / disableLEDFeedback()
  */
-void blink13(bool aEnableLEDFeedback) {
+void IRrecv::blink13(bool aEnableLEDFeedback) {
     setLEDFeedback(FeedbackLEDControl.FeedbackLEDPin, aEnableLEDFeedback);
 }
 /**
@@ -124,3 +133,7 @@ void setBlinkPin(uint8_t aBlinkPin) {
 }
 
 /** @}*/
+
+#endif // #ifndef IR_FEEDBACK_LED_HPP
+#pragma once
+

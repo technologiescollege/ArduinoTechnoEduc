@@ -1,5 +1,18 @@
 {
   "files" : [ {
+    "remoteURL" : "http://digistump.com/package_digistump_index.json",
+    "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\digistump.com\\package_digistump_index.json",
+    "eTag" : "3009e1bba719e09eddff682075ef35d04153edb11434f8ea074cd562e9955fb6",
+    "md5" : "MD5:c43814fed1b4ea761ebe078a082d2d51",
+    "createdAt" : "2021-11-24T01:33:53.163",
+    "cacheControl" : {
+      "maxAge" : 300,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2021-11-24T01:38:53.163"
+  }, {
     "remoteURL" : "http://arduino.esp8266.com/stable/package_esp8266com_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\arduino.esp8266.com\\stable\\package_esp8266com_index.json",
     "eTag" : "60a085ab-2034d",
@@ -13,44 +26,31 @@
     },
     "expires" : "2021-05-17T17:48:45.997"
   }, {
-    "remoteURL" : "http://digistump.com/package_digistump_index.json",
-    "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\digistump.com\\package_digistump_index.json",
-    "eTag" : "3009e1bba719e09eddff682075ef35d04153edb11434f8ea074cd562e9955fb6",
-    "md5" : "MD5:c43814fed1b4ea761ebe078a082d2d51",
-    "createdAt" : "2021-09-07T10:30:22.126",
+    "remoteURL" : "https://raw.githubusercontent.com/uStepper/uStepperHardware/master/package_ustepper_index.json",
+    "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\raw.githubusercontent.com\\uStepper\\uStepperHardware\\master\\package_ustepper_index.json",
+    "eTag" : "72ffe9c7027cc3aa39569b61811948d2c6ac2dbbc9250bf902f2048ffe0d3fe8",
+    "md5" : "MD5:18c60e3aaf64afdeb05e25bacfcee12d",
+    "createdAt" : "2021-11-24T01:33:53.803",
     "cacheControl" : {
       "maxAge" : 300,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2021-09-07T10:35:22.126"
+    "expires" : "2021-11-24T01:38:53.803"
   }, {
     "remoteURL" : "https://arduino.esp8266.com/stable/package_esp8266com_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\arduino.esp8266.com\\stable\\package_esp8266com_index.json",
     "eTag" : "60ff395b-26f64",
     "md5" : "MD5:90644b3a0b909421d918f72290494272",
-    "createdAt" : "2021-09-07T10:30:22.689",
+    "createdAt" : "2021-11-24T01:33:53.588",
     "cacheControl" : {
       "maxAge" : 600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2021-09-07T10:40:22.689"
-  }, {
-    "remoteURL" : "https://raw.githubusercontent.com/uStepper/uStepperHardware/master/package_ustepper_index.json",
-    "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\raw.githubusercontent.com\\uStepper\\uStepperHardware\\master\\package_ustepper_index.json",
-    "eTag" : "72ffe9c7027cc3aa39569b61811948d2c6ac2dbbc9250bf902f2048ffe0d3fe8",
-    "md5" : "MD5:18c60e3aaf64afdeb05e25bacfcee12d",
-    "createdAt" : "2021-09-07T10:30:22.928",
-    "cacheControl" : {
-      "maxAge" : 300,
-      "mustRevalidate" : false,
-      "noCache" : false,
-      "noStore" : false
-    },
-    "expires" : "2021-09-07T10:35:22.928"
+    "expires" : "2021-11-24T01:43:53.588"
   }, {
     "remoteURL" : "https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\github.com\\stm32duino\\BoardManagerFiles\\raw\\master\\STM32\\package_stm_index.json",
@@ -67,55 +67,68 @@
   }, {
     "remoteURL" : "https://github.com/stm32duino/BoardManagerFiles/raw/master/package_stmicroelectronics_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\github.com\\stm32duino\\BoardManagerFiles\\raw\\master\\package_stmicroelectronics_index.json",
-    "eTag" : "021edb6a7f67cad94c1114f2b15c60e45db479a9146a9c7d66a0ab77f5395cba",
-    "md5" : "MD5:8223635ede6b35d618f7ff582d6ff018",
-    "createdAt" : "2021-09-07T10:30:23.791",
+    "eTag" : "3df5676d69e68b3f7242250bd73b99e47eb8632bc38c68e085ac32dd1e50bba4",
+    "md5" : "MD5:d4ece1dd70bb7294569707c6a81577b3",
+    "createdAt" : "2021-11-24T01:33:54.418",
     "cacheControl" : {
       "maxAge" : 300,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2021-09-07T10:35:23.791"
+    "expires" : "2021-11-24T01:38:54.418"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.gz",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.gz",
-    "eTag" : "5ba1cfca79584b2eeaf12b11b283b52d",
-    "md5" : "MD5:5ba1cfca79584b2eeaf12b11b283b52d",
-    "createdAt" : "2021-09-07T10:30:53.244",
+    "eTag" : "c4aa893dc0ef4e048edb54eb1c5e0f62",
+    "md5" : "MD5:c4aa893dc0ef4e048edb54eb1c5e0f62",
+    "createdAt" : "2021-11-24T01:34:28.76",
     "cacheControl" : {
       "maxAge" : 14400,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2021-09-07T14:30:53.244"
+    "expires" : "2021-11-24T05:34:28.760"
+  }, {
+    "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.sig",
+    "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.sig",
+    "eTag" : "25c1a44810598698907b2c39fe4d96b2",
+    "md5" : "MD5:25c1a44810598698907b2c39fe4d96b2",
+    "createdAt" : "2021-11-24T01:34:29.341",
+    "cacheControl" : {
+      "maxAge" : 14400,
+      "mustRevalidate" : false,
+      "noCache" : false,
+      "noStore" : false
+    },
+    "expires" : "2021-11-24T05:34:29.341"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json.sig",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json.sig",
-    "eTag" : "77ff56a8041a09f0ecec9c770e39c1ed",
-    "md5" : "MD5:77ff56a8041a09f0ecec9c770e39c1ed",
-    "createdAt" : "2021-09-07T10:30:25.745",
+    "eTag" : "30ac74dc55c093e2225ae4b6a109d275",
+    "md5" : "MD5:30ac74dc55c093e2225ae4b6a109d275",
+    "createdAt" : "2021-11-24T01:33:55.618",
     "cacheControl" : {
       "maxAge" : 3600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2021-09-07T11:30:25.745"
+    "expires" : "2021-11-24T02:33:55.618"
   }, {
-    "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.sig",
-    "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.sig",
-    "eTag" : "ac92daf5970fb8dfe3683311865dbbf2",
-    "md5" : "MD5:ac92daf5970fb8dfe3683311865dbbf2",
-    "createdAt" : "2021-09-07T10:30:53.572",
+    "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json",
+    "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json",
+    "eTag" : "164ab6e64b42662cecf02fe8931884e4",
+    "md5" : "MD5:164ab6e64b42662cecf02fe8931884e4",
+    "createdAt" : "2021-11-24T01:33:55.366",
     "cacheControl" : {
-      "maxAge" : 14400,
+      "maxAge" : 3600,
       "mustRevalidate" : false,
       "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2021-09-07T14:30:53.572"
+    "expires" : "2021-11-24T02:33:55.366"
   }, {
     "remoteURL" : "https://dl.espressif.com/dl/package_esp32_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\dl.espressif.com\\dl\\package_esp32_index.json",
@@ -129,18 +142,5 @@
       "noStore" : false
     },
     "expires" : "2021-09-07T11:30:24.843"
-  }, {
-    "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json",
-    "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json",
-    "eTag" : "de9d4dcfb4943301584de693af84e8bf",
-    "md5" : "MD5:de9d4dcfb4943301584de693af84e8bf",
-    "createdAt" : "2021-09-07T10:30:25.565",
-    "cacheControl" : {
-      "maxAge" : 3600,
-      "mustRevalidate" : false,
-      "noCache" : false,
-      "noStore" : false
-    },
-    "expires" : "2021-09-07T11:30:25.565"
   } ]
 }
