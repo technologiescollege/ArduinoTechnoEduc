@@ -49,15 +49,18 @@
 //#define EXCLUDE_EXOTIC_PROTOCOLS
 //#define SEND_PWM_BY_TIMER
 //#define USE_NO_SEND_PWM
+//#define NO_LED_FEEDBACK_CODE // saves 500 bytes program space
+//#define DEBUG // Activate this for lots of lovely debug output from the decoders.
+#define INFO // To see valuable informations from universal decoder for pulse width or pulse distance protocols
 
-#include <IRremote.h>
+#include <IRremote.hpp>
 
 #define DELAY_AFTER_SEND 2000
 #define DELAY_AFTER_LOOP 5000
 
 void setup() {
-#if defined(IR_MEASURE_TIMING) && defined(IR_TIMING_TEST_PIN)
-    pinMode(IR_TIMING_TEST_PIN, OUTPUT);
+#if defined(_IR_MEASURE_TIMING) && defined(_IR_TIMING_TEST_PIN)
+    pinMode(_IR_TIMING_TEST_PIN, OUTPUT);
 #endif
 
     Serial.begin(115200);
@@ -68,12 +71,18 @@ void setup() {
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
 
     /*
-     * Start the receiver, enable feedback LED and (if not 3. parameter specified) take LED feedback pin from the internal boards definition
+     * Start the receiver, enable feedback LED and take LED feedback pin from the internal boards definition
      */
     IrReceiver.begin(IR_RECEIVE_PIN);
+#if defined(IR_SEND_PIN)
+    IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
+#else
     IrSender.begin(IR_SEND_PIN, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
+#endif
 
-    Serial.print(F("Ready to receive IR signals at pin "));
+    Serial.print(F("Ready to receive IR signals of protocols: "));
+    printActiveIRProtocols(&Serial);
+    Serial.print(F("at pin "));
 #if defined(ARDUINO_ARCH_STM32) || defined(ESP8266)
     Serial.println(IR_RECEIVE_PIN_STRING);
 #else

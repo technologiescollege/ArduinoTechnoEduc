@@ -41,20 +41,7 @@
  */
 #if defined(SEND_PWM_BY_TIMER) && !defined(ESP32)
 #undef IR_SEND_PIN // send pin is determined by timer except for ESP32
-#endif
-
-/*
- * For backwards compatibility
- */
-#if defined(SYSCLOCK) // allow for processor specific code to define F_CPU
-#undef F_CPU
-/**
- * Clock frequency to be used for timing.
- */
-#define F_CPU SYSCLOCK
-#endif
-#if defined(PARTICLE)
-#define F_CPU 16000000
+#warning Since SEND_PWM_BY_TIMER is defined, the existing value of IR_SEND_PIN is discarded and replaced by the value determined by timer used for PWM generation
 #endif
 
 #if defined (DOXYGEN)
@@ -73,8 +60,8 @@
  * Plain AVR CPU's, no boards
  ***************************************/
 // Arduino Duemilanove, Diecimila, LilyPad, Mini, Fio, Nano, etc
-// ATmega328
-#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328PB__) || defined(__AVR_ATmega168__)
+// ATmega328 and ATmega88
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328PB__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega88P__) || defined(__AVR_ATmega88PB__)
 #  if !defined(IR_USE_AVR_TIMER1) && !defined(IR_USE_AVR_TIMER2)
 //#define IR_USE_AVR_TIMER1   // send pin = pin 9
 #define IR_USE_AVR_TIMER2     // send pin = pin 3
@@ -102,7 +89,7 @@
 #elif defined(__AVR_ATmega808__) || defined(__AVR_ATmega809__) || defined(__AVR_ATmega3208__) || defined(__AVR_ATmega3209__) \
      || defined(__AVR_ATmega1608__) || defined(__AVR_ATmega1609__) || defined(__AVR_ATmega4808__) || defined(__AVR_ATmega4809__) || defined(__AVR_ATtiny1604__)
 #  if !defined(IR_USE_AVR_TIMER_B)
-#define IR_USE_AVR_TIMER_B     //  send pin = pin 6
+#define IR_USE_AVR_TIMER_B     //  send pin = pin 6 on ATmega4809 1 on ATmega4809
 #  endif
 
 // ATmega8u2, ATmega16U2, ATmega32U2
@@ -172,8 +159,8 @@
 #elif defined(__AVR_ATmega32U4__) && defined(TEENSYDUINO)
 #  if !defined(IR_USE_AVR_TIMER1) && !defined(IR_USE_AVR_TIMER3) && !defined(IR_USE_AVR_TIMER4_HS)
 //#define IR_USE_AVR_TIMER1     // send pin = pin 14 (Teensy 2.0 - physical pin: B5)
-#define IR_USE_AVR_TIMER3       // send pin = pin 9  (Teensy 2.0 - physical pin: C6)
-//#define IR_USE_AVR_TIMER4_HS  // send pin = pin 10 (Teensy 2.0 - physical pin: C7)
+//#define IR_USE_AVR_TIMER3     // send pin = pin 9  (Teensy 2.0 - physical pin: C6)
+#define IR_USE_AVR_TIMER4_HS    // send pin = pin 10 (Teensy 2.0 - physical pin: C7)
 #  endif
 
 /***************************************
@@ -333,7 +320,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 void timerConfigForReceive() {
     TCCR1A = 0;
     TCCR1B = _BV(WGM12) | _BV(CS10);
-    OCR1A = F_CPU * MICROS_PER_TICK / 1000000;
+    OCR1A = F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND;
     TCNT1 = 0;
 }
 
@@ -391,7 +378,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #  endif
 }
 
-#define TIMER_COUNT_TOP  (F_CPU * MICROS_PER_TICK / 1000000)
+#define TIMER_COUNT_TOP  (F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND)
 /*
  * timerConfigForReceive() is used exclusively by IRrecv::enableIRIn()
  * It generates an interrupt each 50 (MICROS_PER_TICK) us.
@@ -455,8 +442,8 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 void timerConfigForReceive() {
     TCCR3A = 0;
     TCCR3B = _BV(WGM32) | _BV(CS30);
-    OCR3A = F_CPU * MICROS_PER_TICK / 1000000;
-    OCR3B = F_CPU * MICROS_PER_TICK / 1000000;
+    OCR3A = F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND;
+    OCR3B = F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND;
     TCNT3 = 0;
 }
 
@@ -497,7 +484,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 void timerConfigForReceive() {
     TCCR4A = 0;
     TCCR4B = _BV(WGM42) | _BV(CS40);
-    OCR4A = F_CPU * MICROS_PER_TICK / 1000000;
+    OCR4A = F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND;
     TCNT4 = 0;
 }
 
@@ -507,7 +494,7 @@ void timerConfigForReceive() {
 #elif defined(IR_USE_AVR_TIMER4_HS)
 #  if defined(SEND_PWM_BY_TIMER)
 #    if defined(CORE_OC4A_PIN)
-#define IR_SEND_PIN  CORE_OC4A_PIN  // Teensy
+#define IR_SEND_PIN  CORE_OC4A_PIN  // Teensy 2.0
 #    elif defined(ARDUINO_AVR_PROMICRO)
 #define IR_SEND_PIN  5              // Sparkfun Pro Micro
 #    elif defined(__AVR_ATmega32U4__)
@@ -521,7 +508,7 @@ void timerConfigForReceive() {
 #define DISABLE_SEND_PWM_BY_TIMER   (TCCR4A &= ~(_BV(COM4A0)))  // (Pro Micro does not map PC7 (32/ICP3/CLK0/OC4A)
 // of ATmega32U4 )
 #    else
-#define ENABLE_SEND_PWM_BY_TIMER    TCNT4 = 0; (TCCR4A |= _BV(COM4A1))
+#define ENABLE_SEND_PWM_BY_TIMER    TCNT4 = 0; (TCCR4A |= _BV(COM4A1)); DDRC |= (1<<7)
 #define DISABLE_SEND_PWM_BY_TIMER   (TCCR4A &= ~(_BV(COM4A1)))
 #    endif
 #  endif
@@ -554,8 +541,8 @@ void timerConfigForReceive() {
     TCCR4C = 0;
     TCCR4D = 0;
     TCCR4E = 0;
-    TC4H = (F_CPU * MICROS_PER_TICK / 1000000) >> 8;
-    OCR4C = (F_CPU * MICROS_PER_TICK / 1000000) & 255;
+    TC4H = (F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND) >> 8;
+    OCR4C = (F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND) & 255;
     TC4H = 0;
     TCNT4 = 0;
 }
@@ -597,7 +584,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 void timerConfigForReceive() {
     TCCR5A = 0;
     TCCR5B = _BV(WGM52) | _BV(CS50);
-    OCR5A = F_CPU * MICROS_PER_TICK / 1000000;
+    OCR5A = F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND;
     TCNT5 = 0;
 }
 
@@ -629,7 +616,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
     TCNT0 = 0;// not really required, since we have an 8 bit counter, but makes the signal more reproducible
 }
 
-#define TIMER_COUNT_TOP  (F_CPU * MICROS_PER_TICK / 1000000)
+#define TIMER_COUNT_TOP  (F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND)
 void timerConfigForReceive() {
 #  if (TIMER_COUNT_TOP < 256)
     TCCR0A = _BV(WGM01); // CTC, Top is OCR0A
@@ -678,7 +665,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #  endif
 }
 
-#define TIMER_COUNT_TOP  (F_CPU * MICROS_PER_TICK / 1000000)
+#define TIMER_COUNT_TOP  (F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND)
 void timerConfigForReceive() {
 #  if (TIMER_COUNT_TOP < 256)
     TCCR1 = _BV(CTC1) | _BV(CS10); // Clear Timer/Counter on Compare Match, Top is OCR1C, No prescaling
@@ -694,13 +681,17 @@ void timerConfigForReceive() {
 }
 
 /*
- * AVR TimerB for Nano Every, Uno WiFi Rev2 (8 bits)
+ * AVR TimerB  (8 bits) for ATmega4809 (Nano Every, Uno WiFi Rev2)
  */
 #elif defined(IR_USE_AVR_TIMER_B)
 #  if defined(SEND_PWM_BY_TIMER)
-#define IR_SEND_PIN        A4 // PA2 - A4 on Nano Every, PA5 on ATtiny1604
+#    if defined(__AVR_ATmega4808__) || defined(__AVR_ATmega4809__)
+#define IR_SEND_PIN        6 // PF4 on ATmega4809 / Nano Every (see pins_arduino.h digital_pin_to_timer)
+#    else
+#error SEND_PWM_BY_TIMER not yet supported for this CPU
+#    endif
 
-#define ENABLE_SEND_PWM_BY_TIMER    TCB0.CNT = 0; (TCB0.CTRLB |= TCB_CCMPEN_bm)
+#define ENABLE_SEND_PWM_BY_TIMER    TCB0.CNT = 0; (TCB0.CTRLB |= TCB_CCMPEN_bm) // set Compare/Capture Output Enable
 #define DISABLE_SEND_PWM_BY_TIMER   (TCB0.CTRLB &= ~(TCB_CCMPEN_bm))
 #  endif
 
@@ -725,7 +716,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 
 void timerConfigForReceive() {
     TCB0.CTRLB = (TCB_CNTMODE_INT_gc);  // Periodic interrupt mode
-    TCB0.CCMP = ((F_CPU * MICROS_PER_TICK) / 1000000);
+    TCB0.CCMP = ((F_CPU * MICROS_PER_TICK) / MICROS_IN_ONE_SECOND);
     TCB0.INTFLAGS = TCB_CAPT_bm;         // reset interrupt flags
     TCB0.CTRLA = (TCB_CLKSEL_CLKDIV1_gc) | (TCB_ENABLE_bm);
 }
@@ -776,7 +767,7 @@ void timerConfigForReceive() {
     TCD0.CTRLA = 0;                                                 // reset enable bit in order to unprotect the other bits
     TCD0.CTRLB = TCD_WGMODE_ONERAMP_gc;// must be set since it is used by PWM
 //    TCD0.CMPBSET = 80;
-    TCD0.CMPBCLR = ((F_CPU * MICROS_PER_TICK) / 1000000) - 1;
+    TCD0.CMPBCLR = ((F_CPU * MICROS_PER_TICK) / MICROS_IN_ONE_SECOND) - 1;
 
     _PROTECTED_WRITE(TCD0.FAULTCTRL, 0);// must disable WOA output at pin 13/PA4
 
@@ -808,14 +799,14 @@ void timerConfigForReceive() {
 
 // Special carrier modulator timer for Teensy 3.0 / Teensy 3.1
 #define TIMER_RESET_INTR_PENDING    uint8_t tmp __attribute__((unused)) = CMT_MSC; CMT_CMD2 = 30
-#define TIMER_ENABLE_RECEIVE_INTR   NVIC_ENABLE_IRQ(IRQ_CMT)
+#define TIMER_ENABLE_RECEIVE_INTR   NVIC_ENABLE_IRQ(IRQ_CMT), NVIC_SET_PRIORITY(IRQ_CMT, 48)
 #define TIMER_DISABLE_RECEIVE_INTR  NVIC_DISABLE_IRQ(IRQ_CMT)
 #define TIMER_INTR_NAME     cmt_isr
 
 #  ifdef ISR
 #undef ISR
 #  endif
-#define ISR(f) void do_not_use__(void)
+#define ISR(f) void f(void)
 
 #define CMT_PPS_DIV  ((F_BUS + 7999999) / 8000000)
 #  if F_BUS < 8000000
@@ -862,13 +853,13 @@ void timerConfigForReceive() {
 
 // defines for TPM1 timer on Teensy-LC
 #define TIMER_RESET_INTR_PENDING        FTM1_SC |= FTM_SC_TOF;
-#define TIMER_ENABLE_RECEIVE_INTR       NVIC_ENABLE_IRQ(IRQ_FTM1)
+#define TIMER_ENABLE_RECEIVE_INTR       NVIC_ENABLE_IRQ(IRQ_FTM1), NVIC_SET_PRIORITY(IRQ_FTM1, 0)
 #define TIMER_DISABLE_RECEIVE_INTR      NVIC_DISABLE_IRQ(IRQ_FTM1)
 #define TIMER_INTR_NAME                 ftm1_isr
 #  ifdef ISR
 #undef ISR
 #  endif
-#define ISR(f) void do_not_use__(void)
+#define ISR(f) void f(void)
 
 void timerConfigForSend(uint8_t aFrequencyKHz) {
     SIM_SCGC6 |= SIM_SCGC6_TPM1;
@@ -888,6 +879,78 @@ void timerConfigForReceive() {
     FTM1_SC = FTM_SC_CLKS(1) | FTM_SC_PS(0) | FTM_SC_TOF | FTM_SC_TOIE;
 }
 
+/***************************************
+ * Teensy 4.0, 4.1, MicroMod boards
+ ***************************************/
+#elif defined(__IMXRT1062__)
+#  if defined(SEND_PWM_BY_TIMER)
+#define IR_SEND_PIN        7
+#define ENABLE_SEND_PWM_BY_TIMER        FLEXPWM1_OUTEN |= FLEXPWM_OUTEN_PWMA_EN(8), \
+                                        IOMUXC_SW_MUX_CTL_PAD_GPIO_B1_00 = 6
+#define DISABLE_SEND_PWM_BY_TIMER       IOMUXC_SW_MUX_CTL_PAD_GPIO_B1_00 = 5, \
+                                        FLEXPWM1_OUTEN &= ~FLEXPWM_OUTEN_PWMA_EN(8)
+#  endif
+
+// defines for FlexPWM1 timer on Teensy 4
+#define TIMER_RESET_INTR_PENDING        FLEXPWM1_SM3STS = FLEXPWM_SMSTS_RF;
+#define TIMER_ENABLE_RECEIVE_INTR       attachInterruptVector(IRQ_FLEXPWM1_3, pwm1_3_isr),\
+                                        FLEXPWM1_SM3STS = FLEXPWM_SMSTS_RF, \
+                                        FLEXPWM1_SM3INTEN = FLEXPWM_SMINTEN_RIE, \
+                                        NVIC_ENABLE_IRQ(IRQ_FLEXPWM1_3), \
+                                        NVIC_SET_PRIORITY(IRQ_FLEXPWM1_3, 48)
+#define TIMER_DISABLE_RECEIVE_INTR      NVIC_DISABLE_IRQ(IRQ_FLEXPWM1_3)
+#define TIMER_INTR_NAME                 pwm1_3_isr
+#  ifdef ISR
+#undef ISR
+#  endif
+#define ISR(f) void (f)(void)
+void pwm1_3_isr();
+
+void timerConfigForSend(uint8_t aFrequencyKHz) {
+    uint32_t period = (float)F_BUS_ACTUAL / (float)((aFrequencyKHz) * 2000);
+    uint32_t prescale = 0;
+    while (period > 32767) {
+        period = period >> 1;
+        if (prescale < 7) prescale++;
+    }
+    FLEXPWM1_FCTRL0 |= FLEXPWM_FCTRL0_FLVL(8);
+    FLEXPWM1_FSTS0 = 0x0008;
+    FLEXPWM1_MCTRL |= FLEXPWM_MCTRL_CLDOK(8);
+    FLEXPWM1_SM3CTRL2 = FLEXPWM_SMCTRL2_INDEP;
+    FLEXPWM1_SM3CTRL = FLEXPWM_SMCTRL_HALF | FLEXPWM_SMCTRL_PRSC(prescale);
+    FLEXPWM1_SM3INIT = -period;
+    FLEXPWM1_SM3VAL0 = 0;
+    FLEXPWM1_SM3VAL1 = period;
+    FLEXPWM1_SM3VAL2 = -(period / 3);
+    FLEXPWM1_SM3VAL3 = period / 3;
+    FLEXPWM1_SM3VAL4 = 0;
+    FLEXPWM1_SM3VAL5 = 0;
+    FLEXPWM1_MCTRL |= FLEXPWM_MCTRL_LDOK(8) | FLEXPWM_MCTRL_RUN(8);
+}
+
+void timerConfigForReceive() {
+    uint32_t period = (float)F_BUS_ACTUAL * (float)(MICROS_PER_TICK) * 0.0000005f;
+    uint32_t prescale = 0;
+    while (period > 32767) {
+        period = period >> 1;
+        if (prescale < 7) prescale++;
+    }
+    FLEXPWM1_FCTRL0 |= FLEXPWM_FCTRL0_FLVL(8);
+    FLEXPWM1_FSTS0 = 0x0008;
+    FLEXPWM1_MCTRL |= FLEXPWM_MCTRL_CLDOK(8);
+    FLEXPWM1_SM3CTRL2 = FLEXPWM_SMCTRL2_INDEP;
+    FLEXPWM1_SM3CTRL = FLEXPWM_SMCTRL_HALF | FLEXPWM_SMCTRL_PRSC(prescale);
+    FLEXPWM1_SM3INIT = -period;
+    FLEXPWM1_SM3VAL0 = 0;
+    FLEXPWM1_SM3VAL1 = period;
+    FLEXPWM1_SM3VAL2 = 0;
+    FLEXPWM1_SM3VAL3 = 0;
+    FLEXPWM1_SM3VAL4 = 0;
+    FLEXPWM1_SM3VAL5 = 0;
+    FLEXPWM1_MCTRL |= FLEXPWM_MCTRL_LDOK(8) | FLEXPWM_MCTRL_RUN(8);
+}
+
+
 #elif defined(ESP8266)
 #define TIMER_RESET_INTR_PENDING
 #define TIMER_ENABLE_RECEIVE_INTR   timer1_attachInterrupt(&IRTimerInterruptHandler) // enables interrupt too
@@ -897,8 +960,8 @@ void timerConfigForReceive() {
 #  ifdef ISR
 #undef ISR
 #  endif
-#define ISR() ICACHE_RAM_ATTR void IRTimerInterruptHandler()
-ICACHE_RAM_ATTR void IRTimerInterruptHandler();
+#define ISR() IRAM_ATTR void IRTimerInterruptHandler()
+IRAM_ATTR void IRTimerInterruptHandler();
 
 #ifdef SEND_PWM_BY_TIMER
 #error "No support for hardware PWM generation for ESP8266"
@@ -925,22 +988,23 @@ void timerConfigForReceive() {
  * ESP32 boards - can use any pin for timer
  ***************************************/
 #elif defined(ESP32)
-//#  if defined(SEND_PWM_BY_TIMER)
-#if !defined(IR_SEND_PIN)
+
+#  if ! defined(SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL)
+#define SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL 0 // The channel used for PWM 0 to 7 are high speed PWM channels
+#  endif
+
+#  if defined(SEND_PWM_BY_TIMER)
+#    if !defined(IR_SEND_PIN)
 #define IR_SEND_PIN 4 // can use any pin, no timer restrictions
-#endif
+#    endif
 
-#define ENABLE_SEND_PWM_BY_TIMER    ledcWrite(LED_CHANNEL, IR_SEND_DUTY_CYCLE) // we must use channel here not pin number
-#define DISABLE_SEND_PWM_BY_TIMER   ledcWrite(LED_CHANNEL, 0)
-//#  endif
-
-#  if ! defined(LED_CHANNEL)
-#define LED_CHANNEL 0 // The channel used for PWM 0 to 7 are high speed PWM channels
+#define ENABLE_SEND_PWM_BY_TIMER    ledcWrite(SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL, IR_SEND_DUTY_CYCLE) // we must use channel here not pin number
+#define DISABLE_SEND_PWM_BY_TIMER   ledcWrite(SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL, 0)
 #  endif
 
 #define TIMER_RESET_INTR_PENDING
-#define TIMER_ENABLE_RECEIVE_INTR   timerAlarmEnable(timer)
-#define TIMER_DISABLE_RECEIVE_INTR  timerEnd(timer); timerDetachInterrupt(timer)
+#define TIMER_ENABLE_RECEIVE_INTR   timerAlarmEnable(sESP32Timer)
+#define TIMER_DISABLE_RECEIVE_INTR  if (sESP32Timer != NULL) {timerEnd(sESP32Timer); timerDetachInterrupt(sESP32Timer);}
 // Redefinition of ISR macro which creates a plain function now
 #  ifdef ISR
 #undef ISR
@@ -950,11 +1014,15 @@ IRAM_ATTR void IRTimerInterruptHandler();
 
 // Variables specific to the ESP32.
 // the ledc functions behave like hardware timers for us :-), so we do not require our own soft PWM generation code.
-hw_timer_t *timer;
+hw_timer_t *sESP32Timer;
 
 void timerConfigForSend(uint8_t aFrequencyKHz) {
-    ledcSetup(LED_CHANNEL, aFrequencyKHz * 1000, 8);  // 8 bit PWM resolution
-    ledcAttachPin(IrSender.sendPin, LED_CHANNEL);// bind pin to channel
+    ledcSetup(SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL, aFrequencyKHz * 1000, 8);  // 8 bit PWM resolution
+#if defined(IR_SEND_PIN)
+    ledcAttachPin(IR_SEND_PIN, SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL);// bind pin to channel
+#else
+    ledcAttachPin(IrSender.sendPin, SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL);// bind pin to channel
+#endif
 }
 
 /*
@@ -964,10 +1032,10 @@ void timerConfigForReceive() {
     // ESP32 has a proper API to setup timers, no weird chip macros needed
     // simply call the readable API versions :)
     // 3 timers, choose #1, 80 divider for microsecond precision @80MHz clock, count_up = true
-    timer = timerBegin(1, 80, true);
-    timerAttachInterrupt(timer, &IRTimerInterruptHandler, 1);
+    sESP32Timer = timerBegin(1, 80, true);
+    timerAttachInterrupt(sESP32Timer, &IRTimerInterruptHandler, 1);
     // every 50 us, autoreload = true
-    timerAlarmWrite(timer, MICROS_PER_TICK, true);
+    timerAlarmWrite(sESP32Timer, MICROS_PER_TICK, true);
 }
 
 /***************************************
@@ -1035,7 +1103,7 @@ void timerConfigForReceive() {
     // Set prescaler to 64
     TC->CTRLA.reg |= TC_CTRLA_MODE_COUNT16 | TC_CTRLA_WAVEGEN_MFRQ | TC_CTRLA_PRESCALER_DIV64 | TC_CTRLA_ENABLE;
 
-    setTimerFrequency(1000000 / MICROS_PER_TICK);
+    setTimerFrequency(MICROS_IN_ONE_SECOND / MICROS_PER_TICK);
 
     // Enable the compare interrupt
     TC->INTENSET.reg = 0;
@@ -1160,7 +1228,7 @@ extern "C" {
 void IRTimerInterruptHandler();
 
 /*
- * Use timer 3 as IRMP timer.
+ * Use timer 3 as IR timer.
  * Timer 3 blocks PA6, PA7, PB0, PB1, so if you require one of them as tone() or Servo output, you must choose another timer.
  */
 HardwareTimer sSTM32Timer(3);
@@ -1171,7 +1239,7 @@ HardwareTimer sSTM32Timer(3);
 void timerConfigForReceive() {
     sSTM32Timer.setMode(TIMER_CH1, TIMER_OUTPUT_COMPARE);
     sSTM32Timer.setPrescaleFactor(1);
-    sSTM32Timer.setOverflow((F_CPU / 1000000) * MICROS_PER_TICK);
+    sSTM32Timer.setOverflow((F_CPU / MICROS_IN_ONE_SECOND) * MICROS_PER_TICK);
     sSTM32Timer.attachInterrupt(TIMER_CH1, IRTimerInterruptHandler);
     sSTM32Timer.refresh();
 }
@@ -1199,7 +1267,7 @@ void timerConfigForReceive() {
 void IRTimerInterruptHandler();
 
 /*
- * Use timer 4 as IRMP timer.
+ * Use timer 4 as IR timer.
  * Timer 4 blocks PB6, PB7, PB8, PB9, so if you need one them as tone() or Servo output, you must choose another timer.
  */
 #  if defined(TIM4)
@@ -1228,9 +1296,13 @@ void timerConfigForReceive() {
 
 #  if defined(SEND_PWM_BY_TIMER)
 #define IR_SEND_PIN         A5 // Particle supports multiple pins
-
+#    if defined(IR_SEND_PIN)
+#define ENABLE_SEND_PWM_BY_TIMER    analogWrite(IR_SEND_PIN, 128, ir_out_kHz*1000)
+#define DISABLE_SEND_PWM_BY_TIMER   analogWrite(IR_SEND_PIN, 0, ir_out_kHz*1000)
+#    else
 #define ENABLE_SEND_PWM_BY_TIMER    analogWrite(IrSender.sendPin, 128, ir_out_kHz*1000)
 #define DISABLE_SEND_PWM_BY_TIMER   analogWrite(IrSender.sendPin, 0, ir_out_kHz*1000)
+#    endif
 #  endif
 
 #  ifndef IR_OUT_KHZ

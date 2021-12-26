@@ -42,9 +42,15 @@
 Servo myservo;  // create servo object to control a servo
 
 // Possible PWM GPIO pins on the ESP32: 0(used by on-board button),2,4,5(used by on-board LED),12-19,21-23,25-27,32-33 
+// Possible PWM GPIO pins on the ESP32-S2: 0(used by on-board button),1-17,18(used by on-board LED),19-21,26,33-42 
 int servoPin = 18;      // GPIO pin used to connect the servo control (digital out)
 // Possible ADC pins on the ESP32: 0,2,4,12-15,32-39; 34-39 are recommended for analog input
+// Possible ADC pins on the ESP32-S2: 1-20 are recommended for analog input
+#if defined(ARDUINO_ESP32S2_DEV)
+int potPin = 10;        // GPIO pin used to connect the potentiometer (analog in)
+#else
 int potPin = 34;        // GPIO pin used to connect the potentiometer (analog in)
+#endif
 int ADC_Max = 4096;     // This is the default ADC max value on the ESP32 (12 bit ADC width);
                         // this width can be set (in low-level oode) from 9-12 bits, for a
                         // a range of max values of 512-4096

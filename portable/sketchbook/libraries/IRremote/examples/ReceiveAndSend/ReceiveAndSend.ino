@@ -51,7 +51,7 @@
 
 //#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 900 bytes program space
 
-#include <IRremote.h>
+#include <IRremote.hpp>
 
 int SEND_BUTTON_PIN = APPLICATION_PIN;
 int STATUS_PIN = LED_BUILTIN;
@@ -90,7 +90,9 @@ void setup() {
 
     pinMode(STATUS_PIN, OUTPUT);
 
-    Serial.print(F("Ready to receive IR signals at pin "));
+    Serial.print(F("Ready to receive IR signals of protocols: "));
+    printActiveIRProtocols (&Serial);
+    Serial.print(F("at pin "));
 #if defined(ARDUINO_ARCH_STM32) || defined(ESP8266)
     Serial.println(IR_RECEIVE_PIN_STRING);
 #else

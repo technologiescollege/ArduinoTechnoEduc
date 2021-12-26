@@ -5,7 +5,7 @@
  This sketch was written for the Arduino Mega, and will not work on previous boards.
 
  The circuit:
- * LEDs attached from pins 2 through 13 to ground.
+ * LEDs attached from pins 2 through 13 to ground. or for ESP32-S2 pins 1-17,19-21,26,33-42
 
  created 8 Feb 2009
  by Tom Igoe
@@ -15,8 +15,13 @@
  */
 // These constants won't change.  They're used to give names
 // to the pins used:
+#if defined(ARDUINO_ESP32S2_DEV)
+const int lowestPin = 1;
+const int highestPin = 42;
+#else
 const int lowestPin = 2;
 const int highestPin = 33;
+#endif
 #include <ESP32Servo.h>
 Servo myservo;
 
@@ -43,8 +48,14 @@ void loop() {
 						thisPin == 25 || // one of the  2 DAC outputs, no timer needed
 						thisPin == 26)) { // one of the 2 DAC outputs, no timer needed
 			if (pwmFactory(thisPin) == NULL) { // check if its the first time for the pin or its a DAC
+#if defined(ARDUINO_ESP32S2_DEV)
+				if (thisPin == 17 || // one of the 2 DAC outputs, no timer needed
+						thisPin == 18)
+#else
 				if (thisPin == 25 || // one of the 2 DAC outputs, no timer needed
-						thisPin == 26) {
+						thisPin == 26)
+#endif
+				{
 					Serial.println("DAC to pin " + String(thisPin));
 				} else
 					Serial.println("Writing to pin " + String(thisPin));

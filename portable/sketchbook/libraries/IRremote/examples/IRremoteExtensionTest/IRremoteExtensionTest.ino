@@ -1,11 +1,14 @@
 /*
- * IRExtensionTest.cpp
+ * IRremoteExtensionTest.cpp
  * Simple test using the IRremoteExtensionClass.
  */
+#include <Arduino.h>
+
+//#define RAW_BUFFER_LENGTH  750  // 750 is the value for air condition remotes.
 
 #include "PinDefinitionsAndMore.h"
 
-#include <IRremote.h>
+#include <IRremote.hpp>
 
 #include "IRremoteExtensionClass.h"
 

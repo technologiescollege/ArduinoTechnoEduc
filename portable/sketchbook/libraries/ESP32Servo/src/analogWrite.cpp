@@ -7,9 +7,10 @@
 
 #include "analogWrite.h"
 #include "ESP32PWM.h"
+boolean ESP32PWM::DISABLE_DAC=false;
 
 void analogWrite(uint8_t APin, uint16_t AValue) {
-	if(APin== 25 ||APin==26){
+	if((APin== 25 ||APin==26)&&!ESP32PWM::DISABLE_DAC){
 		dacWrite(APin, AValue);
 		return;
 	}

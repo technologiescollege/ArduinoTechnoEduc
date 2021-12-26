@@ -152,18 +152,18 @@ double ESP32PWM::setup(double freq, uint8_t resolution_bits) {
 	}
 	return ledcSetup(getChannel(), freq, resolution_bits);
 }
-float ESP32PWM::getDutyScaled() {
-	return mapf((float) myDuty, 0, (float) ((1 << resolutionBits) - 1), 0.0,
+double ESP32PWM::getDutyScaled() {
+	return mapf((double) myDuty, 0, (double) ((1 << resolutionBits) - 1), 0.0,
 			1.0);
 }
-void ESP32PWM::writeScaled(float duty) {
-	write(mapf(duty, 0.0, 1.0, 0, (float) ((1 << resolutionBits) - 1)));
+void ESP32PWM::writeScaled(double duty) {
+	write(mapf(duty, 0.0, 1.0, 0, (double) ((1 << resolutionBits) - 1)));
 }
 void ESP32PWM::write(uint32_t duty) {
 	myDuty = duty;
 	ledcWrite(getChannel(), duty);
 }
-void ESP32PWM::adjustFrequencyLocal(double freq, float dutyScaled) {
+void ESP32PWM::adjustFrequencyLocal(double freq, double dutyScaled) {
 	timerFreqSet[getTimer()] = (long) freq;
 	myFreq = freq;
 	if (attached()) {
@@ -177,7 +177,7 @@ void ESP32PWM::adjustFrequencyLocal(double freq, float dutyScaled) {
 		writeScaled(dutyScaled);
 	}
 }
-void ESP32PWM::adjustFrequency(double freq, float dutyScaled) {
+void ESP32PWM::adjustFrequency(double freq, double dutyScaled) {
 	if(dutyScaled<0)
 		dutyScaled=getDutyScaled();
 	writeScaled(dutyScaled);
@@ -236,7 +236,12 @@ void ESP32PWM::attachPin(uint8_t pin) {
 	} else {
 		Serial.println(
 				"ERROR PWM channel unavailible on pin requested! " + String(pin)
-						+ "\r\nPWM availible on: 2,4,5,12-19,21-23,25-27,32-33");
+#if defined(ARDUINO_ESP32S2_DEV)
+						+ "\r\nPWM availible on: 1-21,26,33-42"
+#else
+						+ "\r\nPWM availible on: 2,4,5,12-19,21-23,25-27,32-33"
+#endif
+		);
 		return;
 	}
 	//Serial.print(" on pin "+String(pin));

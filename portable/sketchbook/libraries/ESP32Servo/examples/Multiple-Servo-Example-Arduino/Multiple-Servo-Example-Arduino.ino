@@ -46,11 +46,16 @@ int minUs = 1000;
 int maxUs = 2000;
 
 // These are all GPIO pins on the ESP32
-// Recommended pins include 2,4,12-19,21-23,25-27,32-33 
+// Recommended pins include 2,4,12-19,21-23,25-27,32-33
+// for the ESP32-S2 the GPIO pins are 1-21,26,33-42
 int servo1Pin = 15;
 int servo2Pin = 16;
 int servo3Pin = 14;
+#if defined(ARDUINO_ESP32S2_DEV)
+int servo4Pin = 13;
+#else
 int servo4Pin = 32;
+#endif
 int servo5Pin = 4;
 
 int pos = 0;      // position in degrees
@@ -74,7 +79,11 @@ void setup() {
 void loop() {
 	servo1.attach(servo1Pin, minUs, maxUs);
 	servo2.attach(servo2Pin, minUs, maxUs);
+#if defined(ARDUINO_ESP32S2_DEV)
+	pwm.attachPin(37, 10000);//10khz
+#else
 	pwm.attachPin(27, 10000);//10khz
+#endif
 	servo3.attach(servo3Pin, minUs, maxUs);
 	servo4.attach(servo4Pin, minUs, maxUs);
 

@@ -1,8 +1,27 @@
+ARDUINO 1.8.19 2021.12.20 SECURITY HOTFIX RELEASE
+
+[ide]
+* Removed log4j from IDE. Fix CVE-2021-45105, CVE-2021-45046
+
+ARDUINO 1.8.18 2021.12.14 SECURITY HOTFIX RELEASE
+
+[ide]
+* Upgrade log4j to 2.16.0 - Extra hardening for CVE-2021-44228
+
+
+ARDUINO 1.8.17 (not released superseded by 1.8.18)
+
+[ide]
+* Upgrade log4j to 2.15.0 - CVE-2021-44228 (thanks @rhowe)
+
+
 ARDUINO 1.8.16 2021.09.06
 
 [ide]
 * Removed the very outdated off-line documentation.
 * Do not crash if a malformed boards index URL is entered in preferences.
+* Fixed font-resizing problem with multiple tabs open.
+* Updated FTDI drivers to version 2.12.36.4
 
 [wifi-firmware]
 * Added latest firmwares (up to version 1.4.8) for NINA-based boards
