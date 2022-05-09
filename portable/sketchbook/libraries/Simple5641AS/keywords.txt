@@ -1,0 +1,17 @@
+Simple5641AS	KEYWORD1
+selectAllDigits	KEYWORD2
+selectDigit	KEYWORD2
+clean	KEYWORD2
+shortDisplayNumber	KEYWORD2
+shortDisplayCode	KEYWORD2
+cycle	KEYWORD2
+customDisplayCycle	KEYWORD2
+countDown	KEYWORD2
+slowCountDown	KEYWORD2
+countUp	KEYWORD2
+slowCountUp	KEYWORD2
+zeroAnimation	KEYWORD2
+displayNumber KEYWORD2
+displayCode KEYWORD2
+visualExplanation KEYWORD2
+segmentCodes	LITERAL1

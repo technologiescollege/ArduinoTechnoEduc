@@ -9,7 +9,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2020-2021 Armin Joachimsmeyer
+ * Copyright (c) 2020-2022 Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,15 +44,13 @@
 #define DECODE_DENON        // Includes Sharp
 #define DECODE_KASEIKYO
 #define DECODE_NEC          // Includes Apple and Onkyo
-#  if FLASHEND >= 0x1FFF && !defined(CLOCK_SOURCE) // ATTinyCore is bigger than digispark core
-#define DECODE_SONY
-#  endif
 #endif
 
 #if FLASHEND >= 0x3FFF      // For 16k flash or more, like ATtiny1604
 #define DECODE_JVC
 #define DECODE_RC5
 #define DECODE_RC6
+#define DECODE_SONY
 #define DECODE_PANASONIC    // the same as DECODE_KASEIKYO
 
 #define DECODE_DISTANCE     // universal decoder for pulse width or pulse distance protocols
@@ -95,36 +93,29 @@ void setup() {
 #endif
 
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_USB) || defined(SERIAL_PORT_USBVIRTUAL)  || defined(ARDUINO_attiny3217)
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) || defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
 
-    /*
-     * Start the receiver, enable feedback LED and (if not 3. parameter specified) take LED feedback pin from the internal boards definition
-     */
-    IrReceiver.begin(IR_RECEIVE_PIN);
+    // Start the receiver and if not 3. parameter specified, take LED_BUILTIN pin from the internal boards definition as default feedback LED
+    IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
+
     IrSender.begin(IR_SEND_PIN, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
 
     Serial.print(F("Ready to receive IR signals of protocols: "));
     printActiveIRProtocols(&Serial);
     Serial.print(F("at pin "));
-#if defined(ARDUINO_ARCH_STM32) || defined(ESP8266)
-    Serial.println(IR_RECEIVE_PIN_STRING);
-#else
-    Serial.println(IR_RECEIVE_PIN);
-#endif
-    Serial.print(F("Ready to send IR signals at pin "));
-#if defined(ARDUINO_ARCH_STM32) || defined(ESP8266)
+#  if defined(IR_SEND_PIN_STRING)
     Serial.println(IR_SEND_PIN_STRING);
-#else
+#  else
     Serial.println(IR_SEND_PIN);
-#endif
+#  endif
 
 #if FLASHEND >= 0x3FFF  // For 16k flash or more, like ATtiny1604
 // For esp32 we use PWM generation by ledcWrite() for each pin.
-#  if !defined(SEND_PWM_BY_TIMER) && !defined(USE_NO_SEND_PWM) && !defined(ESP32)
+#  if !defined(SEND_PWM_BY_TIMER)
     /*
      * Print internal software PWM generation info
      */
@@ -258,7 +249,7 @@ void loop() {
                 1690, 560, 1690, 560, 560/*1110 Inverted 8 of command*/, 560, 1690, 560, 1690, 560, 1690, 560,
                 1690/*1111 inverted 0 of command*/, 560 /*stop bit*/}; // Using exact NEC timing
         IrSender.sendRaw(irSignal, sizeof(irSignal) / sizeof(irSignal[0]), NEC_KHZ); // Note the approach used to automatically calculate the size of the array.
-        checkReceive(0xFB04, 0x08);
+        checkReceive(0xFB04 & 0xFF, 0x08);
         delay(DELAY_AFTER_SEND);
 #  endif
 
@@ -327,14 +318,13 @@ void loop() {
     checkReceive(sAddress & 0x1F, sCommand);
     delay(DELAY_AFTER_SEND);
 
-#if FLASHEND >= 0x3FFF || defined(DIGISTUMPCORE) // ATTinyCore is bigger than Digispark core
+#if FLASHEND >= 0x3FFF  // For 16k flash or more, like ATtiny1604
     Serial.println(F("Send Sony/SIRCS with 7 command and 5 address bits"));
     Serial.flush();
     IrSender.sendSony(sAddress & 0x1F, sCommand & 0x7F, sRepeats);
     checkReceive(sAddress & 0x1F, sCommand & 0x7F);
     delay(DELAY_AFTER_SEND);
-#endif
-#if FLASHEND >= 0x3FFF  // For 16k flash or more, like ATtiny1604
+
     Serial.println(F("Send Sony/SIRCS with 7 command and 8 address bits"));
     Serial.flush();
     IrSender.sendSony(sAddress & 0xFF, sCommand, sRepeats, SIRCS_15_PROTOCOL);

@@ -30,7 +30,7 @@
  * Choose the library to be used for IR receiving
  */
 #define USE_TINY_IR_RECEIVER // Recommended, but only for NEC protocol!!! If disabled and IRMP_INPUT_PIN is defined, the IRMP library is used for decoding
-//#define TINY_RECEIVER_USE_ARDUINO_ATTACH_INTERRUPT // costs 112 bytes FLASH + 4bytes RAM
+//#define TINY_RECEIVER_USE_ARDUINO_ATTACH_INTERRUPT // costs 112 bytes program space + 4 bytes RAM
 
 #include "PinDefinitionsAndMore.h"
 // Some kind of auto detect library if USE_TINY_IR_RECEIVER is deactivated
@@ -113,7 +113,7 @@ void doTone2200();
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_USB) || defined(SERIAL_PORT_USBVIRTUAL) || defined(ARDUINO_attiny3217)
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) || defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
 #if defined(ESP8266)
@@ -167,11 +167,9 @@ void loop() {
 
     if (doBlink) {
         digitalWrite(LED_BUILTIN, HIGH);
-        IRDispatcher.delayAndCheckForStop(sBlinkDelay);
-        RETURN_IF_STOP; // = if (IRDispatcher.requestToStopReceived) return;
+        DELAY_AND_RETURN_IF_STOP(sBlinkDelay);
         digitalWrite(LED_BUILTIN, LOW);
-        IRDispatcher.delayAndCheckForStop(sBlinkDelay);
-        RETURN_IF_STOP;
+        DELAY_AND_RETURN_IF_STOP(sBlinkDelay);
     }
 
     if (millis() - IRDispatcher.IRReceivedData.MillisOfLastCode > 120000)
@@ -236,11 +234,9 @@ void doLedBlinkStart() {
 void doLedBlink20times() {
     for (int i = 0; i < 20; ++i) {
         digitalWrite(LED_BUILTIN, HIGH);
-        IRDispatcher.delayAndCheckForStop(200);
-        RETURN_IF_STOP; // if (IRDispatcher.requestToStopReceived) return;
+        DELAY_AND_RETURN_IF_STOP(200);
         digitalWrite(LED_BUILTIN, LOW);
-        IRDispatcher.delayAndCheckForStop(200);
-        RETURN_IF_STOP;
+        DELAY_AND_RETURN_IF_STOP(200);
     }
 }
 

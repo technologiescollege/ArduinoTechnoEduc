@@ -57,6 +57,7 @@ int SEND_BUTTON_PIN = APPLICATION_PIN;
 int STATUS_PIN = LED_BUILTIN;
 
 int DELAY_BETWEEN_REPEAT = 50;
+int DEFAULT_NUMBER_OF_REPEATS_TO_SEND = 3;
 
 // On the Zero and others we switch explicitly to SerialUSB
 #if defined(ARDUINO_ARCH_SAMD)
@@ -78,13 +79,14 @@ void sendCode(storedIRDataStruct *aIRDataToSend);
 
 void setup() {
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_USB) || defined(SERIAL_PORT_USBVIRTUAL)  || defined(ARDUINO_attiny3217)
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) || defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
 
-    IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); // Start the receiver, enable feedback LED, take LED feedback pin from the internal boards definition
+    // Start the receiver and if not 3. parameter specified, take LED_BUILTIN pin from the internal boards definition as default feedback LED
+    IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
 
     IrSender.begin(IR_SEND_PIN, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
 
@@ -100,11 +102,11 @@ void setup() {
 #endif
 
     Serial.print(F("Ready to send IR signals at pin "));
-#if defined(ARDUINO_ARCH_STM32) || defined(ESP8266)
-    Serial.println(IR_SEND_PIN_STRING);
-#else
+#  if defined(IR_SEND_PIN_STRING)
+    Serial.print(IR_SEND_PIN_STRING);
+#  else
     Serial.print(IR_SEND_PIN);
-#endif
+#  endif
     Serial.print(F(" on press of button at pin "));
     Serial.println(SEND_BUTTON_PIN);
 
@@ -202,7 +204,7 @@ void sendCode(storedIRDataStruct *aIRDataToSend) {
         /*
          * Use the write function, which does the switch for different protocols
          */
-        IrSender.write(&aIRDataToSend->receivedIRData, NO_REPEATS);
+        IrSender.write(&aIRDataToSend->receivedIRData, DEFAULT_NUMBER_OF_REPEATS_TO_SEND);
 
         Serial.print(F("Sent: "));
         printIRResultShort(&Serial, &aIRDataToSend->receivedIRData);

@@ -34,17 +34,13 @@
 
 // select only NEC and the universal decoder for pulse width or pulse distance protocols
 #define DECODE_NEC          // Includes Apple and Onkyo
-#define DECODE_DISTANCE
+#define DECODE_DISTANCE     // in case NEC is not received correctly
 
 /*
  * Define macros for input and output pin etc.
  */
 #include "PinDefinitionsAndMore.h"
 
-#if FLASHEND <= 0x1FFF  // For 8k flash or less, like ATtiny85. Exclude exotic protocols.
-#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program space.
-#define EXCLUDE_EXOTIC_PROTOCOLS
-#endif
 //#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program space.
 //#define EXCLUDE_EXOTIC_PROTOCOLS
 //#define SEND_PWM_BY_TIMER
@@ -64,20 +60,19 @@ void setup() {
 #endif
 
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_USB) || defined(SERIAL_PORT_USBVIRTUAL)  || defined(ARDUINO_attiny3217)
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) || defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
 
-    /*
-     * Start the receiver, enable feedback LED and take LED feedback pin from the internal boards definition
-     */
-    IrReceiver.begin(IR_RECEIVE_PIN);
+    // Start the receiver and if not 3. parameter specified, take LED_BUILTIN pin from the internal boards definition as default feedback LED
+    IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
+
 #if defined(IR_SEND_PIN)
     IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
 #else
-    IrSender.begin(IR_SEND_PIN, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
+    IrSender.begin(3, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
 #endif
 
     Serial.print(F("Ready to receive IR signals of protocols: "));
@@ -123,6 +118,9 @@ uint16_t sAddress = 0x0102;
 uint8_t sCommand = 0x34;
 uint8_t sRepeats = 1;
 
+/*
+ * Send NEC IR protocol
+ */
 void send_ir_data() {
     Serial.print(F("Sending: 0x"));
     Serial.print(sAddress, HEX);

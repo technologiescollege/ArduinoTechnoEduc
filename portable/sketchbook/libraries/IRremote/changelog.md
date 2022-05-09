@@ -2,6 +2,17 @@
 The latest version may not be released!
 See also the commit log at github: https://github.com/Arduino-IRremote/Arduino-IRremote/commits/master
 
+## 3.6.1
+- Switched Bose internal protocol timing for 0 and 1 -> old 1 timing is now 0 and vice versa.
+
+## 3.6.0
+- Separated enable flag of send and receive feedback LED. Inspired by PR#970 from luvaihassanali.
+- RP2040 support added.
+- Refactored IRTimer.hpp.
+- Refactored IR_SEND_PIN and IrSender.sendPin handling.
+- Renamed IR_SEND_DUTY_CYCLE to IR_SEND_DUTY_CYCLE_PERCENT.
+- Fixed bugs for SEND_PWM_BY_TIMER active.
+
 ## 3.5.2
 - Improved support for Teensy boards by Paul Stoffregen.
 

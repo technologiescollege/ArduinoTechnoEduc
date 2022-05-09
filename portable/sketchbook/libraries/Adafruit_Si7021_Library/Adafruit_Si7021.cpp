@@ -172,7 +172,7 @@ void Adafruit_Si7021::readSerialNumber() {
   buffer[0] = (uint8_t)(SI7021_ID2_CMD >> 8);
   buffer[1] = (uint8_t)(SI7021_ID2_CMD & 0xFF);
   i2c_dev->write_then_read(buffer, 2, buffer, 6);
-  sernum_a = uint32_t(buffer[0]) << 24 | uint32_t(buffer[1]) << 16 |
+  sernum_b = uint32_t(buffer[0]) << 24 | uint32_t(buffer[1]) << 16 |
              uint32_t(buffer[4]) << 8 | uint32_t(buffer[5]);
 
   // Use SNB3 for device model version

@@ -9,7 +9,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2015-2021 Ken Shirriff http://www.righto.com, Rafi Khan, Armin Joachimsmeyer
+ * Copyright (c) 2015-2022 Ken Shirriff http://www.righto.com, Rafi Khan, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,32 +35,14 @@
 
 #include <Arduino.h>
 
-#if !defined(RAW_BUFFER_LENGTH)
-#error Seems you use #include IRremoteInt.h in a file not containing main(). Please define RAW_BUFFER_LENGTH with the same value as in the main program and check if the macros IR_SEND_PIN and SEND_PWM_BY_TIMER are defined in the main program.
-#endif
-//#define RAW_BUFFER_LENGTH  100 // 100 is default
-//#define RAW_BUFFER_LENGTH  112 //  MagiQuest requires 112 bytes. enable this if DECODE_MAGIQUEST is enabled
-//#define SEND_PWM_BY_TIMER
-//#define IR_SEND_PIN            // here it is only interesting if it is defined, the value does not matter here
-
 #define MARK   1
 #define SPACE  0
 
-#define MILLIS_IN_ONE_SECOND 1000L
-#define MICROS_IN_ONE_SECOND 1000000L
-#define MICROS_IN_ONE_MILLI 1000L
-
 #if defined(PARTICLE)
 #define F_CPU 16000000 // definition for a board for which F_CPU is not defined
-#elif defined(ARDUINO_ARCH_MBED_RP2040)
-#define F_CPU 133000000
-#elif defined(ARDUINO_ARDUINO_NANO33BLE)
-#define F_CPU 64000000
 #endif
-#if defined(F_CPU)
+#if defined(F_CPU) // F_CPU is used to generate the receive send timings in some CPU's
 #define CLOCKS_PER_MICRO (F_CPU / MICROS_IN_ONE_SECOND)
-#else
-#error F_CPU not defined, please define it for your board in IRremoteInt.h
 #endif
 
 /*
@@ -77,9 +59,9 @@
 /**
  * For better readability of code
  */
-#define DISABLE_LED_FEEDBACK false
-#define ENABLE_LED_FEEDBACK true
-#define USE_DEFAULT_FEEDBACK_LED_PIN 0
+#define DISABLE_LED_FEEDBACK            false
+#define ENABLE_LED_FEEDBACK             true
+#define USE_DEFAULT_FEEDBACK_LED_PIN    0
 
 #include "IRProtocol.h"
 
@@ -188,7 +170,6 @@ struct IRData {
     uint32_t decodedRawData;     ///< Up to 32 bit decoded raw data, used for sendRaw functions.
     irparams_struct *rawDataPtr; ///< Pointer of the raw timing data to be decoded. Mainly the data buffer filled by receiving ISR.
 };
-
 
 /**
  * Results returned from old decoders !!!deprecated!!!
@@ -316,7 +297,7 @@ public:
                     __attribute__ ((deprecated ("Please use IrReceiver.decode() without a parameter and IrReceiver.decodedIRData.<fieldname> ."))); // deprecated
 
     // for backward compatibility. Now in IRFeedbackLED.hpp
-    void blink13(bool aEnableLEDFeedback)
+    void blink13(uint8_t aEnableLEDFeedback)
             __attribute__ ((deprecated ("Please use setLEDFeedback() or enableLEDFeedback() / disableLEDFeedback()."))); // deprecated
 
     /*
@@ -358,25 +339,26 @@ void printIRResultShort(Print *aSerial, IRData *aIRDataPtr, uint16_t aLeadingSpa
 /****************************************************
  * Feedback LED related functions
  ****************************************************/
+#define DO_NOT_ENABLE_LED_FEEDBACK          0x00
+#define LED_FEEDBACK_DISABLED_COMPLETELY    0x00
+#define LED_FEEDBACK_ENABLED_FOR_RECEIVE    0x01
+#define LED_FEEDBACK_ENABLED_FOR_SEND       0x02
 void setFeedbackLED(bool aSwitchLedOn);
-void setLEDFeedback(uint8_t aFeedbackLEDPin, bool aEnableLEDFeedback); // if aFeedbackLEDPin == 0, then take board BLINKLED_ON() and BLINKLED_OFF() functions
+void setLEDFeedback(uint8_t aFeedbackLEDPin, uint8_t aEnableLEDFeedback); // if aFeedbackLEDPin == 0, then take board BLINKLED_ON() and BLINKLED_OFF() functions
 void setLEDFeedback(bool aEnableLEDFeedback); // Direct replacement for blink13()
 void enableLEDFeedback();
+constexpr auto enableLEDFeedbackForReceive = enableLEDFeedback; // alias for enableLEDFeedback
 void disableLEDFeedback();
+constexpr auto disableLEDFeedbackForReceive = disableLEDFeedback; // alias for enableLEDFeedback
+void enableLEDFeedbackForSend();
+void disableLEDFeedbackForSend();
 
 void setBlinkPin(uint8_t aFeedbackLEDPin) __attribute__ ((deprecated ("Please use setLEDFeedback()."))); // deprecated
 
-/**
- * microseconds per clock interrupt tick
- */
-#if ! defined(MICROS_PER_TICK)
-#define MICROS_PER_TICK    50
-#endif
-
 /*
- * Pulse parms are ((X*50)-100) for the Mark and ((X*50)+100) for the Space.
+ * Pulse parms are ((X*50)-MARK_EXCESS_MICROS) for the Mark and ((X*50)+MARK_EXCESS_MICROS) for the Space.
  * First MARK is the one after the long gap
- * Pulse parameters in uSec
+ * Pulse parameters in microseconds
  */
 /** Relative tolerance (in percent) for some comparisons on measured data. */
 #define TOLERANCE       25
@@ -392,7 +374,7 @@ void setBlinkPin(uint8_t aFeedbackLEDPin) __attribute__ ((deprecated ("Please us
 //#define TICKS_HIGH(us)  ((int)(((us)*UTOL/MICROS_PER_TICK + 1)))
 #if MICROS_PER_TICK == 50 && TOLERANCE == 25           // Defaults
 #define TICKS_LOW(us)   ((us)/67 )     // (us) / ((MICROS_PER_TICK:50 / LTOL:75 ) * 100)
-#define TICKS_HIGH(us)  ((us)/40 + 1)  // (us) / ((MICROS_PER_TICK:50 / UTOL:125) * 100) + 1
+#define TICKS_HIGH(us)  (((us)/40) + 1)  // (us) / ((MICROS_PER_TICK:50 / UTOL:125) * 100) + 1
 #else
     #define TICKS_LOW(us)   ((uint16_t) ((long) (us) * LTOL / (MICROS_PER_TICK * 100) ))
     #define TICKS_HIGH(us)  ((uint16_t) ((long) (us) * UTOL / (MICROS_PER_TICK * 100) + 1))
@@ -415,29 +397,23 @@ extern IRrecv IrReceiver;
 #define SEND_REPEAT_COMMAND true ///< used for e.g. NEC, where a repeat is different from just repeating the data.
 
 /**
- * Duty cycle in percent for sent signals.
- */
-#if ! defined(IR_SEND_DUTY_CYCLE)
-#define IR_SEND_DUTY_CYCLE 30 // 30 saves power and is compatible to the old existing code
-#endif
-
-/**
  * Main class for sending IR signals
  */
 class IRsend {
 public:
     IRsend();
 
-#if defined(IR_SEND_PIN) || defined(SEND_PWM_BY_TIMER)
+    /*
+     * IR_SEND_PIN is defined
+     */
+#if defined(IR_SEND_PIN) || (defined(SEND_PWM_BY_TIMER) && !(defined(ESP32) || defined(ARDUINO_ARCH_RP2040) || defined(PARTICLE)))
     void begin();
-#endif
-#if !defined(IR_SEND_PIN) && !defined(SEND_PWM_BY_TIMER)
-    IRsend(uint8_t aSendPin);
-    void setSendPin(uint8_t aSendPinNumber);
-#endif
-
     void begin(bool aEnableLEDFeedback, uint8_t aFeedbackLEDPin = USE_DEFAULT_FEEDBACK_LED_PIN);
+#else
+    IRsend(uint8_t aSendPin);
     void begin(uint8_t aSendPin);
+    void setSendPin(uint8_t aSendPinNumber); // required if we use IRsend() as constructor
+#endif
 
     // Not guarded for backward compatibility
     void begin(uint8_t aSendPin, bool aEnableLEDFeedback, uint8_t aFeedbackLEDPin = USE_DEFAULT_FEEDBACK_LED_PIN);
@@ -553,7 +529,7 @@ public:
     ;
     void sendWhynter(unsigned long data, int nbits);
 
-#if !defined(IR_SEND_PIN) && !defined(SEND_PWM_BY_TIMER)
+#if !defined(IR_SEND_PIN)
     uint8_t sendPin;
 #endif
     unsigned int periodTimeMicros;

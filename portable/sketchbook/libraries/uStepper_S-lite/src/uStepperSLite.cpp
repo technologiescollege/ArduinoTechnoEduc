@@ -1,7 +1,7 @@
 /********************************************************************************************
 * 	 	File: 		uStepperSLite.cpp														*
-*		Version:    1.1.0                                           						*
-*      	Date: 		June 14, 2020 	                                    					*
+*		Version:    1.2.0                                           						*
+*      	Date: 		Jan 18, 2020 	                                    					*
 *      	Author: 	Thomas Hørring Olsen                                   					*
 *                                                   										*	
 *********************************************************************************************
@@ -207,6 +207,7 @@ void TIMER1_COMPA_vect(void)
 		}
 		else
 		{
+			
 			/*
 			//		Speed filter
 			posEst += velEst * ENCODERINTSAMPLETIME;
@@ -216,30 +217,7 @@ void TIMER1_COMPA_vect(void)
 			pointer->encoder.curSpeed = velIntegrator * pointer->stepConversion;
 			*/
 
-			//stepGenerator speed integrator
-			pointer->currentPidSpeed += pointer->currentPidAcceleration;
-			if(pointer->direction == CW)
-			{
-				if(pointer->currentPidSpeed >= pointer->velocity)
-				{
-					pointer->currentPidSpeed = pointer->velocity;
-				}
-				else if(pointer->currentPidSpeed < 0.0)
-				{
-					pointer->currentPidSpeed = 0.0;
-				}
-			}
-			else
-			{
-				if(pointer->currentPidSpeed <= -pointer->velocity)
-				{
-					pointer->currentPidSpeed = -pointer->velocity;
-				}
-				else if(pointer->currentPidSpeed > 0.0)
-				{
-					pointer->currentPidSpeed = 0.0;
-				}
-			}
+			
 
 
 			//stepgenerator targetposition integrator
@@ -280,26 +258,139 @@ void TIMER1_COMPA_vect(void)
 			//acceleration profile generator
 			if(pointer->state == INITDECEL)
 			{
-				if(pointer->direction == CCW)
-				{
-					pointer->currentPidAcceleration = -(pointer->acceleration * ENCODERINTSAMPLETIME);
-					if(*stepsSinceResetPointer >= pointer->decelToAccelThreshold)
-					{
-						pointer->state = ACCEL;
-					}
-				}
-				else
+				if(pointer->direction == CW && *stepsSinceResetPointer > 0 && pointer->direction != pointer->stepGeneratorDirection)
 				{
 					pointer->currentPidAcceleration = pointer->acceleration * ENCODERINTSAMPLETIME;
 					if(*stepsSinceResetPointer <= pointer->decelToAccelThreshold)
 					{
-						pointer->state = ACCEL;
+						pointer->stepGeneratorDirection = pointer->direction;
+						if(pointer->decelToAccelThreshold == pointer->accelToCruiseThreshold)
+						{
+							pointer->state = CRUISE;
+						}
+						else
+						{
+							pointer->state = ACCEL;
+						}
+					}
+				}
+				else if(pointer->direction == CW && *stepsSinceResetPointer < 0 && pointer->direction != pointer->stepGeneratorDirection)
+				{
+					pointer->currentPidAcceleration = pointer->acceleration * ENCODERINTSAMPLETIME;
+					if(*stepsSinceResetPointer <= pointer->decelToAccelThreshold)
+					{
+						pointer->stepGeneratorDirection = pointer->direction;
+						if(pointer->decelToAccelThreshold == pointer->accelToCruiseThreshold)
+						{
+							pointer->state = CRUISE;
+						}
+						else
+						{
+							pointer->state = ACCEL;
+						}
+					}
+				}
+				else if(pointer->direction == CCW && *stepsSinceResetPointer < 0 && pointer->direction != pointer->stepGeneratorDirection)
+				{
+					pointer->currentPidAcceleration = -pointer->acceleration * ENCODERINTSAMPLETIME;
+					if(*stepsSinceResetPointer >= pointer->decelToAccelThreshold)
+					{
+						pointer->stepGeneratorDirection = pointer->direction;
+						if(pointer->decelToAccelThreshold == pointer->accelToCruiseThreshold)
+						{
+							pointer->state = CRUISE;
+						}
+						else
+						{
+							pointer->state = ACCEL;
+						}
+					}
+				}
+				else if(pointer->direction == CCW && *stepsSinceResetPointer > 0 && pointer->direction != pointer->stepGeneratorDirection)
+				{
+					pointer->currentPidAcceleration = -pointer->acceleration * ENCODERINTSAMPLETIME;
+					if(*stepsSinceResetPointer >= pointer->decelToAccelThreshold)
+					{
+						pointer->stepGeneratorDirection = pointer->direction;
+						if(pointer->decelToAccelThreshold == pointer->accelToCruiseThreshold)
+						{
+							pointer->state = CRUISE;
+						}
+						else
+						{
+							pointer->state = ACCEL;
+						}
+					}
+				}
+				else if(pointer->direction == CW && *stepsSinceResetPointer > 0 )
+				{
+					pointer->currentPidAcceleration = -pointer->acceleration * ENCODERINTSAMPLETIME;
+					if(*stepsSinceResetPointer >= pointer->decelToAccelThreshold)
+					{
+						pointer->stepGeneratorDirection = pointer->direction;
+						if(pointer->decelToAccelThreshold == pointer->accelToCruiseThreshold)
+						{
+							pointer->state = CRUISE;
+						}
+						else
+						{
+							pointer->state = ACCEL;
+						}
+					}
+				}
+				else if(pointer->direction == CW && *stepsSinceResetPointer < 0)
+				{
+					pointer->currentPidAcceleration = -pointer->acceleration * ENCODERINTSAMPLETIME;
+					if(*stepsSinceResetPointer >= pointer->decelToAccelThreshold)
+					{
+						pointer->stepGeneratorDirection = pointer->direction;
+						if(pointer->decelToAccelThreshold == pointer->accelToCruiseThreshold)
+						{
+							pointer->state = CRUISE;
+						}
+						else
+						{
+							pointer->state = ACCEL;
+						}
+					}
+				}
+				else if(pointer->direction == CCW && *stepsSinceResetPointer < 0)
+				{
+					pointer->currentPidAcceleration = pointer->acceleration * ENCODERINTSAMPLETIME;
+					if(*stepsSinceResetPointer <= pointer->decelToAccelThreshold)
+					{
+						pointer->stepGeneratorDirection = pointer->direction;
+						if(pointer->decelToAccelThreshold == pointer->accelToCruiseThreshold)
+						{
+							pointer->state = CRUISE;
+						}
+						else
+						{
+							pointer->state = ACCEL;
+						}
+					}
+				}
+				else if(pointer->direction == CCW && *stepsSinceResetPointer > 0)
+				{
+					pointer->currentPidAcceleration = pointer->acceleration * ENCODERINTSAMPLETIME;
+					if(*stepsSinceResetPointer <= pointer->decelToAccelThreshold)
+					{
+						pointer->stepGeneratorDirection = pointer->direction;
+						if(pointer->decelToAccelThreshold == pointer->accelToCruiseThreshold)
+						{
+							pointer->state = CRUISE;
+						}
+						else
+						{
+							pointer->state = ACCEL;
+						}
 					}
 				}
 
 			}
 			else if(pointer->state == ACCEL)
 			{
+				pointer->stepGeneratorDirection = pointer->direction;
 				if(pointer->direction == CCW)
 				{
 					if(*stepsSinceResetPointer <= pointer->accelToCruiseThreshold)
@@ -319,6 +410,7 @@ void TIMER1_COMPA_vect(void)
 			}
 			else if(pointer->state == CRUISE)
 			{
+				pointer->stepGeneratorDirection = pointer->direction;
 				if(pointer->continous == 1)
 				{
 					pointer->state = CRUISE;
@@ -346,6 +438,7 @@ void TIMER1_COMPA_vect(void)
 			}
 			else if(pointer->state == DECEL)
 			{
+				pointer->stepGeneratorDirection = pointer->direction;
 				if(pointer->direction == CW)
 				{
 					if(*stepsSinceResetPointer >= pointer->decelToStopThreshold)
@@ -365,6 +458,7 @@ void TIMER1_COMPA_vect(void)
 			}
 			else if(pointer->state == STOP)
 			{
+				pointer->stepGeneratorDirection = pointer->direction;
 				pointer->currentPidAcceleration = 0.0;
 				pointer->currentPidSpeed = 0.0;
 				TCCR3B &= ~(1 << CS30);
@@ -410,7 +504,59 @@ void TIMER1_COMPA_vect(void)
 					sei();
 				}
 			}
-
+			//stepGenerator speed integrator
+			pointer->currentPidSpeed += pointer->currentPidAcceleration;
+			if(pointer->direction == CW)
+			{
+				if(pointer->currentPidAcceleration > 0)
+				{
+					if(pointer->currentPidSpeed >= pointer->velocity && pointer->state != INITDECEL)
+					{
+						pointer->currentPidSpeed = pointer->velocity;
+					}
+				}
+				else if(pointer->currentPidAcceleration < 0)
+				{
+					if(pointer->currentPidSpeed <= 0.0&& pointer->state != INITDECEL)
+					{
+						pointer->currentPidSpeed = 0.0;
+					}
+					else if(pointer->currentPidSpeed <= pointer->velocity&& pointer->state != INITDECEL && pointer->state != DECEL)
+					{
+						pointer->currentPidSpeed = pointer->velocity;
+					}
+				}
+				else if(pointer->currentPidSpeed < 0.0)
+				{
+					//pointer->currentPidSpeed = 0.0;
+				}
+			}
+			else
+			{
+				if(pointer->currentPidAcceleration < 0)
+				{
+					if(pointer->currentPidSpeed <= -pointer->velocity && pointer->state != INITDECEL)
+					{
+						pointer->currentPidSpeed = -pointer->velocity;
+					}
+				}
+				else if(pointer->currentPidAcceleration > 0)
+				{
+					if(pointer->currentPidSpeed >= 0 && pointer->state != INITDECEL)
+					{
+						pointer->currentPidSpeed = 0;
+					}
+					else if(pointer->currentPidSpeed >= -pointer->velocity && pointer->state != INITDECEL && pointer->state != DECEL)
+					{
+						pointer->currentPidSpeed = -pointer->velocity;
+					}
+				}
+				else if(pointer->currentPidSpeed > 0.0)
+				{
+					//pointer->currentPidSpeed = 0.0;
+				}
+			}
+			
 			pointer->detectStall();
 		}
 	}
@@ -543,7 +689,7 @@ void uStepperSLite::setMaxAcceleration(float accel)
 		}
 		else						//If motor still needs to perform some steps
 		{
-			this->moveSteps(abs(this->targetPosition - this->stepsSinceReset + 1), this->direction, this->brake);	//we should make sure the motor gets to execute the remaining steps
+			this->moveSteps(abs(this->targetPosition - this->stepsSinceReset), this->direction, this->brake);	//we should make sure the motor gets to execute the remaining steps
 		}
 	}
 }
@@ -576,7 +722,7 @@ void uStepperSLite::setMaxVelocity(float vel)
 		}
 		else					//If motor still needs to perform some steps
 		{
-			this->moveSteps(abs(this->targetPosition - this->stepsSinceReset + 1), this->direction, this->brake);	//we should make sure the motor gets to execute the remaining steps
+			this->moveSteps(abs(this->targetPosition - this->stepsSinceReset), this->direction, this->brake);	//we should make sure the motor gets to execute the remaining steps
 		}
 	}
 }
@@ -593,8 +739,10 @@ void uStepperSLite::runContinous(bool dir)
 		return;		//Drop in feature is activated. just return since this function makes no sense with drop in activated!
 	}
 
-	curVel = this->currentPidSpeed;
-
+	cli();
+		curVel = this->currentPidSpeed;
+	sei();
+	
 	if(this->state == STOP)											//If motor is currently running at desired speed
 	{
 		initialDecelSteps = 0;
@@ -608,22 +756,22 @@ void uStepperSLite::runContinous(bool dir)
 		tempState = INITDECEL;									//We should decelerate the motor to full stop
 		initialDecelSteps = (uint32_t)((curVel*curVel)/(2.0*this->acceleration));		//the amount of steps needed to bring the motor to full stop. (S = (V^2 - V0^2)/(2*-a)))
 		accelSteps = (uint32_t)((this->velocity * this->velocity)/(2.0*this->acceleration));									//Number of steps to bring the motor to max speed (S = (V^2 - V0^2)/(2*a)))
-
 		startVelocity = curVel;//sqrt((curVel*curVel) + 2.0*this->acceleration);	//number of interrupts before the first step should be performed.
 	}
 	else if((dir == CW && curVel > 0) || (dir == CCW && curVel < 0))												//If the motor is currently rotating the same direction as the desired direction
 	{
+		startVelocity = curVel;
 		if(abs(curVel) > this->velocity)						//If current velocity is greater than desired velocity
 		{
 			tempState = INITDECEL;						//We need to decelerate the motor to desired velocity
-			initialDecelSteps = (uint32_t)(((this->velocity*this->velocity) - (curVel*curVel))/(-2.0*this->acceleration));		//Number of steps to bring the motor down from current speed to max speed (S = (V^2 - V0^2)/(2*-a)))
+			initialDecelSteps = (uint32_t)(((abs(curVel)*abs(curVel)) - (this->velocity*this->velocity))/(2.0*this->acceleration));		//Number of steps to bring the motor down from current speed to max speed (S = (V^2 - V0^2)/(2*-a)))
 			accelSteps = 0;						//No acceleration phase is needed
 		}
 
 		else if(abs(curVel) < this->velocity)					//If the current velocity is less than the desired velocity
 		{
 			tempState = ACCEL;							//Start accelerating
-			accelSteps = (uint32_t)(((this->velocity*this->velocity) - (curVel*curVel))/(2.0*this->acceleration));	//Number of Steps needed to accelerate from current velocity to full speed
+			accelSteps = (uint32_t)(((this->velocity*this->velocity) - (abs(curVel)*abs(curVel)))/(2.0*this->acceleration));	//Number of Steps needed to accelerate from current velocity to full speed
 			initialDecelSteps = 0;
 		}
 
@@ -643,21 +791,56 @@ void uStepperSLite::runContinous(bool dir)
 	}
 	cli();
 		this->direction = dir;
-		this->stepGeneratorDirection = dir;
 
 		this->continous = 1;
 
 		if(dir == CW)
 		{
-			this->decelToAccelThreshold = this->stepsSinceReset + initialDecelSteps;
+			if(this->direction != this->stepGeneratorDirection)
+			{
+				this->decelToAccelThreshold = this->stepsSinceReset - initialDecelSteps;
+			}
+			else
+			{
+				this->decelToAccelThreshold = this->stepsSinceReset + initialDecelSteps;
+			}
+
 			this->accelToCruiseThreshold = this->decelToAccelThreshold + accelSteps;
-			PORTB |= (1 << 2);
+			if(tempState != INITDECEL)
+			{
+				PORTB |= (1 << 2);
+			
+			}
+			else
+			{
+				PORTB &= ~(1 << 2);
+			}
+			
+			
 		}
 		else
 		{
-			this->decelToAccelThreshold = this->stepsSinceReset - initialDecelSteps;
+			if(this->direction != this->stepGeneratorDirection)
+			{
+				this->decelToAccelThreshold = this->stepsSinceReset + initialDecelSteps;
+			}
+			else
+			{
+				this->decelToAccelThreshold = this->stepsSinceReset - initialDecelSteps;
+			}
+			
+			
 			this->accelToCruiseThreshold = this->decelToAccelThreshold - accelSteps;
-			PORTB &= ~(1 << 2);
+			if(tempState != INITDECEL)
+			{
+				PORTB &= ~(1 << 2);
+			}
+			else
+			{
+				PORTB |= (1 << 2);
+			}
+			
+			
 		}
 		this->currentPidSpeed = startVelocity;
 		if(pointer->currentPidSpeed > 5.0)
@@ -673,7 +856,26 @@ void uStepperSLite::runContinous(bool dir)
 			pointer->stepDelay = 20000;
 		}
 		this->state = tempState;
+		Serial.print("\r\nstate: ");
+    Serial.println(this->state);
 	sei();
+	Serial.print("\r\nstate: ");
+    Serial.println(this->state);
+    Serial.print(" StepsSinceReset: ");
+    Serial.println(this->stepsSinceReset);
+    Serial.print(" CurrentSpeed: ");
+    Serial.println(this->currentPidSpeed);
+    Serial.print(" currentPidAcceleration: ");
+    Serial.println(this->currentPidAcceleration);
+    Serial.print(" Dir: ");
+    Serial.println(this->direction);
+	Serial.print(" Dir: ");
+    Serial.println(this->stepGeneratorDirection);
+	Serial.print(" this->decelToAccelThreshold: ");
+    Serial.println(this->decelToAccelThreshold);
+    Serial.print(" this->accelToCruiseThreshold: ");
+    Serial.println(this->accelToCruiseThreshold);
+	Serial.println("");
 
 	PORTD &= ~(1 << 4);
 	TCCR3B |= (1 << CS30);
@@ -703,8 +905,7 @@ void uStepperSLite::moveSteps(int32_t steps, bool dir, bool holdMode)
 	cli();
 		curVel = this->currentPidSpeed;
 	sei();
-	
-	
+
 	initialDecelSteps = 0;
 
 	if(this->state == STOP)								//If motor is currently at full stop (state = STOP)
@@ -749,13 +950,13 @@ void uStepperSLite::moveSteps(int32_t steps, bool dir, bool holdMode)
 	}
 	else if((dir == CW && curVel > 0) || (dir == CCW && curVel < 0))							//If the motor is currently rotating the same direction as desired, we dont necessarily need to decelerate
 	{
+		startVelocity = curVel;
 		if(abs(curVel) > this->velocity)	//If current velocity is greater than desired velocity
 		{
 			state = INITDECEL;	//We need to decelerate the motor to desired velocity
-			initialDecelSteps = (uint32_t)(((this->velocity*this->velocity) - (curVel*curVel))/(-2.0*this->acceleration));		//Number of steps to bring the motor down from current speed to max speed (S = (V^2 - V0^2)/(2*-a)))
+			initialDecelSteps = (uint32_t)(((abs(curVel)*abs(curVel)) - (this->velocity*this->velocity))/(2.0*this->acceleration));		//Number of steps to bring the motor down from current speed to max speed (S = (V^2 - V0^2)/(2*-a)))
 			accelSteps = 0;	//No acceleration phase is needed
-			decelSteps = (uint32_t)((this->velocity*this->velocity)/(2.0*this->acceleration));	//Number of steps needed to decelerate the motor from top speed to full stop
-			startVelocity = curVel;//sqrt((curVel*curVel) + (2.0*this->acceleration));
+			decelSteps = (uint32_t)((this->velocity*this->velocity)/(2.0*this->acceleration));	//Number of steps needed to decelerate the motor from top speed to full stop 
 			if(totalSteps <= (initialDecelSteps + decelSteps))
 			{
 				cruiseSteps = 0;
@@ -769,7 +970,7 @@ void uStepperSLite::moveSteps(int32_t steps, bool dir, bool holdMode)
 		else if(abs(curVel) < this->velocity)	//If current velocity is less than desired velocity
 		{
 			state = ACCEL;			//Start accelerating
-			accelSteps = (int32_t)((((this->velocity*this->velocity) - curVel*curVel))/(2.0*this->acceleration));	//Number of Steps needed to accelerate from current velocity to full speed
+			accelSteps = (int32_t)((((this->velocity*this->velocity) - abs(curVel)*abs(curVel)))/(2.0*this->acceleration));	//Number of Steps needed to accelerate from current velocity to full speed
 
 			if(accelSteps > (totalSteps >> 1))			//If we need to accelerate for longer than half of the total steps, we need to start decelerating before we reach max speed
 			{
@@ -804,7 +1005,6 @@ void uStepperSLite::moveSteps(int32_t steps, bool dir, bool holdMode)
 				cruiseSteps = totalSteps - decelSteps;	//Perform remaining steps as cruise steps
 			}
 		}
-		startVelocity = curVel;
 	}
 	else
 	{
@@ -827,28 +1027,58 @@ void uStepperSLite::moveSteps(int32_t steps, bool dir, bool holdMode)
 		startVelocity = 0.0;
 	}
 	cli();
+	
 		this->direction = dir;
-		this->stepGeneratorDirection = dir;
 
 		this->continous = 0;
 
 		if(dir == CW)
 		{
-			this->decelToAccelThreshold = this->stepsSinceReset + initialDecelSteps;
+			if(this->direction != this->stepGeneratorDirection)
+			{
+				this->decelToAccelThreshold = this->stepsSinceReset - initialDecelSteps;
+			}
+			else
+			{
+				this->decelToAccelThreshold = this->stepsSinceReset + initialDecelSteps;
+			}
 			this->accelToCruiseThreshold = this->decelToAccelThreshold + accelSteps;
 			this->cruiseToDecelThreshold = this->accelToCruiseThreshold + cruiseSteps;
 			this->decelToStopThreshold = this->cruiseToDecelThreshold + decelSteps;
-			PORTB |= (1 << 2);
+			if(state != INITDECEL)
+			{
+				PORTB |= (1 << 2);
+			}
+			else
+			{
+				PORTB &= ~(1 << 2);
+			}
 		}
 		else
 		{
-			this->decelToAccelThreshold = this->stepsSinceReset - initialDecelSteps;
+			if(this->direction != this->stepGeneratorDirection)
+			{
+				this->decelToAccelThreshold = this->stepsSinceReset + initialDecelSteps;
+			}
+			else
+			{
+				this->decelToAccelThreshold = this->stepsSinceReset - initialDecelSteps;
+			}
 			this->accelToCruiseThreshold = this->decelToAccelThreshold - accelSteps;
 			this->cruiseToDecelThreshold = this->accelToCruiseThreshold - cruiseSteps;
 			this->decelToStopThreshold = this->cruiseToDecelThreshold - decelSteps;
-			PORTB &= ~(1 << 2);
+			if(state != INITDECEL)
+			{
+				PORTB &= ~(1 << 2);
+			}
+			else
+			{
+				PORTB |= (1 << 2);
+			}
+			
 		}
 		this->currentPidSpeed = startVelocity;
+
 		if(pointer->currentPidSpeed > 5.0)
 		{
 			pointer->stepDelay = (uint32_t)((STEPGENERATORFREQUENCY/(pointer->currentPidSpeed)) + 0.5);
@@ -864,7 +1094,27 @@ void uStepperSLite::moveSteps(int32_t steps, bool dir, bool holdMode)
 		this->state = state;
 		this->targetPosition = this->decelToStopThreshold;
 		this->brake = holdMode;
+		
+	Serial.print("\r\nstate: ");
+    Serial.println(this->state);
 	sei();
+	Serial.print("\r\nstate: ");
+    Serial.println(this->state);
+    Serial.print(" StepsSinceReset: ");
+    Serial.println(this->stepsSinceReset);
+    Serial.print(" CurrentSpeed: ");
+    Serial.println(this->currentPidSpeed);
+    Serial.print(" currentPidAcceleration: ");
+    Serial.println(this->currentPidAcceleration);
+    Serial.print(" Dir: ");
+    Serial.println(this->direction);
+	Serial.print(" Dir: ");
+    Serial.println(this->stepGeneratorDirection);
+	Serial.print(" this->decelToAccelThreshold: ");
+    Serial.println(this->decelToAccelThreshold);
+    Serial.print(" this->accelToCruiseThreshold: ");
+    Serial.println(this->accelToCruiseThreshold);
+	Serial.println("");
 
 	PORTD &= ~(1 << 4);
 	TCCR3B |= (1 << CS30);
@@ -883,14 +1133,34 @@ void uStepperSLite::hardStop(bool holdMode)
 	this->targetPosition = this->stepsSinceReset;
 	this->pidTargetPosition = this->targetPosition;
 	this->decelToStopThreshold = this->targetPosition;
+	pointer->decelToAccelThreshold = pointer->decelToStopThreshold;
+	pointer->accelToCruiseThreshold = pointer->decelToStopThreshold;
+	pointer->cruiseToDecelThreshold = pointer->decelToStopThreshold;
 
 	this->state = DECEL;
 	this->brake = holdMode;
 	this->continous = 0;
 	this->stepDelay = 2;
-	
+	Serial.print("\r\nstate: ");
+    Serial.println(this->state);
 	sei();
-
+	Serial.print("\r\nstate: ");
+    Serial.println(this->state);
+    Serial.print(" StepsSinceReset: ");
+    Serial.println(this->stepsSinceReset);
+    Serial.print(" CurrentSpeed: ");
+    Serial.println(this->currentPidSpeed);
+    Serial.print(" currentPidAcceleration: ");
+    Serial.println(this->currentPidAcceleration);
+    Serial.print(" Dir: ");
+    Serial.println(this->direction);
+	Serial.print(" Dir: ");
+    Serial.println(this->stepGeneratorDirection);
+	Serial.print(" this->decelToAccelThreshold: ");
+    Serial.println(this->decelToAccelThreshold);
+    Serial.print(" this->accelToCruiseThreshold: ");
+    Serial.println(this->accelToCruiseThreshold);
+	Serial.println("");
 	PORTD &= ~(1 << 4);
 	TCCR3B |= (1 << CS30);
 }
@@ -924,6 +1194,10 @@ void uStepperSLite::softStop(bool holdMode)
 		pointer->decelToStopThreshold = this->targetPosition;
 	}
 
+	pointer->decelToAccelThreshold = pointer->decelToStopThreshold;
+	pointer->accelToCruiseThreshold = pointer->decelToStopThreshold;
+	pointer->cruiseToDecelThreshold = pointer->decelToStopThreshold;
+
 	this->state = DECEL;
 	this->brake = holdMode;
 	this->continous = 0;
@@ -940,7 +1214,26 @@ void uStepperSLite::softStop(bool holdMode)
 	{
 		pointer->stepDelay = 20000;
 	}
+	Serial.print("\r\nstate: ");
+    Serial.println(this->state);
 	sei();
+	Serial.print("\r\nstate: ");
+    Serial.println(this->state);
+    Serial.print(" StepsSinceReset: ");
+    Serial.println(this->stepsSinceReset);
+    Serial.print(" CurrentSpeed: ");
+    Serial.println(this->currentPidSpeed);
+    Serial.print(" currentPidAcceleration: ");
+    Serial.println(this->currentPidAcceleration);
+    Serial.print(" Dir: ");
+    Serial.println(this->direction);
+	Serial.print(" Dir: ");
+    Serial.println(this->stepGeneratorDirection);
+	Serial.print(" this->decelToAccelThreshold: ");
+    Serial.println(this->decelToAccelThreshold);
+    Serial.print(" this->accelToCruiseThreshold: ");
+    Serial.println(this->accelToCruiseThreshold);
+	Serial.println("");
 
 	PORTD &= ~(1 << 4);
 	TCCR3B |= (1 << CS30);
@@ -1364,7 +1657,7 @@ void uStepperSLite::pid(float error)
 	if(uSat > 5.0)
 	{
 		temp = (uint32_t)((STEPGENERATORFREQUENCY/uSat) + 0.5);
-		this->stepGeneratorDirection = CW;
+		this->stepGeneratorDirectionPid = CW;
 
 		cli();
 		pointer->stepDelay = temp;
@@ -1372,7 +1665,7 @@ void uStepperSLite::pid(float error)
 	}
 	else if(uSat < -5.0)
 	{
-		this->stepGeneratorDirection = CCW;
+		this->stepGeneratorDirectionPid = CCW;
 
 		temp = (uint32_t)((STEPGENERATORFREQUENCY/-uSat) + 0.5);
 		cli();
@@ -1381,14 +1674,14 @@ void uStepperSLite::pid(float error)
 	}
 	else if(uSat > 0.0)
 	{
-		this->stepGeneratorDirection = CW;
+		this->stepGeneratorDirectionPid = CW;
 		cli();
 		pointer->stepDelay = 20000;
 		sei();
 	}
 	else if(uSat < 0.0)
 	{
-		this->stepGeneratorDirection = CCW;
+		this->stepGeneratorDirectionPid = CCW;
 
 		cli();
 		pointer->stepDelay = 20000;
@@ -1396,7 +1689,7 @@ void uStepperSLite::pid(float error)
 	}
 	else
 	{
-		this->stepGeneratorDirection = this->direction;
+		this->stepGeneratorDirectionPid = this->stepGeneratorDirection;
 		cli();
 		pointer->stepDelay = 20000;
 		sei();

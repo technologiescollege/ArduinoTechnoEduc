@@ -1,0 +1,19 @@
+name: Manual Strict Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Manual strict check with arduino-linter'
+        default: 'Workflow'
+        required: false
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: arduino/arduino-lint-action@v1
+        with:
+          library-manager: update
+          compliance: strict

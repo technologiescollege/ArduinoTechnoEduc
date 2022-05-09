@@ -13,7 +13,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2015-2021 Ken Shirriff http://www.righto.com, Rafi Khan, Armin Joachimsmeyer
+ * Copyright (c) 2015-2022 Ken Shirriff http://www.righto.com, Rafi Khan, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,12 +40,34 @@
  * and http://zovirl.com/2008/11/12/building-a-universal-remote-with-an-arduino/
  */
 
+/*
+ * This library can be configured at compile time by the following options / macros:
+ * For more details see: https://github.com/Arduino-IRremote/Arduino-IRremote#compile-options--macros-for-this-library
+ *
+ * - RAW_BUFFER_LENGTH                  Buffer size of raw input buffer. Must be even! 100 is sufficient for *regular* protocols of up to 48 bits.
+ * - IR_SEND_PIN                        If specified (as constant), reduces program size and improves send timing for AVR.
+ * - SEND_PWM_BY_TIMER                  Disable carrier PWM generation in software and use (restricted) hardware PWM.
+ * - USE_NO_SEND_PWM                    Use no carrier PWM, just simulate an **active low** receiver signal. Overrides SEND_PWM_BY_TIMER definition.
+ * - USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN Use or simulate open drain output mode at send pin. Attention, active state of open drain is LOW, so connect the send LED between positive supply and send pin!
+ * - EXCLUDE_EXOTIC_PROTOCOLS           If activated, BOSEWAVE, WHYNTER and LEGO_PF are excluded in decode() and in sending with IrSender.write().
+ * - EXCLUDE_UNIVERSAL_PROTOCOLS        If activated, the universal decoder for pulse width or pulse distance protocols and decodeHash (special decoder for all protocols) are excluded in decode().
+ * - DECODE_*                           Selection of individual protocols to be decoded. See below.
+ * - MARK_EXCESS_MICROS                 Value is subtracted from all marks and added to all spaces before decoding, to compensate for the signal forming of different IR receiver modules.
+ * - RECORD_GAP_MICROS                  Minimum gap between IR transmissions, to detect the end of a protocol.
+ * - FEEDBACK_LED_IS_ACTIVE_LOW         Required on some boards (like my BluePill and my ESP8266 board), where the feedback LED is active low.
+ * - NO_LED_FEEDBACK_CODE               This completely disables the LED feedback code for send and receive.
+ * - IR_INPUT_IS_ACTIVE_HIGH            Enable it if you use a RF receiver, which has an active HIGH output signal.
+ * - IR_SEND_DUTY_CYCLE_PERCENT         Duty cycle of IR send signal.
+ * - MICROS_PER_TICK                    Resolution of the raw input buffer data. Corresponds to 2 pulses of each 26.3 µs at 38 kHz.
+ * - IR_USE_AVR_TIMER*                  Selection of timer to be used for generating IR receiving sample interval.
+ */
+
 #ifndef IRremote_hpp
 #define IRremote_hpp
 
-#define VERSION_IRREMOTE "3.5.0"
+#define VERSION_IRREMOTE "3.6.1"
 #define VERSION_IRREMOTE_MAJOR 3
-#define VERSION_IRREMOTE_MINOR 5
+#define VERSION_IRREMOTE_MINOR 6
 
 // activate it for all cores that does not use the -flto flag, if you get false error messages regarding begin() during compilation.
 //#define SUPPRESS_ERROR_MESSAGE_FOR_BEGIN
@@ -65,10 +87,14 @@
  */
 
 #if !defined(NO_DECODER) // for sending raw only
-#if (!(defined(DECODE_DENON) || defined(DECODE_JVC) || defined(DECODE_KASEIKYO) \
+#  if (!(defined(DECODE_DENON) || defined(DECODE_JVC) || defined(DECODE_KASEIKYO) \
 || defined(DECODE_PANASONIC) || defined(DECODE_LG) || defined(DECODE_NEC) || defined(DECODE_SAMSUNG) \
-|| defined(DECODE_SONY) || defined(DECODE_RC5) || defined(DECODE_RC6) || defined(DECODE_HASH) \
-|| defined(DECODE_BOSEWAVE) || defined(DECODE_LEGO_PF) || defined(DECODE_WHYNTER)))
+|| defined(DECODE_SONY) || defined(DECODE_RC5) || defined(DECODE_RC6) \
+|| defined(DECODE_DISTANCE) || defined(DECODE_HASH) || defined(DECODE_BOSEWAVE) \
+|| defined(DECODE_LEGO_PF) || defined(DECODE_WHYNTER)))
+/*
+ * If no protocol is explicitly enabled, we enable all protocols
+ */
 #define DECODE_DENON        // Includes Sharp
 #define DECODE_JVC
 #define DECODE_KASEIKYO
@@ -80,18 +106,18 @@
 #define DECODE_RC5
 #define DECODE_RC6
 
-#  if !defined(EXCLUDE_EXOTIC_PROTOCOLS) // saves around 2000 bytes program space
+#    if !defined(EXCLUDE_EXOTIC_PROTOCOLS) // saves around 2000 bytes program space
 #define DECODE_BOSEWAVE
 #define DECODE_LEGO_PF
 #define DECODE_WHYNTER
 #define DECODE_MAGIQUEST // It modifies the RAW_BUFFER_LENGTH from 100 to 112
-#  endif
+#    endif
 
-#  if !defined(EXCLUDE_UNIVERSAL_PROTOCOLS)
+#    if !defined(EXCLUDE_UNIVERSAL_PROTOCOLS)
 #define DECODE_DISTANCE     // universal decoder for pulse width or pulse distance protocols - requires up to 750 bytes additional program space
 #define DECODE_HASH         // special decoder for all protocols - requires up to 250 bytes additional program space
+#    endif
 #  endif
-#endif
 #endif // !defined(NO_DECODER)
 
 #if defined(DECODE_NEC) && !(~(~DECODE_NEC + 0) == 0 && ~(~DECODE_NEC + 1) == 1)
@@ -178,10 +204,11 @@
 /**
  * Define to disable carrier PWM generation in software and use (restricted) hardware PWM.
  */
-#if defined(ESP32)
+#if !defined(SEND_PWM_BY_TIMER) && (defined(ESP32) || defined(ARDUINO_ARCH_RP2040) || defined(PARTICLE))
 #define SEND_PWM_BY_TIMER       // the best and default method for ESP32
+#warning For ESP32, RP2040 and particle boards SEND_PWM_BY_TIMER is enabled by default. If this is not intended, deactivate the line over this error message in file IRremote.hpp.
 #else
-//#define SEND_PWM_BY_TIMER
+//#define SEND_PWM_BY_TIMER // restricts send pin on many platforms to fixed pin numbers
 #endif
 
 /**
@@ -189,8 +216,8 @@
  */
 //#define USE_NO_SEND_PWM
 #if defined(SEND_PWM_BY_TIMER) && defined(USE_NO_SEND_PWM)
-#undef SEND_PWM_BY_TIMER // USE_NO_SEND_PWM overrides SEND_PWM_BY_TIMER
 #warning "SEND_PWM_BY_TIMER and USE_NO_SEND_PWM are both defined -> undefine SEND_PWM_BY_TIMER now!"
+#undef SEND_PWM_BY_TIMER // USE_NO_SEND_PWM overrides SEND_PWM_BY_TIMER
 #endif
 
 /**
@@ -198,6 +225,9 @@
  * Attention, active state of open drain is LOW, so connect the send LED between positive supply and send pin!
  */
 //#define USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN
+#if defined(USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN) && !defined(OUTPUT_OPEN_DRAIN)
+#warning Pin mode OUTPUT_OPEN_DRAIN is not supported on this platform -> fall back to mode OUTPUT.
+#endif
 /**
  * This amount is subtracted from the on-time of the pulses generated for software PWM generation.
  * It should be the time used for digitalWrite(sendPin, LOW) and the call to delayMicros()
@@ -212,11 +242,36 @@
 #  endif
 #endif
 
-#include "IRremoteInt.h"
-#include "private/IRTimer.hpp"
-#if !defined(NO_LED_FEEDBACK_CODE)
-#include "IRFeedbackLED.hpp"
+/**
+ * Duty cycle in percent for sent signals.
+ */
+#if ! defined(IR_SEND_DUTY_CYCLE_PERCENT)
+#define IR_SEND_DUTY_CYCLE_PERCENT 30 // 30 saves power and is compatible to the old existing code
 #endif
+
+/**
+ * microseconds per clock interrupt tick
+ */
+#if ! defined(MICROS_PER_TICK)
+#define MICROS_PER_TICK    50
+#endif
+
+#define MILLIS_IN_ONE_SECOND 1000L
+#define MICROS_IN_ONE_SECOND 1000000L
+#define MICROS_IN_ONE_MILLI 1000L
+
+#include "IRremoteInt.h"
+#if !defined(USE_IRREMOTE_HPP_AS_PLAIN_INCLUDE)
+#include "private/IRTimer.hpp"  // defines IR_SEND_PIN for AVR and SEND_PWM_BY_TIMER
+#  if !defined(NO_LED_FEEDBACK_CODE)
+#    if !defined(LED_BUILTIN)
+/*
+ * print a warning
+ */
+#warning INFO: No definition for LED_BUILTIN found -> default LED feedback is disabled.
+#    endif
+#include "IRFeedbackLED.hpp"
+#  endif
 /*
  * Include the sources here to enable compilation with macro values set by user program.
  */
@@ -226,49 +281,50 @@
 /*
  * Include the sources of all decoders here to enable compilation with macro values set by user program.
  */
-#if defined(DECODE_BOSEWAVE)
+#  if defined(DECODE_BOSEWAVE)
 #include "ir_BoseWave.hpp"
-#endif
-#if defined(DECODE_DENON )       // Includes Sharp
+#  endif
+#  if defined(DECODE_DENON )       // Includes Sharp
 #include "ir_Denon.hpp"
-#endif
-#if defined(DECODE_DISTANCE)     // universal decoder for pulse width or pulse distance protocols - requires up to 750 bytes additional program space
+#  endif
+#  if defined(DECODE_DISTANCE)     // universal decoder for pulse width or pulse distance protocols - requires up to 750 bytes additional program space
 #include "ir_DistanceProtocol.hpp"
-#endif
-#if defined(DECODE_JVC)
+#  endif
+#  if defined(DECODE_JVC)
 #include "ir_JVC.hpp"
-#endif
-#if defined(DECODE_KASEIKYO) || defined(DECODE_PANASONIC)
+#  endif
+#  if defined(DECODE_KASEIKYO) || defined(DECODE_PANASONIC)
 #include "ir_Kaseikyo.hpp"
-#endif
-#if defined(DECODE_LEGO_PF)
+#  endif
+#  if defined(DECODE_LEGO_PF)
 #include "ir_Lego.hpp"
-#endif
-#if defined(DECODE_LG)
+#  endif
+#  if defined(DECODE_LG)
 #include "ir_LG.hpp"
-#endif
-#if defined(DECODE_MAGIQUEST)
+#  endif
+#  if defined(DECODE_MAGIQUEST)
 #include "ir_MagiQuest.hpp"
-#endif
-#if defined(DECODE_NEC)          // Includes Apple and Onkyo
+#  endif
+#  if defined(DECODE_NEC)          // Includes Apple and Onkyo
 #include "ir_NEC.hpp"
-#endif
-#if defined(DECODE_RC5) || defined(DECODE_RC6)
+#  endif
+#  if defined(DECODE_RC5) || defined(DECODE_RC6)
 #include "ir_RC5_RC6.hpp"
-#endif
-#if defined(DECODE_SAMSUNG)
+#  endif
+#  if defined(DECODE_SAMSUNG)
 #include "ir_Samsung.hpp"
-#endif
-#if defined(DECODE_SONY)
+#  endif
+#  if defined(DECODE_SONY)
 #include "ir_Sony.hpp"
-#endif
-#if defined(DECODE_WHYNTER)
+#  endif
+#  if defined(DECODE_WHYNTER)
 #include "ir_Whynter.hpp"
-#endif
+#  endif
 
 #include "ir_Pronto.hpp" // pronto is an universal decoder and encoder
 
 #include "ir_Dish.hpp" // contains only sendDISH(unsigned long data, int nbits)
+#endif // #if !defined(USE_IRREMOTE_HPP_AS_PLAIN_INCLUDE)
 
 /**
  * Macros for legacy compatibility

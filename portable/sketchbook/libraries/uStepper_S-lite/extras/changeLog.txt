@@ -1,5 +1,10 @@
 Changelog - uStepper S-Lite library
 ----------------------------
+Version 1.2.0:
+	- Fixed alot of minor bugs in the acceleration algorithm
+Version 1.1.0:
+	- Fixed problem with deceleration not being used on stop and change of speed
+	- Added functionality to choose between hard stop and soft stop (hardStop() and softStop())
 Version 1.0.0:
 	- Fixed dropin and PID
 	- Complete rewrite of step generation algorithm, to increase performance and accuracy

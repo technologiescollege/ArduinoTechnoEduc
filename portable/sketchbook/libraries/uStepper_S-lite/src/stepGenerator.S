@@ -1,7 +1,7 @@
 /********************************************************************************************
 *       File:       stepGenerator.S                        		                            *
-*		Version:    1.1.0                                           						*
-*      	Date: 		June 14, 2020 	                                    					*
+*		Version:    1.2.0                                           						*
+*      	Date: 		Jan 18, 2020 	                                    					*
 *      	Author: 	Thomas Hørring Olsen                                   					*
 *                                                   										* 
 *********************************************************************************************
@@ -41,6 +41,7 @@ _stepGenerator:
 .equ _CNTSINCELASTSTEP,4
 .equ _STEPDELAY,8
 .equ _DIRECTION,12
+.equ _DIRECTION_PID,21
 .equ _DECELTOSTOPTHRESHOLD,13
 .equ _CONTINOUS,17
 .equ _PIDERROR,18
@@ -65,29 +66,6 @@ rjmp _checkRdy
 rjmp _finish
 
 _runAlgorithm:
-/************* NOT NEEDED *************
-ldd r16,z+_STEPSSINCERESET
-ldd r17,z+_DECELTOSTOPTHRESHOLD
-cp r16,r17
-brne _checkRdy
-ldd r16,z+_STEPSSINCERESET+1
-ldd r17,z+_DECELTOSTOPTHRESHOLD+1
-cp r16,r17
-brne _checkRdy
-ldd r16,z+_STEPSSINCERESET+2
-ldd r17,z+_DECELTOSTOPTHRESHOLD+2
-cp r16,r17
-brne _checkRdy
-ldd r16,z+_STEPSSINCERESET+3
-ldd r17,z+_DECELTOSTOPTHRESHOLD+3
-cp r16,r17
-brne _checkRdy
-;ldi r16,1
-;std z+_STATE,r16
-ldd r16,z+_PIDERROR
-cpi r16,1
-brlo _finish
-************************************/
 subi r16,1
 std z+_PIDERROR,r16
 
@@ -111,16 +89,16 @@ std z+_CNTSINCELASTSTEP,r20
 std z+_CNTSINCELASTSTEP+1,r20
 std z+_CNTSINCELASTSTEP+2,r20
 
+ldd r16,z+_MODE
+cpi r16,2			;Check if we are in PID mode
+breq _finish_PID
+
 ldd r16,z+_DIRECTION
 sbrc r16,0
 rjmp _CCW
 
-sbi 0x05,2 ;SET _DIRECTION PIN TO CW !
+cbi 0x05,2 ;SET _DIRECTION PIN TO CW !
 sbi 0x0B,7 ;PULL STEP PIN HIGH !!!
-
-ldd r16,z+_MODE
-cpi r16,2			;Check if we are in PID mode
-breq _finish
 
 ldd r16,z+_STEPSSINCERESET
 ldi r17,1
@@ -141,12 +119,12 @@ rjmp _finish
 
 _CCW:
 
-cbi 0x05,2 ;SET _DIRECTION PIN TO CCW !
-sbi 0x0B,7 ;PULL STEP PIN HIGH !!!
-
 ldd r16,z+_MODE
 cpi r16,2			;Check if we are in PID mode
-breq _finish
+breq _finish_PID
+
+sbi 0x05,2 ;SET _DIRECTION PIN TO CCW !
+sbi 0x0B,7 ;PULL STEP PIN HIGH !!!
 
 ldd r16,z+_STEPSSINCERESET
 subi r16,1
@@ -184,3 +162,16 @@ pop r16
 out 0x3F,r16
 pop r16
 reti
+
+_finish_PID:
+ldd r16,z+_DIRECTION_PID
+sbrc r16,0
+rjmp _finish_PID_CCW
+cbi 0x05,2 ;SET _DIRECTION PIN TO CW !
+sbi 0x0B,7 ;PULL STEP PIN HIGH !!!
+rjmp _finish
+
+_finish_PID_CCW:
+sbi 0x05,2 ;SET _DIRECTION PIN TO CW !
+sbi 0x0B,7 ;PULL STEP PIN HIGH !!!
+rjmp _finish

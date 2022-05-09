@@ -206,6 +206,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a7957fc7bbaf231a20ad4dc2b5506672b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70343aa0d8b1379f718e757e6c17df4d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuStepperSLite.html#a70343aa0d8b1379f718e757e6c17df4d">mode</a></td></tr>
 <tr class="separator:a70343aa0d8b1379f718e757e6c17df4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa39f8294561db1c5a1ea2ee6d1acbb1f"><td class="memItemLeft" align="right" valign="top"><a id="aa39f8294561db1c5a1ea2ee6d1acbb1f"></a>
+volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>stepGeneratorDirectionPid</b></td></tr>
+<tr class="separator:aa39f8294561db1c5a1ea2ee6d1acbb1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8780cb16590ff36482bb5b3a3392298b"><td class="memItemLeft" align="right" valign="top">volatile int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuStepperSLite.html#a8780cb16590ff36482bb5b3a3392298b">stepCnt</a></td></tr>
 <tr class="separator:a8780cb16590ff36482bb5b3a3392298b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ff9d7a4e9145a9753dbb8d3ffc7f424"><td class="memItemLeft" align="right" valign="top">volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuStepperSLite.html#a2ff9d7a4e9145a9753dbb8d3ffc7f424">direction</a></td></tr>
@@ -244,6 +247,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a807c3fe887eb2ad6c7a099824e2d2b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48701518d855251f020d6da81507a5eb"><td class="memItemLeft" align="right" valign="top">volatile float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuStepperSLite.html#a48701518d855251f020d6da81507a5eb">currentPidSpeed</a></td></tr>
 <tr class="separator:a48701518d855251f020d6da81507a5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90e8ed16854ae89547039c22f22a48eb"><td class="memItemLeft" align="right" valign="top"><a id="a90e8ed16854ae89547039c22f22a48eb"></a>
+volatile float&#160;</td><td class="memItemRight" valign="bottom"><b>currentPidSpeedDebug</b> = 0.0</td></tr>
+<tr class="separator:a90e8ed16854ae89547039c22f22a48eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac03777fd1567d5551bea99a78361b5f9"><td class="memItemLeft" align="right" valign="top">volatile float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuStepperSLite.html#ac03777fd1567d5551bea99a78361b5f9">currentPidAcceleration</a></td></tr>
 <tr class="separator:ac03777fd1567d5551bea99a78361b5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae02bb4457fe50836021394cab4b60f8f"><td class="memItemLeft" align="right" valign="top">volatile float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuStepperSLite.html#ae02bb4457fe50836021394cab4b60f8f">pidStepsSinceReset</a></td></tr>
@@ -352,7 +358,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00520">520</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00666">666</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -384,7 +390,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 <p>This method is used internally for stall detection. </p>
 <dl class="section return"><dt>Returns</dt><dd>0 = not stalled, 1 = stalled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01485">1485</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01778">1778</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -409,7 +415,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
         this function is used, the motor will not brake, and it will
         be possible to turn the motor shaft by hand
 </pre> 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01143">1143</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01436">1436</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -431,7 +437,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 
 <p>This method disables the PID until calling enablePid. </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01406">1406</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01699">1699</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -454,7 +460,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 <pre class="fragment">Usage:
 </pre><p> Set Proportional constant: 'P=10.002;' Set Integral constant: 'I=10.002;' Set Differential constant: 'D=10.002;' Invert Direction: 'invert;' Get Current PID Error: 'error;' Get Run/Hold Current Settings: 'current;' Set Run Current (percent): 'runCurrent=50.0;' Set Hold Current (percent): 'holdCurrent=50.0;' </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01965">1965</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l02258">2258</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -486,7 +492,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
         Set Run Current (percent): 'runCurrent=50.0;'
         Set Hold Current (percent): 'holdCurrent=50.0;' 
 </pre> 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01991">1991</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l02284">2284</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -523,7 +529,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>checksum of dropin settings struct </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l02037">2037</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l02330">2330</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -550,7 +556,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
         library, this will make the force the motor to brake in the
         current position.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01138">1138</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01431">1431</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -572,7 +578,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 
 <p>This method enables the PID after being disabled (disablePid). </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01411">1411</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01704">1704</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -598,7 +604,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 <dd>
 1 - Counter Clockwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01148">1148</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01441">1441</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -625,7 +631,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 <dd>
 1 - Motor rotating </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01153">1153</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01446">1446</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -648,7 +654,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 <p>This method returns the current PID error. </p>
 <dl class="section return"><dt>Returns</dt><dd>PID error (float) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01422">1422</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01715">1715</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -684,7 +690,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>uStepperEncoder::setH
 <dd>
 positive value - number of steps the motor should have rotated in the clockwise direction, with respect to the initial position. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01163">1163</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01456">1456</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -718,7 +724,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00873">873</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01123">1123</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -746,7 +752,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01554">1554</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01847">1847</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -775,7 +781,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 = not stalled, 1 = stalled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01522">1522</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01815">1815</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -809,7 +815,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
         EEPROM is discarded, and the default data specifed at compile time are used isntead.
 </pre><dl class="section return"><dt>Returns</dt><dd>0 = stored settings NOT valid, 1 = stored settings valid </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l02010">2010</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l02303">2303</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -848,7 +854,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01241">1241</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01534">1534</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -902,7 +908,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00682">682</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00884">884</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -941,7 +947,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01223">1223</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01516">1516</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -984,7 +990,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Degrees turned from calling the function, till end was reached </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01184">1184</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01477">1477</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1012,7 +1018,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01559">1559</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01852">1852</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1046,7 +1052,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00584">584</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00730">730</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1076,7 +1082,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 
 <p>This method stores the current dropin settings in EEPROM. </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l02030">2030</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l02323">2323</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1117,7 +1123,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01168">1168</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01461">1461</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1145,7 +1151,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01549">1549</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01842">1842</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1181,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01173">1173</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01466">1466</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1209,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01544">1544</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01837">1837</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1236,7 +1242,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00534">534</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00680">680</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1268,7 +1274,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00551">551</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00697">697</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1296,7 +1302,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01539">1539</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01832">1832</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1326,7 +1332,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01178">1178</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01471">1471</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1420,7 +1426,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01020">1020</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01313">1313</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1455,7 +1461,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00903">903</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01173">1173</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1490,7 +1496,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l00898">898</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8cpp_source.html#l01168">1168</a> of file <a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a>.</p>
 
 </div>
 </div>
@@ -1604,7 +1610,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the maximum acceleration to be used. The can be set and read by the user of the library using the functions <a class="el" href="classuStepperSLite.html#a936581f459eb80191ad1fd7feb092c08" title="Set the maximum acceleration of the stepper motor.">setMaxAcceleration()</a> and getMaxAcceleration() respectively. Since this library uses a second order acceleration curve, the acceleration applied will always be either +/- this value (acceleration/deceleration)or zero (cruise). </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00497">497</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00499">499</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1621,7 +1627,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This Variable holds the number of steps to issue during the acceleration phase </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00543">543</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00545">545</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1638,7 +1644,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable converts an angle in degrees into a corresponding number of steps </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00524">524</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00526">526</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1655,7 +1661,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable holds the bool telling if the motor should brake or not </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00564">564</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00566">566</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1706,7 +1712,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This Variable holds the number of steps to issue during the cruise phase </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00546">546</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00548">548</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1723,7 +1729,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable holds the current PID algorithm acceleration </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00552">552</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00554">554</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1740,7 +1746,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the current PID errror. </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00620">620</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00622">622</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1757,7 +1763,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable holds the current PID algorithm speed </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00549">549</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00551">551</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1774,7 +1780,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This Variable holds the number of steps to issue during the initial deceleration phase, which is issued if the motor velocity is higher than the desired velocity of a new move </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00540">540</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00542">542</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1808,7 +1814,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the direction commanded by the last issued move </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00484">484</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00486">486</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1825,7 +1831,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>Instantiate object for the Stepper Driver </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00631">631</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00633">633</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1850,7 +1856,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable holds the dropin settings. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="structdropinCliSettings__t.html" title="Struct to store dropin settings.">dropinCliSettings_t</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l01037">1037</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l01039">1039</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1867,7 +1873,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the differential coefficient used by the PID </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00517">517</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00519">519</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1884,7 +1890,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>Instantiate object for the encoder </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00628">628</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00630">630</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1901,7 +1907,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable is used to invert the drop-in motor direction. </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00636">636</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00638">638</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1918,7 +1924,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the integral coefficient used by the PID </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00514">514</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00516">516</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1952,7 +1958,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable holds the bool telling if the PID is enabled or not </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00561">561</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00563">563</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -1986,7 +1992,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable holds the steps done in the PID since last reset </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00555">555</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00557">557</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2003,7 +2009,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the current PID target position. </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00625">625</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00627">627</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2020,7 +2026,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the proportional coefficient used by the PID </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00505">505</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00507">507</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2037,7 +2043,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable is used to convert a desired velocity in RPM to the corresponding delay between step pulses in interrupt ticks </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00536">536</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00538">538</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2054,7 +2060,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the value for converting RPM to steps per second </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00511">511</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00513">513</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2071,7 +2077,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable holds information on wether the motor is stalled or not. 0 = OK, 1 = stalled </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00532">532</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00534">534</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2088,7 +2094,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the sensitivity of the stall function, and is set to a value between 0.0 and 1.0 </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00520">520</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00522">522</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2122,7 +2128,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the number of steps commanded by external controller, in case of dropin feature </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00481">481</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00483">483</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2139,7 +2145,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the conversion coefficient from raw encoder data to number of steps </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00501">501</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00503">503</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2190,7 +2196,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the value for converting steps per second to RPM </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00508">508</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00510">510</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2224,7 +2230,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable converts a number of steps into a corresponding angle in degrees </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00528">528</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00530">530</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2241,7 +2247,7 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable holds the target position </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00558">558</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00560">560</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
@@ -2258,18 +2264,18 @@ positive value - number of steps the motor should have rotated in the clockwise 
 </div><div class="memdoc">
 <p>This variable contains the maximum velocity, the motor is allowed to reach at any given point. The user of the library can set this by use of the <a class="el" href="classuStepperSLite.html#a1eb46f8626f7ddd7e4f7f8d301fced50" title="Sets the maximum rotational velocity of the motor.">setMaxVelocity()</a> function </p>
 
-<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00489">489</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uStepperSLite_8h_source.html#l00491">491</a> of file <a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>C:/Users/thomasolsen/Documents/Arduino/libraries/uStepper-S-lite/src/<a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a></li>
-<li>C:/Users/thomasolsen/Documents/Arduino/libraries/uStepper-S-lite/src/<a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a></li>
+<li>/home/thomas/Arduino/libraries/uStepper-S-lite/src/<a class="el" href="uStepperSLite_8h_source.html">uStepperSLite.h</a></li>
+<li>/home/thomas/Arduino/libraries/uStepper-S-lite/src/<a class="el" href="uStepperSLite_8cpp_source.html">uStepperSLite.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jun 14 2020 14:01:47 for uStepper S-lite by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 18 2021 21:18:07 for uStepper S-lite by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.18
 </small></address>
