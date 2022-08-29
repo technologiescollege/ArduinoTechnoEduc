@@ -26,6 +26,7 @@
 
 #include <Adafruit_BusIO_Register.h>
 #include <Adafruit_I2CDevice.h>
+#include <Adafruit_SPIDevice.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
@@ -159,6 +160,7 @@ public:
   Adafruit_ADXL343(int32_t sensorID, TwoWire *wireBus);
   Adafruit_ADXL343(uint8_t clock, uint8_t miso, uint8_t mosi, uint8_t cs,
                    int32_t sensorID = -1);
+  Adafruit_ADXL343(uint8_t cs, SPIClass *theSPI, int32_t sensorID = -1);
 
   bool begin(uint8_t i2caddr = ADXL343_ADDRESS);
   void setRange(adxl34x_range_t range);
@@ -189,7 +191,8 @@ protected:
   Adafruit_SPIDevice *spi_dev = NULL; ///< BusIO SPI device
   Adafruit_I2CDevice *i2c_dev = NULL; ///< BusIO I2C device
 
-  TwoWire *_wire;         ///< I2C hardware interface
+  TwoWire *_wire = NULL;  ///< I2C hardware interface
+  SPIClass *_spi = NULL;  ///< SPI hardware interface
   int32_t _sensorID;      ///< User-set sensor identifier
   adxl34x_range_t _range; ///< cache of range
   uint8_t _clk,           ///< SPI software clock

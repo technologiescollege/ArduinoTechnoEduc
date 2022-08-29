@@ -16,9 +16,9 @@
 #ifndef ADAFRUITIO_DEFINITIONS_H_
 #define ADAFRUITIO_DEFINITIONS_H_
 
-#define ADAFRUITIO_VERSION_MAJOR 3 ///< Adafruit IO Arduino Major Semvar
-#define ADAFRUITIO_VERSION_MINOR 5 ///< Adafruit IO Arduino Minor Semvar
-#define ADAFRUITIO_VERSION_PATCH 0 ///< Adafruit IO Arduino Patch Semvar
+#define ADAFRUITIO_VERSION_MAJOR 4 ///< Adafruit IO Arduino Major Semvar
+#define ADAFRUITIO_VERSION_MINOR 2 ///< Adafruit IO Arduino Minor Semvar
+#define ADAFRUITIO_VERSION_PATCH 1 ///< Adafruit IO Arduino Patch Semvar
 
 // forward declaration
 class AdafruitIO_Data;
@@ -119,20 +119,20 @@ public:
 // echo | openssl s_client -connect io.adafruit.com:443 | openssl x509
 // -fingerprint -noout
 #define AIO_SSL_FINGERPRINT                                                    \
-  "59 3C 48 0A B1 8B 39 4E 0D 58 50 47 9A 13 55 60 CC A0 1D AF" ///< Latest
+  "18 C0 C2 3D BE DD 81 37 73 40 E7 E4 36 61 CB 0A DF 96 AD 25" ///< Latest
                                                                 ///< Adafruit IO
                                                                 ///< SSL
                                                                 ///< Fingerprint
 
 #define AIO_FEED_NAME_LENGTH                                                   \
-  258 ///< Maximum length of an Adafruit IO Feed    \
-                                  ///< Name; 128 + 1 + 128 for the group, a dot \
-                                  ///< , and actual feed name.
+  258 ///< Maximum length of an Adafruit IO Feed: Name; 128 + 1 + 128 for the
+      ///< group, a dot, and actual feed name.
+
 #define AIO_DATA_LENGTH                                                        \
   45 ///< Maximum length of data sent/recieved from Adafruit IO
 #define AIO_CSV_LENGTH                                                         \
-  AIO_FEED_NAME_LENGTH + 4 ///< Maximum comma-separated-value length from \
-                           ///< Adafruit IO
+  AIO_FEED_NAME_LENGTH +                                                       \
+      4 ///< Maximum comma-separated-value length from Adafruit IO
 
 /** aio_status_t offers 13 status states */
 typedef enum {

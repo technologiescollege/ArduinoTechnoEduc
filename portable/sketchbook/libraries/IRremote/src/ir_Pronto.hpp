@@ -31,8 +31,8 @@
  *
  ************************************************************************************
  */
-#ifndef IR_PRONTO_HPP
-#define IR_PRONTO_HPP
+#ifndef _IR_PRONTO_HPP
+#define _IR_PRONTO_HPP
 
 // The first number, here 0000, denotes the type of the signal. 0000 denotes a raw IR signal with modulation,
 // The second number, here 006C, denotes a frequency code
@@ -44,14 +44,6 @@
 /** \addtogroup Decoder Decoders and encoders for different protocols
  * @{
  */
-
-// TODO remove 6/2021
-#if defined(__STM32F1__) || defined(ARDUINO_ARCH_STM32F1) // Recommended original Arduino_STM32 by Roger Clark.
-#  if !defined(strncpy_P)
-// this define is not included in the pgmspace.h file see https://github.com/rogerclarkmelbourne/Arduino_STM32/issues/852
-#define strncpy_P(dest, src, size) strncpy((dest), (src), (size))
-#  endif
-#endif
 
 //! @cond
 // DO NOT EXPORT from this file
@@ -104,7 +96,7 @@ void IRsend::sendPronto(const uint16_t *data, unsigned int length, uint_fast8_t 
     uint16_t durations[intros + repeats];
     for (unsigned int i = 0; i < intros + repeats; i++) {
         uint32_t duration = ((uint32_t) data[i + numbersInPreamble]) * timebase;
-        durations[i] = (unsigned int) ((duration <= __UINT16_MAX__) ? duration : __UINT16_MAX__);
+        durations[i] = (unsigned int) ((duration <= UINT16_MAX) ? duration : UINT16_MAX);
     }
 
     /*
@@ -234,7 +226,7 @@ static void dumpDuration(Print *aSerial, uint32_t duration, uint16_t timebase) {
 /*
  * Compensate received values by MARK_EXCESS_MICROS, like it is done for decoding!
  */
-static void compensateAndDumpSequence(Print *aSerial, const volatile uint16_t *data, size_t length, uint16_t timebase) {
+static void compensateAndDumpSequence(Print *aSerial, const volatile unsigned int *data, size_t length, uint16_t timebase) {
     for (size_t i = 0; i < length; i++) {
         uint32_t tDuration = data[i] * MICROS_PER_TICK;
         if (i & 1) {
@@ -299,7 +291,7 @@ static size_t dumpDuration(String *aString, uint32_t duration, uint16_t timebase
     return dumpNumber(aString, (duration + timebase / 2) / timebase);
 }
 
-static size_t compensateAndDumpSequence(String *aString, const volatile uint16_t *data, size_t length, uint16_t timebase) {
+static size_t compensateAndDumpSequence(String *aString, const volatile unsigned int *data, size_t length, uint16_t timebase) {
 
     size_t size = 0;
 
@@ -340,5 +332,4 @@ size_t IRrecv::compensateAndStorePronto(String *aString, unsigned int frequency)
 }
 
 /** @}*/
-#endif
-#pragma once
+#endif // _IR_PRONTO_HPP

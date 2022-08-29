@@ -50,7 +50,7 @@
  * - USE_NO_SEND_PWM                    Use no carrier PWM, just simulate an **active low** receiver signal. Overrides SEND_PWM_BY_TIMER definition.
  * - USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN Use or simulate open drain output mode at send pin. Attention, active state of open drain is LOW, so connect the send LED between positive supply and send pin!
  * - EXCLUDE_EXOTIC_PROTOCOLS           If activated, BOSEWAVE, WHYNTER and LEGO_PF are excluded in decode() and in sending with IrSender.write().
- * - EXCLUDE_UNIVERSAL_PROTOCOLS        If activated, the universal decoder for pulse width or pulse distance protocols and decodeHash (special decoder for all protocols) are excluded in decode().
+ * - EXCLUDE_UNIVERSAL_PROTOCOLS        If activated, the universal decoder for pulse distance protocols and decodeHash (special decoder for all protocols) are excluded in decode().
  * - DECODE_*                           Selection of individual protocols to be decoded. See below.
  * - MARK_EXCESS_MICROS                 Value is subtracted from all marks and added to all spaces before decoding, to compensate for the signal forming of different IR receiver modules.
  * - RECORD_GAP_MICROS                  Minimum gap between IR transmissions, to detect the end of a protocol.
@@ -58,16 +58,24 @@
  * - NO_LED_FEEDBACK_CODE               This completely disables the LED feedback code for send and receive.
  * - IR_INPUT_IS_ACTIVE_HIGH            Enable it if you use a RF receiver, which has an active HIGH output signal.
  * - IR_SEND_DUTY_CYCLE_PERCENT         Duty cycle of IR send signal.
- * - MICROS_PER_TICK                    Resolution of the raw input buffer data. Corresponds to 2 pulses of each 26.3 µs at 38 kHz.
+ * - MICROS_PER_TICK                    Resolution of the raw input buffer data. Corresponds to 2 pulses of each 26.3 us at 38 kHz.
  * - IR_USE_AVR_TIMER*                  Selection of timer to be used for generating IR receiving sample interval.
  */
 
-#ifndef IRremote_hpp
-#define IRremote_hpp
+#ifndef _IR_REMOTE_HPP
+#define _IR_REMOTE_HPP
 
-#define VERSION_IRREMOTE "3.6.1"
+#define VERSION_IRREMOTE "3.8.0"
 #define VERSION_IRREMOTE_MAJOR 3
-#define VERSION_IRREMOTE_MINOR 6
+#define VERSION_IRREMOTE_MINOR 8
+#define VERSION_IRREMOTE_PATCH 0
+
+/*
+ * Macro to convert 3 version parts into an integer
+ * To be used in preprocessor comparisons, such as #if VERSION_IRREMOTE_HEX >= VERSION_HEX_VALUE(3, 7, 0)
+ */
+#define VERSION_HEX_VALUE(major, minor, patch) ((major << 16) | (minor << 8) | (patch))
+#define VERSION_IRREMOTE_HEX  VERSION_HEX_VALUE(VERSION_IRREMOTE_MAJOR, VERSION_IRREMOTE_MINOR, VERSION_IRREMOTE_PATCH)
 
 // activate it for all cores that does not use the -flto flag, if you get false error messages regarding begin() during compilation.
 //#define SUPPRESS_ERROR_MESSAGE_FOR_BEGIN
@@ -106,16 +114,16 @@
 #define DECODE_RC5
 #define DECODE_RC6
 
-#    if !defined(EXCLUDE_EXOTIC_PROTOCOLS) // saves around 2000 bytes program space
+#    if !defined(EXCLUDE_EXOTIC_PROTOCOLS) // saves around 2000 bytes program memory
 #define DECODE_BOSEWAVE
 #define DECODE_LEGO_PF
-#define DECODE_WHYNTER
 #define DECODE_MAGIQUEST // It modifies the RAW_BUFFER_LENGTH from 100 to 112
+#define DECODE_WHYNTER
 #    endif
 
 #    if !defined(EXCLUDE_UNIVERSAL_PROTOCOLS)
-#define DECODE_DISTANCE     // universal decoder for pulse width or pulse distance protocols - requires up to 750 bytes additional program space
-#define DECODE_HASH         // special decoder for all protocols - requires up to 250 bytes additional program space
+#define DECODE_DISTANCE     // universal decoder for pulse distance protocols - requires up to 750 bytes additional program memory
+#define DECODE_HASH         // special decoder for all protocols - requires up to 250 bytes additional program memory
 #    endif
 #  endif
 #endif // !defined(NO_DECODER)
@@ -191,7 +199,7 @@
  * Activate this line if your receiver has an external output driver transistor / "inverted" output
  */
 //#define IR_INPUT_IS_ACTIVE_HIGH
-#ifdef IR_INPUT_IS_ACTIVE_HIGH
+#if defined(IR_INPUT_IS_ACTIVE_HIGH)
 // IR detector output is active high
 #define INPUT_MARK   1 ///< Sensor output for a mark ("flash")
 #else
@@ -204,11 +212,21 @@
 /**
  * Define to disable carrier PWM generation in software and use (restricted) hardware PWM.
  */
-#if !defined(SEND_PWM_BY_TIMER) && (defined(ESP32) || defined(ARDUINO_ARCH_RP2040) || defined(PARTICLE))
-#define SEND_PWM_BY_TIMER       // the best and default method for ESP32
-#warning For ESP32, RP2040 and particle boards SEND_PWM_BY_TIMER is enabled by default. If this is not intended, deactivate the line over this error message in file IRremote.hpp.
-#else
 //#define SEND_PWM_BY_TIMER // restricts send pin on many platforms to fixed pin numbers
+
+#if (defined(ESP32) || defined(ARDUINO_ARCH_RP2040) || defined(PARTICLE)) || defined(ARDUINO_ARCH_MBED)
+#  if !defined(SEND_PWM_BY_TIMER)
+#define SEND_PWM_BY_TIMER       // the best and default method for ESP32 etc.
+#warning INFO: For ESP32, RP2040, mbed and particle boards SEND_PWM_BY_TIMER is enabled by default. If this is not intended, deactivate the line in IRremote.hpp over this warning message in file IRremote.hpp.
+#  endif
+#else
+#  if defined(SEND_PWM_BY_TIMER)
+#    if defined(IR_SEND_PIN)
+#undef IR_SEND_PIN // to avoid warning 3 lines later
+#warning Since SEND_PWM_BY_TIMER is defined, the existing value of IR_SEND_PIN is discarded and replaced by the value determined by timer used for PWM generation
+#    endif
+#define IR_SEND_PIN     DeterminedByTimer // must be set here, since it is evaluated at IRremoteInt.h, before the include of private/IRTimer.hpp
+#  endif
 #endif
 
 /**
@@ -261,8 +279,15 @@
 #define MICROS_IN_ONE_MILLI 1000L
 
 #include "IRremoteInt.h"
+/*
+ * We always use digitalWriteFast() and digitalReadFast() functions to have a consistent mapping for pins.
+ * For most non AVR cpu's, it is just a mapping to digitalWrite() and digitalRead() functions.
+ */
+#include "digitalWriteFast.h"
+
 #if !defined(USE_IRREMOTE_HPP_AS_PLAIN_INCLUDE)
 #include "private/IRTimer.hpp"  // defines IR_SEND_PIN for AVR and SEND_PWM_BY_TIMER
+
 #  if !defined(NO_LED_FEEDBACK_CODE)
 #    if !defined(LED_BUILTIN)
 /*
@@ -287,7 +312,7 @@
 #  if defined(DECODE_DENON )       // Includes Sharp
 #include "ir_Denon.hpp"
 #  endif
-#  if defined(DECODE_DISTANCE)     // universal decoder for pulse width or pulse distance protocols - requires up to 750 bytes additional program space
+#  if defined(DECODE_DISTANCE)     // universal decoder for pulse distance protocols - requires up to 750 bytes additional program memory
 #include "ir_DistanceProtocol.hpp"
 #  endif
 #  if defined(DECODE_JVC)
@@ -334,7 +359,4 @@
 #define USECPERTICK MICROS_PER_TICK
 #define MARK_EXCESS MARK_EXCESS_MICROS
 
-#endif // IRremote_hpp
-
-#pragma once
-
+#endif // _IR_REMOTE_HPP

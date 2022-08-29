@@ -4,104 +4,104 @@
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\digistump.com\\package_digistump_index.json",
     "eTag" : "3009e1bba719e09eddff682075ef35d04153edb11434f8ea074cd562e9955fb6",
     "md5" : "MD5:c43814fed1b4ea761ebe078a082d2d51",
-    "createdAt" : "2022-05-09T10:58:47.581",
+    "createdAt" : "2022-08-28T23:04:13.397",
     "cacheControl" : {
       "maxAge" : 300,
-      "noCache" : false,
       "mustRevalidate" : false,
+      "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2022-05-09T11:03:47.581"
+    "expires" : "2022-08-28T23:09:13.397"
   }, {
     "remoteURL" : "https://arduino.esp8266.com/stable/package_esp8266com_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\arduino.esp8266.com\\stable\\package_esp8266com_index.json",
     "eTag" : "60ff395b-26f64",
     "md5" : "MD5:90644b3a0b909421d918f72290494272",
-    "createdAt" : "2022-05-09T10:58:47.791",
+    "createdAt" : "2022-08-28T23:04:13.597",
     "cacheControl" : {
       "maxAge" : 600,
-      "noCache" : false,
       "mustRevalidate" : false,
+      "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2022-05-09T11:08:47.791"
+    "expires" : "2022-08-28T23:14:13.597"
   }, {
     "remoteURL" : "https://raw.githubusercontent.com/uStepper/uStepperHardware/master/package_ustepper_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\raw.githubusercontent.com\\uStepper\\uStepperHardware\\master\\package_ustepper_index.json",
-    "eTag" : "688c655e90fdb4941f56d7c6aecf3a35046e3aef007a887f380826b1ab51827a",
-    "md5" : "MD5:ed2a52cd227c16273dcc399b24537b3e",
-    "createdAt" : "2022-05-09T10:58:48.051",
+    "eTag" : "d177964ed6930b08992c883035632983d86fe7c6cb15344a8dbf8f3b3d8c670d",
+    "md5" : "MD5:de1b5da0950999f190354517b2b396a4",
+    "createdAt" : "2022-08-28T23:04:13.847",
     "cacheControl" : {
       "maxAge" : 300,
-      "noCache" : false,
       "mustRevalidate" : false,
+      "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2022-05-09T11:03:48.051"
+    "expires" : "2022-08-28T23:09:13.847"
   }, {
     "remoteURL" : "https://github.com/stm32duino/BoardManagerFiles/raw/master/package_stmicroelectronics_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\github.com\\stm32duino\\BoardManagerFiles\\raw\\master\\package_stmicroelectronics_index.json",
     "eTag" : "3df5676d69e68b3f7242250bd73b99e47eb8632bc38c68e085ac32dd1e50bba4",
     "md5" : "MD5:d4ece1dd70bb7294569707c6a81577b3",
-    "createdAt" : "2022-05-09T10:58:48.571",
+    "createdAt" : "2022-08-28T23:04:14.177",
     "cacheControl" : {
       "maxAge" : 300,
-      "noCache" : false,
       "mustRevalidate" : false,
+      "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2022-05-09T11:03:48.571"
+    "expires" : "2022-08-28T23:09:14.177"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.gz",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.gz",
-    "eTag" : "a1850948386db2f1e11479b6c3ac3668",
-    "md5" : "MD5:a1850948386db2f1e11479b6c3ac3668",
-    "createdAt" : "2022-05-09T11:12:58.071",
+    "eTag" : "09ef7273b7c6ed654c1137fa7cf2a2d1",
+    "md5" : "MD5:09ef7273b7c6ed654c1137fa7cf2a2d1",
+    "createdAt" : "2022-08-28T23:04:53.778",
     "cacheControl" : {
       "maxAge" : 14400,
-      "noCache" : false,
       "mustRevalidate" : false,
+      "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2022-05-09T15:12:58.071"
+    "expires" : "2022-08-29T03:04:53.778"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json.sig",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json.sig",
-    "eTag" : "f865392fea5db0f6a02af5d9910b6de7",
-    "md5" : "MD5:f865392fea5db0f6a02af5d9910b6de7",
-    "createdAt" : "2022-05-09T10:58:49.581",
+    "eTag" : "2d900309bb3cc4316802f00ac25bcfab",
+    "md5" : "MD5:2d900309bb3cc4316802f00ac25bcfab",
+    "createdAt" : "2022-08-28T23:04:15.617",
     "cacheControl" : {
       "maxAge" : 3600,
-      "noCache" : false,
       "mustRevalidate" : false,
+      "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2022-05-09T11:58:49.581"
+    "expires" : "2022-08-29T00:04:15.617"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/libraries/library_index.json.sig",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\libraries\\library_index.json.sig",
-    "eTag" : "1c1fb085c5cd083649dcea3b263b7a71",
-    "md5" : "MD5:1c1fb085c5cd083649dcea3b263b7a71",
-    "createdAt" : "2022-05-09T11:12:58.401",
+    "eTag" : "805e7d6bdd4da3901da6941d05cfcf48",
+    "md5" : "MD5:805e7d6bdd4da3901da6941d05cfcf48",
+    "createdAt" : "2022-08-28T23:04:54.268",
     "cacheControl" : {
       "maxAge" : 14400,
-      "noCache" : false,
       "mustRevalidate" : false,
+      "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2022-05-09T15:12:58.401"
+    "expires" : "2022-08-29T03:04:54.268"
   }, {
     "remoteURL" : "https://downloads.arduino.cc/packages/package_index.json",
     "localPath" : "F:\\Logiciels\\Programmation\\ArduinoTechnoEduc\\portable\\cache\\downloads.arduino.cc\\packages\\package_index.json",
-    "eTag" : "5c182a0289778c839297d2d61401f273",
-    "md5" : "MD5:5c182a0289778c839297d2d61401f273",
-    "createdAt" : "2022-05-09T10:58:49.391",
+    "eTag" : "14a942a61adf5186d6a3e4f138974eb4",
+    "md5" : "MD5:14a942a61adf5186d6a3e4f138974eb4",
+    "createdAt" : "2022-08-28T23:04:15.277",
     "cacheControl" : {
       "maxAge" : 3600,
-      "noCache" : false,
       "mustRevalidate" : false,
+      "noCache" : false,
       "noStore" : false
     },
-    "expires" : "2022-05-09T11:58:49.391"
+    "expires" : "2022-08-29T00:04:15.277"
   } ]
 }

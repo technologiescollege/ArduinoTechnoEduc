@@ -30,8 +30,8 @@
  *
  ************************************************************************************
  */
-#ifndef IRremoteInt_h
-#define IRremoteInt_h
+#ifndef _IR_REMOTE_INT_H
+#define _IR_REMOTE_INT_H
 
 #include <Arduino.h>
 
@@ -80,45 +80,27 @@
  */
 struct irparams_struct {
     // The fields are ordered to reduce memory over caused by struct-padding
-    volatile uint8_t StateForISR;   ///< State Machine state
-    uint8_t IRReceivePin;           ///< Pin connected to IR data from detector
+    volatile uint8_t StateForISR;       ///< State Machine state
+    uint_fast8_t IRReceivePin;          ///< Pin connected to IR data from detector
 #if defined(__AVR__)
     volatile uint8_t *IRReceivePinPortInputRegister;
     uint8_t IRReceivePinMask;
 #endif
-    uint16_t TickCounterForISR;     ///< Counts 50uS ticks. The value is copied into the rawbuf array on every transition.
+    uint_fast16_t TickCounterForISR;    ///< Counts 50uS ticks. The value is copied into the rawbuf array on every transition.
 
-    bool OverflowFlag;              ///< Raw buffer OverflowFlag occurred
-#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program space and speeds up ISR
-    uint8_t rawlen;                 ///< counter of entries in rawbuf
+    bool OverflowFlag;                  ///< Raw buffer OverflowFlag occurred
+#if RAW_BUFFER_LENGTH <= 254            // saves around 75 bytes program memory and speeds up ISR
+    uint_fast8_t rawlen;                ///< counter of entries in rawbuf
 #else
-    unsigned int rawlen;            ///< counter of entries in rawbuf
+    uint_fast16_t rawlen;               ///< counter of entries in rawbuf
 #endif
-    uint16_t rawbuf[RAW_BUFFER_LENGTH]; ///< raw data / tick counts per mark/space, first entry is the length of the gap between previous and current command
+    unsigned int rawbuf[RAW_BUFFER_LENGTH]; ///< raw data / tick counts per mark/space, first entry is the length of the gap between previous and current command
 };
-
-/*
- * Info directives
- * Can be disabled to save program space
- */
-#ifdef INFO
-#  define IR_INFO_PRINT(...)    Serial.print(__VA_ARGS__)
-#  define IR_INFO_PRINTLN(...)  Serial.println(__VA_ARGS__)
-#else
-/**
- * If INFO, print the arguments, otherwise do nothing.
- */
-#  define IR_INFO_PRINT(...) void()
-/**
- * If INFO, print the arguments as a line, otherwise do nothing.
- */
-#  define IR_INFO_PRINTLN(...) void()
-#endif
 
 /*
  * Debug directives
  */
-#ifdef DEBUG
+#if defined(DEBUG) || defined(TRACE)
 #  define IR_DEBUG_PRINT(...)    Serial.print(__VA_ARGS__)
 #  define IR_DEBUG_PRINTLN(...)  Serial.println(__VA_ARGS__)
 #else
@@ -132,7 +114,7 @@ struct irparams_struct {
 #  define IR_DEBUG_PRINTLN(...) void()
 #endif
 
-#ifdef TRACE
+#if defined(TRACE)
 #  define IR_TRACE_PRINT(...)    Serial.print(__VA_ARGS__)
 #  define IR_TRACE_PRINTLN(...)  Serial.println(__VA_ARGS__)
 #else
@@ -150,24 +132,32 @@ struct irparams_struct {
 #define IRDATA_FLAGS_IS_REPEAT          0x01
 #define IRDATA_FLAGS_IS_AUTO_REPEAT     0x02
 #define IRDATA_FLAGS_PARITY_FAILED      0x04 ///< the current (autorepeat) frame violated parity check
-#define IRDATA_TOGGLE_BIT_MASK          0x08
-#define IRDATA_FLAGS_EXTRA_INFO         0x10 ///< there is unexpected extra info not contained in address and data (e.g. Kaseikyo unknown vendor ID)
+#define IRDATA_FLAGS_TOGGLE_BIT         0x08 ///< is set if RC5 or RC6 toggle bit is set
+#define IRDATA_FLAGS_IS_SPECIAL_REPEAT  0x08 ///< is set if we received a NEC special receive (full frame instead of repeat frame)
+#define IRDATA_FLAGS_EXTRA_INFO         0x10 ///< there is extra info not contained in address and data (e.g. Kaseikyo unknown vendor ID)
 #define IRDATA_FLAGS_WAS_OVERFLOW       0x40 ///< irparams.rawlen is 0 in this case to avoid endless OverflowFlag
 #define IRDATA_FLAGS_IS_LSB_FIRST       0x00
-#define IRDATA_FLAGS_IS_MSB_FIRST       0x80 ///< Just for info. Value is simply determined by the protocol
+#define IRDATA_FLAGS_IS_MSB_FIRST       0x80 ///< Just for info. Value is mainly determined by the protocol
 
+// deprecated
+#define IRDATA_TOGGLE_BIT_MASK          0x08 ///< is set if RC5 or RC6 toggle bit is set
+
+#define RAW_DATA_ARRAY_SIZE             ((((RAW_BUFFER_LENGTH - 2) - 1) / 64) + 1) // The -2 is for initial gap + stop bit mark, 64 mark + spaces for 32 bit.
 /**
  * Data structure for the user application, available as decodedIRData.
  * Filled by decoders and read by print functions or user application.
  */
 struct IRData {
-    decode_type_t protocol;  ///< UNKNOWN, NEC, SONY, RC5, ...
-    uint16_t address;        ///< Decoded address
-    uint16_t command;        ///< Decoded command
-    uint16_t extra;          ///< Used by MagiQuest and for Kaseikyo unknown vendor ID. Ticks used for decoding Distance protocol.
-    uint16_t numberOfBits; ///< Number of bits received for data (address + command + parity) - to determine protocol length if different length are possible.
-    uint8_t flags;               ///< See IRDATA_FLAGS_* definitions above
-    uint32_t decodedRawData;     ///< Up to 32 bit decoded raw data, used for sendRaw functions.
+    decode_type_t protocol; ///< UNKNOWN, NEC, SONY, RC5, ...
+    uint16_t address;       ///< Decoded address, Distance protocol (OneMarkTicks << 8) | OneSpaceTicks
+    uint16_t command;       ///< Decoded command, Distance protocol (ZeroMarkTicks << 8) | ZeroSpaceTicks
+    uint16_t extra;         ///< Contains MagiQuest magnitude, Kaseikyo unknown vendor ID and Distance protocol (HeaderMarkTicks << 8) | HeaderSpaceTicks.
+    uint16_t numberOfBits;  ///< Number of bits received for data (address + command + parity) - to determine protocol length if different length are possible.
+    uint8_t flags;          ///< See IRDATA_FLAGS_* definitions above
+    uint32_t decodedRawData; ///< Up to 32 bit decoded raw data, to be used for send functions.
+#if defined(DECODE_DISTANCE)
+    uint32_t decodedRawDataArray[RAW_DATA_ARRAY_SIZE]; ///< 32 bit decoded raw data, to be used for send functions.
+#endif
     irparams_struct *rawDataPtr; ///< Pointer of the raw timing data to be decoded. Mainly the data buffer filled by receiving ISR.
 };
 
@@ -176,15 +166,15 @@ struct IRData {
  */
 struct decode_results {
     decode_type_t decode_type;  // deprecated, moved to decodedIRData.protocol ///< UNKNOWN, NEC, SONY, RC5, ...
-    uint16_t address;           ///< Used by Panasonic & Sharp [16-bits]
+    uint16_t address;           // Used by Panasonic & Sharp [16-bits]
     uint32_t value;             // deprecated, moved to decodedIRData.decodedRawData ///< Decoded value / command [max 32-bits]
     uint8_t bits;               // deprecated, moved to decodedIRData.numberOfBits ///< Number of bits in decoded value
     uint16_t magnitude;         // deprecated, moved to decodedIRData.extra ///< Used by MagiQuest [16-bits]
     bool isRepeat;              // deprecated, moved to decodedIRData.flags ///< True if repeat of value is detected
 
 // next 3 values are copies of irparams values - see IRremoteint.h
-    uint16_t *rawbuf;           // deprecated, moved to decodedIRData.rawDataPtr->rawbuf ///< Raw intervals in 50uS ticks
-    uint16_t rawlen;            // deprecated, moved to decodedIRData.rawDataPtr->rawlen ///< Number of records in rawbuf
+    unsigned int *rawbuf;       // deprecated, moved to decodedIRData.rawDataPtr->rawbuf ///< Raw intervals in 50uS ticks
+    uint_fast8_t rawlen;        // deprecated, moved to decodedIRData.rawDataPtr->rawlen ///< Number of records in rawbuf
     bool overflow;              // deprecated, moved to decodedIRData.flags ///< true if IR raw code too long
 };
 
@@ -195,25 +185,27 @@ class IRrecv {
 public:
 
     IRrecv();
-    IRrecv(uint8_t aReceivePin);
-    IRrecv(uint8_t aReceivePin, uint8_t aFeedbackLEDPin);
-    void setReceivePin(uint8_t aReceivePinNumber);
-
-    void enableIRIn();
-    void disableIRIn();
+    IRrecv(uint_fast8_t aReceivePin);
+    IRrecv(uint_fast8_t aReceivePin, uint_fast8_t aFeedbackLEDPin);
+    void setReceivePin(uint_fast8_t aReceivePinNumber);
 
     /*
      * Stream like API
      */
-    void begin(uint8_t aReceivePin, bool aEnableLEDFeedback = false, uint8_t aFeedbackLEDPin = USE_DEFAULT_FEEDBACK_LED_PIN);
-    void start(); // alias for enableIRIn
+    void begin(uint_fast8_t aReceivePin, bool aEnableLEDFeedback = false, uint_fast8_t aFeedbackLEDPin =
+    USE_DEFAULT_FEEDBACK_LED_PIN);
+    void start();
+    void enableIRIn(); // alias for start
     void start(uint32_t aMicrosecondsToAddToGapCounter);
+    void restartAfterSend();
+
     bool available();
     IRData* read(); // returns decoded data
     // write is a method of class IRsend below
     // size_t write(IRData *aIRSendData, uint_fast8_t aNumberOfRepeats = NO_REPEATS);
-    void stop(); // alias for disableIRIn
-    void end();
+    void stop();
+    void disableIRIn(); // alias for stop
+    void end(); // alias for stop
 
     bool isIdle();
 
@@ -226,10 +218,17 @@ public:
     /*
      * Useful info and print functions
      */
-    void printIRResultShort(Print *aSerial);
     void printIRResultMinimal(Print *aSerial);
     void printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsInsteadOfTicks = true);
     void printIRResultAsCVariables(Print *aSerial);
+
+    /*
+     * Next 4 functions are also available as non member functions
+     */
+    void printIRResultShort(Print *aSerial);
+    void printIRSendUsage(Print *aSerial);
+    const __FlashStringHelper* getProtocolString();
+    static void printActiveIRProtocols(Print *aSerial);
 
     void compensateAndPrintIRResultAsCArray(Print *aSerial, bool aOutputMicrosecondsInsteadOfTicks = true);
     void compensateAndPrintIRResultAsPronto(Print *aSerial, unsigned int frequency = 38000U);
@@ -243,17 +242,17 @@ public:
     /*
      * The main decoding functions used by the individual decoders
      */
-    bool decodePulseDistanceData(uint8_t aNumberOfBits, uint8_t aStartOffset, uint16_t aBitMarkMicros, uint16_t aOneSpaceMicros,
-            uint16_t aZeroSpaceMicros, bool aMSBfirst);
+    bool decodePulseDistanceData(uint_fast8_t aNumberOfBits, uint_fast8_t aStartOffset, unsigned int aBitMarkMicros,
+            unsigned int aOneSpaceMicros, unsigned int aZeroSpaceMicros, bool aMSBfirst);
 
-    bool decodePulseWidthData(uint8_t aNumberOfBits, uint8_t aStartOffset, uint16_t aOneMarkMicros, uint16_t aZeroMarkMicros,
-            uint16_t aBitSpaceMicros, bool aMSBfirst);
+    bool decodePulseWidthData(uint_fast8_t aNumberOfBits, uint_fast8_t aStartOffset, unsigned int aOneMarkMicros,
+            unsigned int aZeroMarkMicros, unsigned int aBitSpaceMicros, bool aMSBfirst);
 
     bool decodeBiPhaseData(uint_fast8_t aNumberOfBits, uint_fast8_t aStartOffset, uint_fast8_t aStartClockCount,
-            uint_fast8_t aValueOfSpaceToMarkTransition, uint16_t aBiphaseTimeUnit);
+            uint_fast8_t aValueOfSpaceToMarkTransition, unsigned int aBiphaseTimeUnit);
 
-    void initBiphaselevel(uint8_t aRCDecodeRawbuffOffset, uint16_t aBiphaseTimeUnit);
-    uint8_t getBiphaselevel();
+    void initBiphaselevel(uint_fast8_t aRCDecodeRawbuffOffset, unsigned int aBiphaseTimeUnit);
+    uint_fast8_t getBiphaselevel();
 
     /*
      * All standard (decode address + command) protocol decoders
@@ -304,7 +303,7 @@ public:
      * Internal functions
      */
     void initDecodedIRData();
-    uint8_t compare(unsigned int oldval, unsigned int newval);
+    uint_fast8_t compare(unsigned int oldval, unsigned int newval);
 
     IRData decodedIRData;       // New: decoded IR data for the application
 
@@ -316,25 +315,30 @@ public:
     uint8_t repeatCount;        // Used e.g. for Denon decode for autorepeat decoding.
 };
 
-extern uint8_t sBiphaseDecodeRawbuffOffset; //
+extern uint_fast8_t sBiphaseDecodeRawbuffOffset; //
 
 /*
  * Mark & Space matching functions
  */
-bool matchTicks(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros);
-bool matchMark(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros);
-bool matchSpace(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros);
+bool matchTicks(unsigned int aMeasuredTicks, unsigned int aMatchValueMicros);
+bool matchMark(unsigned int aMeasuredTicks, unsigned int aMatchValueMicros);
+bool matchSpace(unsigned int aMeasuredTicks, unsigned int aMatchValueMicros);
 
 /*
  * Old function names
  */
-bool MATCH(uint16_t measured, uint16_t desired);
-bool MATCH_MARK(uint16_t measured_ticks, uint16_t desired_us);
-bool MATCH_SPACE(uint16_t measured_ticks, uint16_t desired_us);
+bool MATCH(unsigned int measured, unsigned int desired);
+bool MATCH_MARK(unsigned int measured_ticks, unsigned int desired_us);
+bool MATCH_SPACE(unsigned int measured_ticks, unsigned int desired_us);
 
 int getMarkExcessMicros();
+/*
+ * Next 4 functions are also available as member functions
+ */
+void printIRResultShort(Print *aSerial, IRData *aIRDataPtr, bool aPrintGap);
+void printIRSendUsage(Print *aSerial, IRData *aIRDataPtr);
+const __FlashStringHelper* getProtocolString();
 void printActiveIRProtocols(Print *aSerial);
-void printIRResultShort(Print *aSerial, IRData *aIRDataPtr, uint16_t aLeadingSpaceDuration = 0);
 
 /****************************************************
  * Feedback LED related functions
@@ -360,24 +364,25 @@ void setBlinkPin(uint8_t aFeedbackLEDPin) __attribute__ ((deprecated ("Please us
  * First MARK is the one after the long gap
  * Pulse parameters in microseconds
  */
-/** Relative tolerance (in percent) for some comparisons on measured data. */
-#define TOLERANCE       25
+#if !defined(TOLERANCE_FOR_DECODERS_MARK_OR_SPACE_MATCHING)
+#define TOLERANCE_FOR_DECODERS_MARK_OR_SPACE_MATCHING    25 // Relative tolerance (in percent) for matchTicks(), matchMark() and matchSpace() functions used for protocol decoding.
+#endif
 
 /** Lower tolerance for comparison of measured data */
 //#define LTOL            (1.0 - (TOLERANCE/100.))
-#define LTOL            (100 - TOLERANCE)
+#define LTOL            (100 - TOLERANCE_FOR_DECODERS_MARK_OR_SPACE_MATCHING)
 /** Upper tolerance for comparison of measured data */
 //#define UTOL            (1.0 + (TOLERANCE/100.))
-#define UTOL            (100 + TOLERANCE)
+#define UTOL            (100 + TOLERANCE_FOR_DECODERS_MARK_OR_SPACE_MATCHING)
 
 //#define TICKS_LOW(us)   ((int)(((us)*LTOL/MICROS_PER_TICK)))
 //#define TICKS_HIGH(us)  ((int)(((us)*UTOL/MICROS_PER_TICK + 1)))
-#if MICROS_PER_TICK == 50 && TOLERANCE == 25           // Defaults
+#if MICROS_PER_TICK == 50 && TOLERANCE_FOR_DECODERS_MARK_OR_SPACE_MATCHING == 25           // Defaults
 #define TICKS_LOW(us)   ((us)/67 )     // (us) / ((MICROS_PER_TICK:50 / LTOL:75 ) * 100)
 #define TICKS_HIGH(us)  (((us)/40) + 1)  // (us) / ((MICROS_PER_TICK:50 / UTOL:125) * 100) + 1
 #else
-    #define TICKS_LOW(us)   ((uint16_t) ((long) (us) * LTOL / (MICROS_PER_TICK * 100) ))
-    #define TICKS_HIGH(us)  ((uint16_t) ((long) (us) * UTOL / (MICROS_PER_TICK * 100) + 1))
+#define TICKS_LOW(us)   ((unsigned int ) ((long) (us) * LTOL / (MICROS_PER_TICK * 100) ))
+#define TICKS_HIGH(us)  ((unsigned int ) ((long) (us) * UTOL / (MICROS_PER_TICK * 100) + 1))
 #endif
 
 /*
@@ -406,24 +411,24 @@ public:
     /*
      * IR_SEND_PIN is defined
      */
-#if defined(IR_SEND_PIN) || (defined(SEND_PWM_BY_TIMER) && !(defined(ESP32) || defined(ARDUINO_ARCH_RP2040) || defined(PARTICLE)))
+#if defined(IR_SEND_PIN)
     void begin();
-    void begin(bool aEnableLEDFeedback, uint8_t aFeedbackLEDPin = USE_DEFAULT_FEEDBACK_LED_PIN);
+    void begin(bool aEnableLEDFeedback, uint_fast8_t aFeedbackLEDPin = USE_DEFAULT_FEEDBACK_LED_PIN);
 #else
-    IRsend(uint8_t aSendPin);
-    void begin(uint8_t aSendPin);
-    void setSendPin(uint8_t aSendPinNumber); // required if we use IRsend() as constructor
+    IRsend(uint_fast8_t aSendPin);
+    void begin(uint_fast8_t aSendPin);
+    void setSendPin(uint_fast8_t aSendPin); // required if we use IRsend() as constructor
 #endif
 
     // Not guarded for backward compatibility
-    void begin(uint8_t aSendPin, bool aEnableLEDFeedback, uint8_t aFeedbackLEDPin = USE_DEFAULT_FEEDBACK_LED_PIN);
+    void begin(uint_fast8_t aSendPin, bool aEnableLEDFeedback, uint_fast8_t aFeedbackLEDPin = USE_DEFAULT_FEEDBACK_LED_PIN);
 
     size_t write(IRData *aIRSendData, uint_fast8_t aNumberOfRepeats = NO_REPEATS);
 
-    void enableIROut(uint8_t aFrequencyKHz);
+    void enableIROut(uint_fast8_t aFrequencyKHz);
 
     void sendPulseDistanceWidthData(unsigned int aOneMarkMicros, unsigned int aOneSpaceMicros, unsigned int aZeroMarkMicros,
-            unsigned int aZeroSpaceMicros, uint32_t aData, uint8_t aNumberOfBits, bool aMSBfirst, bool aSendStopBit = false);
+            unsigned int aZeroSpaceMicros, uint32_t aData, uint_fast8_t aNumberOfBits, bool aMSBfirst, bool aSendStopBit = false);
     void sendBiphaseData(unsigned int aBiphaseTimeUnit, uint32_t aData, uint_fast8_t aNumberOfBits);
 
     void mark(unsigned int aMarkMicros);
@@ -431,12 +436,12 @@ public:
     void IRLedOff();
 
 // 8 Bit array
-    void sendRaw(const uint8_t aBufferWithTicks[], uint_fast8_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz);
-    void sendRaw_P(const uint8_t aBufferWithTicks[], uint_fast8_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz);
+    void sendRaw(const uint8_t aBufferWithTicks[], uint_fast16_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz);
+    void sendRaw_P(const uint8_t aBufferWithTicks[], uint_fast16_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz);
 
 // 16 Bit array
-    void sendRaw(const uint16_t aBufferWithMicroseconds[], uint_fast8_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz);
-    void sendRaw_P(const uint16_t aBufferWithMicroseconds[], uint_fast8_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz);
+    void sendRaw(const uint16_t aBufferWithMicroseconds[], uint_fast16_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz);
+    void sendRaw_P(const uint16_t aBufferWithMicroseconds[], uint_fast16_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz);
 
     /*
      * New send functions
@@ -452,6 +457,7 @@ public:
     void sendLGRepeat(bool aUseLG2Protocol = false);
     void sendLG(uint8_t aAddress, uint16_t aCommand, uint_fast8_t aNumberOfRepeats, bool aIsRepeat = false, bool aUseLG2Protocol =
             false);
+    void sendLG2(uint8_t aAddress, uint16_t aCommand, uint_fast8_t aNumberOfRepeats, bool aIsRepeat = false);
     void sendLGRaw(uint32_t aRawData, uint_fast8_t aNumberOfRepeats = 0, bool aIsRepeat = false, bool aUseLG2Protocol = false);
 
     void sendNECRepeat();
@@ -471,7 +477,8 @@ public:
     void sendRC5(uint8_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats, bool aEnableAutomaticToggle = true);
     void sendRC6(uint8_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats, bool aEnableAutomaticToggle = true);
     void sendSamsungRepeat();
-    void sendSamsung(uint16_t aAddress, uint16_t aCommand, uint_fast8_t aNumberOfRepeats, bool aIsRepeat = false);
+    void sendSamsung(uint16_t aAddress, uint16_t aCommand, uint_fast8_t aNumberOfRepeats);
+    void sendSamsungLG(uint16_t aAddress, uint16_t aCommand, uint_fast8_t aNumberOfRepeats, bool aIsRepeat = false);
     void sendSharp(uint8_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats); // redirected to sendDenon
     void sendSony(uint16_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats, uint8_t numberOfBits = SIRCS_12_PROTOCOL);
 
@@ -484,6 +491,11 @@ public:
     void sendPronto(const __FlashStringHelper *str, uint_fast8_t aNumberOfRepeats = NO_REPEATS);
     void sendPronto(const char *prontoHexString, uint_fast8_t aNumberOfRepeats = NO_REPEATS);
     void sendPronto(const uint16_t *data, unsigned int length, uint_fast8_t aNumberOfRepeats = NO_REPEATS);
+
+    void sendPulseDistance(unsigned int aHeaderMarkMicros, unsigned int aHeaderSpaceMicros, unsigned int aOneMarkMicros,
+            unsigned int aOneSpaceMicros, unsigned int aZeroMarkMicros, unsigned int aZeroSpaceMicros,
+            uint32_t *aDecodedRawDataArray, unsigned int aNumberOfBits, bool aMSBfirst, unsigned int aRepeatSpaceMillis = 110,
+            uint_fast8_t aNumberOfRepeats = 0);
 #if defined(__AVR__)
     void sendPronto_PF(uint_farptr_t str, uint_fast8_t aNumberOfRepeats = NO_REPEATS);
     void sendPronto_P(const char *str, uint_fast8_t aNumberOfRepeats);
@@ -533,7 +545,7 @@ public:
     uint8_t sendPin;
 #endif
     unsigned int periodTimeMicros;
-    unsigned int periodOnTimeMicros; // compensated with PULSE_CORRECTION_NANOS for duration of digitalWrite.
+    unsigned int periodOnTimeMicros; // compensated with PULSE_CORRECTION_NANOS for duration of digitalWrite. Around 8 microseconds for 38 kHz.
     unsigned int getPulseCorrectionNanos();
 
     void customDelayMicroseconds(unsigned long aMicroseconds);
@@ -544,7 +556,4 @@ public:
  */
 extern IRsend IrSender;
 
-#endif // IRremoteInt_h
-
-#pragma once
-
+#endif // _IR_REMOTE_INT_H

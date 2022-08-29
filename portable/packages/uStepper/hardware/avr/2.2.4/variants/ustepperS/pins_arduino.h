@@ -51,7 +51,7 @@ static const uint8_t A0 = 21;
 static const uint8_t A1 = 22;
 static const uint8_t A2 = 23;
 
-static const uint8_t SCL0 = 23;
+static const uint8_t SCL0 = 21;
 static const uint8_t SDA0 = 22;
 
 //Pins NOT available to the user directly
@@ -130,9 +130,9 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PD, // D18 - pd4 - PD4
 	PD, // D19 - pd5 - PD5
 	PD, // D20 - pd6 - PD6
-	PC, // D21 - A0 - PC3
+	PC, // D21 - A0 - SCL0 - PC3
 	PC, // D22 - A1 - SDA0 - PC4
-	PC, // D23 - A2 - SCL0 - PC5
+	PC, // D23 - A2 - PC5
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
@@ -157,9 +157,9 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	_BV(4), // D18 - pd4 - PD4
 	_BV(5), // D19 - pd5 - PD5
 	_BV(6), // D20 - pd6 - PD6
-	_BV(5), // D21 - A0 - PC3
+	_BV(5), // D21 - A0 - SCL0 - PC3
 	_BV(4), // D22 - A1 - SDA0 - PC4
-	_BV(3), // D23 - A2 - SCL0 - PC5
+	_BV(3), // D23 - A2 - PC5
 };
 
 const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
@@ -184,9 +184,9 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	NOT_ON_TIMER, // D18 - pd4 - PD4
 	NOT_ON_TIMER, // D19 - pd5 - PD5
 	NOT_ON_TIMER, // D20 - pd6 - PD6
-	NOT_ON_TIMER, // D21 - A0 - PC3
+	NOT_ON_TIMER, // D21 - A0 - SCL0 - PC3
 	NOT_ON_TIMER, // D22 - A1 - SDA0 - PC4
-	NOT_ON_TIMER, // D23 - A2 - SCL0 - PC5
+	NOT_ON_TIMER, // D23 - A2 - PC5
 };	
 
 #endif

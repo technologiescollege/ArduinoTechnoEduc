@@ -28,12 +28,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 MD_PZone::MD_PZone(void) :
-_MX(nullptr), _suspend(false), _lastRunTime(0),
-_fsmState(END), _scrollDistance(0), _zoneEffect(0), _pText(nullptr), 
-_userChars(nullptr), _cBufSize(0), _cBuf(nullptr), _charSpacing(1), 
-_fontDef(nullptr)
+  _MX(nullptr), _suspend(false), _lastRunTime(0),
+  _fsmState(END), _scrollDistance(0), _zoneEffect(0), _pText(nullptr), 
+  _userChars(nullptr), _cBufSize(0), _cBuf(nullptr), _charSpacing(1), 
+  _fontDef(nullptr)
 #if ENA_SPRITE
-, _spriteInData(nullptr), _spriteOutData(nullptr)
+  , _spriteInData(nullptr), _spriteOutData(nullptr)
 #endif
 {
 };
@@ -212,7 +212,7 @@ bool MD_PZone::calcTextLimits(const uint8_t *p)
   return (b);
 }
 
-bool MD_PZone::addChar(uint16_t code, uint8_t *data)
+bool MD_PZone::addChar(uint16_t code, const uint8_t *data)
 // Add a user defined character to the replacement list
 {
   charDef_t *pcd;

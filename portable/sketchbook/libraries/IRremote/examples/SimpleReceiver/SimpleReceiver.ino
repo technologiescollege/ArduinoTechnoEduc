@@ -50,19 +50,14 @@
 //#define DECODE_MAGIQUEST
 //#define DECODE_WHYNTER
 
-//#define DECODE_DISTANCE     // universal decoder for pulse width or pulse distance protocols
+//#define DECODE_DISTANCE     // universal decoder for pulse distance protocols
 //#define DECODE_HASH         // special decoder for all protocols
 
-//#define DEBUG // Activate this for lots of lovely debug output from the decoders.
-//#define INFO                // To see valuable informations from universal decoder for pulse width or pulse distance protocols
+//#define DEBUG               // Activate this for lots of lovely debug output from the decoders.
 
 #include <Arduino.h>
 
-/*
- * Define macros for input and output pin etc.
- */
-#include "PinDefinitionsAndMore.h"
-
+#include "PinDefinitionsAndMore.h" //Define macros for input and output pin etc.
 #include <IRremote.hpp>
 
 void setup() {
@@ -75,8 +70,7 @@ void setup() {
 
     Serial.print(F("Ready to receive IR signals of protocols: "));
     printActiveIRProtocols(&Serial);
-    Serial.print(F("at pin "));
-    Serial.println(IR_RECEIVE_PIN);
+    Serial.println(F("at pin " STR(IR_RECEIVE_PIN)));
 }
 
 void loop() {
@@ -92,7 +86,9 @@ void loop() {
 
         // Print a short summary of received data
         IrReceiver.printIRResultShort(&Serial);
+        IrReceiver.printIRSendUsage(&Serial);
         if (IrReceiver.decodedIRData.protocol == UNKNOWN) {
+            Serial.println(F("Received noise or an unknown (or not yet enabled) protocol"));
             // We have an unknown protocol here, print more info
             IrReceiver.printIRResultRawFormatted(&Serial, true);
         }

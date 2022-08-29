@@ -29,8 +29,8 @@
  *
  ************************************************************************************
  */
-#ifndef IR_PROTOCOL_H
-#define IR_PROTOCOL_H
+#ifndef _IR_PROTOCOL_H
+#define _IR_PROTOCOL_H
 
 /**
  * An enum consisting of all supported formats.
@@ -38,31 +38,35 @@
  */
 typedef enum {
     UNKNOWN = 0,
-    PULSE_DISTANCE,
+#if defined(SUPPORT_PULSE_WIDTH_DECODING) // The only known pulse width protocol is Sony
     PULSE_WIDTH,
+#endif
+    PULSE_DISTANCE,
     DENON,
-    DISH,
+    SHARP,
     JVC,
     LG,
     LG2,
     NEC,
     PANASONIC,
     KASEIKYO,
-    KASEIKYO_JVC,
     KASEIKYO_DENON,
     KASEIKYO_SHARP,
+    KASEIKYO_JVC,
     KASEIKYO_MITSUBISHI,
     RC5,
     RC6,
     SAMSUNG,
-    SHARP,
+    SAMSUNG_LG,
     SONY,
     ONKYO,
     APPLE,
+#if !defined(EXCLUDE_EXOTIC_PROTOCOLS)
     BOSEWAVE,
     LEGO_PF,
     MAGIQUEST,
     WHYNTER,
+#endif
 } decode_type_t;
 
 const __FlashStringHelper* getProtocolString(decode_type_t aProtocol);
@@ -100,6 +104,4 @@ const __FlashStringHelper* getProtocolString(decode_type_t aProtocol);
 #define LEGO_MODE_COMBO     1
 #define LEGO_MODE_SINGLE    0x4 // here the 2 LSB have meanings like Output A / Output B
 
-#endif // IR_PROTOCOL_H
-
-#pragma once
+#endif // _IR_PROTOCOL_H

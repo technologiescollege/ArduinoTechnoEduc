@@ -29,8 +29,8 @@
  *
  ************************************************************************************
  */
-#ifndef IR_LG_HPP
-#define IR_LG_HPP
+#ifndef _IR_LG_HPP
+#define _IR_LG_HPP
 
 #include <Arduino.h>
 
@@ -73,7 +73,7 @@
 #define LG_UNIT                 500 // 19 periods of 38 kHz
 
 #define LG_HEADER_MARK          (18 * LG_UNIT) // 9000
-#define LG_HEADER_SPACE         4200
+#define LG_HEADER_SPACE         4200           // 84
 
 #define LG2_HEADER_MARK         (6 * LG_UNIT)  // 3000
 #define LG2_HEADER_SPACE        (19 * LG_UNIT) // 9500
@@ -102,6 +102,7 @@ void IRsend::sendLGRepeat(bool aUseLG2Protocol) {
     }
     space(LG_REPEAT_HEADER_SPACE);
     mark(LG_BIT_MARK);
+    IrReceiver.restartAfterSend();
 }
 
 /**
@@ -125,6 +126,10 @@ void IRsend::sendLG(uint8_t aAddress, uint16_t aCommand, uint_fast8_t aNumberOfR
     sendLGRaw(tRawData, aNumberOfRepeats, aIsRepeat, aUseLG2Protocol);
 }
 
+void IRsend::sendLG2(uint8_t aAddress, uint16_t aCommand, uint_fast8_t aNumberOfRepeats, bool aIsRepeat) {
+    sendLG(aAddress, aCommand, aNumberOfRepeats, aIsRepeat);
+}
+
 /*
  * Here you can put your raw data, even one with "wrong" checksum
  */
@@ -140,16 +145,13 @@ void IRsend::sendLGRaw(uint32_t aRawData, uint_fast8_t aNumberOfRepeats, bool aI
     if (aUseLG2Protocol) {
         mark(LG2_HEADER_MARK);
         space(LG2_HEADER_SPACE);
-        // MSB first
-        sendPulseDistanceWidthData(LG_BIT_MARK, LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, aRawData, LG_BITS, PROTOCOL_IS_MSB_FIRST,
-        SEND_STOP_BIT);
     } else {
         mark(LG_HEADER_MARK);
         space(LG_HEADER_SPACE);
-        // MSB first
-        sendPulseDistanceWidthData(LG_BIT_MARK, LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, aRawData, LG_BITS, PROTOCOL_IS_MSB_FIRST,
-        SEND_STOP_BIT);
     }
+    // MSB first
+    sendPulseDistanceWidthData(LG_BIT_MARK, LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, aRawData, LG_BITS, PROTOCOL_IS_MSB_FIRST,
+    SEND_STOP_BIT);
 
     for (uint_fast8_t i = 0; i < aNumberOfRepeats; ++i) {
         // send repeat in a 110 ms raster
@@ -161,6 +163,7 @@ void IRsend::sendLGRaw(uint32_t aRawData, uint_fast8_t aNumberOfRepeats, bool aI
         // send repeat
         sendLGRepeat(aUseLG2Protocol);
     }
+    IrReceiver.restartAfterSend();
 }
 
 //+=============================================================================
@@ -179,9 +182,9 @@ bool IRrecv::decodeLG() {
 // Check we have the right amount of data (60). The +4 is for initial gap, start bit mark and space + stop bit mark.
     if (decodedIRData.rawDataPtr->rawlen != ((2 * LG_BITS) + 4) && (decodedIRData.rawDataPtr->rawlen != 4)) {
         IR_DEBUG_PRINT(F("LG: "));
-        IR_DEBUG_PRINT("Data length=");
+        IR_DEBUG_PRINT(F("Data length="));
         IR_DEBUG_PRINT(decodedIRData.rawDataPtr->rawlen);
-        IR_DEBUG_PRINTLN(" is not 60 or 4");
+        IR_DEBUG_PRINTLN(F(" is not 60 or 4"));
         return false;
     }
 
@@ -189,7 +192,7 @@ bool IRrecv::decodeLG() {
     if (!matchMark(decodedIRData.rawDataPtr->rawbuf[1], LG_HEADER_MARK)) {
         if (!matchMark(decodedIRData.rawDataPtr->rawbuf[1], LG2_HEADER_MARK)) {
             IR_DEBUG_PRINT(F("LG: "));
-            IR_DEBUG_PRINTLN("Header mark is wrong");
+            IR_DEBUG_PRINTLN(F("Header mark is wrong"));
             return false;
         } else {
             tProtocol = LG2;
@@ -208,7 +211,7 @@ bool IRrecv::decodeLG() {
             return true;
         }
         IR_DEBUG_PRINT(F("LG: "));
-        IR_DEBUG_PRINT("Repeat header space is wrong");
+        IR_DEBUG_PRINT(F("Repeat header space is wrong"));
         return false;
     }
 
@@ -249,11 +252,11 @@ bool IRrecv::decodeLG() {
 // Checksum check
     if ((tChecksum & 0xF) != (decodedIRData.decodedRawData & 0xF)) {
         IR_DEBUG_PRINT(F("LG: "));
-        IR_DEBUG_PRINT("4 bit checksum is not correct. expected=0x");
+        IR_DEBUG_PRINT(F("4 bit checksum is not correct. expected=0x"));
         IR_DEBUG_PRINT(tChecksum, HEX);
-        IR_DEBUG_PRINT(" received=0x");
+        IR_DEBUG_PRINT(F(" received=0x"));
         IR_DEBUG_PRINT((decodedIRData.decodedRawData & 0xF), HEX);
-        IR_DEBUG_PRINT(" data=0x");
+        IR_DEBUG_PRINT(F(" data=0x"));
         IR_DEBUG_PRINTLN(decodedIRData.command, HEX);
         decodedIRData.flags |= IRDATA_FLAGS_PARITY_FAILED;
     }
@@ -316,8 +319,8 @@ void IRsend::sendLG(unsigned long data, int nbits) {
 // Data + stop bit
     sendPulseDistanceWidthData(LG_BIT_MARK, LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, data, nbits, PROTOCOL_IS_MSB_FIRST,
     SEND_STOP_BIT);
+    IrReceiver.restartAfterSend();
 }
 
 /** @}*/
-#endif
-#pragma once
+#endif // _IR_LG_HPP

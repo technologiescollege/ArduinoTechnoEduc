@@ -71,6 +71,7 @@ static const uint8_t PROGMEM rocket[F_ROCKET * W_ROCKET] =  // rocket
 uint8_t	curString = 0;
 const char *msg[] =
 {
+//  "Parola for Arduino LED Matrix Display", 
   "Parola for",
   "Arduino",
   "LED Matrix",
@@ -111,6 +112,7 @@ void doUI(void)
 
         DEBUG("\nChanging alignment to ", curMode);
         P.setTextAlignment(textAlign[curMode]);
+        P.displayClear();
         P.displayReset();
         curMode = (curMode + 1) % ARRAY_SIZE(textAlign);
       }

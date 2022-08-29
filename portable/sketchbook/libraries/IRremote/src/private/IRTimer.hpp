@@ -32,8 +32,8 @@
  *
  ************************************************************************************
  */
-#ifndef IR_TIMER_HPP
-#define IR_TIMER_HPP
+#ifndef _IR_TIMER_HPP
+#define _IR_TIMER_HPP
 
 /** \addtogroup HardwareDependencies CPU / board dependent definitions
  * @{
@@ -41,11 +41,13 @@
 /** \addtogroup Timer Usage of timers for the different CPU / boards
  * @{
  */
-#include "digitalWriteFast.h"
 
-#if defined(SEND_PWM_BY_TIMER) && !defined(ESP32) && !defined(ARDUINO_ARCH_RP2040) && !defined(PARTICLE)
-#undef IR_SEND_PIN // send pin is determined by timer except for ESP32 and RP2040 and Particle(untested)
-#warning Since SEND_PWM_BY_TIMER is defined, the existing value of IR_SEND_PIN is discarded and replaced by the value determined by timer used for PWM generation
+#if defined(SEND_PWM_BY_TIMER) && ( (defined(ESP32) || defined(ARDUINO_ARCH_RP2040) || defined(PARTICLE)) || defined(ARDUINO_ARCH_MBED) )
+#define SEND_PWM_DOES_NOT_USE_RECEIVE_TIMER // Receive timer and send generation are independent, so it is recommended to always define SEND_PWM_BY_TIMER
+#endif
+
+#if defined(IR_SEND_PIN) && defined(SEND_PWM_BY_TIMER) && !defined(SEND_PWM_DOES_NOT_USE_RECEIVE_TIMER) // For e.g ESP32 IR_SEND_PIN definition is useful
+#undef IR_SEND_PIN // avoid warning below, user warning is done at IRremote.hpp
 #endif
 
 #if defined (DOXYGEN)
@@ -256,8 +258,8 @@
 
 void timerConfigForReceive() {
     TCCR1A = 0;
-    TCCR1B = _BV(WGM12) | _BV(CS10);
-    OCR1A = F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND;
+    TCCR1B = _BV(WGM12) | _BV(CS10); // CTC mode, no prescaling
+    OCR1A = (F_CPU * MICROS_PER_TICK) / MICROS_IN_ONE_SECOND; // 16 * 50 = 800
     TCNT1 = 0;
 }
 
@@ -309,7 +311,6 @@ void timerConfigForReceive() {
  */
 void timerConfigForSend(uint8_t aFrequencyKHz) {
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
 #  if (((F_CPU / 2000) / 38) < 256)
     const uint16_t tPWMWrapValue = (F_CPU / 2000) / (aFrequencyKHz); // 210,52 for 38 kHz @16 MHz clock, 2000 instead of 1000 because of Phase Correct PWM
@@ -350,7 +351,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 
 #define TIMER_COUNT_TOP  (F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND)
 /*
- * timerConfigForReceive() is used exclusively by IRrecv::enableIRIn()
+ * timerConfigForReceive() is used exclusively by IRrecv::start()
  * It generates an interrupt each 50 (MICROS_PER_TICK) us.
  */
 void timerConfigForReceive() {
@@ -396,7 +397,6 @@ void timerConfigForReceive() {
  */
 void timerConfigForSend(uint8_t aFrequencyKHz) {
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
 #  if (((F_CPU / 2000) / 38) < 256)
     const uint16_t tPWMWrapValue = (F_CPU / 2000) / (aFrequencyKHz); // 210,52 for 38 kHz @16 MHz clock, 2000 instead of 1000 because of Phase Correct PWM
@@ -461,7 +461,6 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #error "Creating timer PWM with timer 3 is not supported for F_CPU > 16 MHz"
 #endif
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
     const uint16_t tPWMWrapValue = (F_CPU / 2000) / (aFrequencyKHz); // 210,52 for 38 kHz @16 MHz clock, 2000 instead of 1000 because of Phase Correct PWM
     TCCR3A = _BV(WGM31);
@@ -476,6 +475,18 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
  * AVR Timer4 (16 bits)
  */
 #elif defined(IR_USE_AVR_TIMER4)
+#define TIMER_RESET_INTR_PENDING
+#define TIMER_ENABLE_RECEIVE_INTR   (TIMSK4 = _BV(OCIE4A))
+#define TIMER_DISABLE_RECEIVE_INTR  (TIMSK4 = 0)
+#define TIMER_INTR_NAME             TIMER4_COMPA_vect
+
+void timerConfigForReceive() {
+    TCCR4A = 0;
+    TCCR4B = _BV(WGM42) | _BV(CS40);
+    OCR4A = F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND;
+    TCNT4 = 0;
+}
+
 #  if defined(SEND_PWM_BY_TIMER)
 #    if defined(CORE_OC4A_PIN)
 #define IR_SEND_PIN  CORE_OC4A_PIN
@@ -492,6 +503,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #if F_CPU > 16000000
 #error "Creating timer PWM with timer 4 is not supported for F_CPU > 16 MHz"
 #endif
+    TIMER_DISABLE_RECEIVE_INTR;
     const uint16_t tPWMWrapValue = (F_CPU / 2000) / (aFrequencyKHz); // 210,52 for 38 kHz @16 MHz clock, 2000 instead of 1000 because of Phase Correct PWM
     TCCR4A = _BV(WGM41);
     TCCR4B = _BV(WGM43) | _BV(CS40);
@@ -500,18 +512,6 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
     TCNT4 = 0;// required, since we have an 16 bit counter
 }
 #  endif // defined(SEND_PWM_BY_TIMER)
-
-#define TIMER_RESET_INTR_PENDING
-#define TIMER_ENABLE_RECEIVE_INTR   (TIMSK4 = _BV(OCIE4A))
-#define TIMER_DISABLE_RECEIVE_INTR  (TIMSK4 = 0)
-#define TIMER_INTR_NAME             TIMER4_COMPA_vect
-
-void timerConfigForReceive() {
-    TCCR4A = 0;
-    TCCR4B = _BV(WGM42) | _BV(CS40);
-    OCR4A = F_CPU * MICROS_PER_TICK / MICROS_IN_ONE_SECOND;
-    TCNT4 = 0;
-}
 
 /*
  * AVR Timer4 (10 bits, high speed option)
@@ -564,7 +564,6 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #error "Creating timer PWM with timer 4 HS is not supported for F_CPU > 16 MHz"
 #endif
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
     const uint16_t tPWMWrapValue = ((F_CPU / 2000) / (aFrequencyKHz)) - 1; // 210,52 for 38 kHz @16 MHz clock, 2000 instead of 1000 because of Phase Correct PWM
     TCCR4A = (1 << PWM4A);
@@ -618,7 +617,6 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #error "Creating timer PWM with timer 5 is not supported for F_CPU > 16 MHz"
 #endif
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
     const uint16_t tPWMWrapValue = (F_CPU / 2000) / (aFrequencyKHz); // 210,52 for 38 kHz @16 MHz clock, 2000 instead of 1000 because of Phase Correct PWM
     TCCR5A = _BV(WGM51);
@@ -669,7 +667,6 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #error "Creating timer PWM with timer TINY0 is not supported for F_CPU > 16 MHz"
 #endif
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
     const uint16_t tPWMWrapValue = (F_CPU / 2000) / (aFrequencyKHz); // 210,52 for 38 kHz @16 MHz clock, 2000 instead of 1000 because of Phase Correct PWM
     TCCR0A = _BV(WGM00);// PWM, Phase Correct, Top is OCR0A
@@ -717,7 +714,6 @@ void timerConfigForReceive() {
  */
 void timerConfigForSend(uint8_t aFrequencyKHz) {
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
     #  if (((F_CPU / 1000) / 38) < 256)
     const uint16_t tPWMWrapValue = (F_CPU / 1000) / (aFrequencyKHz); // 421 @16 MHz, 26 @1 MHz and 38 kHz
@@ -757,8 +753,8 @@ void timerConfigForReceive() {
     TCA0.SINGLE.CTRLA = TCA_SINGLE_CLKSEL_DIV1_gc | TCA_SINGLE_ENABLE_bm;   // set prescaler to 1 and enable timer
 }
 
-#  ifdef SEND_PWM_BY_TIMER
-#error "No support for hardware PWM generation for ESP8266"
+#  if defined(SEND_PWM_BY_TIMER)
+#error "No support for hardware PWM generation for ATtiny3216/17 etc."
 #  endif // defined(SEND_PWM_BY_TIMER)
 
 /*
@@ -799,7 +795,6 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #error "Creating timer PWM with timer TCB0 is not possible for F_CPU > 16 MHz"
 #endif
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
     const uint16_t tPWMWrapValue = (F_CPU / 2000) / (aFrequencyKHz); // 210,52 for 38 kHz @16 MHz clock, 2000 instead of 1000 because of using CLK / 2
     TCB0.CTRLB = TCB_CNTMODE_PWM8_gc;// 8 bit PWM mode
@@ -854,7 +849,6 @@ void timerEnableSendPWM() {
  */
 void timerConfigForSend(uint8_t aFrequencyKHz) {
     TIMER_DISABLE_RECEIVE_INTR;
-    pinModeFast(IR_SEND_PIN, OUTPUT);
 
     const uint16_t tPWMWrapValue = (F_CPU / 1000) / (aFrequencyKHz);    // 526,31 for 38 kHz @20 MHz clock
     // use one ramp mode and overflow interrupt
@@ -893,7 +887,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #define TIMER_DISABLE_RECEIVE_INTR  NVIC_DISABLE_IRQ(IRQ_CMT)
 #define TIMER_INTR_NAME     cmt_isr
 
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR(f) void f(void)
@@ -927,8 +921,12 @@ void timerConfigForReceive() {
  * Set output pin mode and disable receive interrupt if it uses the same resource
  */
 void timerConfigForSend(uint8_t aFrequencyKHz) {
-    TIMER_DISABLE_RECEIVE_INTR; // TODO really required here? Do we have a common resource
+    TIMER_DISABLE_RECEIVE_INTR; // TODO really required here? Do we have a common resource for Teensy3.0, 3.1
+#    if defined(IR_SEND_PIN)
     pinMode(IR_SEND_PIN, OUTPUT);
+#    else
+    pinMode(IrSender.sendPin, OUTPUT);
+#    endif
 
     SIM_SCGC4 |= SIM_SCGC4_CMT;
     SIM_SOPT2 |= SIM_SOPT2_PTD7PAD;
@@ -954,7 +952,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #define TIMER_ENABLE_RECEIVE_INTR       NVIC_ENABLE_IRQ(IRQ_FTM1), NVIC_SET_PRIORITY(IRQ_FTM1, 0)
 #define TIMER_DISABLE_RECEIVE_INTR      NVIC_DISABLE_IRQ(IRQ_FTM1)
 #define TIMER_INTR_NAME                 ftm1_isr
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR(f) void f(void)
@@ -979,8 +977,12 @@ void timerConfigForReceive() {
  * Set output pin mode and disable receive interrupt if it uses the same resource
  */
 void timerConfigForSend(uint8_t aFrequencyKHz) {
-    TIMER_DISABLE_RECEIVE_INTR; // TODO really required here? Do we have a common resource
+    TIMER_DISABLE_RECEIVE_INTR;
+#    if defined(IR_SEND_PIN)
     pinMode(IR_SEND_PIN, OUTPUT);
+#    else
+    pinMode(IrSender.sendPin, OUTPUT);
+#    endif
 
     SIM_SCGC6 |= SIM_SCGC6_TPM1;
     FTM1_SC = 0;
@@ -1005,7 +1007,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
                                         NVIC_SET_PRIORITY(IRQ_FLEXPWM1_3, 48)
 #define TIMER_DISABLE_RECEIVE_INTR      NVIC_DISABLE_IRQ(IRQ_FLEXPWM1_3)
 #define TIMER_INTR_NAME                 pwm1_3_isr
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR(f) void (f)(void)
@@ -1045,8 +1047,12 @@ void timerConfigForReceive() {
  * Set output pin mode and disable receive interrupt if it uses the same resource
  */
 void timerConfigForSend(uint8_t aFrequencyKHz) {
-    TIMER_DISABLE_RECEIVE_INTR; // TODO really required here? Do we have a common resource
+    TIMER_DISABLE_RECEIVE_INTR;
+#    if defined(IR_SEND_PIN)
     pinMode(IR_SEND_PIN, OUTPUT);
+#    else
+    pinMode(IrSender.sendPin, OUTPUT);
+#    endif
 
     uint32_t period = (float)F_BUS_ACTUAL / (float)((aFrequencyKHz) * 2000);
     uint32_t prescale = 0;
@@ -1076,13 +1082,13 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #define TIMER_DISABLE_RECEIVE_INTR  timer1_detachInterrupt() // disables interrupt too
 
 // Redefinition of ISR macro which creates a plain function now
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR() IRAM_ATTR void IRTimerInterruptHandler()
 IRAM_ATTR void IRTimerInterruptHandler();
 
-#  ifdef SEND_PWM_BY_TIMER
+#  if defined(SEND_PWM_BY_TIMER)
 #error "No support for hardware PWM generation for ESP8266"
 #  endif // defined(SEND_PWM_BY_TIMER)
 
@@ -1100,9 +1106,11 @@ void timerConfigForReceive() {
     timer1_write((80 / 16) * MICROS_PER_TICK); // 80 for 80 and 160! MHz clock, 16 for TIM_DIV16 above
 }
 
-/*********************************************
+/**********************************************************
  * ESP32 boards - can use any pin for send PWM
- *********************************************/
+ * Receive timer and send generation are independent,
+ * so it is recommended to always define SEND_PWM_BY_TIMER
+ **********************************************************/
 #elif defined(ESP32)
 
 #  if !defined(SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL)
@@ -1113,7 +1121,7 @@ void timerConfigForReceive() {
 #define TIMER_ENABLE_RECEIVE_INTR   timerAlarmEnable(s50usTimer)
 #define TIMER_DISABLE_RECEIVE_INTR  if (s50usTimer != NULL) {timerEnd(s50usTimer); timerDetachInterrupt(s50usTimer);}
 // Redefinition of ISR macro which creates a plain function now
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR() IRAM_ATTR void IRTimerInterruptHandler()
@@ -1142,24 +1150,9 @@ void timerConfigForReceive() {
 
 /*
  * timerConfigForSend() is used exclusively by IRsend::enableIROut()
- * Set output pin mode and disable receive interrupt if it uses the same resource
+ * ledcWrite since ESP 2.0.2 does not work if pin mode is set. Disable receive interrupt if it uses the same resource
  */
 void timerConfigForSend(uint8_t aFrequencyKHz) {
-    TIMER_DISABLE_RECEIVE_INTR;
-#  if defined(OUTPUT_OPEN_DRAIN)
-#    if defined(IR_SEND_PIN)
-    pinMode(IR_SEND_PIN, OUTPUT_OPEN_DRAIN);
-#    else
-    pinMode(IrSender.sendPin, OUTPUT_OPEN_DRAIN);
-#    endif
-#  else // defined(OUTPUT_OPEN_DRAIN)
-#    if defined(IR_SEND_PIN)
-    pinMode(IR_SEND_PIN, OUTPUT);
-#    else
-    pinMode(IrSender.sendPin, OUTPUT);
-#    endif
-#  endif // defined(OUTPUT_OPEN_DRAIN)
-
     ledcSetup(SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL, aFrequencyKHz * 1000, 8);  // 8 bit PWM resolution
 #    if defined(IR_SEND_PIN)
     ledcAttachPin(IR_SEND_PIN, SEND_AND_RECEIVE_TIMER_LEDC_CHANNEL);  // bind pin to channel
@@ -1174,73 +1167,113 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
  ***************************************/
 #elif defined(ARDUINO_ARCH_SAMD)
 #  if defined(SEND_PWM_BY_TIMER)
-#error PWM generation by hardware not implemented for SAMD
+#error PWM generation by hardware is not yet implemented for SAMD
 #  endif
 
-// use Timer TC3 here
 #  if !defined(IR_SAMD_TIMER)
+#    if defined(__SAMD51__)
+#define IR_SAMD_TIMER       TC5
+#define IR_SAMD_TIMER_IRQ   TC5_IRQn
+#    else
+// SAMD21
 #define IR_SAMD_TIMER       TC3
 #define IR_SAMD_TIMER_ID    GCLK_CLKCTRL_ID_TCC2_TC3
-#endif
+#define IR_SAMD_TIMER_IRQ   TC3_IRQn
+#    endif
+#  endif
 
 #define TIMER_RESET_INTR_PENDING
-#define TIMER_ENABLE_RECEIVE_INTR   NVIC_EnableIRQ(TC3_IRQn)
-#define TIMER_DISABLE_RECEIVE_INTR  NVIC_DisableIRQ(TC3_IRQn) // or TC3->COUNT16.CTRLA.reg &= ~TC_CTRLA_ENABLE;
+#define TIMER_ENABLE_RECEIVE_INTR   NVIC_EnableIRQ(IR_SAMD_TIMER_IRQ)
+#define TIMER_DISABLE_RECEIVE_INTR  NVIC_DisableIRQ(IR_SAMD_TIMER_IRQ) // or TC5->INTENCLR.bit.MC0 = 1; or TC5->COUNT16.CTRLA.reg &= ~TC_CTRLA_ENABLE;
 // Redefinition of ISR macro which creates a plain function now
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR(f) void IRTimerInterruptHandler(void)
 // ATSAMD Timer IRQ functions
 void IRTimerInterruptHandler();
 
-#define TIMER_PRESCALER_DIV 64
-
-void setTimerFrequency(unsigned int aFrequencyHz) {
-    int compareValue = (F_CPU / (TIMER_PRESCALER_DIV * aFrequencyHz)) - 1;
-    //Serial.println(compareValue);
-    TcCount16 *TC = (TcCount16*) IR_SAMD_TIMER;
-    TC->COUNT.reg = 0;
-    TC->CC[0].reg = compareValue;
-    while (TC->STATUS.bit.SYNCBUSY == 1) {
-    }
-}
-
+/**
+ * Adafruit M4 code (cores/arduino/startup.c) configures these clock generators:
+ * GCLK0 = F_CPU
+ * GCLK2 = 100 MHz
+ * GCLK1 = 48 MHz // This Clock is present in SAMD21 and SAMD51
+ * GCLK4 = 12 MHz
+ * GCLK3 = XOSC32K
+ */
 /*
  * Set timer for interrupts every MICROS_PER_TICK (50 us)
  */
 void timerConfigForReceive() {
-    // Clock source is Generic clock generator 0; enable
-    REG_GCLK_CLKCTRL = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | IR_SAMD_TIMER_ID);
-    while (GCLK->STATUS.bit.SYNCBUSY == 1) {
-    }
+    TcCount16 *TC = (TcCount16*) IR_SAMD_TIMER;
 
-    TcCount16 *TC = (TcCount16*) IR_SAMD_TIMER; // Timer 3
+#  if defined(__SAMD51__)
+    // Enable the TC5 clock, use generic clock generator 0 (F_CPU) for TC5
+    GCLK->PCHCTRL[TC5_GCLK_ID].reg = GCLK_PCHCTRL_GEN_GCLK0_Val | (1 << GCLK_PCHCTRL_CHEN_Pos);
+
+    // The TC should be disabled before the TC is reset in order to avoid undefined behavior.
+    TC->CTRLA.reg &= ~TC_CTRLA_ENABLE; // Disable the Timer
+    while (TC->SYNCBUSY.bit.ENABLE)
+        ; // Wait for disabled
+    // Reset TCx
+    TC->CTRLA.reg = TC_CTRLA_SWRST;
+    // When writing a '1' to the CTRLA.SWRST bit it will immediately read as '1'.
+    while (TC->SYNCBUSY.bit.SWRST)
+        ; // CTRL.SWRST will be cleared by hardware when the peripheral has been reset.
+
+    // SAMD51 has F_CPU = 120 MHz
+    TC->CC[0].reg = ((MICROS_PER_TICK * (F_CPU / MICROS_IN_ONE_SECOND)) / 16) - 1;   // (375 - 1);
+
+    /*
+     * Set timer counter mode to 16 bits, set mode as match frequency, prescaler is DIV16 => 7.5 MHz clock, start counter
+     */
+    TC->CTRLA.reg |= TC_CTRLA_MODE_COUNT16 | TC_WAVE_WAVEGEN_MFRQ | TC_CTRLA_PRESCALER_DIV16 | TC_CTRLA_ENABLE;
+//    while (TC5->COUNT16.STATUS.bit.SYNCBUSY == 1);                                // The next commands do an implicit wait :-)
+#  else
+    // Enable GCLK and select GCLK0 (F_CPU) as clock for TC4 and TC5
+    REG_GCLK_CLKCTRL = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | IR_SAMD_TIMER_ID);
+    while (GCLK->STATUS.bit.SYNCBUSY == 1);
 
     // The TC should be disabled before the TC is reset in order to avoid undefined behavior.
     TC->CTRLA.reg &= ~TC_CTRLA_ENABLE;
     // When write-synchronization is ongoing for a register, any subsequent write attempts to this register will be discarded, and an error will be reported.
-    while (TC->STATUS.bit.SYNCBUSY == 1) {
-    } // wait for sync
-      // Reset TCx
+    while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync to ensure that we can write again to COUNT16.CTRLA.reg
+    // Reset TCx
     TC->CTRLA.reg = TC_CTRLA_SWRST;
     // When writing a ‘1’ to the CTRLA.SWRST bit it will immediately read as ‘1’.
-    // CTRL.SWRST will be cleared by hardware when the peripheral has been reset.
-    while (TC->CTRLA.bit.SWRST) {
-    }
+    while (TC->CTRLA.bit.SWRST); // CTRL.SWRST will be cleared by hardware when the peripheral has been reset.
 
-    // Use the 16-bit timer
-    // Use match mode so that the timer counter resets when the count matches the compare register
-    // Set prescaler to 64
-    TC->CTRLA.reg |= TC_CTRLA_MODE_COUNT16 | TC_CTRLA_WAVEGEN_MFRQ | TC_CTRLA_PRESCALER_DIV64 | TC_CTRLA_ENABLE;
+    // SAMD51 has F_CPU = 48 MHz
+    TC->CC[0].reg = ((MICROS_PER_TICK * (F_CPU / MICROS_IN_ONE_SECOND)) / 16) - 1;   // (150 - 1);
 
-    setTimerFrequency(MICROS_IN_ONE_SECOND / MICROS_PER_TICK);
+    /*
+     * Set timer counter mode to 16 bits, set mode as match frequency, prescaler is DIV16 => 3 MHz clock, start counter
+     */
+    TC->CTRLA.reg |= TC_CTRLA_MODE_COUNT16 | TC_CTRLA_WAVEGEN_MFRQ | TC_CTRLA_PRESCALER_DIV16 | TC_CTRLA_ENABLE;
+
+#  endif
+    // Configure interrupt request
+    NVIC_DisableIRQ (IR_SAMD_TIMER_IRQ);
+    NVIC_ClearPendingIRQ(IR_SAMD_TIMER_IRQ);
+    NVIC_SetPriority(IR_SAMD_TIMER_IRQ, 0);
+    NVIC_EnableIRQ(IR_SAMD_TIMER_IRQ);
 
     // Enable the compare interrupt
-    TC->INTENSET.reg = 0;
     TC->INTENSET.bit.MC0 = 1;
+
 }
 
+#  if defined(__SAMD51__)
+void TC5_Handler(void) {
+    TcCount16 *TC = (TcCount16*) IR_SAMD_TIMER;
+    // Check for right interrupt bit
+    if (TC->INTFLAG.bit.MC0 == 1) {
+        // reset bit for next turn
+        TC->INTFLAG.bit.MC0 = 1;
+        IRTimerInterruptHandler();
+    }
+}
+#  else
 void TC3_Handler(void) {
     TcCount16 *TC = (TcCount16*) IR_SAMD_TIMER;
     // Check for right interrupt bit
@@ -1250,6 +1283,7 @@ void TC3_Handler(void) {
         IRTimerInterruptHandler();
     }
 }
+#  endif // defined(__SAMD51__)
 
 /***************************************
  * Mbed based boards
@@ -1262,7 +1296,7 @@ void TC3_Handler(void) {
 #define TIMER_DISABLE_RECEIVE_INTR  s50usTimer.detach();
 
 // Redefinition of ISR macro which creates a plain function now
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR() void IRTimerInterruptHandler(void)
@@ -1318,7 +1352,7 @@ repeating_timer_t s50usTimer;
 #define TIMER_DISABLE_RECEIVE_INTR  cancel_repeating_timer(&s50usTimer);
 
 // Redefinition of ISR macro which creates a plain function now
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR() void IRTimerInterruptHandler(void)
@@ -1343,8 +1377,8 @@ uint sIROutPuseWidth;
 /*
  * If we just disable the PWM, the counter stops and the output stays at the state is currently has
  */
-#define ENABLE_SEND_PWM_BY_TIMER    pwm_set_counter(sSliceNumberForSendPWM, 0); pwm_set_chan_level(sSliceNumberForSendPWM, sChannelNumberForSendPWM, sIROutPuseWidth);
-#define DISABLE_SEND_PWM_BY_TIMER   pwm_set_chan_level(sSliceNumberForSendPWM, sChannelNumberForSendPWM, 0); // this sets output also to LOW
+#define ENABLE_SEND_PWM_BY_TIMER        pwm_set_counter(sSliceNumberForSendPWM, 0); pwm_set_chan_level(sSliceNumberForSendPWM, sChannelNumberForSendPWM, sIROutPuseWidth);
+#define DISABLE_SEND_PWM_BY_TIMER       pwm_set_chan_level(sSliceNumberForSendPWM, sChannelNumberForSendPWM, 0); // this sets output also to LOW
 
 /*
  * timerConfigForSend() is used exclusively by IRsend::enableIROut()
@@ -1363,6 +1397,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
     sChannelNumberForSendPWM = pwm_gpio_to_channel(IrSender.sendPin);
 #    endif
     uint16_t tPWMWrapValue = (clock_get_hz(clk_sys)) / (aFrequencyKHz * 1000); // 3289.473 for 38 kHz @125 MHz clock. We have a 16 bit counter and use system clock (125 MHz)
+
     pwm_config tPWMConfig = pwm_get_default_config();
     pwm_config_set_wrap(&tPWMConfig, tPWMWrapValue - 1);
     pwm_init(sSliceNumberForSendPWM, &tPWMConfig, false); // we do not want to send now
@@ -1383,7 +1418,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #define TIMER_RESET_INTR_PENDING
 #define TIMER_ENABLE_RECEIVE_INTR   NVIC_EnableIRQ(TIMER2_IRQn);
 #define TIMER_DISABLE_RECEIVE_INTR  NVIC_DisableIRQ(TIMER2_IRQn);
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR(f) void IRTimerInterruptHandler(void)
@@ -1439,7 +1474,7 @@ extern "C" {
 #define TIMER_DISABLE_RECEIVE_INTR  s50usTimer.pause()
 
 // Redefinition of ISR macro which creates a plain function now
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR() void IRTimerInterruptHandler(void)
@@ -1479,7 +1514,7 @@ void timerConfigForReceive() {
 #define TIMER_DISABLE_RECEIVE_INTR  s50usTimer.pause()
 
 // Redefinition of ISR macro which creates a plain function now
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR() void IRTimerInterruptHandler(void)
@@ -1520,7 +1555,7 @@ extern IntervalTimer timer;
 #define TIMER_DISABLE_RECEIVE_INTR  timer.end()
 
 // Redefinition of ISR macro which creates a plain function now
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR() void IRTimerInterruptHandler(void)
@@ -1549,7 +1584,6 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #    else
     pinMode(IrSender.sendPin, OUTPUT);
 #    endif
-
     ir_out_kHz = aFrequencyKHz;
 }
 #  endif // defined(SEND_PWM_BY_TIMER)
@@ -1567,7 +1601,7 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #define TIMER_ENABLE_RECEIVE_INTR
 #define TIMER_DISABLE_RECEIVE_INTR
 
-#  ifdef ISR
+#  if defined(ISR)
 #undef ISR
 #  endif
 #define ISR() void notImplemented(void)
@@ -1588,7 +1622,6 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 #    else
     pinMode(IrSender.sendPin, OUTPUT);
 #    endif
-
     (void) aFrequencyKHz;
 }
 #  endif // defined(SEND_PWM_BY_TIMER)
@@ -1597,5 +1630,4 @@ void timerConfigForSend(uint8_t aFrequencyKHz) {
 
 /** @}*/
 /** @}*/
-#endif // #ifndef IR_TIMER_HPP
-#pragma once
+#endif // _IR_TIMER_HPP

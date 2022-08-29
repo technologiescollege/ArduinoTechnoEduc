@@ -1,10 +1,16 @@
 /*
  * Required libraries:
- *  - Seeed Arduino rpcunified
+ *  - Seeed Arduino rpcUnified
  *  - Seeed Arduino rpcWiFi
  *  - Seeed Arduino SFUD
  *  - Seeed Arduino FS
  *  - Seeed Arduino mbedtls
+ *  - Seeed Arduino FreeRTOS
+ *  - ArduinoOTA
+ *  - ArduinoHttpClient
+ *
+ * Please also update the WiFi module firmware:
+ *   https://wiki.seeedstudio.com/Wio-Terminal-Network-Overview
  */
 
 // Fill-in information from your Blynk Template here
@@ -24,10 +30,6 @@ void setup()
 {
   Serial.begin(115200);
   delay(100);
-  
-#ifdef APP_DEBUG 
-  while (!Serial) {delay(10);}
-#endif
 
   BlynkEdgent.begin();
 }

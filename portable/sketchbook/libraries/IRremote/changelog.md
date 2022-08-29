@@ -2,6 +2,32 @@
 The latest version may not be released!
 See also the commit log at github: https://github.com/Arduino-IRremote/Arduino-IRremote/commits/master
 
+## 3.8.0
+- Changed Samsung repeat handling. Old handling is available as SamsungLG.
+- Added function printIRSendUsage().
+- Reduced output size and improved format of printIRResultRawFormatted() to fasten up output (and getting repeats properly decoded).
+- Fixed Bug in sendDenonRaw() and improved decodeDenon().
+- Fixed potential bug in SendBiphase data for 1 bit.
+- Fixed bug in send for RP4020.
+- Fixed pin mapping problems especially for Teensy 2.0.
+- Added support for decoding of "special" NEC repeats.
+- Added SAMD51 support.
+- Improved pin mapping for TinyReceiver.
+
+## 3.7.1
+- SendRaw now supports bufferlenght > 255.
+- Improved DistanceProtocol decoder output.
+- Fixed ESP32 send bug for 2.x ESP32 cores.
+
+## 3.7.0
+- Changed TOLERANCE to TOLERANCE_FOR_DECODERS_MARK_OR_SPACE_MATCHING and documented it.
+- Changed last uint8_t to uint_fast8_t and uint16_t to unsigned integer.
+- Improved MagiQuest protocol.
+- Improved prints and documentation.
+- Added IrReceiver.restartAfterSend() and inserted it in every send(). Closes #989
+- Use IRAM_ATTR instead of deprecated ICACHE_RAM_ATTR for ESP8266.
+- Removed pulse width decoding from ir_DistanceProtocol.
+
 ## 3.6.1
 - Switched Bose internal protocol timing for 0 and 1 -> old 1 timing is now 0 and vice versa.
 
@@ -44,7 +70,7 @@ See also the commit log at github: https://github.com/Arduino-IRremote/Arduino-I
 - Moved blink13() back to IRrecv class.
 - Added Kaseikyo convenience functions like sendKaseikyo_Denon().
 - Improved / adjusted LG protocol and added class Aircondition_LG based on real hardware supplied by makerspace 201 (https://wiki.hackerspaces.org/ZwoNullEins) from Cologne.
-- Improved universal decoder for pulse width or pulse distance protocols to support more than 32 bits.
+- Improved universal decoder for pulse distance protocols to support more than 32 bits.
 - Added mbed support.
 
 ## 3.3.0
@@ -52,7 +78,7 @@ See also the commit log at github: https://github.com/Arduino-IRremote/Arduino-I
 - Fixed error for AVR timer1. Thanks to alexbarcelo.
 - New example IRremoteExtensionTest.
 - Enabled megaAVR 0-series devices.
-- Added universal decoder for pulse width or pulse distance protocols.
+- Added universal decoder for pulse distance protocols.
 
 ## 3.2.0
 - Fix for ESP32 send Error, removed `USE_SOFT_SEND_PWM` macro.

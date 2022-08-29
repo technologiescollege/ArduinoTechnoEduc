@@ -32,12 +32,7 @@
  */
 #include <Arduino.h>
 
-//#define RAW_BUFFER_LENGTH  750  // 750 is the value for air condition remotes.
-
-/*
- * Define macros for input and output pin etc.
- */
-#include "PinDefinitionsAndMore.h"
+//#define RAW_BUFFER_LENGTH  750  // 750 is the value for air condition remotes. If DECODE_MAGIQUEST is enabled 112, otherwise 100 is default.
 
 /*
  * You can change this value accordingly to the receiver module you use.
@@ -49,8 +44,8 @@
 
 //#define RECORD_GAP_MICROS 12000 // Activate it for some LG air conditioner protocols
 //#define DEBUG // Activate this for lots of lovely debug output from the decoders.
-#define INFO // To see valuable informations from universal decoder for pulse width or pulse distance protocols
 
+#include "PinDefinitionsAndMore.h" //Define macros for input and output pin etc.
 #include <IRremote.hpp>
 
 //+=============================================================================
@@ -60,7 +55,7 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
 
     Serial.begin(115200);   // Status message will be sent to PC at 9600 baud
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) || defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/|| defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
     // Just to know which program is running on my Arduino
@@ -71,8 +66,13 @@ void setup() {
 
     Serial.print(F("Ready to receive IR signals of protocols: "));
     printActiveIRProtocols(&Serial);
-    Serial.print(F("at pin "));
-    Serial.println(IR_RECEIVE_PIN);
+    Serial.println(F("at pin " STR(IR_RECEIVE_PIN)));
+
+    // infos for receive
+    Serial.print(RECORD_GAP_MICROS);
+    Serial.println(F(" us is the (minimum) gap, after which the start of a new IR packet is assumed"));
+    Serial.print(MARK_EXCESS_MICROS);
+    Serial.println(F(" us are subtracted from all marks and added to all spaces for decoding"));
 }
 
 //+=============================================================================
@@ -84,11 +84,13 @@ void loop() {
         if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_WAS_OVERFLOW) {
             Serial.println(F("Overflow detected"));
             Serial.println(F("Try to increase the \"RAW_BUFFER_LENGTH\" value of " STR(RAW_BUFFER_LENGTH) " in " __FILE__));
-            // see also https://github.com/Arduino-IRremote/Arduino-IRremote#modifying-compile-options-with-sloeber-ide
+            // see also https://github.com/Arduino-IRremote/Arduino-IRremote#compile-options--macros-for-this-library
         } else {
             Serial.println();                               // 2 blank lines between entries
             Serial.println();
             IrReceiver.printIRResultShort(&Serial);
+            Serial.println();
+            IrReceiver.printIRSendUsage(&Serial);
             Serial.println();
             Serial.println(F("Raw result in internal ticks (50 us) - with leading gap"));
             IrReceiver.printIRResultRawFormatted(&Serial, false); // Output the results in RAW format

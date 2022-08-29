@@ -1,7 +1,7 @@
 /*
  * ReceiveDemo.cpp
  *
- * Demonstrates receiving IR codes with the IRremote library.
+ * Demonstrates receiving IR codes with the IRremote library and the use of the Arduino tone() function with this library.
  * If debug button is pressed (pin connected to ground) a long output is generated.
  *
  *  This file is part of Arduino-IRremote https://github.com/Arduino-IRremote/Arduino-IRremote.
@@ -40,20 +40,21 @@
  */
 //#define DECODE_LG
 //#define DECODE_NEC
+//#define DECODE_DISTANCE
 // etc. see IRremote.hpp
 //
 
-//#define RAW_BUFFER_LENGTH  750  // 750 is the value for air condition remotes.
+//#define RAW_BUFFER_LENGTH  750  // 750 is the value for air condition remotes. If DECODE_MAGIQUEST is enabled 112, otherwise 100 is default.
 
-//#define NO_LED_FEEDBACK_CODE // saves 92 bytes program space
+//#define NO_LED_FEEDBACK_CODE // saves 92 bytes program memory
 #if FLASHEND <= 0x1FFF  // For 8k flash or less, like ATtiny85. Exclude exotic protocols.
 #define EXCLUDE_EXOTIC_PROTOCOLS
 #  if !defined(DIGISTUMPCORE) // ATTinyCore is bigger than Digispark core
-#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program space.
+#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program memory.
 #  endif
 #endif
-//#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program space.
-//#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 650 bytes program space if all other protocols are active
+//#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program memory.
+//#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 650 bytes program memory if all other protocols are active
 //#define _IR_MEASURE_TIMING
 
 // MARK_EXCESS_MICROS is subtracted from all marks and added to all spaces before decoding,
@@ -63,11 +64,8 @@
 //#define RECORD_GAP_MICROS 12000 // Activate it for some LG air conditioner protocols
 
 //#define DEBUG // Activate this for lots of lovely debug output from the decoders.
-#define INFO // To see valuable informations from universal decoder for pulse width or pulse distance protocols
-/*
- * First define macros for input and output pin etc.
- */
-#include "PinDefinitionsAndMore.h"
+
+#include "PinDefinitionsAndMore.h" //Define macros for input and output pin etc.
 #include <IRremote.hpp>
 
 #if defined(APPLICATION_PIN)
@@ -76,21 +74,13 @@
 #define DEBUG_BUTTON_PIN   6
 #endif
 
-// On the Zero and others we switch explicitly to SerialUSB
-#if defined(ARDUINO_ARCH_SAMD)
-#define Serial SerialUSB
-#endif
-
 void setup() {
-#if defined(_IR_MEASURE_TIMING) && defined(_IR_TIMING_TEST_PIN)
-    pinMode(_IR_TIMING_TEST_PIN, OUTPUT);
-#endif
-#if FLASHEND >= 0x3FFF  // For 16k flash or more, like ATtiny1604. Code does not fit in program space of ATtiny85 etc.
+#if FLASHEND >= 0x3FFF  // For 16k flash or more, like ATtiny1604. Code does not fit in program memory of ATtiny85 etc.
     pinMode(DEBUG_BUTTON_PIN, INPUT_PULLUP);
 #endif
 
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) || defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/|| defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
 // Just to know which program is running on my Arduino
@@ -105,14 +95,9 @@ void setup() {
 
     Serial.print(F("Ready to receive IR signals of protocols: "));
     printActiveIRProtocols(&Serial);
-    Serial.print(F("at pin "));
-#if defined(ARDUINO_ARCH_STM32) || defined(ESP8266)
-    Serial.println(IR_RECEIVE_PIN_STRING);
-#else
-    Serial.println(IR_RECEIVE_PIN);
-#endif
+    Serial.println(F("at pin " STR(IR_RECEIVE_PIN)));
 
-#if FLASHEND >= 0x3FFF  // For 16k flash or more, like ATtiny1604. Code does not fit in program space of ATtiny85 etc.
+#if FLASHEND >= 0x3FFF  // For 16k flash or more, like ATtiny1604. Code does not fit in program memory of ATtiny85 etc.
     Serial.print(F("Debug button pin is "));
     Serial.println(DEBUG_BUTTON_PIN);
 
@@ -140,7 +125,7 @@ void loop() {
         if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_WAS_OVERFLOW) {
             Serial.println(F("Overflow detected"));
             Serial.println(F("Try to increase the \"RAW_BUFFER_LENGTH\" value of " STR(RAW_BUFFER_LENGTH) " in " __FILE__));
-            // see also https://github.com/Arduino-IRremote/Arduino-IRremote#modifying-compile-options-with-sloeber-ide
+            // see also https://github.com/Arduino-IRremote/Arduino-IRremote#compile-options--macros-for-this-library
 #  if !defined(ESP8266) && !defined(NRF5)
             /*
              * do double beep
@@ -160,6 +145,7 @@ void loop() {
         } else {
             // Print a short summary of received data
             IrReceiver.printIRResultShort(&Serial);
+            IrReceiver.printIRSendUsage(&Serial);
 
             if (IrReceiver.decodedIRData.protocol == UNKNOWN || digitalRead(DEBUG_BUTTON_PIN) == LOW) {
                 // We have an unknown protocol, print more info
@@ -169,10 +155,10 @@ void loop() {
 
         // tone on esp8266 works once, then it disables the successful IrReceiver.start() / timerConfigForReceive().
 #  if !defined(ESP8266) && !defined(NRF5)
-        if (IrReceiver.decodedIRData.protocol != UNKNOWN) {
+        if (IrReceiver.decodedIRData.protocol != UNKNOWN && digitalRead(DEBUG_BUTTON_PIN) != LOW) {
             /*
-             * If a valid protocol was received, play tone, wait and restore IR timer.
-             * Otherwise do not play a tone to get exact gap time between transmissions.
+             * If no debug mode or a valid protocol was received, play tone, wait and restore IR timer.
+             * Otherwise do not play a tone to get exact gap time between transmissions and not running into repeat frames while wait for tone to end.
              * This will give the next CheckForRecordGapsMicros() call a chance to eventually propose a change of the current RECORD_GAP_MICROS value.
              */
 #    if !defined(ESP32)

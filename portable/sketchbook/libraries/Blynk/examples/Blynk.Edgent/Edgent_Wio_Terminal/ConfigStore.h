@@ -67,10 +67,20 @@ void CopyString(const String& s, T(&arr)[size]) {
 static bool config_load_blnkopt()
 {
   static const char blnkopt[] = "blnkopt\0"
+#if defined(BLYNK_AUTH_TOKEN)
+    /* While Blynk.Edgent assigns Auth token, SSID and password
+     * dynamically using the App, you can still pre-configure them.
+     * Please use this FOR TESTING PURPOSES ONLY.
+     */
+    BLYNK_PARAM_KV("ssid" , BLYNK_WIFI_SSID)
+    BLYNK_PARAM_KV("pass" , BLYNK_WIFI_PASS)
+    BLYNK_PARAM_KV("auth" , BLYNK_AUTH_TOKEN)
+#else
     BLYNK_PARAM_KV("ssid" , BLYNK_PARAM_PLACEHOLDER_64
                             BLYNK_PARAM_PLACEHOLDER_64
                             BLYNK_PARAM_PLACEHOLDER_64
                             BLYNK_PARAM_PLACEHOLDER_64)
+#endif
     BLYNK_PARAM_KV("host" , CONFIG_DEFAULT_SERVER)
     BLYNK_PARAM_KV("port" , BLYNK_TOSTRING(CONFIG_DEFAULT_PORT))
     "\0";
@@ -103,47 +113,28 @@ const sfud_flash *_flash = sfud_get_device_table() + 0;
 
 void config_load()
 {
-
-  uint8_t has_config;
-  sfud_err result = sfud_read(_flash, 0, 1, &has_config);
-  
-  if (!has_config == 42)
+  memset(&configStore, 0, sizeof(configStore));
+  sfud_err result = sfud_read(_flash, 0, sizeof(configStore), (uint8_t*)&configStore);
+  if (result != SFUD_SUCCESS || configStore.magic != 0x626C6E6B)
   {
     DEBUG_PRINT("Using default config.");
     configStore = configDefault;
     return;
   }
-    
-  memset(&configStore, 0, sizeof(configStore));
-  
-  uint8_t b[sizeof(configStore)];
-
-  result = sfud_read(_flash, 1, sizeof(b), b);
-  memcpy(&configStore, b, sizeof(configStore));
-  
 }
 
 bool config_save()
 {
 
-  sfud_err result = sfud_erase(_flash, 0, sizeof(configStore)+1);
+  sfud_err result = sfud_erase(_flash, 0, sizeof(configStore));
   delay(100);
   if (!result == SFUD_SUCCESS) { DEBUG_PRINT("Erase flash data failed"); return false; }
 
-  uint8_t b[sizeof(configStore)];
-  memcpy(b, &configStore, sizeof(configStore));
-  
-  uint8_t status = 42;
-  result = sfud_write(_flash, 0, sizeof(status), &status);
-  delay(10);
-  
-  if (!result == SFUD_SUCCESS) { DEBUG_PRINT("Write the flash data failed"); return false; }
-  
-  result = sfud_write(_flash, 1, sizeof(b), b);
+  result = sfud_write(_flash, 0, sizeof(configStore), (uint8_t*)&configStore);
   delay(50);
-  
+
   if (!result == SFUD_SUCCESS) { DEBUG_PRINT("Write the flash data failed"); return false; }
-  
+
   DEBUG_PRINT("Configuration stored to flash");
   return true;
 }
@@ -151,9 +142,9 @@ bool config_save()
 bool config_init()
 {
   if (sfud_init() != SFUD_SUCCESS) { DEBUG_PRINT("SFUD init failed"); return false; }
-  
+
   sfud_qspi_fast_read_enable(sfud_get_device(SFUD_W25Q32_DEVICE_INDEX), 2);
-  
+
   config_load();
   return true;
 }
@@ -170,9 +161,9 @@ void config_set_last_error(int error) {
   // Only set error if not provisioned
   if (!configStore.getFlag(CONFIG_FLAG_VALID)) {
     configStore = configDefault;
-    
+
     sfud_err result = sfud_erase(_flash, 0, 1);
-    
+
     configStore.last_error = error;
     BLYNK_LOG2("Last error code: ", error);
     config_save();

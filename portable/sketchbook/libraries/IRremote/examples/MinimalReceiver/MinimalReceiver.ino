@@ -29,7 +29,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.
+ *  along with this program. If not, see <http://www.gnu.org/licenses/gpl.html>.
  *
  */
 
@@ -47,6 +47,8 @@
 #  endif
 #elif defined(__AVR_ATtiny1616__)  || defined(__AVR_ATtiny3216__) || defined(__AVR_ATtiny3217__)
 #define IR_INPUT_PIN    10
+#elif (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__))
+#define IR_INPUT_PIN    21 // INT0
 #elif defined(ESP8266)
 #define IR_INPUT_PIN    14 // D5
 #elif defined(ESP32)
@@ -56,8 +58,8 @@
 #elif defined(ARDUINO_ARCH_RP2040) // Pi Pico with arduino-pico core https://github.com/earlephilhower/arduino-pico
 #define IR_INPUT_PIN    15  // to be compatible with the Arduino Nano RP2040 Connect (pin3)
 #else
-#define IR_INPUT_PIN    2
-//#define NO_LED_FEEDBACK_CODE // activating saves 14 bytes program space
+#define IR_INPUT_PIN    2   // INT0
+//#define NO_LED_FEEDBACK_CODE   // Activate this if you want to suppress LED feedback or if you do not have a LED. This saves 14 bytes code and 2 clock cycles per interrupt.
 #endif
 
 //#define DEBUG // to see if attachInterrupt is used
@@ -81,7 +83,7 @@ volatile struct TinyIRReceiverCallbackDataStruct sCallbackData;
 void setup()
 {
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) || defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/|| defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
     // Just to know which program is running on my Arduino
@@ -89,7 +91,9 @@ void setup()
     Serial.println();
 #endif
     Serial.println(F("START " __FILE__ " from " __DATE__));
-    initPCIInterruptForTinyReceiver();
+    if(!initPCIInterruptForTinyReceiver()){
+        Serial.println(F("No interrupt available for pin " STR(IR_INPUT_PIN))); // optimized out by the compiler, if not required :-)
+    }
     Serial.println(F("Ready to receive NEC IR signals at pin " STR(IR_INPUT_PIN)));
 }
 
@@ -117,9 +121,7 @@ void loop()
  * This is the function is called if a complete command was received
  * It runs in an ISR context with interrupts enabled, so functions like delay() etc. are working here
  */
-#if defined(ESP8266)
-void ICACHE_RAM_ATTR handleReceivedTinyIRData(uint16_t aAddress, uint8_t aCommand, bool isRepeat)
-#elif defined(ESP32)
+#if defined(ESP8266) || defined(ESP32)
 void IRAM_ATTR handleReceivedTinyIRData(uint16_t aAddress, uint8_t aCommand, bool isRepeat)
 #else
 void handleReceivedTinyIRData(uint16_t aAddress, uint8_t aCommand, bool isRepeat)

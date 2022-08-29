@@ -29,8 +29,8 @@
  *
  ************************************************************************************
  */
-#ifndef IR_NEC_HPP
-#define IR_NEC_HPP
+#ifndef _IR_NEC_HPP
+#define _IR_NEC_HPP
 
 #include <Arduino.h>
 
@@ -51,27 +51,30 @@
 // see: https://www.sbprojects.net/knowledge/ir/nec.php
 // for Apple see https://en.wikipedia.org/wiki/Apple_Remote
 // ONKYO like NEC but 16 independent command bits
-// LSB first, 1 start bit + 16 bit address + 8 bit command + 8 bit inverted command + 1 stop bit.
+// LSB first, 1 start bit + 16 bit address (or 8 bit address and 8 bit inverted address) + 8 bit command + 8 bit inverted command + 1 stop bit.
+// Standard NEC send a special fixed repeat frame, but I have a DVD remote, which send the same full frame after the 110 ms.
 //
 #define NEC_ADDRESS_BITS        16 // 16 bit address or 8 bit address and 8 bit inverted address
 #define NEC_COMMAND_BITS        16 // Command and inverted command
 
 #define NEC_BITS                (NEC_ADDRESS_BITS + NEC_COMMAND_BITS)
-#define NEC_UNIT                560 // 21.28 periods of 38 kHz   TICKS_LOW = 8.358 TICKS_HIGH = 15.0
+#define NEC_UNIT                560             // 21.28 periods of 38 kHz, 11.2 ticks TICKS_LOW = 8.358 TICKS_HIGH = 15.0
 
-#define NEC_HEADER_MARK         (16 * NEC_UNIT) // 9000
-#define NEC_HEADER_SPACE        (8 * NEC_UNIT)  // 4500
+#define NEC_HEADER_MARK         (16 * NEC_UNIT) // 9000 / 180
+#define NEC_HEADER_SPACE        (8 * NEC_UNIT)  // 4500 / 90
 
 #define NEC_BIT_MARK            NEC_UNIT
-#define NEC_ONE_SPACE           (3 * NEC_UNIT)  // 1690   TICKS_LOW = 25.07 TICKS_HIGH = 45.0
+#define NEC_ONE_SPACE           (3 * NEC_UNIT)  // 1690 / 33.8  TICKS_LOW = 25.07 TICKS_HIGH = 45.0
 #define NEC_ZERO_SPACE          NEC_UNIT
 
 #define NEC_REPEAT_HEADER_SPACE (4 * NEC_UNIT)  // 2250
 
 #define NEC_AVERAGE_DURATION    62000 // NEC_HEADER_MARK + NEC_HEADER_SPACE + 32 * 2,5 * NEC_UNIT + NEC_UNIT // 2.5 because we assume more zeros than ones
+#define NEC_MINIMAL_DURATION    49900 // NEC_HEADER_MARK + NEC_HEADER_SPACE + 32 * 2 * NEC_UNIT + NEC_UNIT // 2.5 because we assume more zeros than ones
 #define NEC_REPEAT_DURATION     (NEC_HEADER_MARK  + NEC_REPEAT_HEADER_SPACE + NEC_BIT_MARK) // 12 ms
 #define NEC_REPEAT_PERIOD       110000 // Commands are repeated every 110 ms (measured from start to start) for as long as the key on the remote control is held down.
 #define NEC_REPEAT_SPACE        (NEC_REPEAT_PERIOD - NEC_AVERAGE_DURATION) // 48 ms
+#define NEC_MAXIMUM_REPEAT_SPACE (NEC_REPEAT_PERIOD - NEC_MINIMAL_DURATION + 5) // 65 ms
 
 #define APPLE_ADDRESS           0x87EE
 //+=============================================================================
@@ -84,6 +87,7 @@ void IRsend::sendNECRepeat() {
     mark(NEC_HEADER_MARK);
     space(NEC_REPEAT_HEADER_SPACE);
     mark(NEC_BIT_MARK);
+    IrReceiver.restartAfterSend();
 //    ledOff(); // Always end with the LED off
 }
 
@@ -178,6 +182,7 @@ void IRsend::sendNECRaw(uint32_t aRawData, uint_fast8_t aNumberOfRepeats, bool a
         // send repeat
         sendNECRepeat();
     }
+    IrReceiver.restartAfterSend();
 }
 
 //+=============================================================================
@@ -196,9 +201,9 @@ bool IRrecv::decodeNEC() {
     // Check we have the right amount of data (68). The +4 is for initial gap, start bit mark and space + stop bit mark.
     if (decodedIRData.rawDataPtr->rawlen != ((2 * NEC_BITS) + 4) && (decodedIRData.rawDataPtr->rawlen != 4)) {
         IR_DEBUG_PRINT(F("NEC: "));
-        IR_DEBUG_PRINT("Data length=");
+        IR_DEBUG_PRINT(F("Data length="));
         IR_DEBUG_PRINT(decodedIRData.rawDataPtr->rawlen);
-        IR_DEBUG_PRINTLN(" is not 68 or 4");
+        IR_DEBUG_PRINTLN(F(" is not 68 or 4"));
         return false;
     }
 
@@ -284,6 +289,11 @@ bool IRrecv::decodeNEC() {
     }
     decodedIRData.numberOfBits = NEC_BITS;
 
+    // check for special repeat, do not check for same content ;-)
+    if (decodedIRData.rawDataPtr->rawbuf[0] < (NEC_MAXIMUM_REPEAT_SPACE / MICROS_PER_TICK)) {
+        decodedIRData.flags |= IRDATA_FLAGS_IS_REPEAT | IRDATA_FLAGS_IS_SPECIAL_REPEAT;
+    }
+
     return true;
 }
 
@@ -308,17 +318,17 @@ bool IRrecv::decodeNECMSB(decode_results *aResults) {
 
     // Check we have the right amount of data (32). +4 for initial gap, start bit mark and space + stop bit mark
     if (aResults->rawlen != (2 * NEC_BITS) + 4) {
-        IR_DEBUG_PRINT("NEC MSB: ");
-        IR_DEBUG_PRINT("Data length=");
+        IR_DEBUG_PRINT(F("NEC MSB: "));
+        IR_DEBUG_PRINT(F("Data length="));
         IR_DEBUG_PRINT(aResults->rawlen);
-        IR_DEBUG_PRINTLN(" is not 68");
+        IR_DEBUG_PRINTLN(F(" is not 68"));
         return false;
     }
 
 // Check header "space"
     if (!matchSpace(aResults->rawbuf[offset], NEC_HEADER_SPACE)) {
-        IR_DEBUG_PRINT("NEC MSB: ");
-        IR_DEBUG_PRINTLN("Header space length is wrong");
+        IR_DEBUG_PRINT(F("NEC MSB: "));
+        IR_DEBUG_PRINTLN(F("Header space length is wrong"));
         return false;
     }
     offset++;
@@ -331,7 +341,7 @@ bool IRrecv::decodeNECMSB(decode_results *aResults) {
 
     // Stop bit
     if (!matchMark(aResults->rawbuf[offset + (2 * NEC_BITS)], NEC_BIT_MARK)) {
-        IR_DEBUG_PRINT("NEC MSB: ");
+        IR_DEBUG_PRINT(F("NEC MSB: "));
         IR_DEBUG_PRINTLN(F("Stop bit mark length is wrong"));
         return false;
     }
@@ -371,8 +381,8 @@ void IRsend::sendNECMSB(uint32_t data, uint8_t nbits, bool repeat) {
     // Old version with MSB first Data + stop bit
     sendPulseDistanceWidthData(NEC_BIT_MARK, NEC_ONE_SPACE, NEC_BIT_MARK, NEC_ZERO_SPACE, data, nbits, PROTOCOL_IS_MSB_FIRST,
     SEND_STOP_BIT);
+    IrReceiver.restartAfterSend();
 }
 
 /** @}*/
-#endif
-#pragma once
+#endif // _IR_NEC_HPP
