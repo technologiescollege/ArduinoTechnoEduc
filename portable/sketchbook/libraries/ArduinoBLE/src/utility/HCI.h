@@ -35,7 +35,7 @@ enum LE_COMMAND {
   ENCRYPT                      = 0x0017,
   RANDOM                       = 0x0018,
   LONG_TERM_KEY_REPLY          = 0x001A,
-  LONG_TERM_KEY_NEGATIVE_REPLY = 0x1B,
+  LONG_TERM_KEY_NEGATIVE_REPLY = 0x001B,
   READ_LOCAL_P256              = 0x0025,
   GENERATE_DH_KEY_V1           = 0x0026,
   GENERATE_DH_KEY_V2           = 0x005E
@@ -99,15 +99,15 @@ public:
   virtual AuthReq localAuthreq();
   virtual uint8_t localIOCap();
 
-  virtual int saveNewAddress(uint8_t addressType, uint8_t* address, uint8_t* peerIrk, uint8_t* remoteIrk);
-  virtual int leAddResolvingAddress(uint8_t addressType, uint8_t* address, uint8_t* peerIrk, uint8_t* remoteIrk);
+  virtual void saveNewAddress(uint8_t addressType, uint8_t* address, uint8_t* peerIrk, uint8_t* remoteIrk);
+  virtual void leAddResolvingAddress(uint8_t addressType, uint8_t* address, uint8_t* peerIrk, uint8_t* remoteIrk);
   virtual int leStopResolvingAddresses();
   virtual int leStartResolvingAddresses();
   virtual int leReadPeerResolvableAddress(uint8_t peerAddressType, uint8_t* peerIdentityAddress, uint8_t* peerResolvableAddress);
 
-  virtual int readStoredLKs();
+  virtual void readStoredLKs();
   virtual int readStoredLK(uint8_t BD_ADDR[], uint8_t read_all = 0);
-  virtual int writeLK(uint8_t peerAddress[], uint8_t LK[]);
+  virtual void writeLK(uint8_t peerAddress[], uint8_t LK[]);
   virtual int tryResolveAddress(uint8_t* BDAddr, uint8_t* address);
 
   virtual int sendAclPkt(uint16_t handle, uint8_t cid, uint8_t plen, void* data);

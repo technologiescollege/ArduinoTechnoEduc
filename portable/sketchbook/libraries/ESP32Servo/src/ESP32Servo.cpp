@@ -194,11 +194,12 @@ bool Servo::attached()
 
 void Servo::setTimerWidth(int value)
 {
-    // only allow values between 16 and 20
-    if (value < 16)
-        value = 16;
-    else if (value > 20)
-        value = 20;
+    // only allow values between 10 and 14 for ESP32-C3
+    // only allow values between 16 and 20 for other ESP32
+    if (value < MINIMUM_TIMER_WIDTH )
+        value = MINIMUM_TIMER_WIDTH;
+    else if (value > MAXIMUM_TIMER_WIDTH)
+        value = MAXIMUM_TIMER_WIDTH;
         
     // Fix the current ticks value after timer width change
     // The user can reset the tick value with a write() or writeUs()

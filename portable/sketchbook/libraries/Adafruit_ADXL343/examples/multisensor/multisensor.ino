@@ -47,7 +47,7 @@ void setup(void)
     while(1);
   }
   
-  /* Set the range and data rate to whatever is appropriate for your project /*
+  /* Set the range and data rate to whatever is appropriate for your project */
   /* See the sensortest example for more details */
   accel1.setRange(ADXL343_RANGE_2_G);
   accel2.setRange(ADXL343_RANGE_2_G);

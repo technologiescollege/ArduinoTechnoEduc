@@ -81,8 +81,16 @@
 //#define DEFAULT_uS_LOW 400
 //#define DEFAULT_uS_HIGH 2400
 
-#define DEFAULT_TIMER_WIDTH 16
-#define DEFAULT_TIMER_WIDTH_TICKS 65536
+#ifdef ARDUINO_ESP32C3_DEV
+#define MINIMUM_TIMER_WIDTH 10
+#define MAXIMUM_TIMER_WIDTH 14
+#define DEFAULT_TIMER_WIDTH 10
+#else
+#define MINIMUM_TIMER_WIDTH 10
+#define MAXIMUM_TIMER_WIDTH 20
+#define DEFAULT_TIMER_WIDTH 10
+#endif
+#define DEFAULT_TIMER_WIDTH_TICKS 1024
 
 #define ESP32_Servo_VERSION           1     // software version of this library
 
