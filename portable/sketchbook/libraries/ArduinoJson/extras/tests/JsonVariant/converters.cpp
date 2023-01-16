@@ -91,16 +91,16 @@ class Complex {
 namespace ARDUINOJSON_NAMESPACE {
 template <>
 struct Converter<Complex> {
-  static void toJson(const Complex& src, VariantRef dst) {
+  static void toJson(const Complex& src, JsonVariant dst) {
     dst["real"] = src.real();
     dst["imag"] = src.imag();
   }
 
-  static Complex fromJson(VariantConstRef src) {
+  static Complex fromJson(JsonVariantConst src) {
     return Complex(src["real"], src["imag"]);
   }
 
-  static bool checkJson(VariantConstRef src) {
+  static bool checkJson(JsonVariantConst src) {
     return src["real"].is<double>() && src["imag"].is<double>();
   }
 };
@@ -139,4 +139,16 @@ TEST_CASE("Custom converter with specialization") {
     REQUIRE(doc["value"]["real"] == 19);
     REQUIRE(doc["value"]["imag"] == 3);
   }
+}
+
+TEST_CASE("ConverterNeedsWriteableRef") {
+  using namespace ARDUINOJSON_NAMESPACE;
+  CHECK(ConverterNeedsWriteableRef<int>::value == false);
+  CHECK(ConverterNeedsWriteableRef<float>::value == false);
+  CHECK(ConverterNeedsWriteableRef<JsonVariant>::value == true);
+  CHECK(ConverterNeedsWriteableRef<JsonVariantConst>::value == false);
+  CHECK(ConverterNeedsWriteableRef<JsonObject>::value == true);
+  CHECK(ConverterNeedsWriteableRef<JsonObjectConst>::value == false);
+  CHECK(ConverterNeedsWriteableRef<JsonArray>::value == true);
+  CHECK(ConverterNeedsWriteableRef<JsonArrayConst>::value == false);
 }

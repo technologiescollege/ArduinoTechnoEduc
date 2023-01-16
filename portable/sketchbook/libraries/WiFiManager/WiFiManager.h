@@ -131,12 +131,18 @@
 
 #include <DNSServer.h>
 #include <memory>
-#include "strings_en.h"
+
+
+// Include wm strings vars
+// Pass in strings env override via WM_STRINGS_FILE
+#ifndef WM_STRINGS_FILE
+#define WM_STRINGS_FILE "wm_strings_en.h" // this includes constants as dependency
+#endif
+#include WM_STRINGS_FILE
 
 // prep string concat vars
 #define WM_STRING2(x) #x
 #define WM_STRING(x) WM_STRING2(x)    
-
 
 // #include <esp_idf_version.h>
 #ifdef ESP_IDF_VERSION
@@ -764,7 +770,7 @@ class WiFiManager
     
     // Set default debug level
     #ifndef WM_DEBUG_LEVEL
-    #define WM_DEBUG_LEVEL DEBUG_VERBOSE // development default, not release
+    #define WM_DEBUG_LEVEL DEBUG_NOTIFY
     #endif
 
     // override debug level OFF
@@ -775,7 +781,7 @@ class WiFiManager
     #ifdef WM_DEBUG_LEVEL
     uint8_t _debugLevel = (uint8_t)WM_DEBUG_LEVEL;
     #else 
-    uint8_t _debugLevel = DEBUG_VERBOSE; // default debug level
+    uint8_t _debugLevel = 0; // default debug level
     #endif
 
     // @todo use DEBUG_ESP_PORT ?

@@ -8,6 +8,7 @@
 #include "custom_string.hpp"
 #include "weird_strcmp.hpp"
 
+#include <ArduinoJson/Strings/IsString.hpp>
 #include <ArduinoJson/Strings/StringAdapters.hpp>
 
 #include <catch.hpp>
@@ -85,30 +86,18 @@ TEST_CASE("custom_string") {
   CHECK(s.size() == 5);
 }
 
+struct EmptyStruct {};
+
 TEST_CASE("IsString<T>") {
-  SECTION("std::string") {
-    CHECK(IsString<std::string>::value == true);
-  }
-
-  SECTION("basic_string<wchar_t>") {
-    CHECK(IsString<std::basic_string<wchar_t> >::value == false);
-  }
-
-  SECTION("custom_string") {
-    CHECK(IsString<custom_string>::value == true);
-  }
-
-  SECTION("const __FlashStringHelper*") {
-    CHECK(IsString<const __FlashStringHelper*>::value == true);
-  }
-
-  SECTION("const char*") {
-    CHECK(IsString<const char*>::value == true);
-  }
-
-  SECTION("const char[]") {
-    CHECK(IsString<const char[8]>::value == true);
-  }
+  CHECK(IsString<std::string>::value == true);
+  CHECK(IsString<std::basic_string<wchar_t> >::value == false);
+  CHECK(IsString<custom_string>::value == true);
+  CHECK(IsString<const __FlashStringHelper*>::value == true);
+  CHECK(IsString<const char*>::value == true);
+  CHECK(IsString<const char[8]>::value == true);
+  CHECK(IsString< ::String>::value == true);
+  CHECK(IsString< ::StringSumHelper>::value == true);
+  CHECK(IsString<const EmptyStruct*>::value == false);
 }
 
 TEST_CASE("stringCompare") {
