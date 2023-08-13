@@ -31,7 +31,7 @@ WiFiManagerParameter::WiFiManagerParameter() {
 WiFiManagerParameter::WiFiManagerParameter(const char *custom) {
   _id             = NULL;
   _label          = NULL;
-  _length         = 1;
+  _length         = 0;
   _value          = nullptr;
   _labelPlacement = WFM_LABEL_DEFAULT;
   _customHTML     = custom;
@@ -58,7 +58,7 @@ void WiFiManagerParameter::init(const char *id, const char *label, const char *d
   _label          = label;
   _labelPlacement = labelPlacement;
   _customHTML     = custom;
-  _length         = 1;
+  _length         = 0;
   _value          = nullptr;
   setValue(defaultValue,length);
 }
@@ -365,7 +365,7 @@ boolean WiFiManager::autoConnect(char const *apName, char const *apPassword) {
     }
 
     #ifdef WM_DEBUG_LEVEL
-    DEBUG_WM(F("AutoConnect: FAILED"));
+    DEBUG_WM(F("AutoConnect: FAILED for "),(String)((millis()-_startconn)) + " ms");
     #endif
   // }
   // else {
@@ -1041,6 +1041,7 @@ uint8_t WiFiManager::connectWifi(String ssid, String pass, bool connect) {
       #endif
   }
   // if ssid argument provided connect to that
+  // NOTE: this also catches preload() _defaultssid @todo rework
   if (ssid != "") {
     wifiConnectNew(ssid,pass,connect);
     // @todo connect=false seems to disconnect sta in begin() so not sure if _connectonsave is useful at all
@@ -1050,7 +1051,7 @@ uint8_t WiFiManager::connectWifi(String ssid, String pass, bool connect) {
         connRes = waitForConnectResult(_saveTimeout); // use default save timeout for saves to prevent bugs in esp->waitforconnectresult loop
       }
       else {
-         connRes = waitForConnectResult(0);
+         connRes = waitForConnectResult();
       }
     // }
   }
@@ -1290,7 +1291,7 @@ String WiFiManager::getHTTPHead(String title){
   return page;
 }
 
-void WiFiManager::HTTPSend(String content){
+void WiFiManager::HTTPSend(const String &content){
   server->send(200, FPSTR(HTTP_HEAD_CT), content);
 }
 
@@ -1733,7 +1734,7 @@ String WiFiManager::getParamOut(){
 
     for (int i = 0; i < _paramsCount; i++) {
       //Serial.println((String)_params[i]->_length);
-      if (_params[i] == NULL || _params[i]->_length == 0 || _params[i]->_length > 99999) {
+      if (_params[i] == NULL || _params[i]->_length > 99999) {
         // try to detect param scope issues, doesnt always catch but works ok
         #ifdef WM_DEBUG_LEVEL
         DEBUG_WM(DEBUG_ERROR,F("[ERROR] WiFiManagerParameter is out of scope"));
@@ -1811,6 +1812,22 @@ void WiFiManager::handleWifiSave() {
   //SAVE/connect here
   _ssid = server->arg(F("s")).c_str();
   _pass = server->arg(F("p")).c_str();
+
+  #ifdef WM_DEBUG_LEVEL
+  String requestinfo = "SERVER_REQUEST\n----------------\n";
+  requestinfo += "URI: ";
+  requestinfo += server->uri();
+  requestinfo += "\nMethod: ";
+  requestinfo += (server->method() == HTTP_GET) ? "GET" : "POST";
+  requestinfo += "\nArguments: ";
+  requestinfo += server->args();
+  requestinfo += "\n";
+  for (uint8_t i = 0; i < server->args(); i++) {
+    requestinfo += " " + server->argName(i) + ": " + server->arg(i) + "\n";
+  }
+
+  DEBUG_WM(DEBUG_MAX,requestinfo);
+  #endif
 
   // set static ips from server args
   if (server->arg(FPSTR(S_ip)) != "") {
@@ -1911,7 +1928,7 @@ void WiFiManager::doParamSave(){
     #endif
 
     for (int i = 0; i < _paramsCount; i++) {
-      if (_params[i] == NULL || _params[i]->_length == 0) {
+      if (_params[i] == NULL || _params[i]->_length > 99999) {
         #ifdef WM_DEBUG_LEVEL
         DEBUG_WM(DEBUG_ERROR,F("[ERROR] WiFiManagerParameter is out of scope"));
         #endif
@@ -2007,6 +2024,7 @@ void WiFiManager::handleInfo() {
       F("memsmeter"),      
       F("lastreset"),
       F("temp"),
+      // F("hall"),
       F("wifihead"),
       F("conx"),
       F("stassid"),
@@ -2249,9 +2267,11 @@ String WiFiManager::getInfoData(String id){
     p = FPSTR(HTTP_INFO_temp);
     p.replace(FPSTR(T_1),(String)temperatureRead());
     p.replace(FPSTR(T_2),(String)((temperatureRead()+32)*1.8));
-    // p.replace(FPSTR(T_3),(String)hallRead());
-    // p.replace(FPSTR(T_3),"NA"); // removed hall sensor as reads can cause issues with adcs
   }
+  // else if(id==F("hall")){ 
+  //   p = FPSTR(HTTP_INFO_hall);
+  //   p.replace(FPSTR(T_1),(String)hallRead()); // hall sensor reads can cause issues with adcs
+  // }
   #endif
   else if(id==F("aboutver")){
     p = FPSTR(HTTP_INFO_aboutver);
@@ -3286,7 +3306,7 @@ template <typename Generic, typename Genericb>
 void WiFiManager::DEBUG_WM(wm_debuglevel_t level,Generic text,Genericb textb) {
   if(!_debug || _debugLevel < level) return;
 
-  if(_debugLevel >= DEBUG_MAX){
+  if(_debugLevel > DEBUG_MAX){
     #ifdef ESP8266
     // uint32_t free;
     // uint16_t max;
@@ -3309,6 +3329,7 @@ void WiFiManager::DEBUG_WM(wm_debuglevel_t level,Generic text,Genericb textb) {
     _debugPort.printf("[MEM] free: %5d | max: %5d | frag: %3d%% \n", free, max, frag);    
     #endif
   }
+
   _debugPort.print(_debugPrefix);
   if(_debugLevel >= debugLvlShow) _debugPort.print("["+(String)level+"] ");
   _debugPort.print(text);

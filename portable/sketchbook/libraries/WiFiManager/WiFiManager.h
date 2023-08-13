@@ -163,18 +163,25 @@
         // #pragma message "ESP_ARDUINO_VERSION_MAJOR = " WM_STRING(ESP_ARDUINO_VERSION_MAJOR)
         // #pragma message "ESP_ARDUINO_VERSION_MINOR = " WM_STRING(ESP_ARDUINO_VERSION_MINOR)
         // #pragma message "ESP_ARDUINO_VERSION_PATCH = " WM_STRING(ESP_ARDUINO_VERSION_PATCH)
+        #ifdef ESP_ARDUINO_VERSION_MAJOR
         #define VER_ARDUINO_STR WM_STRING(ESP_ARDUINO_VERSION_MAJOR)  "."  WM_STRING(ESP_ARDUINO_VERSION_MINOR)  "."  WM_STRING(ESP_ARDUINO_VERSION_PATCH)
+        #else
+        #define VER_ARDUINO_STR "Unknown"
+        #endif
     #else
         #include <core_version.h>
         // #pragma message "ESP_ARDUINO_VERSION_GIT  = " WM_STRING(ARDUINO_ESP32_GIT_VER)//  0x46d5afb1
         // #pragma message "ESP_ARDUINO_VERSION_DESC = " WM_STRING(ARDUINO_ESP32_GIT_DESC) //  1.0.6
         // #pragma message "ESP_ARDUINO_VERSION_REL  = " WM_STRING(ARDUINO_ESP32_RELEASE) //"1_0_6"
+        #ifdef ESP_ARDUINO_VERSION_MAJOR
         #define VER_ARDUINO_STR WM_STRING(ESP_ARDUINO_VERSION_MAJOR)  "."  WM_STRING(ESP_ARDUINO_VERSION_MINOR)  "."  WM_STRING(ESP_ARDUINO_VERSION_PATCH)
+        #else
+        #define VER_ARDUINO_STR "Unknown"
+        #endif
     #endif
 #else 
 #define VER_ARDUINO_STR "Unknown"
 #endif
-
 
 // #pragma message "VER_IDF_STR = " WM_STRING(VER_IDF_STR)
 // #pragma message "VER_ARDUINO_STR = " WM_STRING(VER_ARDUINO_STR)
@@ -639,7 +646,7 @@ class WiFiManager
     void          updateConxResult(uint8_t status);
 
     // webserver handlers
-    void          HTTPSend(String content);
+    void          HTTPSend(const String &content);
     void          handleRoot();
     void          handleWifi(boolean scan);
     void          handleWifiSave();
@@ -753,11 +760,12 @@ class WiFiManager
 
     // debugging
     typedef enum {
-        DEBUG_ERROR     = 0,
-        DEBUG_NOTIFY    = 1, // default stable
-        DEBUG_VERBOSE   = 2,
-        DEBUG_DEV       = 3, // default dev
-        DEBUG_MAX       = 4
+        DEBUG_SILENT    = 0, // debug OFF but still compiled for runtime
+        DEBUG_ERROR     = 1, // error only
+        DEBUG_NOTIFY    = 2, // default stable,INFO
+        DEBUG_VERBOSE   = 3, // move verbose info
+        DEBUG_DEV       = 4, // development useful debugging info
+        DEBUG_MAX       = 5  // MAX extra dev auditing, var dumps etc (MAX+1 will print timing,mem and frag info)
     } wm_debuglevel_t;
 
     boolean _debug  = true;
