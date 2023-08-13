@@ -42,12 +42,16 @@
 Servo myservo;  // create servo object to control a servo
 
 // Possible PWM GPIO pins on the ESP32: 0(used by on-board button),2,4,5(used by on-board LED),12-19,21-23,25-27,32-33 
-// Possible PWM GPIO pins on the ESP32-S2: 0(used by on-board button),1-17,18(used by on-board LED),19-21,26,33-42 
+// Possible PWM GPIO pins on the ESP32-S2: 0(used by on-board button),1-17,18(used by on-board LED),19-21,26,33-42
+// Possible PWM GPIO pins on the ESP32-S3: 0(used by on-board button),1-21,35-45,47,48(used by on-board LED)
+// Possible PWM GPIO pins on the ESP32-C3: 0(used by on-board button),1-7,8(used by on-board LED),9-10,18-21
 int servoPin = 18;      // GPIO pin used to connect the servo control (digital out)
 // Possible ADC pins on the ESP32: 0,2,4,12-15,32-39; 34-39 are recommended for analog input
 // Possible ADC pins on the ESP32-S2: 1-20 are recommended for analog input
-#if defined(ARDUINO_ESP32S2_DEV)
+#if defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3)
 int potPin = 10;        // GPIO pin used to connect the potentiometer (analog in)
+#elif defined(CONFIG_IDF_TARGET_ESP32C3)
+int potPin = 4;         // GPIO pin used to connect the potentiometer (analog in)
 #else
 int potPin = 34;        // GPIO pin used to connect the potentiometer (analog in)
 #endif

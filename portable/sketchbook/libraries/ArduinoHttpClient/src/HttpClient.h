@@ -228,7 +228,7 @@ public:
     */
     String readHeaderName();
 
-    /** Read the vallue of the current response header.
+    /** Read the value of the current response header.
       Returns empty string if a header is not available.
     */
     String readHeaderValue();
@@ -341,7 +341,7 @@ protected:
     // Number of milliseconds that we wait each time there isn't any data
     // available to be read (during status code and header processing)
     static const int kHttpWaitForDataDelay = 1000;
-    // Number of milliseconds that we'll wait in total without receiveing any
+    // Number of milliseconds that we'll wait in total without receiving any
     // data before returning HTTP_ERROR_TIMED_OUT (during status code and header
     // processing)
     static const int kHttpResponseTimeout = 30*1000;

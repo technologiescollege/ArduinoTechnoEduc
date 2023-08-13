@@ -10,7 +10,7 @@
   The body of the PUT request looks like this:
   {"on": true} or {"on":false}
 
-  This example  shows how to concatenate Strings to assemble the
+  This example shows how to concatenate Strings to assemble the
   PUT request and the body of the request.
 
    modified 15 Feb 2016 
@@ -23,16 +23,16 @@
 #include "arduino_secrets.h"
 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
-/////// Wifi Settings ///////
+/////// WiFi Settings ///////
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 
-int status = WL_IDLE_STATUS;      // the Wifi radio's status
+int status = WL_IDLE_STATUS;      // the WiFi radio's status
 
 char hueHubIP[] = "192.168.0.3";  // IP address of the HUE bridge
 String hueUserName = "huebridgeusername"; // hue bridge username
 
-// make a wifi instance and a HttpClient instance:
+// make a WiFiClient instance and a HttpClient instance:
 WiFiClient wifi;
 HttpClient httpClient = HttpClient(wifi, hueHubIP);
 
@@ -42,7 +42,7 @@ void setup() {
   Serial.begin(9600);
   while (!Serial); // wait for serial port to connect.
 
-  // attempt to connect to Wifi network:
+  // attempt to connect to WiFi network:
   while ( status != WL_CONNECTED) {
     Serial.print("Attempting to connect to WPA SSID: ");
     Serial.println(ssid);

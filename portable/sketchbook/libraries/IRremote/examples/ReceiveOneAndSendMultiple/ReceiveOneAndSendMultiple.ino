@@ -6,6 +6,8 @@
  *  it sends multiple Samsung32 frames with appropriate delays in between.
  *  This serves as a Netflix-key emulation for my old Samsung H5273 TV.
  *
+ *  Tested on a digispark ATTiny85 board using AttinyCore https://github.com/SpenceKonde/ATTinyCore
+ *
  *  This file is part of Arduino-IRremote https://github.com/Arduino-IRremote/Arduino-IRremote.
  *
  ************************************************************************************
@@ -34,14 +36,58 @@
  */
 
 // Digispark ATMEL ATTINY85
-// Piezo speaker must have a 270 Ohm resistor in series for USB programming and running at the Samsung TV.
-// IR LED has a 270 Ohm resistor in series.
+// Piezo speaker must have a 270 ohm resistor in series for USB programming and running at the Samsung TV.
+// IR LED has a 270 ohm resistor in series.
 //                                                    +-\/-+
 //                                   !RESET (5) PB5  1|    |8  Vcc
 // USB+ 3.6V Z-Diode, 1.5kOhm to VCC  Piezo (3) PB3  2|    |7  PB2 (2) TX Debug output
 // USB- 3.6V Z-Diode              IR Output (4) PB4  3|    |6  PB1 (1) Feedback LED
 //                                              GND  4|    |5  PB0 (0) IR Input
 //                                                    +----+
+/* SAUMSUMG REMOTE CODES (Model: BN59-01180A)
+ * Power Button - 0x2
+ * Power Off - 0x98
+ * 1 - 0x4
+ * 2 - 0x5
+ * 3 - 0x6
+ * 4 - 0x8
+ * 5 - 0x9
+ * 6 - 0xa
+ * 7 - 0xc
+ * 8 - 0xd
+ * 9 - 0xe
+ * CH List - 0x6b
+ * Vol + - 0x7
+ * Vol - - 0xb
+ * Mute - 0xf
+ * Source - 0x1
+ * Ch + - 0x12
+ * Ch - - 0x10
+ * Menu - 0x1a
+ * Home - 0x79
+ * MagicInfo Player - 0x30
+ * Tools - 0x4b
+ * Info - 0x1f
+ * Up arrow - 0x60
+ * Left arrow - 0x65
+ * Right arrow - 0x62
+ * Down arrow - 0x61
+ * Return - 0x58
+ * Exit - 0x2d
+ * A - 0x6c
+ * B - 0x14
+ * C - 0x15
+ * D - 0x16
+ * Set - 0xab
+ * Unset - 0xac
+ * Lock - 0x77
+ * Stop (square) - 0x46
+ * Rewind (arrows) - 0x45
+ * Play (triangle) - 0x47
+ * Pause (bars) - 0x4a
+ * Fast Forward (arrows) - 0x48
+ */
+
 #include <Arduino.h>
 
 // select only Samsung protocol for sending and receiving
@@ -73,12 +119,11 @@ void setup() {
     // Start the receiver and if not 3. parameter specified, take LED_BUILTIN pin from the internal boards definition as default feedback LED
     IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
 
-    IrSender.begin(IR_SEND_PIN, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
-
     Serial.print(F("Ready to receive IR signals of protocols: "));
     printActiveIRProtocols(&Serial);
     Serial.println(F("at pin " STR(IR_RECEIVE_PIN)));
 
+    IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
     Serial.println(F("Ready to send IR signals at pin " STR(IR_SEND_PIN)));
 }
 
@@ -114,6 +159,7 @@ void loop() {
          * !!!Important!!! Enable receiving of the next value,
          * since receiving has stopped after the end of the current received data packet.
          */
+        IrReceiver.restartAfterSend(); // Is a NOP if sending does not require a timer.
         IrReceiver.resume(); // Enable receiving of the next value
     }
 }

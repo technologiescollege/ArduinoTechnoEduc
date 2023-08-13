@@ -84,7 +84,7 @@ int HttpClient::startRequest(const char* aURLPath, const char* aHttpMethod,
     {
         if (iServerName)
         {
-            if (!iClient->connect(iServerName, iServerPort) > 0)
+            if (!(iClient->connect(iServerName, iServerPort) > 0))
             {
 #ifdef LOGGING
                 Serial.println("Connection failed");
@@ -94,7 +94,7 @@ int HttpClient::startRequest(const char* aURLPath, const char* aHttpMethod,
         }
         else
         {
-            if (!iClient->connect(iServerAddress, iServerPort) > 0)
+            if (!(iClient->connect(iServerAddress, iServerPort) > 0))
             {
 #ifdef LOGGING
                 Serial.println("Connection failed");
@@ -587,7 +587,7 @@ String HttpClient::responseBody()
     }
 
     if (bodyLength > 0 && (unsigned int)bodyLength != response.length()) {
-        // failure, we did not read in reponse content length bytes
+        // failure, we did not read in response content length bytes
         return String((const char*)NULL);
     }
 
@@ -685,7 +685,7 @@ int HttpClient::read()
 
 bool HttpClient::headerAvailable()
 {
-    // clear the currently store header line
+    // clear the currently stored header line
     iHeaderLine = "";
 
     while (!endOfHeadersReached())

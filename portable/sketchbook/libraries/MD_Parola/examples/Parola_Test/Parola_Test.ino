@@ -179,7 +179,7 @@ void doUI(void)
         {
           P.setIntensity(intensity);
           P.displayShutdown(false);
-          DEBUG("\nChanged intensity to ", intensity);
+          DEBUG("\nChanged intensity to ", P.getIntensity());
         }
 
         intensity = (intensity + 1) % (MAX_INTENSITY + 1);
@@ -213,7 +213,7 @@ void setup(void)
   uiSwitches.begin();
 
   // Parola object
-  P.begin();
+  if (!P.begin()) DEBUGS("\nMD_Parola library initialization failed");
 #if ENA_SPRITE
   P.setSpriteData(rocket, W_ROCKET, F_ROCKET, rocket, W_ROCKET, F_ROCKET);
 #endif

@@ -7,12 +7,32 @@ extern "C" {
 #include "Settings.h"
 #include <BlynkSimpleEsp32_SSL.h>
 
+#if defined(BLYNK_USE_LITTLEFS)
+  #include <LittleFS.h>
+  #define BLYNK_FS LittleFS
+#elif defined(BLYNK_USE_SPIFFS)
+  #if defined(ESP32)
+    #include <SPIFFS.h>
+  #elif defined(ESP8266)
+    #include <FS.h>
+  #endif
+  #define BLYNK_FS SPIFFS
+#endif
+
 #ifndef BLYNK_NEW_LIBRARY
 #error "Old version of Blynk library is in use. Please replace it with the new one."
 #endif
 
-#if !defined(BLYNK_TEMPLATE_ID) || !defined(BLYNK_DEVICE_NAME)
-#error "Please specify your BLYNK_TEMPLATE_ID and BLYNK_DEVICE_NAME"
+#if !defined(BLYNK_TEMPLATE_NAME) && defined(BLYNK_DEVICE_NAME)
+#define BLYNK_TEMPLATE_NAME BLYNK_DEVICE_NAME
+#endif
+
+#if !defined(BLYNK_TEMPLATE_ID) || !defined(BLYNK_TEMPLATE_NAME)
+#error "Please specify your BLYNK_TEMPLATE_ID and BLYNK_TEMPLATE_NAME"
+#endif
+
+#if defined(BLYNK_AUTH_TOKEN)
+#error "BLYNK_AUTH_TOKEN is assigned automatically when using Blynk.Edgent, please remove it from the configuration"
 #endif
 
 BlynkTimer edgentTimer;
@@ -39,22 +59,23 @@ void BlynkState::set(State m) {
 
 void printDeviceBanner()
 {
+#ifdef BLYNK_PRINT
   Blynk.printBanner();
-  DEBUG_PRINT("--------------------------");
-  DEBUG_PRINT(String("Product:  ") + BLYNK_DEVICE_NAME);
-  DEBUG_PRINT(String("Firmware: ") + BLYNK_FIRMWARE_VERSION " (build " __DATE__ " " __TIME__ ")");
+  BLYNK_PRINT.println("----------------------------------------------------");
+  BLYNK_PRINT.print(" Device:    "); BLYNK_PRINT.println(getWiFiName());
+  BLYNK_PRINT.print(" Firmware:  "); BLYNK_PRINT.println(BLYNK_FIRMWARE_VERSION " (build " __DATE__ " " __TIME__ ")");
   if (configStore.getFlag(CONFIG_FLAG_VALID)) {
-    DEBUG_PRINT(String("Token:    ") +
-                String(configStore.cloudToken).substring(0,4) +
+    BLYNK_PRINT.print(" Token:     ");
+    BLYNK_PRINT.println(String(configStore.cloudToken).substring(0,4) +
                 " - •••• - •••• - ••••");
   }
-  DEBUG_PRINT(String("Device:   ") + BLYNK_INFO_DEVICE + " @ " + ESP.getCpuFreqMHz() + "MHz");
-  DEBUG_PRINT(String("MAC:      ") + WiFi.macAddress());
-  DEBUG_PRINT(String("Flash:    ") + ESP.getFlashChipSize() / 1024 + "K");
-  DEBUG_PRINT(String("ESP sdk:  ") + ESP.getSdkVersion());
-  DEBUG_PRINT(String("Chip rev: ") + ESP.getChipRevision());
-  DEBUG_PRINT(String("Free mem: ") + ESP.getFreeHeap());
-  DEBUG_PRINT("--------------------------");
+  BLYNK_PRINT.print(" Platform:  "); BLYNK_PRINT.println(String(BLYNK_INFO_DEVICE) + " @ " + ESP.getCpuFreqMHz() + "MHz");
+  BLYNK_PRINT.print(" Chip rev:  "); BLYNK_PRINT.println(ESP.getChipRevision());
+  BLYNK_PRINT.print(" SDK:       "); BLYNK_PRINT.println(ESP.getSdkVersion());
+  BLYNK_PRINT.print(" Flash:     "); BLYNK_PRINT.println(String(ESP.getFlashChipSize() / 1024) + "K");
+  BLYNK_PRINT.print(" Free mem:  "); BLYNK_PRINT.println(ESP.getFreeHeap());
+  BLYNK_PRINT.println("----------------------------------------------------");
+#endif
 }
 
 void runBlynkWithChecks() {
@@ -77,6 +98,13 @@ public:
   {
     WiFi.persistent(false);
     WiFi.enableSTA(true); // Needed to get MAC
+#if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(4, 0, 0))
+    WiFi.setMinSecurity(WIFI_AUTH_WEP);
+#endif
+
+#ifdef BLYNK_FS
+    BLYNK_FS.begin(true);
+#endif
 
     indicator_init();
     button_init();
@@ -91,6 +119,13 @@ public:
       BlynkState::set(MODE_CONNECTING_NET);
     } else {
       BlynkState::set(MODE_WAIT_CONFIG);
+    }
+
+    if (!String(BLYNK_TEMPLATE_ID).startsWith("TMPL") ||
+        !strlen(BLYNK_TEMPLATE_NAME)
+    ) {
+      DEBUG_PRINT("Invalid configuration of TEMPLATE_ID / TEMPLATE_NAME");
+      while (true) { delay(100); }
     }
   }
 

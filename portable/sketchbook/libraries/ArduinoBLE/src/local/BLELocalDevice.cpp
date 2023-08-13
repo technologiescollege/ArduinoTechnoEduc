@@ -33,6 +33,10 @@
 #ifndef BT_REG_ON
 #define BT_REG_ON PF_14
 #endif
+#elif defined(ARDUINO_GIGA)
+#ifndef BT_REG_ON
+#define BT_REG_ON PA_10
+#endif
 #endif
 
 BLELocalDevice::BLELocalDevice()
@@ -65,10 +69,30 @@ int BLELocalDevice::begin()
   delay(100);
   digitalWrite(NINA_RESETN, HIGH);
   delay(750);
-#elif defined(ARDUINO_PORTENTA_H7_M4) || defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_NICLA_VISION)
+#elif defined(ARDUINO_PORTENTA_H7_M4) || defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_NICLA_VISION) || defined(ARDUINO_GIGA)
   // BT_REG_ON -> HIGH
   pinMode(BT_REG_ON, OUTPUT);
   digitalWrite(BT_REG_ON, HIGH);
+#elif defined(ARDUINO_PORTENTA_C33)
+#define NINA_GPIO0      (100)
+#define NINA_RESETN     (101)
+  pinMode(NINA_GPIO0, OUTPUT);
+  pinMode(NINA_RESETN, OUTPUT);
+  Serial5.begin(921600);
+
+  digitalWrite(NINA_GPIO0, HIGH);
+  delay(100);
+  digitalWrite(NINA_RESETN, HIGH);
+  digitalWrite(NINA_RESETN, LOW);
+  digitalWrite(NINA_RESETN, HIGH);
+  auto _start = millis();
+  while (millis() - _start < 500) {
+    if (Serial5.available()) {
+      Serial5.read();
+    }
+  }
+  //pinMode(94, OUTPUT);
+  //digitalWrite(94, LOW);
 #endif
 
 
@@ -195,7 +219,7 @@ void BLELocalDevice::end()
 #elif defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_NANO_RP2040_CONNECT)
   // disable the NINA
   digitalWrite(NINA_RESETN, LOW);
-#elif defined(ARDUINO_PORTENTA_H7_M4) || defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_NICLA_VISION)
+#elif defined(ARDUINO_PORTENTA_H7_M4) || defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_NICLA_VISION) || defined(ARDUINO_GIGA)
   digitalWrite(BT_REG_ON, LOW);
 #endif
 }

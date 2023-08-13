@@ -97,10 +97,17 @@ public:
 		return pin;
 	}
 	static bool hasPwm(int pin) {
-#if defined(ARDUINO_ESP32S2_DEV)
-		if ((pin >=1 && pin <= 21) || //20
+#if defined(CONFIG_IDF_TARGET_ESP32S2)
+		if ((pin >=1 && pin <= 21) || //21
 				(pin == 26) || //1
 				(pin >= 33 && pin <= 42)) //10
+#elif defined(CONFIG_IDF_TARGET_ESP32S3)
+		if ((pin >=1 && pin <= 21) || //20
+				(pin >= 35 && pin <= 45) || //11
+				(pin == 47) || (pin == 48)) //2
+#elif defined(CONFIG_IDF_TARGET_ESP32C3)
+		if ((pin >=1 && pin <= 10) || //11
+				(pin >= 18 && pin <= 21)) //4
 #else
 		if ((pin == 2) || //1
 				(pin == 4) || //1

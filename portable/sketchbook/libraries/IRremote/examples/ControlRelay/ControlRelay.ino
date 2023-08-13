@@ -33,12 +33,13 @@
  */
 #include <Arduino.h>
 
-#if FLASHEND <= 0x1FFF  // For 8k flash or less, like ATtiny85. Exclude exotic protocols.
+#include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
+
+#if FLASHEND <= 0x1FFF || (RAMEND <= 0x4FF || RAMSIZE < 0x4FF)  // For 8k flash or 512 bytes RAM or less, like ATtiny85, ATtiny167
 #define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program memory.
 #define EXCLUDE_EXOTIC_PROTOCOLS
 #endif
 
-#include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
 #include <IRremote.hpp>
 
 #if defined(APPLICATION_PIN)
@@ -90,6 +91,7 @@ void loop() {
             Serial.println();
             if (IrReceiver.decodedIRData.protocol == UNKNOWN) {
                 // We have an unknown protocol, print more info
+                Serial.println(F("Received noise or an unknown (or not yet enabled) protocol"));
                 IrReceiver.printIRResultRawFormatted(&Serial, true);
             }
 #else

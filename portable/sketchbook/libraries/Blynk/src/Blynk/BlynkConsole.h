@@ -11,33 +11,34 @@
 #ifndef BlynkConsole_h
 #define BlynkConsole_h
 
+#include <Blynk/BlynkDebug.h>
+#include <Blynk/BlynkParam.h>
+
 #define BLYNK_CONSOLE_MAX_COMMANDS 64
 #define BLYNK_CONSOLE_INPUT_BUFFER 256
 #define BLYNK_CONSOLE_USE_STREAM
-#define BLYNK_CONSOLE_USE_LAMBDAS
-
-#ifdef BLYNK_CONSOLE_USE_LAMBDAS
-#include <functional>
-#endif
 
 #ifdef BLYNK_CONSOLE_USE_STREAM
-#include <stdarg.h>
+  #include <stdarg.h>
 #endif
 
 class BlynkConsole
 {
 private:
 
-#ifdef BLYNK_CONSOLE_USE_LAMBDAS
+#ifdef BLYNK_HAS_FUNCTIONAL_H
     typedef std::function<void(void)> HandlerSimp;
     typedef std::function<void(int argc, const char** argv)> HandlerArgs;
+    typedef std::function<void(const BlynkParam &param)> HandlerParams;
 #else
     typedef void (*HandlerSimp)();
     typedef void (*HandlerArgs)(int argc, const char** argv);
+    typedef void (*HandlerParams)(const BlynkParam &param);
 #endif
     enum HandlerType {
         SIMPLE,
         WITH_ARGS,
+        WITH_PARAMS,
         SUB_CONSOLE
     };
 
@@ -46,9 +47,10 @@ private:
         const char* cmd;
         HandlerType type;
         union {
-            HandlerSimp*  f_simp;
-            HandlerArgs*  f_args;
-            BlynkConsole* f_cons;
+            HandlerSimp*    f_simp;
+            HandlerArgs*    f_args;
+            HandlerParams*  f_params;
+            BlynkConsole*   f_cons;
         };
         CmdHandler() = default;
         CmdHandler(const char* s, HandlerSimp* f)
@@ -56,6 +58,9 @@ private:
         {}
         CmdHandler(const char* s, HandlerArgs* f)
             : cmd(s), type(WITH_ARGS), f_args(f)
+        {}
+        CmdHandler(const char* s, HandlerParams* f)
+            : cmd(s), type(WITH_PARAMS), f_params(f)
         {}
         CmdHandler(const char* s, BlynkConsole* f)
             : cmd(s), type(SUB_CONSOLE), f_cons(f)
@@ -74,8 +79,9 @@ public:
     BlynkConsole() {
         reset_buff();
 
-#if defined(BLYNK_CONSOLE_USE_STREAM) && defined(BLYNK_CONSOLE_USE_LAMBDAS)
+#if defined(BLYNK_CONSOLE_USE_STREAM) && defined(BLYNK_HAS_FUNCTIONAL_H)
         help = [=]() {
+            if (!stream) return;
             stream->print("Available commands: ");
             for (size_t i=0; i<commandsQty; i++) {
                 CmdHandler& handler = commands[i];
@@ -126,38 +132,56 @@ public:
         commands[commandsQty++] = CmdHandler(cmd, new HandlerArgs(h));
     }
 
-    void addCommand(const char* cmd, BlynkConsole* h) {
+    void addCommand(const char* cmd, HandlerParams h) {
         if (commandsQty >= BLYNK_CONSOLE_MAX_COMMANDS) return;
+        commands[commandsQty++] = CmdHandler(cmd, new HandlerParams(h));
+    }
+
+    void addCommand(const char* cmd, BlynkConsole* h) {
+        if (commandsQty >= BLYNK_CONSOLE_MAX_COMMANDS || !h) return;
 #ifdef BLYNK_CONSOLE_USE_STREAM
-        h->init(*stream);
+        h->begin(stream);
 #endif
         commands[commandsQty++] = CmdHandler(cmd, h);
+    }
+
+    void addCommand(const char* cmd, BlynkConsole& h) {
+        addCommand(cmd, &h);
     }
 
     ProcessResult process(char c) {
         if (cmdPtr >= cmdBuff+sizeof(cmdBuff)) {
             reset_buff();
         }
-      
+
         *(cmdPtr++) = c;
         if (c == '\n' || c == '\r') {
-            ProcessResult ret = runCommand(cmdBuff);
-            reset_buff();
-            return ret;
+            return runCommandInBuff();
         }
         return PROCESSED;
     }
 
-    ProcessResult runCommand(char* cmd) {
-        char* argv[8] = { 0, };
-        int argc = split_argv(cmd, argv);
+    ProcessResult runCommand(const char* cmd) {
+        strncpy(cmdBuff, cmd, sizeof(cmdBuff));
+        cmdBuff[sizeof(cmdBuff)-1] = '\0';
+        cmdPtr = cmdBuff + strlen(cmdBuff);
+        return runCommandInBuff();
+    }
+
+private:
+
+    ProcessResult runCommandInBuff() {
+        char* argv[16];
+        int argc = split_argv(cmdBuff, argv, 16);
         if (argc <= 0) {
             return SKIPPED;
         }
 #ifdef BLYNK_CONSOLE_USE_STREAM
         if (stream) stream->println();
 #endif
-        return runCommand(argc, (const char**)argv);
+        ProcessResult ret = runCommand(argc, (const char**)argv);
+        reset_buff();
+        return ret;
     }
 
     ProcessResult runCommand(int argc, const char** argv) {
@@ -171,6 +195,18 @@ public:
                 case WITH_ARGS:
                     (*(handler.f_args))(argc-1, (const char**)(argv+1));
                     break;
+                case WITH_PARAMS: {
+                    size_t len = (cmdPtr - cmdBuff);
+                    if (len > 0 && len < BLYNK_CONSOLE_INPUT_BUFFER) {
+                        char mem[len];
+                        BlynkParam param(mem, 0, sizeof(mem));
+                        for (int i = 1; i < argc; i++) {
+                            param.add(argv[i]);
+                        }
+                        (*(handler.f_params))(param);
+                    }
+                    break;
+                }
                 case SUB_CONSOLE:
                     if (argc < 2) return NOT_FOUND;
                     return handler.f_cons->runCommand(argc-1, (const char**)(argv+1));
@@ -180,12 +216,23 @@ public:
         }
         return NOT_FOUND;
     }
-    
+
+public:
+
 #ifdef BLYNK_CONSOLE_USE_STREAM
-    void init(Stream& s) {
+
+    void begin(Stream& s) {
         stream = &s;
     }
-    
+
+    void begin(Stream* s) {
+        stream = s;
+    }
+
+    Stream& getStream() {
+        return *stream;
+    }
+
     void run() {
         while (stream && stream->available()) {
             char c = stream->read();
@@ -196,6 +243,7 @@ public:
                 break;
             case NOT_FOUND:
                 stream->println("Command not found.");
+                // Fall-through
             case EXECUTED:
                 stream->print(">");
                 break;
@@ -252,12 +300,13 @@ private:
     }
     
     static
-    int split_argv(char *str, char** argv)
+    int split_argv(char *str, char** argv, int argv_capacity)
     {
         int result = 0;
         char* curr = str;
         int len = 0;
-        for (int i = 0; str[i] != '\0'; i++) {
+        memset(argv, 0, sizeof(char*)*argv_capacity);
+        for (int i = 0; str[i] != '\0' && result < (argv_capacity-1); i++) {
             if (strchr(" \n\r\t", str[i])) {
                 if (len) {  // Found space after non-space
                     str[i] = '\0';
@@ -272,7 +321,11 @@ private:
                 len++;
             }
         }
-        argv[result] = NULL;
+        // Add final argument, if needed
+        if (len && result < (argv_capacity-1)) {
+            unescape(curr);
+            argv[result++] = curr;
+        }
         return result;
     }
 

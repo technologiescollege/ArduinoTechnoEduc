@@ -5,6 +5,15 @@
  * \brief Main header file for the MD_MAX72xx library
  */
 
+// Define the selection criteria for MBED SPI handling activation
+#define MBED_SPI_ACTIVE (defined(__MBED__) && !defined(ARDUINO))
+
+#if MBED_SPI_ACTIVE
+#warning "MBED SPI interface activated."
+#else
+#warning "ARDUINO SPI interface activated."
+#endif
+
 #if defined(__MBED__) && !defined(ARDUINO)
 #include "mbed.h"
 #define delay   ThisThread::sleep_for
@@ -73,7 +82,7 @@ Topics
 If you like and use this library please consider making a small donation using [PayPal](https://paypal.me/MajicDesigns/4USD)
 
 \page pageCopyright Copyright
-Copyright (C) 2012-18 Marco Colli. All rights reserved.
+Copyright (C) 2012-23 Marco Colli. All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -90,6 +99,15 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 \page pageRevisionHistory Revision History
+Aug 2023 version 3.4.2
+- Fixed issue with getColumn() 8 bit parameter
+
+Jun 2023 version 3.4.1
+- Changed __MBED__ #define handling from v3.2.5 (MBED_SPI_ACTIVE). This may break MBED implementations as unable to test.
+
+May 2023 version 3.4.0
+- begin() now returns bool value.
+
 Oct 2022 version 3.3.1
 - Added RPS_Game example
 
@@ -473,8 +491,10 @@ public:
    * The LED hardware is initialized to the middle intensity value, all rows showing,
    * and all LEDs cleared (off). Test, shutdown and decode modes are off. Display updates
    * are on and wraparound is off.
+   * 
+   * \return true if initilized with no error, false otherwise.
    */
-  void begin(void);
+  bool begin(void);
 
   /**
    * Class Destructor.
@@ -641,7 +661,7 @@ public:
    * \param c   column to be read [0..getColumnCount()-1].
    * \return uint8_t value with each bit set to 1 if the corresponding LED is lit. 0 is returned for parameter error.
    */
-  uint8_t getColumn(uint8_t c) { return getColumn((c / COL_SIZE), c % COL_SIZE); };
+  uint8_t getColumn(uint16_t c) { return getColumn((c / COL_SIZE), c % COL_SIZE); };
 
   /**
    * Get the status of a single LED, addressed as a pixel.
@@ -1019,7 +1039,7 @@ private:
   bool    _wrapAround;    // when shifting, wrap left to right and vice versa (circular buffer)
 
   // SPI interface data
-#if defined(__MBED__) && !defined(ARDUINO)
+#if MBED_SPI_ACTIVE
   SPI   _spi;           // Mbed SPI object
   DigitalOut _cs;
 #endif

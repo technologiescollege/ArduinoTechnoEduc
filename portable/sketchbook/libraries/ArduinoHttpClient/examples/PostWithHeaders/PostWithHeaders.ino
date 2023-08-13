@@ -1,7 +1,7 @@
 /*
   POST with headers client for ArduinoHttpClient library
   Connects to server once every five seconds, sends a POST request
-  with custome headers and a request body
+  with custom headers and a request body
 
   created 14 Feb 2016
   by Tom Igoe
@@ -18,7 +18,7 @@
 #include "arduino_secrets.h"
 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
-/////// Wifi Settings ///////
+/////// WiFi Settings ///////
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 

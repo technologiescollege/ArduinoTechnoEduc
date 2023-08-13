@@ -98,11 +98,18 @@ int Servo::attach(int pin, int min, int max)
         }
         else
         {
+#ifdef __XTENSA_esp32s3__
+if(
+#endif
         	Serial.println("This pin can not be a servo: "+String(pin)+
-#if defined(ARDUINO_ESP32S2_DEV)
-				"\r\nServo availible on: 1-21,26,33-42"
+#if defined(CONFIG_IDF_TARGET_ESP32S2)
+				"\r\nServo available on: 1-21,26,33-42"
+#elif defined(CONFIG_IDF_TARGET_ESP32S3)
+			        "\r\nPWM available on: 1-21,35-45,47-48"
+#elif defined(CONFIG_IDF_TARGET_ESP32C3)
+				"\r\nPWM available on: 1-10,18-21"
 #else
-				"\r\nServo availible on: 2,4,5,12-19,21-23,25-27,32-33"
+				"\r\nServo available on: 2,4,5,12-19,21-23,25-27,32-33"
 #endif
 			);
             return 0;

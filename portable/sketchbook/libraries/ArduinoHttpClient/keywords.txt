@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For HttpClient
+# Syntax Coloring Map For ArduinoHttpClient
 #######################################
 
 #######################################

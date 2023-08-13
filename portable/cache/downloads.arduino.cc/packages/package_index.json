@@ -20,11 +20,11 @@
           "size": "4877442",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -32,8 +32,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -66,11 +66,11 @@
           "size": "4876816",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -78,8 +78,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -112,11 +112,11 @@
           "size": "4780884",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -124,8 +124,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -158,11 +158,11 @@
           "size": "4876957",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -170,8 +170,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -204,11 +204,11 @@
           "size": "4876916",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -216,8 +216,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -250,11 +250,11 @@
           "size": "4904283",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -262,8 +262,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -297,11 +297,11 @@
           "size": "4885536",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -309,8 +309,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -344,11 +344,11 @@
           "size": "4890702",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -356,8 +356,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -391,11 +391,11 @@
           "size": "4991331",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -403,8 +403,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -438,11 +438,11 @@
           "size": "4991634",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -450,8 +450,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -485,11 +485,11 @@
           "size": "4993586",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -497,8 +497,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -532,11 +532,11 @@
           "size": "4993644",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -544,8 +544,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -579,11 +579,11 @@
           "size": "4993455",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -591,8 +591,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -626,11 +626,11 @@
           "size": "4993959",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
+            {"name": "Arduino UNO"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
@@ -638,8 +638,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -673,12 +673,12 @@
           "size": "5011829",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -687,8 +687,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -731,12 +731,12 @@
           "size": "5011912",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -745,8 +745,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -789,12 +789,12 @@
           "size": "4897659",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -803,8 +803,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -847,12 +847,12 @@
           "size": "4959420",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -861,8 +861,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -905,12 +905,12 @@
           "size": "4897949",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -919,8 +919,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -963,12 +963,12 @@
           "size": "4897460",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -977,8 +977,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1021,12 +1021,12 @@
           "size": "4907422",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -1035,8 +1035,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1079,12 +1079,12 @@
           "size": "5001988",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -1093,8 +1093,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1137,12 +1137,12 @@
           "size": "4941605",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -1151,8 +1151,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1195,12 +1195,12 @@
           "size": "4918242",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -1209,8 +1209,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1253,12 +1253,12 @@
           "size": "4941548",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -1267,8 +1267,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1311,13 +1311,13 @@
           "size": "4940789",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno Mini"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO Mini"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -1326,8 +1326,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1370,13 +1370,13 @@
           "size": "7160121",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno Mini"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO Mini"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -1385,8 +1385,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1429,13 +1429,13 @@
           "size": "7127080",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino Uno"},
-            {"name": "Arduino Uno Mini"},
-            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino UNO"},
+            {"name": "Arduino UNO Mini"},
+            {"name": "Arduino UNO WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino Mega"},
-            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Mega ADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino Micro"},
@@ -1444,8 +1444,8 @@
             {"name": "Arduino Ethernet"},
             {"name": "Arduino Fio"},
             {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
+            {"name": "Arduino LilyPad USB"},
+            {"name": "Arduino LilyPad"},
             {"name": "Arduino Pro"},
             {"name": "Arduino ATMegaNG"},
             {"name": "Arduino Robot Control"},
@@ -1488,7 +1488,7 @@
           "size": "717681",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             }
           ],
           "toolsDependencies": [
@@ -1523,7 +1523,7 @@
           "size": "709516",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             }
           ],
           "toolsDependencies": [
@@ -1558,7 +1558,7 @@
           "size": "712366",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             }
           ],
           "toolsDependencies": [
@@ -1593,7 +1593,7 @@
           "size": "712719",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             }
           ],
           "toolsDependencies": [
@@ -1628,7 +1628,7 @@
           "size": "817179",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             },
             {
               "name": "Arduino Nano Every"
@@ -1666,7 +1666,7 @@
           "size": "840041",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             },
             {
               "name": "Arduino Nano Every"
@@ -1704,7 +1704,7 @@
           "size": "856037",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             },
             {
               "name": "Arduino Nano Every"
@@ -1742,7 +1742,7 @@
           "size": "855455",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             },
             {
               "name": "Arduino Nano Every"
@@ -1780,7 +1780,7 @@
           "size": "876954",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             },
             {
               "name": "Arduino Nano Every"
@@ -1818,7 +1818,7 @@
           "size": "856719",
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             },
             {
               "name": "Arduino Nano Every"
@@ -1856,7 +1856,7 @@
           },
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             },
             {
               "name": "Arduino Nano Every"
@@ -1894,7 +1894,7 @@
           },
           "boards": [
             {
-              "name": "Arduino Uno WiFi Rev2"
+              "name": "Arduino UNO WiFi Rev2"
             },
             {
               "name": "Arduino Nano Every"
@@ -2352,7 +2352,7 @@
           "size": "978163",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" }
+            { "name": "Arduino MKR 1000" }
           ],
           "toolsDependencies": [
             {
@@ -2423,7 +2423,7 @@
           "size": "979548",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" }
+            { "name": "Arduino MKR 1000" }
           ],
           "toolsDependencies": [
             {
@@ -2459,7 +2459,7 @@
           "size": "997331",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" }
+            { "name": "Arduino MKR 1000" }
           ],
           "toolsDependencies": [
             {
@@ -2495,7 +2495,7 @@
           "size": "841503",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" }
+            { "name": "Arduino MKR 1000" }
           ],
           "toolsDependencies": [
             {
@@ -2531,7 +2531,7 @@
           "size": "841801",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" }
+            { "name": "Arduino MKR 1000" }
           ],
           "toolsDependencies": [
             {
@@ -2567,8 +2567,8 @@
           "size": "855221",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZero" }
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" }
           ],
           "toolsDependencies": [
             {
@@ -2609,8 +2609,8 @@
           "size": "2765368",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZero" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino M0" },
             { "name": "Arduino M0 Pro" },
             { "name": "Arduino Tian" },
@@ -2660,8 +2660,8 @@
           "size": "2764312",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZero" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino M0" },
             { "name": "Arduino M0 Pro" },
             { "name": "Adafruit Circuit Playground Express" }
@@ -2710,8 +2710,8 @@
           "size": "2754767",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZero" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino M0 Pro" },
             { "name": "Arduino M0" },
             { "name": "Arduino Tian" },
@@ -2756,9 +2756,9 @@
           "size": "2777384",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZero" },
-            { "name": "Arduino MKRFox1200" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
+            { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino M0 Pro" },
             { "name": "Arduino M0" },
             { "name": "Arduino Tian" },
@@ -2808,9 +2808,9 @@
           "size": "2746416",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZero" },
-            { "name": "Arduino MKRFox1200" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
+            { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino M0 Pro" },
             { "name": "Arduino M0" },
             { "name": "Arduino Tian" },
@@ -2860,9 +2860,9 @@
           "size": "2795099",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZero" },
-            { "name": "Arduino MKRFox1200" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
+            { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino M0 Pro" },
             { "name": "Arduino M0" },
             { "name": "Arduino Tian" },
@@ -2912,9 +2912,9 @@
           "size": "2796651",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZero" },
-            { "name": "Arduino MKRFox1200" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
+            { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino M0 Pro" },
             { "name": "Arduino M0" },
             { "name": "Arduino Tian" },
@@ -2964,8 +2964,8 @@
           "size": "2849852",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
@@ -3018,8 +3018,8 @@
           "size": "2808624",
           "boards": [
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
@@ -3073,8 +3073,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
@@ -3128,8 +3128,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
@@ -3184,8 +3184,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
@@ -3243,8 +3243,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
@@ -3304,8 +3304,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
@@ -3365,8 +3365,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
@@ -3426,8 +3426,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3488,8 +3488,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3550,8 +3550,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3612,8 +3612,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3674,8 +3674,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3736,8 +3736,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3798,8 +3798,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3860,8 +3860,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3922,8 +3922,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -3984,8 +3984,8 @@
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
             { "name": "Arduino Zero" },
-            { "name": "Arduino MKR1000" },
-            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR 1000" },
+            { "name": "Arduino MKR Zero" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR WAN 1310" },
@@ -5633,7 +5633,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             }
           ],
           "toolsDependencies": [
@@ -5854,7 +5854,7 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             }
           ],
           "toolsDependencies": [
@@ -5918,7 +5918,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             }
           ],
           "toolsDependencies": [
@@ -6139,7 +6139,7 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             }
           ],
           "toolsDependencies": [
@@ -6203,7 +6203,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             }
           ],
           "toolsDependencies": [
@@ -6424,7 +6424,7 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             }
           ],
           "toolsDependencies": [
@@ -6488,7 +6488,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
               "name": "Arduino Nicla Vision"
@@ -6712,10 +6712,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -6779,7 +6779,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
               "name": "Arduino Nicla Vision"
@@ -7028,10 +7028,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -7100,7 +7100,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
               "name": "Arduino Nicla Vision"
@@ -7349,10 +7349,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -7421,7 +7421,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
               "name": "Arduino Nicla Vision"
@@ -7678,10 +7678,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -7750,7 +7750,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
               "name": "Arduino Nicla Vision"
@@ -8007,10 +8007,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -8079,7 +8079,7 @@
               "name": "Raspberry Pi Pico"
             },
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
               "name": "Arduino Nicla Vision"
@@ -8321,10 +8321,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -8558,10 +8558,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -8795,10 +8795,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -8843,7 +8843,7 @@
           },
           "boards": [
             {
-              "name": "Arduino Finder Opta"
+              "name": "Arduino Opta™"
             }
           ],
           "toolsDependencies": [
@@ -9072,10 +9072,10 @@
           },
           "boards": [
             {
-              "name": "Nicla Sense ME"
+              "name": "Arduino Nicla Sense ME"
             },
             {
-              "name": "Nicla Vision"
+              "name": "Arduino Nicla Vision"
             }
           ],
           "toolsDependencies": [
@@ -9120,6 +9120,388 @@
           },
           "boards": [
             {
+              "name": "Arduino Opta™"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nicla Boards",
+          "architecture": "mbed_nicla",
+          "version": "3.5.5",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nicla-3.5.5.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nicla-3.5.5.tar.bz2",
+          "checksum": "SHA-256:acb5ee7d7b523c9d48d55029a1da94246a054aa4e8f943f5b497f661233eafed",
+          "size": "17624990",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nicla Sense ME"
+            },
+            {
+              "name": "Arduino Nicla Vision"
+            },
+            {
+              "name": "Arduino Nicla Voice"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nicla Boards",
+          "architecture": "mbed_nicla",
+          "version": "3.5.6",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nicla-3.5.6.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nicla-3.5.6.tar.bz2",
+          "checksum": "SHA-256:609aef97c75e2957e1c6eff597a27c757d948eb30f5b20d4ae5322cebbb6f904",
+          "size": "17678914",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Nicla Sense ME"
+            },
+            {
+              "name": "Nicla Vision"
+            },
+            {
+              "name": "Nicla Voice"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Edge Boards",
+          "architecture": "mbed_edge",
+          "version": "4.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-edge-4.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-edge-4.0.2.tar.bz2",
+          "checksum": "SHA-256:2b45c98a5057e8df31b2d914fa165ca57c10e3d437c720dfe7a797b758ac1ffa",
+          "size": "5412746",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Edge Control"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nano Boards",
+          "architecture": "mbed_nano",
+          "version": "4.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nano-4.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nano-4.0.2.tar.bz2",
+          "checksum": "SHA-256:2d53425fa9f0e7a473e536ee0b602d4549fe6e17df1a514c5bc3f66e61d53c37",
+          "size": "6721721",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            },
+            {
+              "name": "Arduino Nano 33 BLE Sense"
+            },
+            {
+              "name": "Arduino Nano RP2040 Connect"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Portenta Boards",
+          "architecture": "mbed_portenta",
+          "version": "4.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-portenta-4.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-portenta-4.0.2.tar.bz2",
+          "checksum": "SHA-256:62a35fce396dbfc6304cb64a06d8f17c84a7b4872eba482ad1fa16a5c2bc2368",
+          "size": "21244204",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Portenta X8"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            },
+            {
+              "packager": "arduino",
+              "version": "32.0.0",
+              "name": "adb"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS RP2040 Boards",
+          "architecture": "mbed_rp2040",
+          "version": "4.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-RP2040-4.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-RP2040-4.0.2.tar.bz2",
+          "checksum": "SHA-256:e784bb41bb68bd62ca6a7bb2a32b7a65b5388ac5570feb1d9ef917219e4dd2c2",
+          "size": "4247469",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Raspberry Pi Pico"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nicla Boards",
+          "architecture": "mbed_nicla",
+          "version": "4.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nicla-4.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nicla-4.0.2.tar.bz2",
+          "checksum": "SHA-256:e0629e294049c7f18c3108f7264348ec95f06fa6da85e693fc085e7d40723b9c",
+          "size": "19945869",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Nicla Sense ME"
+            },
+            {
+              "name": "Nicla Voice"
+            },
+            {
+              "name": "Nicla Vision"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Opta Boards",
+          "architecture": "mbed_opta",
+          "version": "4.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-opta-4.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-opta-4.0.2.tar.bz2",
+          "checksum": "SHA-256:71883c0486b4d8071ddb1ad3f5f63be253f8801b6eb55bee163832641c8fa939",
+          "size": "15880168",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
               "name": "Arduino Finder Opta"
             }
           ],
@@ -9143,6 +9525,752 @@
               "packager": "arduino",
               "version": "1.8.0-arduino.2",
               "name": "imgtool"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Giga Boards",
+          "architecture": "mbed_giga",
+          "version": "4.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-giga-4.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-giga-4.0.2.tar.bz2",
+          "checksum": "SHA-256:5c89a96a80c4d738ac9a2ba89cba4e8ba73a2243500457c2db8c2be36e83deee",
+          "size": "16236853",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Giga"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Edge Boards",
+          "architecture": "mbed_edge",
+          "version": "4.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-edge-4.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-edge-4.0.4.tar.bz2",
+          "checksum": "SHA-256:afde24778fb31d63b60d660c423ee603cf0ee34ddb7ec16861f3a3febe85a4c2",
+          "size": "5412329",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Edge Control"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nano Boards",
+          "architecture": "mbed_nano",
+          "version": "4.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nano-4.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nano-4.0.4.tar.bz2",
+          "checksum": "SHA-256:5de161802364ef7989232ba6c7e4fbbc2f5e4886276dbdec3221ea6d5df1f34d",
+          "size": "6691925",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            },
+            {
+              "name": "Arduino Nano 33 BLE Sense"
+            },
+            {
+              "name": "Arduino Nano RP2040 Connect"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Portenta Boards",
+          "architecture": "mbed_portenta",
+          "version": "4.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-portenta-4.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-portenta-4.0.4.tar.bz2",
+          "checksum": "SHA-256:d158184ef56a5be4edfd612b528f4d69da9d7ccb4c33199b140530f125890f13",
+          "size": "20773202",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Portenta X8"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            },
+            {
+              "packager": "arduino",
+              "version": "32.0.0",
+              "name": "adb"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS RP2040 Boards",
+          "architecture": "mbed_rp2040",
+          "version": "4.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-RP2040-4.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-RP2040-4.0.4.tar.bz2",
+          "checksum": "SHA-256:1a608efe93b5d24d2a9466ce73dffa8b4ec2010cfc6dba952d3088830ddca9a4",
+          "size": "4234300",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Raspberry Pi Pico"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nicla Boards",
+          "architecture": "mbed_nicla",
+          "version": "4.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nicla-4.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nicla-4.0.4.tar.bz2",
+          "checksum": "SHA-256:686a39d21f960375cc0bb730a06f17ff54dbab14b8cf8a165ae50bcd606463ec",
+          "size": "19723838",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Nicla Sense ME"
+            },
+            {
+              "name": "Nicla Voice"
+            },
+            {
+              "name": "Nicla Vision"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Opta Boards",
+          "architecture": "mbed_opta",
+          "version": "4.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-opta-4.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-opta-4.0.4.tar.bz2",
+          "checksum": "SHA-256:ce5e2a77e0295e795b39df3f38c2443392f9c54ee7d684af4f48468330340900",
+          "size": "15651407",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Finder Opta"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Giga Boards",
+          "architecture": "mbed_giga",
+          "version": "4.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-giga-4.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-giga-4.0.4.tar.bz2",
+          "checksum": "SHA-256:7405c21ec080a0baaa95237c1adc033b12c21600a26352718d04b64913acd5a0",
+          "size": "15663592",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Giga"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Renesas Portenta Boards",
+          "architecture": "renesas_portenta",
+          "version": "1.0.0",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_portenta-1.0.0.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_portenta-1.0.0.tar.bz2",
+          "checksum": "SHA-256:2e4d1b1368dbe06f2209cc09fec873c4daa45ffe932eeada4e3d242970dc23fa",
+          "size": "15760297",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta C33"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "Arduino UNO R4 Boards",
+          "architecture": "renesas_uno",
+          "version": "1.0.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_uno-1.0.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_uno-1.0.1.tar.bz2",
+          "checksum": "SHA-256:23a27ab7772c9b4df8567a8af8e5a8a10691f9689e53a63f29bc14e3fef7f9fa",
+          "size": "10087532",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino UNO R4 Minima"
+            },
+            {
+              "name": "Arduino UNO R4 WiFi"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Renesas Portenta Boards",
+          "architecture": "renesas_portenta",
+          "version": "1.0.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_portenta-1.0.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_portenta-1.0.1.tar.bz2",
+          "checksum": "SHA-256:b25f1ff43a4f396ca871494ce0bd626f3f0a0e8901a90b11e7abe7730143ef60",
+          "size": "15731334",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta C33"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "Arduino UNO R4 Boards",
+          "architecture": "renesas_uno",
+          "version": "1.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_uno-1.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_uno-1.0.2.tar.bz2",
+          "checksum": "SHA-256:999906918ea7eff4eebbabb79887be1cd500283404e60e5966317caa6c95de49",
+          "size": "10042923",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino UNO R4 Minima"
+            },
+            {
+              "name": "Arduino UNO R4 WiFi"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Renesas Portenta Boards",
+          "architecture": "renesas_portenta",
+          "version": "1.0.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_portenta-1.0.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_portenta-1.0.2.tar.bz2",
+          "checksum": "SHA-256:f341854aff090f8b1c7662a396e800b17ff89fbd245149ef26dfa8080cb2ac39",
+          "size": "15908992",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta C33"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "esp32",
+          "architecture": "esp32",
+          "version": "2.0.10",
+          "category": "ESP32",
+          "url": "https://github.com/arduino/arduino-esp32/releases/download/2.0.10/esp32-2.0.10.zip",
+          "archiveFileName": "esp32-2.0.10.zip",
+          "checksum": "SHA-256:0ced923bc3d2714af62975a3d81cbd1b8bc91e30c6d00b218b040de5a6ccd22e",
+          "size": "248170040",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano ESP32"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s2-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s3-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.11.0-esp32-20221026"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.5.1"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
+            }
+          ]
+        },
+        {
+          "name": "Arduino ESP32 Boards",
+          "architecture": "esp32",
+          "version": "2.0.11",
+          "category": "ESP32",
+          "url": "https://github.com/arduino/arduino-esp32/releases/download/2.0.11/esp32-2.0.11.zip",
+          "archiveFileName": "esp32-2.0.11.zip",
+          "checksum": "SHA-256:570a6547d25fab449590b39f89bb715667b626ca7f0aea81b92a9c7f9d3e1116",
+          "size": "248170034",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano ESP32"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s2-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s3-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.11.0-esp32-20221026"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.5.1"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
             }
           ]
         },
@@ -10436,56 +11564,56 @@
         },
         {
           "name": "arduinoOTA",
-          "version": "1.4.0",
+          "version": "1.4.1",
           "systems": [
             {
               "host": "i686-pc-linux-gnu",
-              "archiveFileName": "arduinoOTA_1.4.0_Linux_32bit.tar.gz",
-              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.0_Linux_32bit.tar.gz",
-              "size": "3742108",
-              "checksum": "SHA-256:9080b00d784c51bfd3703ae6a1c3c28ac6a2509356c319d44cd87cdb54853f50"
+              "archiveFileName": "arduinoOTA_1.4.1_Linux_32bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.1_Linux_32bit.tar.gz",
+              "size": "3741387",
+              "checksum": "SHA-256:42e3f157acbe68b497a57a744ab48aeb8def2e367a457edba353377956e7c1de"
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "archiveFileName": "arduinoOTA_1.4.0_Linux_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.0_Linux_64bit.tar.gz",
-              "size": "3984473",
-              "checksum": "SHA-256:6bbc317b82753bdae5a98a5785f7ba91171fa4d43c50333801af32c9076b94dc"
+              "archiveFileName": "arduinoOTA_1.4.1_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.1_Linux_64bit.tar.gz",
+              "size": "3985162",
+              "checksum": "SHA-256:90d9394f368fb80c512b0be89535f28ca03da64f97e39ed755d33aba63aba7dd"
             },
             {
               "host": "i686-mingw32",
-              "archiveFileName": "arduinoOTA_1.4.0_Windows_32bit.zip",
-              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.0_Windows_32bit.zip",
-              "size": "3723215",
-              "checksum": "SHA-256:2cd10357d743fb678fff73dae73ae52ed310db09d103819702d53add13ca0bbb"
+              "archiveFileName": "arduinoOTA_1.4.1_Windows_32bit.zip",
+              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.1_Windows_32bit.zip",
+              "size": "3723304",
+              "checksum": "SHA-256:012721cbff75c0908b3e7d191231064743e8f025fe771b38b33028d01d859e52"
             },
             {
               "host": "x86_64-mingw32",
-              "archiveFileName": "arduinoOTA_1.4.0_Windows_64bit.zip",
-              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.0_Windows_64bit.zip",
-              "size": "3895744",
-              "checksum": "SHA-256:05eeebd155cb53e9528ab132bc00af76719f4c082cdcd0fee1f9cd96c56ecdd4"
+              "archiveFileName": "arduinoOTA_1.4.1_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.1_Windows_64bit.zip",
+              "size": "3895845",
+              "checksum": "SHA-256:d9d14f01cbccc83a19292777cd604660e8cbe7d362f2ca972e3d0a296ab0d746"
             },
             {
               "host": "x86_64-apple-darwin",
-              "archiveFileName": "arduinoOTA_1.4.0_macOS_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.0_macOS_64bit.tar.gz",
-              "size": "3955987",
-              "checksum": "SHA-256:c5e7f3c7cc823bceb617a57ba6875710957a7090d059a5335daffcc2b19cbad4"
+              "archiveFileName": "arduinoOTA_1.4.1_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.1_macOS_64bit.tar.gz",
+              "size": "3956086",
+              "checksum": "SHA-256:5f824b5268b6cb56391deee81a58e9edaa3f0b247862d623c4c8e735b202ecf2"
             },
             {
               "host": "arm-linux-gnueabihf",
-              "archiveFileName": "arduinoOTA_1.4.0_Linux_ARMv6.tar.gz",
-              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.0_Linux_ARMv6.tar.gz",
-              "size": "3583605",
-              "checksum": "SHA-256:d2c75b73db96c22c01b68326539eecab1100f55a30bf7aab0cfa3942583e58c8"
+              "archiveFileName": "arduinoOTA_1.4.1_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.1_Linux_ARMv6.tar.gz",
+              "size": "3583929",
+              "checksum": "SHA-256:248daf6e9ea73b6eed9ec697c610524fcba73b63327d0176b6944e0936f1bdf4"
             },
             {
               "host": "arm64-linux-gnueabihf",
-              "archiveFileName": "arduinoOTA_1.4.0_Linux_ARM64.tar.gz",
-              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.0_Linux_ARM64.tar.gz",
-              "size": "3649252",
-              "checksum": "SHA-256:98e311c3e84a7fa7403d52d33fcd67ee90ba816b9628379f65446e259e3197b2"
+              "archiveFileName": "arduinoOTA_1.4.1_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduinoOTA/arduinoOTA_1.4.1_Linux_ARM64.tar.gz",
+              "size": "3648820",
+              "checksum": "SHA-256:01081746bc8ec0ae879c89b518301937b2040abfb13c0e3f43e182de47edbbf7"
             }
           ]
         },
@@ -10828,6 +11956,54 @@
               "archiveFileName": "bossac-1.9.1-arduino2-linuxaarch64.tar.gz",
               "checksum": "SHA-256:c167fa0ea223966f4d21f5592da3888bcbfbae385be6c5c4e41f8abff35f5cb1",
               "size": "442853"
+            }
+          ]
+        },
+        {
+          "name": "bossac",
+          "version": "1.9.1-arduino5",
+          "systems": [
+            {
+              "host": "i386-apple-darwin11",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino5-osx.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino5-osx.tar.gz",
+              "size": "47862",
+              "checksum": "SHA-256:c76eae00874a44265029b452303fb355e9ffa006e7ba214ca7ae01b1416867da"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino5-linuxaarch64.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino5-linuxaarch64.tar.gz",
+              "size": "442901",
+              "checksum": "SHA-256:f91dbbe90d57dd8074cd9b0ca7a2f5d41ee71bdf15e9bfd68bf2048a08e4a286"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino5-linuxarm.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino5-linuxarm.tar.gz",
+              "size": "362365",
+              "checksum": "SHA-256:a0680ac5067ca8134f28fd7f86320d4c3099c782cefecd2e9b1edfde57f5947b"
+            },
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino5-linux64.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino5-linux64.tar.gz",
+              "size": "399674",
+              "checksum": "SHA-256:ef80d247c431db2686a3e6728cb4897b708b92cd67687100c125684f3c12fc80"
+            },
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino5-linux32.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino5-linux32.tar.gz",
+              "size": "385086",
+              "checksum": "SHA-256:d9c7ddab312bfc330ed7a98916ffa2c7a9c44798863ce1f4467fb240abc1830a"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino5-windows.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino5-windows.tar.gz",
+              "size": "1260650",
+              "checksum": "SHA-256:99e1982cf29600152e1c89b3389c1b4ce853201491ed52a12b4a327200cc6af0"
             }
           ]
         },
@@ -11805,6 +12981,54 @@
               "archiveFileName": "dfu-util-0.11.0-arduino3-windows.tar.bz2",
               "size": "635719",
               "checksum": "SHA-256:7dccfadc260c5b13f7267fcd9ed610571bc74f6f64a85c20541c9ae48a1833b3"
+            }
+          ]
+        },
+        {
+          "name": "dfu-util",
+          "version": "0.11.0-arduino5",
+          "systems": [
+            {
+              "host": "i386-apple-darwin11",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.11-arduino5-darwin_amd64.tar.gz",
+              "archiveFileName": "dfu-util-0.11-arduino5-darwin_amd64.tar.gz",
+              "size": "72429",
+              "checksum": "SHA-256:9e576c6e44f54b1e921a43ea77bcc08ec99e0e4e0905f4b9acf9ab2c979f0a22"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.11-arduino5-linux_arm.tar.gz",
+              "archiveFileName": "dfu-util-0.11-arduino5-linux_arm.tar.gz",
+              "size": "2512819",
+              "checksum": "SHA-256:acd4bd283fd408515279a44dd830499ad37b0767e8f2fde5c27e878ded909dc3"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.11-arduino5-linux_arm64.tar.gz",
+              "archiveFileName": "dfu-util-0.11-arduino5-linux_arm64.tar.gz",
+              "size": "2607592",
+              "checksum": "SHA-256:b3f46a65da0c2fed2449dc5a3351c3c74953a868aa7f8d99ba2bb8c418344fe9"
+            },
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.11-arduino5-linux_amd64.tar.gz",
+              "archiveFileName": "dfu-util-0.11-arduino5-linux_amd64.tar.gz",
+              "size": "2283425",
+              "checksum": "SHA-256:96c64c278561af806b585c123c85748926ad02b1aedc07e5578ca9bee2be0d2a"
+            },
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.11-arduino5-linux_386.tar.gz",
+              "archiveFileName": "dfu-util-0.11-arduino5-linux_386.tar.gz",
+              "size": "2524406",
+              "checksum": "SHA-256:9a707692261e5710ed79a6d8a4031ffd0bfe1e585216569934346e9b2d68d0c2"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.11-arduino5-windows_386.tar.gz",
+              "archiveFileName": "dfu-util-0.11-arduino5-windows_386.tar.gz",
+              "size": "571340",
+              "checksum": "SHA-256:6451e16bf77600fe2436c8708ab4b75077c49997cf8bedf03221d9d6726bb641"
             }
           ]
         },
@@ -13394,6 +14618,68 @@
           ]
         },
         {
+          "name": "arduino-fwuploader",
+          "version": "2.3.0",
+          "systems": [
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.3.0_Linux_32bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.3.0_Linux_32bit.tar.gz",
+              "checksum": "SHA-256:39a40bb1ad2bfd76ca72fbee458da1ef70228a4a7ea823bef451660f896ceb10",
+              "size": "9774627"
+            },
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.3.0_Linux_64bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.3.0_Linux_64bit.tar.gz",
+              "checksum": "SHA-256:7ade445af7eddb28a0d38c27a53e93e06b735b79db2cefe5fb7a530bcc2b926a",
+              "size": "9903881"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.3.0_Windows_32bit.zip",
+              "archiveFileName": "arduino-fwuploader_2.3.0_Windows_32bit.zip",
+              "checksum": "SHA-256:22a6ef6120a26d3dd88921ca51a604fb7e10ac84d56a8c342ac476adfb48c650",
+              "size": "9973184"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.3.0_Windows_64bit.zip",
+              "archiveFileName": "arduino-fwuploader_2.3.0_Windows_64bit.zip",
+              "checksum": "SHA-256:d54b12c20ad5d8eb169a1ce7dfd3a67c3953b816326327ed8a216a9232e47d14",
+              "size": "9963033"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.3.0_macOS_64bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.3.0_macOS_64bit.tar.gz",
+              "checksum": "SHA-256:b528b535a770e7f434b090dc754187475a5998cf9968493ceda13331974ecae6",
+              "size": "9921559"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.3.0_macOS_ARM64.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.3.0_macOS_ARM64.tar.gz",
+              "checksum": "SHA-256:925af0ab0ca333f67f24c498a3e450ab4e33da03165b5a2b421a202073fbbedc",
+              "size": "9382790"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.3.0_Linux_ARMv6.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.3.0_Linux_ARMv6.tar.gz",
+              "checksum": "SHA-256:daf5bf02069a12bbc5b91e0fa6340655293a678b48be1e08d5f6cfdd672e1c66",
+              "size": "9366809"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.3.0_Linux_ARM64.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.3.0_Linux_ARM64.tar.gz",
+              "checksum": "SHA-256:7ca3807154342590abce0d6d0f560bfc721cc3f2d3af478ca64102174188827f",
+              "size": "9267889"
+            }
+          ]
+        },
+        {
           "name": "nrf5x-cl-tools",
           "version": "9.3.1",
           "systems": [
@@ -13424,6 +14710,246 @@
               "archiveFileName": "nRF5x-Command-Line-Tools_9_3_1_Win32.tar.bz2",
               "size": "812257",
               "checksum": "SHA-256:a4467350e39314690cec2e96b80e7e3cab463c84eff9b81593ad57754d76ee00"
+            }
+          ]
+        },
+        {
+          "name": "espflash",
+          "version": "2.0.0",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "espflash_2.0.0_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/espflash_2.0.0_Linux_64bit.tar.gz",
+              "size": 3168742,
+              "checksum": "SHA-256:b234547df8a08339e461d0aab8130c344be6c48279642fac92bfe77084a5f0f9"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "archiveFileName": "espflash_2.0.0_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/tools/espflash_2.0.0_Windows_64bit.zip",
+              "size": 2898625,
+              "checksum": "SHA-256:8e6c5f6a39bd5358663766417e676dcc7236c8d5ab57bb51760c20bc99f394e1"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "espflash_2.0.0_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/espflash_2.0.0_macOS_64bit.tar.gz",
+              "size": 2847601,
+              "checksum": "SHA-256:f5a7b65f679b2c4ad6d30af02377f6c0bdf3c2e20d32cbc3e5ac1af95cd8f0fd"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "espflash_2.0.0_Linux_ARMv7.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/espflash_2.0.0_Linux_ARMv7.tar.gz",
+              "size": 2709225,
+              "checksum": "SHA-256:9c3df96c360e978186b44007667ca6e7c3d5a5104f7eb855fc212b3840e4805a"
+            },
+            {
+              "host": "arm64-linux-gnueabihf",
+              "archiveFileName": "espflash_2.0.0_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/espflash_2.0.0_Linux_ARM64.tar.gz",
+              "size": 2955417,
+              "checksum": "SHA-256:19532401fffd22e9b67de09c92a1eddd65aa2b47b369292aae844665198dd852"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "archiveFileName": "espflash_2.0.0_macOS_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/espflash_2.0.0_macOS_ARM64.tar.gz",
+              "size": 2802102,
+              "checksum": "SHA-256:362db4880b2e46a758b0a223e0a4ed25faf1747dc4546f5ee50d9d33bab64966"
+            }
+          ]
+        },
+        {
+          "name": "esptool",
+          "version": "3.3.3",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "esptool_3.3.3_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/esptool_3.3.3_Linux_64bit.tar.gz",
+              "size": 12850181,
+              "checksum": "SHA-256:bdcab463fe2d1eb65d4d0d575ac2be2efbef470994998021a99bd8fe63853335"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "archiveFileName": "esptool_3.3.3_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/tools/esptool_3.3.3_Windows_64bit.zip",
+              "size": 6347021,
+              "checksum": "SHA-256:b12354d11596397d3a84970d16c9267d6f5770fba5c75d78e1adfc5a7088f4de"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "esptool_3.3.3_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/esptool_3.3.3_macOS_64bit.tar.gz",
+              "size": 5787840,
+              "checksum": "SHA-256:302e547fe2aa222cbbd67aaf2126ac451f48d1eff46d30f0454613d22e8c2a21"
+            }
+          ]
+        },
+        {
+          "name": "esptool",
+          "version": "4.6.2",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "esptool_4.6.2_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/esptool_4.6.2_Linux_64bit.tar.gz",
+              "size": 13034467,
+              "checksum": "SHA-256:e29437dfbd12b025cd5e23d724481b6262f5b8fb75ce2fa5d0498a4cf65eca95"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "archiveFileName": "esptool_4.6.2_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/tools/esptool_4.6.2_Windows_64bit.zip",
+              "size": 6400257,
+              "checksum": "SHA-256:a103423b367c5dcb7343e1093f4a1a9ff041ca95756919c2b9c91ad2f312294d"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "esptool_4.6.2_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/esptool_4.6.2_macOS_64bit.tar.gz",
+              "size": 5859915,
+              "checksum": "SHA-256:546e964c0012d5e708985d70f5a7ff081219dff332c9f49eebec6b16c26a37a9"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "esptool_4.6.2_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/esptool_4.6.2_Linux_ARMv6.tar.gz",
+              "size": 9659362,
+              "checksum": "SHA-256:d5efb2b80ad21157228cbca43e13d9187a9dc12b944a3c63d69e9139e424568b"
+            },
+            {
+              "host": "arm64-linux-gnueabihf",
+              "archiveFileName": "esptool_4.6.2_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/esptool_4.6.2_Linux_ARM64.tar.gz",
+              "size": 10221768,
+              "checksum": "SHA-256:33e1f2edb04def19e17f8ffa1cd37f9638ecccae8c05f95e54667e44496bd28d"
+            }
+          ]
+        },
+        {
+          "name": "uno-r4-wifi-fwuploader-plugin",
+          "version": "1.0.0",
+          "systems": [
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/uno-r4-wifi-fwuploader-plugin_1.0.0_Linux_32bit.tar.gz",
+              "archiveFileName": "uno-r4-wifi-fwuploader-plugin_1.0.0_Linux_32bit.tar.gz",
+              "checksum": "SHA-256:3a0cf3a35d2cb5afd046e60c441cb58805b2cac4e49fd9da57f95c80283ced55",
+              "size": "4804225"
+            },
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/uno-r4-wifi-fwuploader-plugin_1.0.0_Linux_64bit.tar.gz",
+              "archiveFileName": "uno-r4-wifi-fwuploader-plugin_1.0.0_Linux_64bit.tar.gz",
+              "checksum": "SHA-256:f17f088b6dfa5e292b9350c76c56aeb465d2b4acbd866815a13f947e23342a1f",
+              "size": "4856595"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/uno-r4-wifi-fwuploader-plugin_1.0.0_Windows_32bit.zip",
+              "archiveFileName": "uno-r4-wifi-fwuploader-plugin_1.0.0_Windows_32bit.zip",
+              "checksum": "SHA-256:e49eb41199c2fa6751448265ba9dbbe41f5b8a544f982d7d36a7746dca746565",
+              "size": "5074405"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/uno-r4-wifi-fwuploader-plugin_1.0.0_Windows_64bit.zip",
+              "archiveFileName": "uno-r4-wifi-fwuploader-plugin_1.0.0_Windows_64bit.zip",
+              "checksum": "SHA-256:2b9aade645b1fb753a8120fbaec747d6b8fddf1fc3dd13e6147ba078765a92cf",
+              "size": "5085458"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/uno-r4-wifi-fwuploader-plugin_1.0.0_macOS_64bit.tar.gz",
+              "archiveFileName": "uno-r4-wifi-fwuploader-plugin_1.0.0_macOS_64bit.tar.gz",
+              "checksum": "SHA-256:f5334ee385e47735121ae568a31ca03dc0603da1132f2ec4316bf904eedc72de",
+              "size": "5426761"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/uno-r4-wifi-fwuploader-plugin_1.0.0_macOS_ARM64.tar.gz",
+              "archiveFileName": "uno-r4-wifi-fwuploader-plugin_1.0.0_macOS_ARM64.tar.gz",
+              "checksum": "SHA-256:e47af33debce4b476047f5789d62d253401ba91c4633e1c4569652031bcb9c38",
+              "size": "4782730"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/uno-r4-wifi-fwuploader-plugin_1.0.0_Linux_ARMv6.tar.gz",
+              "archiveFileName": "uno-r4-wifi-fwuploader-plugin_1.0.0_Linux_ARMv6.tar.gz",
+              "checksum": "SHA-256:ce645ca45773d9297d1b4c3f8a5a3572c019c7279b5d7d671f03a1ba1acde951",
+              "size": "4566072"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/uno-r4-wifi-fwuploader-plugin_1.0.0_Linux_ARM64.tar.gz",
+              "archiveFileName": "uno-r4-wifi-fwuploader-plugin_1.0.0_Linux_ARM64.tar.gz",
+              "checksum": "SHA-256:d021c9981fc3d91b6c5ffc449ddb8364d263d2c73c0c3c54c05eab3274b646c6",
+              "size": "4460245"
+            }
+          ]
+        },
+        {
+          "name": "nina-fwuploader-plugin",
+          "version": "1.0.0",
+          "systems": [
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/nina-fwuploader-plugin/nina-fwuploader-plugin_1.0.0_Linux_32bit.tar.gz",
+              "archiveFileName": "nina-fwuploader-plugin_1.0.0_Linux_32bit.tar.gz",
+              "checksum": "SHA-256:a14f0e876628865c78decf816b71d61844cd621e18d111ca0af3d6f0cd686210",
+              "size": "4620524"
+            },
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/nina-fwuploader-plugin/nina-fwuploader-plugin_1.0.0_Linux_64bit.tar.gz",
+              "archiveFileName": "nina-fwuploader-plugin_1.0.0_Linux_64bit.tar.gz",
+              "checksum": "SHA-256:11eeb6b078eba2dcbe4b8ab187221cb5e0528c6b67fcc927ea75fc8d204d6354",
+              "size": "4724967"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/nina-fwuploader-plugin/nina-fwuploader-plugin_1.0.0_Windows_32bit.zip",
+              "archiveFileName": "nina-fwuploader-plugin_1.0.0_Windows_32bit.zip",
+              "checksum": "SHA-256:c3aa316f4c07c8d7469b3c993d0e7dd7e3d98c0e82a55638ea69ca9526a15961",
+              "size": "4842900"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/nina-fwuploader-plugin/nina-fwuploader-plugin_1.0.0_Windows_64bit.zip",
+              "archiveFileName": "nina-fwuploader-plugin_1.0.0_Windows_64bit.zip",
+              "checksum": "SHA-256:ab958c206c883c3eebf7b9241dfc9fbbdf34d1961abb5bc55d5f257f4d815175",
+              "size": "4926670"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/nina-fwuploader-plugin/nina-fwuploader-plugin_1.0.0_macOS_64bit.tar.gz",
+              "archiveFileName": "nina-fwuploader-plugin_1.0.0_macOS_64bit.tar.gz",
+              "checksum": "SHA-256:6418cdb8684fc7ea8724526bfd1a7f5568f8a59c58c65a5953441e1aa7f10d5b",
+              "size": "4688967"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/nina-fwuploader-plugin/nina-fwuploader-plugin_1.0.0_macOS_ARM64.tar.gz",
+              "archiveFileName": "nina-fwuploader-plugin_1.0.0_macOS_ARM64.tar.gz",
+              "checksum": "SHA-256:25fc6732197453f1b9fd054c15a60907fb88a15b394b8443a7e50a1d9f69e474",
+              "size": "4478600"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/nina-fwuploader-plugin/nina-fwuploader-plugin_1.0.0_Linux_ARMv6.tar.gz",
+              "archiveFileName": "nina-fwuploader-plugin_1.0.0_Linux_ARMv6.tar.gz",
+              "checksum": "SHA-256:1ae067a6bd9e1797f741bcbd9068f69ac22bfd6eff08d319197333a5a4d857f8",
+              "size": "4457747"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/nina-fwuploader-plugin/nina-fwuploader-plugin_1.0.0_Linux_ARM64.tar.gz",
+              "archiveFileName": "nina-fwuploader-plugin_1.0.0_Linux_ARM64.tar.gz",
+              "checksum": "SHA-256:8a6fd11271329fd06a0690a3798b8bb74ce4b2e983064f84d71246f1f824841f",
+              "size": "4451720"
             }
           ]
         }
@@ -13763,6 +15289,48 @@
             {
               "packager": "Intel",
               "version": "2.0.1",
+              "name": "arduino101load"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.9.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "Intel",
+              "version": "1.6.9+1.0.1",
+              "name": "arc-elf32"
+            },
+            {
+              "packager": "Intel",
+              "version": "0.9.0+0.1",
+              "name": "openocd"
+            },
+            {
+              "packager": "Intel",
+              "version": "2.0.0",
+              "name": "flashpack"
+            }
+          ]
+        },
+        {
+          "name": "Intel Curie Boards",
+          "version": "2.0.6",
+          "category": "Arduino Certified",
+          "archiveFileName": "corelibs-arduino101-2.0.5.zip",
+          "architecture": "arc32",
+          "url": "https://github.com/arduino/ArduinoCore-arc32/archive/2.0.5.zip",
+          "checksum": "SHA-256:afc71056b6df11d69bb8c8204cb28e65ad557b611a42a180de682c520c7311f9",
+          "size": "6247928",
+          "boards": [
+            {
+              "name": "Arduino 101"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "Intel",
+              "version": "2.3.0",
               "name": "arduino101load"
             },
             {
@@ -14215,6 +15783,68 @@
               "archiveFileName": "arduino101load-2.1.0-windows_386.tar.bz2",
               "size": "1078361",
               "checksum": "SHA-256:32ff223937fbf747f1c552256627dfcb8eeccb4903342a9e8ac8b3e6d89cb4a7"
+            }
+          ]
+        },
+        {
+          "name": "arduino101load",
+          "version": "2.3.0",
+          "systems": [
+            {
+              "host": "i686-pc-linux-gnu",
+              "archiveFileName": "arduino101load_2.3.0_Linux_32bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduino101load_2.3.0_Linux_32bit.tar.gz",
+              "size": 1841143,
+              "checksum": "SHA-256:6f9c28922510fc2e12af775004ff24f3e46c97969e2ef9747ccd3b7f1f18f5f6"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "arduino101load_2.3.0_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduino101load_2.3.0_Linux_64bit.tar.gz",
+              "size": 1877169,
+              "checksum": "SHA-256:3c82dd345a9c8bce8c6b04d981bcc26631392af0bb812b284fd239a9ab3cb34a"
+            },
+            {
+              "host": "i686-mingw32",
+              "archiveFileName": "arduino101load_2.3.0_Windows_32bit.zip",
+              "url": "https://downloads.arduino.cc/tools/arduino101load_2.3.0_Windows_32bit.zip",
+              "size": 1388457,
+              "checksum": "SHA-256:1642a1c9e4d83024a175be2135ab271a567a21cf15c2f3005869b61ffea9e439"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "archiveFileName": "arduino101load_2.3.0_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/tools/arduino101load_2.3.0_Windows_64bit.zip",
+              "size": 1416557,
+              "checksum": "SHA-256:faaa058f02f787dc98cbe5e74cfae5f87236c8cb09c9e792992c1cb8ec9a270c"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "arduino101load_2.3.0_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduino101load_2.3.0_macOS_64bit.tar.gz",
+              "size": 1844645,
+              "checksum": "SHA-256:54775545fca4af611a9c191c37223b9905f1feea6333997be98c6faa56dd426b"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "arduino101load_2.3.0_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduino101load_2.3.0_Linux_ARMv6.tar.gz",
+              "size": 1785643,
+              "checksum": "SHA-256:32b3c7c4ce654429bc1a8c6a8ff621ec032766b5dd03c4ef827509b335722a30"
+            },
+            {
+              "host": "arm64-linux-gnueabihf",
+              "archiveFileName": "arduino101load_2.3.0_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduino101load_2.3.0_Linux_ARM64.tar.gz",
+              "size": 1779096,
+              "checksum": "SHA-256:26f85c5b1e7802fe470f3a18b1c901aaff2d06099fc8dd3f144305f62da6bbaa"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "archiveFileName": "arduino101load_2.3.0_macOS_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/tools/arduino101load_2.3.0_macOS_ARM64.tar.gz",
+              "size": 1802446,
+              "checksum": "SHA-256:24ae0a99dfde2bc07054a45f7f5fb8d64e7edf811570ae9f9eea0acdfe97358e"
             }
           ]
         },
@@ -14897,221 +16527,249 @@
         },
         {
           "name": "serial-discovery",
-          "version": "1.3.2",
+          "version": "1.3.5",
           "systems": [
             {
               "host": "i686-pc-linux-gnu",
-              "archiveFileName": "serial-discovery_v1.3.2_Linux_32bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.2_Linux_32bit.tar.gz",
-              "size": 1588777,
-              "checksum": "SHA-256:86890adaedf38bcb62ceba904f94fb383ee7e9524d8d767bf3bb8032f0f4ca3f"
+              "archiveFileName": "serial-discovery_v1.3.5_Linux_32bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.5_Linux_32bit.tar.gz",
+              "size": 1609017,
+              "checksum": "SHA-256:106b892ec712b78f3a63a7f9b189e941d94e66bee294b2247da8e7fbdc8a2a7f"
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "archiveFileName": "serial-discovery_v1.3.2_Linux_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.2_Linux_64bit.tar.gz",
-              "size": 1630523,
-              "checksum": "SHA-256:a18efd5eb4c085131ea2df63c10cb0df0e1b6d0de38761a71e94cb0fa40a08c3"
+              "archiveFileName": "serial-discovery_v1.3.5_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.5_Linux_64bit.tar.gz",
+              "size": 1653015,
+              "checksum": "SHA-256:0e9c734dff3240b020502d11e1aaec9da807d7ed9f8cd5d5c1e00057c915124c"
             },
             {
               "host": "i686-mingw32",
-              "archiveFileName": "serial-discovery_v1.3.2_Windows_32bit.zip",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.2_Windows_32bit.zip",
-              "size": 1814067,
-              "checksum": "SHA-256:03045731c39009d99e1527f4127cc2595e434d923eccef025f5d5fdd82b2803d"
+              "archiveFileName": "serial-discovery_v1.3.5_Windows_32bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.5_Windows_32bit.zip",
+              "size": 1830592,
+              "checksum": "SHA-256:577c2ea211cbd629aab28060af88b99590404b80a1f95a03ee2b540ebc875f4d"
             },
             {
               "host": "x86_64-mingw32",
-              "archiveFileName": "serial-discovery_v1.3.2_Windows_64bit.zip",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.2_Windows_64bit.zip",
-              "size": 1843894,
-              "checksum": "SHA-256:94ef68fb35d9ffed75f1c46607932d614d3d5b4722faf69487c6d433f7374868"
+              "archiveFileName": "serial-discovery_v1.3.5_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.5_Windows_64bit.zip",
+              "size": 1862214,
+              "checksum": "SHA-256:beec99c4d62febd72fb21c991dbf848177443dbfac5cf8bb777706623213ce07"
             },
             {
               "host": "x86_64-apple-darwin",
-              "archiveFileName": "serial-discovery_v1.3.2_macOS_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.2_macOS_64bit.tar.gz",
-              "size": 1699050,
-              "checksum": "SHA-256:369e84d34cdee39277e840e7bdaf8393f3c10eefbd9934c9535cf57c4aaa3b20"
+              "archiveFileName": "serial-discovery_v1.3.5_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.5_macOS_64bit.tar.gz",
+              "size": 1700584,
+              "checksum": "SHA-256:733a1a86bad22312e132ef2cc084912a57572a8fea7d08c85599e8c7cb040687"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "archiveFileName": "serial-discovery_v1.3.5_macOS_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.5_macOS_ARM64.tar.gz",
+              "size": 1601071,
+              "checksum": "SHA-256:a60933479a4d4924081678a100b5feaa570f37a7bc7e4535625e1a5c7d789723"
             },
             {
               "host": "arm-linux-gnueabihf",
-              "archiveFileName": "serial-discovery_v1.3.2_Linux_ARMv6.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.2_Linux_ARMv6.tar.gz",
-              "size": 1531250,
-              "checksum": "SHA-256:89ccc9bd3d22cfc1eec242fe00a34da2cba29c0008eb34d36509aea2c5a2819f"
+              "archiveFileName": "serial-discovery_v1.3.5_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.5_Linux_ARMv6.tar.gz",
+              "size": 1551631,
+              "checksum": "SHA-256:e3ff4833a7e22224d52cf64e58793f909bca9f1a0c73ee407110502754eac833"
             },
             {
               "host": "arm64-linux-gnueabihf",
-              "archiveFileName": "serial-discovery_v1.3.2_Linux_ARM64.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.2_Linux_ARM64.tar.gz",
-              "size": 1531863,
-              "checksum": "SHA-256:3209edd3dd783d6d9b8c7957a83fb0315648b9c45b916c6a8297d2e247816206"
+              "archiveFileName": "serial-discovery_v1.3.5_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.5_Linux_ARM64.tar.gz",
+              "size": 1553486,
+              "checksum": "SHA-256:c04abe516a79fda049ee126502d884e0205f1c83f0c7e506a2d36f983868ee49"
             }
           ]
         },
         {
           "name": "serial-discovery",
-          "version": "1.3.3",
+          "version": "1.4.0",
           "systems": [
             {
               "host": "i686-pc-linux-gnu",
-              "archiveFileName": "serial-discovery_v1.3.3_Linux_32bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.3_Linux_32bit.tar.gz",
-              "size": 1609379,
-              "checksum": "SHA-256:c23440a440d3f31674548b7d15b1c0818acdc7cfcdc2d8e537e86f3574f9e946"
+              "archiveFileName": "serial-discovery_v1.4.0_Linux_32bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.4.0_Linux_32bit.tar.gz",
+              "size": 1682766,
+              "checksum": "SHA-256:63141b96d1cd9ec73f0fd194795cbc3ac43ea36d7495c41d4255fa5feddf041c"
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "archiveFileName": "serial-discovery_v1.3.3_Linux_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.3_Linux_64bit.tar.gz",
-              "size": 1652976,
-              "checksum": "SHA-256:a2b6a4a91328c6b870af5027eb098715a3c409abe3ad224a346ce31dfa6411bb"
+              "archiveFileName": "serial-discovery_v1.4.0_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.4.0_Linux_64bit.tar.gz",
+              "size": 1707118,
+              "checksum": "SHA-256:70b5b7a264ddb3cd7b3b378879f07952e579d98073e18b922a2946139f12b136"
             },
             {
               "host": "i686-mingw32",
-              "archiveFileName": "serial-discovery_v1.3.3_Windows_32bit.zip",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.3_Windows_32bit.zip",
-              "size": 1830594,
-              "checksum": "SHA-256:e298987ef2f42d511271e6eaaaa8d17470ffa10ab98078cc4e19883e4955e875"
+              "archiveFileName": "serial-discovery_v1.4.0_Windows_32bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.4.0_Windows_32bit.zip",
+              "size": 1904579,
+              "checksum": "SHA-256:af08706f475bda318752cf287ed2684027028ec8a4319a1de73138cfa852dbc9"
             },
             {
               "host": "x86_64-mingw32",
-              "archiveFileName": "serial-discovery_v1.3.3_Windows_64bit.zip",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.3_Windows_64bit.zip",
-              "size": 1862209,
-              "checksum": "SHA-256:32dfcfd9aed393a1e047ff4dfd727e76ce4762adee2a4079c57142a3f35facd1"
+              "archiveFileName": "serial-discovery_v1.4.0_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.4.0_Windows_64bit.zip",
+              "size": 1923577,
+              "checksum": "SHA-256:c194d06d5aafdce1ed31296d8ca7db6c8f093fee65039f4db2133234a691dec6"
             },
             {
               "host": "x86_64-apple-darwin",
-              "archiveFileName": "serial-discovery_v1.3.3_macOS_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.3_macOS_64bit.tar.gz",
-              "size": 1699756,
-              "checksum": "SHA-256:31c8051c077254e633c3dc23eeaa569b404fab9f69b829eb05c24baba454466b"
+              "archiveFileName": "serial-discovery_v1.4.0_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.4.0_macOS_64bit.tar.gz",
+              "size": 1748706,
+              "checksum": "SHA-256:acb2a9058314cef6d12c67c1660db06e06d90def15f9b9546350ba87839b151d"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "archiveFileName": "serial-discovery_v1.4.0_macOS_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.4.0_macOS_ARM64.tar.gz",
+              "size": 1649820,
+              "checksum": "SHA-256:f50435404e1e3676826f30ad82a9399cdc53c501dd7dbc5a43ca28072f9284fb"
             },
             {
               "host": "arm-linux-gnueabihf",
-              "archiveFileName": "serial-discovery_v1.3.3_Linux_ARMv6.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.3_Linux_ARMv6.tar.gz",
-              "size": 1552724,
-              "checksum": "SHA-256:7e7d78f7af31b6c1c5fb78c8fd18c6fe6396bdeacb8736bfd86b3726557f6f93"
+              "archiveFileName": "serial-discovery_v1.4.0_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.4.0_Linux_ARMv6.tar.gz",
+              "size": 1618663,
+              "checksum": "SHA-256:5c37b72feb4288f7a87b5c191c603164c00fca48cc115a1616cca1093f89830b"
             },
             {
               "host": "arm64-linux-gnueabihf",
-              "archiveFileName": "serial-discovery_v1.3.3_Linux_ARM64.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.3.3_Linux_ARM64.tar.gz",
-              "size": 1553452,
-              "checksum": "SHA-256:4a849a6cc57de939c5b65921aec852e49a2945a6e727c503df1cbb33772c68c9"
+              "archiveFileName": "serial-discovery_v1.4.0_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.4.0_Linux_ARM64.tar.gz",
+              "size": 1605635,
+              "checksum": "SHA-256:7d694e122e1aa0d1365b5ab3aea809bd265b23de40dd304fe88026d5955eedeb"
             }
           ]
         },
         {
           "name": "mdns-discovery",
-          "version": "1.0.6",
+          "version": "1.0.8",
           "systems": [
             {
               "host": "i686-pc-linux-gnu",
-              "archiveFileName": "mdns-discovery_v1.0.6_Linux_32bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.6_Linux_32bit.tar.gz",
-              "size": 2395184,
-              "checksum": "SHA-256:0bee82c1020e7d5f2b6c89a6f61890c7314f755fb3a1be8d124890f9c43912e4"
+              "archiveFileName": "mdns-discovery_v1.0.8_Linux_32bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.8_Linux_32bit.tar.gz",
+              "size": 2394423,
+              "checksum": "SHA-256:f1a60ab5f36f44b4da28b6b0a24be0393d4837fe1c5efd497c8c393875d43fe7"
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "archiveFileName": "mdns-discovery_v1.0.6_Linux_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.6_Linux_64bit.tar.gz",
-              "size": 2468081,
-              "checksum": "SHA-256:7fc938a4d5c3c96e62d071d98b72bbdf45c8f92c399636ba78f8d67c4e78324f"
+              "archiveFileName": "mdns-discovery_v1.0.8_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.8_Linux_64bit.tar.gz",
+              "size": 2466642,
+              "checksum": "SHA-256:4c12164afac6c9ea0f611fd63fccacd5465084e9d0b5ea741be6ccda415c033b"
             },
             {
               "host": "i686-mingw32",
-              "archiveFileName": "mdns-discovery_v1.0.6_Windows_32bit.zip",
-              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.6_Windows_32bit.zip",
-              "size": 2588028,
-              "checksum": "SHA-256:892b19cd795a22a29f52d94118198134be214cc1e2a75f90ae09b04c6582d2ce"
+              "archiveFileName": "mdns-discovery_v1.0.8_Windows_32bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.8_Windows_32bit.zip",
+              "size": 2588024,
+              "checksum": "SHA-256:272d722fd786473c09f11913ece90288828e3fbc8979cdc704a1b82d777af166"
             },
             {
               "host": "x86_64-mingw32",
-              "archiveFileName": "mdns-discovery_v1.0.6_Windows_64bit.zip",
-              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.6_Windows_64bit.zip",
-              "size": 2633871,
-              "checksum": "SHA-256:8f0fa04089c44536360714eb2881b40cf773bf4af17604b6a93b1dab211aa8bc"
+              "archiveFileName": "mdns-discovery_v1.0.8_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.8_Windows_64bit.zip",
+              "size": 2633875,
+              "checksum": "SHA-256:f100e822c89d765abb2eddaab62e8fcd254b545e58a2242bf9c06fb6ca1d6250"
             },
             {
               "host": "x86_64-apple-darwin",
-              "archiveFileName": "mdns-discovery_v1.0.6_macOS_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.6_macOS_64bit.tar.gz",
-              "size": 2418658,
-              "checksum": "SHA-256:211a02f641c9eeb9bd2d8f2efe5f980ec5c2271a224424a60916fac033d65454"
+              "archiveFileName": "mdns-discovery_v1.0.8_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.8_macOS_64bit.tar.gz",
+              "size": 2417751,
+              "checksum": "SHA-256:73cf482b67060078c9a66c359ce15ad40bb3ce07d5b5ba9dc261e0cc533058ac"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "archiveFileName": "mdns-discovery_v1.0.8_macOS_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.8_macOS_ARM64.tar.gz",
+              "size": 2350031,
+              "checksum": "SHA-256:3d75924b21ca2af697daae9b6bcd731f3d29cf5f48cef5d832673f571ca077c6"
             },
             {
               "host": "arm-linux-gnueabihf",
-              "archiveFileName": "mdns-discovery_v1.0.6_Linux_ARMv6.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.6_Linux_ARMv6.tar.gz",
-              "size": 2298815,
-              "checksum": "SHA-256:51be90c06202e8a744909f74076eef05e6d25ac83b7645d1d101981bc79d20d5"
+              "archiveFileName": "mdns-discovery_v1.0.8_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.8_Linux_ARMv6.tar.gz",
+              "size": 2298060,
+              "checksum": "SHA-256:53a79890d80fa780927ad65093986084ac6fd34026513bb52114d86293594a0e"
             },
             {
               "host": "arm64-linux-gnueabihf",
-              "archiveFileName": "mdns-discovery_v1.0.6_Linux_ARM64.tar.gz",
-              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.6_Linux_ARM64.tar.gz",
-              "size": 2301721,
-              "checksum": "SHA-256:334ab7f295ff02a98f523b20e1007fb31fab24c064618ac196d2fcbf2ee35dc0"
+              "archiveFileName": "mdns-discovery_v1.0.8_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.8_Linux_ARM64.tar.gz",
+              "size": 2301888,
+              "checksum": "SHA-256:31d3e205b9a978daa9de2706d988bbec80f4a0992980a594531d62a9b712afc8"
             }
           ]
         },
         {
-          "name": "serial-monitor",
-          "version": "0.11.0",
+          "name": "mdns-discovery",
+          "version": "1.0.9",
           "systems": [
             {
               "host": "i686-pc-linux-gnu",
-              "archiveFileName": "serial-monitor_v0.11.0_Linux_32bit.tar.gz",
-              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.11.0_Linux_32bit.tar.gz",
-              "size": 1933805,
-              "checksum": "SHA-256:717a63536d9d7e7bbd6a69dbb6480f93e31faf1ac2623ae0a37cf6c9de62f003"
+              "archiveFileName": "mdns-discovery_v1.0.9_Linux_32bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.9_Linux_32bit.tar.gz",
+              "size": 2386191,
+              "checksum": "SHA-256:560f81857f4ae7f9cbce4c1b5922681f0a78a655b75449c79ba7bc5a6e31fa00"
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "archiveFileName": "serial-monitor_v0.11.0_Linux_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.11.0_Linux_64bit.tar.gz",
-              "size": 1981196,
-              "checksum": "SHA-256:673eae331640df39262a4951d09c5e662577b8a7dbe4a210ab04d93d58f3c382"
+              "archiveFileName": "mdns-discovery_v1.0.9_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.9_Linux_64bit.tar.gz",
+              "size": 2458409,
+              "checksum": "SHA-256:a4bf9e46a15487ec729f98c23f05b2d772feaa82789c1d12a485be9acb77b48a"
             },
             {
               "host": "i686-mingw32",
-              "archiveFileName": "serial-monitor_v0.11.0_Windows_32bit.zip",
-              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.11.0_Windows_32bit.zip",
-              "size": 1961590,
-              "checksum": "SHA-256:372f09337fc65eae351982547b6ad6e0488e967cd06357f4d2b84be300e4464c"
+              "archiveFileName": "mdns-discovery_v1.0.9_Windows_32bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.9_Windows_32bit.zip",
+              "size": 2587871,
+              "checksum": "SHA-256:fcc0b8e1ada4a14509947c056333e0db66e1a448bfcd2735b4e05a8d4a56db3c"
             },
             {
               "host": "x86_64-mingw32",
-              "archiveFileName": "serial-monitor_v0.11.0_Windows_64bit.zip",
-              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.11.0_Windows_64bit.zip",
-              "size": 1991929,
-              "checksum": "SHA-256:f8dcd149c81a3a7863efb763d54dd1535dd57faab7e6ce9bbc69b8dd061d0311"
+              "archiveFileName": "mdns-discovery_v1.0.9_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.9_Windows_64bit.zip",
+              "size": 2633749,
+              "checksum": "SHA-256:67523361a8f173d4f134092b9092765f32cef3c6d19735287f913dfeb0a97572"
             },
             {
               "host": "x86_64-apple-darwin",
-              "archiveFileName": "serial-monitor_v0.11.0_macOS_64bit.tar.gz",
-              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.11.0_macOS_64bit.tar.gz",
-              "size": 1881036,
-              "checksum": "SHA-256:df5743eeba156f891ecd44341de064c23ba1e96e436e8d91ba924e3d23f0ac36"
+              "archiveFileName": "mdns-discovery_v1.0.9_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.9_macOS_64bit.tar.gz",
+              "size": 2477992,
+              "checksum": "SHA-256:489b25ed06bd4e5150a66a396db3f0def76ad30fc08572506c215ed600c97a3e"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "archiveFileName": "mdns-discovery_v1.0.9_macOS_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.9_macOS_ARM64.tar.gz",
+              "size": 2370520,
+              "checksum": "SHA-256:b13afa80c12e6faecc61e05901fce1649254997ed26d61e6c4a446b3a41c3b6d"
             },
             {
               "host": "arm-linux-gnueabihf",
-              "archiveFileName": "serial-monitor_v0.11.0_Linux_ARMv6.tar.gz",
-              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.11.0_Linux_ARMv6.tar.gz",
-              "size": 1864559,
-              "checksum": "SHA-256:5cf5640dfb13abd46629742b3f14c5d543726ba0d52a337b6959cf92a9ad5823"
+              "archiveFileName": "mdns-discovery_v1.0.9_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.9_Linux_ARMv6.tar.gz",
+              "size": 2292400,
+              "checksum": "SHA-256:dbb8918582efedab947a5f433da9befad79f2055d467b0de05eba9009a96a598"
             },
             {
               "host": "arm64-linux-gnueabihf",
-              "archiveFileName": "serial-monitor_v0.11.0_Linux_ARM64.tar.gz",
-              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.11.0_Linux_ARM64.tar.gz",
-              "size": 1866547,
-              "checksum": "SHA-256:b2770d76722de8adf680da287a37e2dc2128f0430283935646e705da0c15e04c"
+              "archiveFileName": "mdns-discovery_v1.0.9_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.0.9_Linux_ARM64.tar.gz",
+              "size": 2293464,
+              "checksum": "SHA-256:0435fd5013c3d2958b790d3b9989f1c685c04316dcdd997298a4c489f7a2a049"
             }
           ]
         },
@@ -15167,6 +16825,992 @@
               "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.12.0_Linux_ARM64.tar.gz",
               "size": 1865881,
               "checksum": "SHA-256:93f0be57463169e7c79739d9d56c28e3892d4696803752269660b6a1cae5acf2"
+            }
+          ]
+        },
+        {
+          "name": "serial-monitor",
+          "version": "0.13.0",
+          "systems": [
+            {
+              "host": "i686-pc-linux-gnu",
+              "archiveFileName": "serial-monitor_v0.13.0_Linux_32bit.tar.gz",
+              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.13.0_Linux_32bit.tar.gz",
+              "size": 1934167,
+              "checksum": "SHA-256:65973aa96cc125d42695443b1fabd43563a03683b067d9516cf5632882f39cf8"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "serial-monitor_v0.13.0_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.13.0_Linux_64bit.tar.gz",
+              "size": 1983393,
+              "checksum": "SHA-256:f7186cc874bbbc111edb536fbad86e4263fb51b04aebd68c2d0562f5578ffc75"
+            },
+            {
+              "host": "i686-mingw32",
+              "archiveFileName": "serial-monitor_v0.13.0_Windows_32bit.zip",
+              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.13.0_Windows_32bit.zip",
+              "size": 1961314,
+              "checksum": "SHA-256:2c19a95c633e30d43473fa149ceee2ba3f43434fc658d5acf9dbeb1b0a7b814a"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "archiveFileName": "serial-monitor_v0.13.0_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.13.0_Windows_64bit.zip",
+              "size": 1991202,
+              "checksum": "SHA-256:d2658e8995b5eb1e5993894af9a051fc272df18562d7d6bd4db7bcd21aa7c9a1"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "serial-monitor_v0.13.0_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.13.0_macOS_64bit.tar.gz",
+              "size": 1880793,
+              "checksum": "SHA-256:8acbb0bdcedb507e3f5e36de476fdfef1e1b35b96cbdbe92640531d9383f0a73"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "serial-monitor_v0.13.0_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.13.0_Linux_ARMv6.tar.gz",
+              "size": 1865428,
+              "checksum": "SHA-256:17cfce3d211c31340690e16110a55da9807b94e2c882921da1205b4e11d53d4d"
+            },
+            {
+              "host": "arm64-linux-gnueabihf",
+              "archiveFileName": "serial-monitor_v0.13.0_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.13.0_Linux_ARM64.tar.gz",
+              "size": 1865413,
+              "checksum": "SHA-256:7604ba7b3eca774fb104e6e7e861f0b5d314999a2cdcc51a24a761958695e6df"
+            }
+          ]
+        },
+        {
+          "name": "dfu-discovery",
+          "version": "0.1.2",
+          "systems": [
+            {
+              "host": "i686-pc-linux-gnu",
+              "archiveFileName": "dfu-discovery_v0.1.2_Linux_32bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_Linux_32bit.tar.gz",
+              "size": 1573941,
+              "checksum": "SHA-256:64284465450f437fb3124c1950bd66ead0ab0023dcd5799ea925616a1667bd83"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "dfu-discovery_v0.1.2_Linux_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_Linux_64bit.tar.gz",
+              "size": 1731768,
+              "checksum": "SHA-256:d82649741fd6cbe369d7fe22d290efd7e28e4d6fd0b81b7b1eabff43b495b5f8"
+            },
+            {
+              "host": "i686-mingw32",
+              "archiveFileName": "dfu-discovery_v0.1.2_Windows_32bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_Windows_32bit.zip",
+              "size": 2235781,
+              "checksum": "SHA-256:eac23fa581431161ddfbbd66a911d1e30b6f582eeb70f5165f2b92ad92a18a93"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "archiveFileName": "dfu-discovery_v0.1.2_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_Windows_64bit.zip",
+              "size": 2282491,
+              "checksum": "SHA-256:5ef334c4d566b0033c229c28b2b401bc98bad70d5c25e3027c038aa3cde0d10f"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "dfu-discovery_v0.1.2_macOS_64bit.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_macOS_64bit.tar.gz",
+              "size": 1895874,
+              "checksum": "SHA-256:7f22774d925a014d51b6e997e25dc78a721db91b67225263fbcb3de265209f25"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "archiveFileName": "dfu-discovery_v0.1.2_macOS_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_macOS_ARM64.tar.gz",
+              "size": 1816821,
+              "checksum": "SHA-256:50e04bf5d5aa2257a8029f9f4b52893e90272cd747c1059277708cb5eb0e5524"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "dfu-discovery_v0.1.2_Linux_ARMv6.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_Linux_ARMv6.tar.gz",
+              "size": 1620739,
+              "checksum": "SHA-256:91eb2e0e7c09c2080999d308b732b30486d34b6459ce30569c73d7ef0e59d640"
+            },
+            {
+              "host": "arm64-linux-gnueabihf",
+              "archiveFileName": "dfu-discovery_v0.1.2_Linux_ARM64.tar.gz",
+              "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_Linux_ARM64.tar.gz",
+              "size": 1617881,
+              "checksum": "SHA-256:4bda54b9031d5b1fb1af70d1c38bf1b1f8cfd0eb0cd81f6c3a43253c31dea92d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "renesas",
+      "maintainer": "Renesas Electronics Corporation",
+      "websiteURL": "https://github.com/renesas/Arduino",
+      "email": "Middle_support@lm.renesas.com",
+      "platforms": [
+        {
+          "name": "RL78/G22 Fast Prototyping Board",
+          "architecture": "rl78g22_fpb",
+          "version": "2.0.0",
+          "category": "Contributed",
+          "help": {
+            "online": "https://github.com/renesas/Arduino/wiki"
+          },
+          "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.0.0/core-ArduinoCore-rl78g22-fpb-2.0.0.zip",
+          "archiveFileName": "core-ArduinoCore-rl78g22-fpb-2.0.0.zip",
+          "checksum": "SHA-256:1944d20d49f11ffaddb5a0cb1c28c27098510572678b02a6785bfd51fa9e88a4",
+          "size": "1898305",
+          "boards": [
+            {
+              "name": "RL78/G22 Fast Prototyping Board"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "name": "llvm-rl78",
+              "packager": "renesas",
+              "version": "10.0.0.202209"
+            },
+            {
+              "name": "rl78",
+              "packager": "renesas",
+              "version": "1.1.1"
+            }
+          ]
+        },
+        {
+          "name": "RL78/G23-64p Fast Prototyping Board",
+          "architecture": "rl78g23_fpb_p64",
+          "version": "2.0.0",
+          "category": "Contributed",
+          "help": {
+            "online": "https://github.com/renesas/Arduino/wiki"
+          },
+          "url": "https://github.com/renesas/ArduinoCore-rl78g23_fpb_64p/releases/download/rl78-2.0.0/core-ArduinoCore-rl78g23-fpb-p64-2.0.0.zip",
+          "archiveFileName": "core-ArduinoCore-rl78g23-fpb-p64-2.0.0.zip",
+          "checksum": "SHA-256:3c6747418d2843af1e3fee9b6fc542783bc124513e3aeec5b506139cb9fda4e0",
+          "size": "1985725",
+          "boards": [
+            {
+              "name": "RL78/G23-64p Fast Prototyping Board"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "name": "llvm-rl78",
+              "packager": "renesas",
+              "version": "10.0.0.202209"
+            },
+            {
+              "name": "rl78",
+              "packager": "renesas",
+              "version": "1.1.1"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "llvm-rl78",
+          "version": "10.0.0.202209",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "url": "https://llvm-gcc-renesas.com/downloads/download.php?f=rl78/10.0.0.202209/llvm-10.0.0.202209-rl78-elf.zip",
+              "archiveFileName": "llvm-10.0.0.202209-rl78-elf.zip",
+              "checksum": "SHA-256:17a1a8b362de358050a69e37ecb7c86523d6967cba6df63b703994c669f9a2ac",
+              "size": "149440013"
+            }
+          ]
+        },
+        {
+          "name": "rl78",
+          "version": "1.1.1",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.0.0/win32-tool-rl78g2x-1.1.1.zip",
+              "archiveFileName": "win32-tool-rl78g2x-1.1.1.zip",
+              "checksum": "SHA-256:1a057062b5045397506e72f98a9d27ac796494eadc82ab2b8bf0644a12f2aaae",
+              "size": "194296"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "esp32",
+      "maintainer": "Espressif Systems",
+      "websiteURL": "https://github.com/espressif/arduino-esp32",
+      "email": "hristo@espressif.com",
+      "help": {
+        "online": "http://esp32.com"
+      },
+      "platforms": [
+        {
+          "name": "esp32",
+          "architecture": "esp32",
+          "version": "2.0.10",
+          "category": "ESP32",
+          "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.10/esp32-2.0.10.zip",
+          "archiveFileName": "esp32-2.0.10.zip",
+          "checksum": "SHA-256:6028cb623c838723c41000869963d95f7cb811d58643133068eed31c03c2d7c0",
+          "size": "250401273",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "ESP32 Dev Board"
+            },
+            {
+              "name": "ESP32-S2 Dev Board"
+            },
+            {
+              "name": "ESP32-S3 Dev Board"
+            },
+            {
+              "name": "ESP32-C3 Dev Board"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s2-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s3-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.11.0-esp32-20221026"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.5.1"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
+            }
+          ]
+        },
+        {
+          "name": "esp32",
+          "architecture": "esp32",
+          "version": "2.0.11",
+          "category": "ESP32",
+          "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.11/esp32-2.0.11.zip",
+          "archiveFileName": "esp32-2.0.11.zip",
+          "checksum": "SHA-256:d15386308dc72f94816ce80b5508af999f2fd0d88eb5e1ffba48316ab0b9c5d6",
+          "size": "250401265",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "ESP32 Dev Board"
+            },
+            {
+              "name": "ESP32-S2 Dev Board"
+            },
+            {
+              "name": "ESP32-S3 Dev Board"
+            },
+            {
+              "name": "ESP32-C3 Dev Board"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s2-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s3-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.11.0-esp32-20221026"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.5.1"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "xtensa-esp32-elf-gcc",
+          "version": "esp-2021r2-patch5-8.4.0",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "archiveFileName": "xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "checksum": "SHA-256:8ef14e0409c2011b41e504a30f70d3e35287313a795d1f2462ad2cd0e2052d37",
+              "size": "94397702"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "archiveFileName": "xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "checksum": "SHA-256:e7d217ac2ef52c746a41f8647840b2717edcd8afc15f081bc1c4505e10a189b7",
+              "size": "90684219"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "archiveFileName": "xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "checksum": "SHA-256:ea6631f8a5105ae90d7fc462c10ed4f9049924ea8c2f9391d90b339d5f881dac",
+              "size": "89954866"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "archiveFileName": "xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "checksum": "SHA-256:ecb90af9cede0982672234da0b1bd7b7f76eadde60aa5c82eefdf37d64ffe49f",
+              "size": "96354023"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "archiveFileName": "xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "checksum": "SHA-256:19af109fda024a3a4c989f7ccaa104f9b1b74cfd6c9363e730bb8cb9b50d5dc4",
+              "size": "101712946"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "archiveFileName": "xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "checksum": "SHA-256:b14189772d70a96813895fff7731d0f2fec0c825cfc02e002d6d91a0cc4b6b1d",
+              "size": "93104016"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "archiveFileName": "xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "checksum": "SHA-256:9851c2cfa355e1fad8abfb643a1c945d27385b1851f3ae468915ea78fcbec940",
+              "size": "118610020"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "archiveFileName": "xtensa-esp32-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "checksum": "SHA-256:a328b3c55631846241bbe7999a309b20b797c8dc50b6e8dccf463e66a2da5fb4",
+              "size": "121846722"
+            }
+          ]
+        },
+        {
+          "name": "xtensa-esp32s2-elf-gcc",
+          "version": "esp-2021r2-patch5-8.4.0",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "archiveFileName": "xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "checksum": "SHA-256:19c77bd91fefab7c8c40a6334f9b985e2d9a1c7fac6d424b692110930dd3682f",
+              "size": "67849099"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "archiveFileName": "xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "checksum": "SHA-256:bdcd24676ef2a65b670ca9e0a01768ece47f4dfcfb545a3307f76a054c33b522",
+              "size": "64154532"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "archiveFileName": "xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "checksum": "SHA-256:b26723b6ce1c35b90f204eb39e5ab06a6f80fb7895f000e16b6962e4c176ae32",
+              "size": "63448105"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "archiveFileName": "xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "checksum": "SHA-256:da3b5c45e4997d14269df1814c92dd7004902bb810608341bc3819c3e506fa0b",
+              "size": "69656104"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "archiveFileName": "xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "checksum": "SHA-256:8eb63745b44083edef7cc6fdf3b06999f576b75134bc5e8b0ef881ca439b72d7",
+              "size": "75154138"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "archiveFileName": "xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "checksum": "SHA-256:4cd38d6ec31076c0aa083f62ab84ab5c33aa07fafd0af61366186e5f553aa008",
+              "size": "66457613"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "archiveFileName": "xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "checksum": "SHA-256:c758062295804b082fbd77fcd59a356f62d4e76372aaa29589cc871603309cba",
+              "size": "82338511"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "archiveFileName": "xtensa-esp32s2-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "checksum": "SHA-256:1c1e168ff8bc460a9719f3b216d3c1125d29040389786d738244838499362c74",
+              "size": "85579252"
+            }
+          ]
+        },
+        {
+          "name": "xtensa-esp32s3-elf-gcc",
+          "version": "esp-2021r2-patch5-8.4.0",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "checksum": "SHA-256:8aa17a6adf01efa5b1628c8ac578063a44d26ae9581d39486b92223a41ef262f",
+              "size": "68099473"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "checksum": "SHA-256:b218c11122e5565b6442376ebd21a652abdfcbf90981afa3e177ce978710225d",
+              "size": "64233211"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "checksum": "SHA-256:967477434ad5483718915936a77ce915a10c5972a6b3fd02688a5c4e14182bfb",
+              "size": "63530586"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "checksum": "SHA-256:07671d01a63ebd389912787efb2b263677c7b351c07fe430ded733cdae95e81d",
+              "size": "70025439"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "checksum": "SHA-256:99b6d44cea5aebbedc8b6965e7bf551aa4a40ed83ddbe1c0e9b7cb255564ded5",
+              "size": "75719772"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "checksum": "SHA-256:c64b05be25d26916c65dcfe11de9e60b96d58980b2df706d3074cb70b1ef6cb9",
+              "size": "66791095"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "checksum": "SHA-256:658d3036ffdf11ddad6f0a784c8829f6ffd4dbd7c252d7f61722256d0ad43975",
+              "size": "82665716"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "checksum": "SHA-256:9000be38d44bf79c39b93a2aeb99b42e956c593ccbc02fe31cb9c71ae1bbcb22",
+              "size": "86022563"
+            }
+          ]
+        },
+        {
+          "name": "xtensa-esp-elf-gdb",
+          "version": "11.2_20220823",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/xtensa-esp-elf-gdb-11.2_20220823-x86_64-linux-gnu.tar.gz",
+              "archiveFileName": "xtensa-esp-elf-gdb-11.2_20220823-x86_64-linux-gnu.tar.gz",
+              "checksum": "SHA-256:b5f7cc3e4b5a58db655754083ed9652e4953e71c3b4922fb624e7a034ec24a64",
+              "size": 26947336
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/xtensa-esp-elf-gdb-11.2_20220823-aarch64-linux-gnu.tar.gz",
+              "archiveFileName": "xtensa-esp-elf-gdb-11.2_20220823-aarch64-linux-gnu.tar.gz",
+              "checksum": "SHA-256:816acfae38b6b443f4f1590395f68f079243539259d19c7772ae6416c6519444",
+              "size": 27134508
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/xtensa-esp-elf-gdb-11.2_20220823-arm-linux-gnueabi.tar.gz",
+              "archiveFileName": "xtensa-esp-elf-gdb-11.2_20220823-arm-linux-gnueabi.tar.gz",
+              "checksum": "SHA-256:4dd1bace0633196fddfdcef3cebcc4bbfce22f5a0d2d1e3d618f3d8a6cbfcacc",
+              "size": 25205239
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/xtensa-esp-elf-gdb-11.2_20220823-i586-linux-gnu.tar.gz",
+              "archiveFileName": "xtensa-esp-elf-gdb-11.2_20220823-i586-linux-gnu.tar.gz",
+              "checksum": "SHA-256:27744d09d171be2f55ec15fa7f2d7f8ff94d33f7e130d24ebe082cb6c438618b",
+              "size": 25978028
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/xtensa-esp-elf-gdb-11.2_20220823-x86_64-apple-darwin14.tar.gz",
+              "archiveFileName": "xtensa-esp-elf-gdb-11.2_20220823-x86_64-apple-darwin14.tar.gz",
+              "checksum": "SHA-256:1432faa12d7301133f6ee654d60751b57adcc6cf323ee1ecc393f06f0225eff4",
+              "size": 38386785
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/xtensa-esp-elf-gdb-11.2_20220823-aarch64-apple-darwin21.1.tar.gz",
+              "archiveFileName": "xtensa-esp-elf-gdb-11.2_20220823-aarch64-apple-darwin21.1.tar.gz",
+              "checksum": "SHA-256:d0b542ef070ea72857f9cf554f176a0a9d868cd59e05ac293ad39402bcc5277d",
+              "size": 21671964
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/xtensa-esp-elf-gdb-11.2_20220823-i686-w64-mingw32.zip",
+              "archiveFileName": "xtensa-esp-elf-gdb-11.2_20220823-i686-w64-mingw32.zip",
+              "checksum": "SHA-256:1678b06aa80b1d689d05548056635efde5b73b98f2c3de5d555bcfc6f374c5d0",
+              "size": 23241302
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/xtensa-esp-elf-gdb-11.2_20220823-x86_64-w64-mingw32.zip",
+              "archiveFileName": "xtensa-esp-elf-gdb-11.2_20220823-x86_64-w64-mingw32.zip",
+              "checksum": "SHA-256:7060df4b6aa133e282147c3651d50222d677d6a0fff92979c500353b099a3f41",
+              "size": 25135265
+            }
+          ]
+        },
+        {
+          "name": "riscv32-esp-elf-gcc",
+          "version": "esp-2021r2-patch5-8.4.0",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "checksum": "SHA-256:f7d73e5f9e2df3ea6ca8e2c95d6ca6d23d6b38fd101ea5d3012f3cb3cd59f39f",
+              "size": "192388486"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "checksum": "SHA-256:cf520ae3a72f65b9758ea187524b105b8b7546566d738c32e60a0df9846ef1af",
+              "size": "188626914"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "checksum": "SHA-256:2dc3536214caa1697f6834bb4701d05894ca55b53589fc5b54064b050ef93799",
+              "size": "188624050"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "checksum": "SHA-256:165d6d53e76d79f5ade7e2b7ade54b2b495ecfda0d1184d84d6343659d0e3bdb",
+              "size": "194606113"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "checksum": "SHA-256:d6d4cef216cbf28d6fbb88f3e127d4f42a376d9497c260bf8c1ad9cef440f839",
+              "size": "199411930"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "checksum": "SHA-256:6e03f2ab1f145be13f8890c6de77b53f52c7bffe3d9d5824549db20298f5ba91",
+              "size": "191209735"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "archiveFileName": "riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "checksum": "SHA-256:1e0cfcfbc8f82c441261cadd21742f66d716ec18c18bf10ed7c7d5b0bee6752f",
+              "size": "257844437"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "archiveFileName": "riscv32-esp-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "checksum": "SHA-256:b08f568e8fe5069dd521b87da21b8e56117e5c2c3b492f73a51966a46d3379a4",
+              "size": "259712666"
+            }
+          ]
+        },
+        {
+          "name": "riscv32-esp-elf-gdb",
+          "version": "11.2_20220823",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/riscv32-esp-elf-gdb-11.2_20220823-x86_64-linux-gnu.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-x86_64-linux-gnu.tar.gz",
+              "checksum": "SHA-256:6bf5b5d2d407e074af2a74fc826764934ac1625a1751c52fbc0d4d7772061f8f",
+              "size": 26799809
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/riscv32-esp-elf-gdb-11.2_20220823-aarch64-linux-gnu.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-aarch64-linux-gnu.tar.gz",
+              "checksum": "SHA-256:e54ef67cdb5724fc2da8f0487f19b2c83c08b560fff317f5ffd98fbb230b397a",
+              "size": 27021672
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/riscv32-esp-elf-gdb-11.2_20220823-arm-linux-gnueabi.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-arm-linux-gnueabi.tar.gz",
+              "checksum": "SHA-256:86772c6aee8a05b2c75a6b04e9da630e35e8415b64da8ccde92a5fb2d3c7fcf4",
+              "size": 25532577
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/riscv32-esp-elf-gdb-11.2_20220823-i586-linux-gnu.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-i586-linux-gnu.tar.gz",
+              "checksum": "SHA-256:3463be3e24182b7f1bd0fb232020534445b2d0ea0e7093c1b4f4da102b3baf52",
+              "size": 26188698
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/riscv32-esp-elf-gdb-11.2_20220823-x86_64-apple-darwin14.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-x86_64-apple-darwin14.tar.gz",
+              "checksum": "SHA-256:a9db1811ebb9271134eba2f7c303fc2587bd4b2a1ae33cd05ff2605cd2fb30d2",
+              "size": 38397584
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/riscv32-esp-elf-gdb-11.2_20220823-aarch64-apple-darwin21.1.tar.gz",
+              "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-aarch64-apple-darwin21.1.tar.gz",
+              "checksum": "SHA-256:c94fb6d726b8d97e65e23237f5126a41343bca8f22a0414df5f0e6777e36f51c",
+              "size": 21593613
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/riscv32-esp-elf-gdb-11.2_20220823-i686-w64-mingw32.zip",
+              "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-i686-w64-mingw32.zip",
+              "checksum": "SHA-256:20cdee8a1c01428363ef02f4cc8035c65508d6b43560c525733eae94b7c7bb50",
+              "size": 23436802
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v11.2_20220823/riscv32-esp-elf-gdb-11.2_20220823-x86_64-w64-mingw32.zip",
+              "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-x86_64-w64-mingw32.zip",
+              "checksum": "SHA-256:add72366485b784b66837ce263548980f1df144d0954c42d75a81f6acbd43cac",
+              "size": 24802315
+            }
+          ]
+        },
+        {
+          "name": "openocd-esp32",
+          "version": "v0.11.0-esp32-20221026",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.11.0-esp32-20221026/openocd-esp32-linux-amd64-0.11.0-esp32-20221026.tar.gz",
+              "archiveFileName": "openocd-esp32-linux-amd64-0.11.0-esp32-20221026.tar.gz",
+              "checksum": "SHA-256:ce63e9b1dfab60cc62da5dc2abcc22ba7036c42afe74671c787eb026744e7d0b",
+              "size": "2051435"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.11.0-esp32-20221026/openocd-esp32-linux-arm64-0.11.0-esp32-20221026.tar.gz",
+              "archiveFileName": "openocd-esp32-linux-arm64-0.11.0-esp32-20221026.tar.gz",
+              "checksum": "SHA-256:fe60a3a603e8c6bee47367e40fcb8c0da3a38e01163e9674ebc919b067700506",
+              "size": "1993843"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.11.0-esp32-20221026/openocd-esp32-linux-armel-0.11.0-esp32-20221026.tar.gz",
+              "archiveFileName": "openocd-esp32-linux-armel-0.11.0-esp32-20221026.tar.gz",
+              "checksum": "SHA-256:6ef76101cca196a4be30fc74f191eff34abb423e32930a383012b866c9b76135",
+              "size": "2092111"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.11.0-esp32-20221026/openocd-esp32-macos-0.11.0-esp32-20221026.tar.gz",
+              "archiveFileName": "openocd-esp32-macos-0.11.0-esp32-20221026.tar.gz",
+              "checksum": "SHA-256:8edc666a0a230432554b73df7c62e0b5ec21fb018e7fda13b11a7ca8b6c1763b",
+              "size": "2199855"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.11.0-esp32-20221026/openocd-esp32-macos-arm64-0.11.0-esp32-20221026.tar.gz",
+              "archiveFileName": "openocd-esp32-macos-arm64-0.11.0-esp32-20221026.tar.gz",
+              "checksum": "SHA-256:c426c0158ba6488e2f432f7c5b22e79155b5b0fae6d1ad5bbd7894723b43aa12",
+              "size": "2247179"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.11.0-esp32-20221026/openocd-esp32-win32-0.11.0-esp32-20221026.zip",
+              "archiveFileName": "openocd-esp32-win32-0.11.0-esp32-20221026.zip",
+              "checksum": "SHA-256:e0e789d35308c029c6b53457cf4a42a5620cb1a3014740026c089c2ed4fd77b2",
+              "size": "2493214"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.11.0-esp32-20221026/openocd-esp32-win32-0.11.0-esp32-20221026.zip",
+              "archiveFileName": "openocd-esp32-win32-0.11.0-esp32-20221026.zip",
+              "checksum": "SHA-256:e0e789d35308c029c6b53457cf4a42a5620cb1a3014740026c089c2ed4fd77b2",
+              "size": "2493214"
+            }
+          ]
+        },
+        {
+          "name": "esptool_py",
+          "version": "4.5.1",
+          "systems": [
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.7/esptool-v4.5.1-src.tar.gz",
+              "archiveFileName": "esptool-v4.5.1-src.tar.gz",
+              "checksum": "SHA-256:aa06831a7d88d8ccde4ea21241e983a08dbdae967290e181658b0d18bffc8f86",
+              "size": "96922"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.7/esptool-v4.5.1-src.tar.gz",
+              "archiveFileName": "esptool-v4.5.1-src.tar.gz",
+              "checksum": "SHA-256:aa06831a7d88d8ccde4ea21241e983a08dbdae967290e181658b0d18bffc8f86",
+              "size": "96922"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.7/esptool-v4.5.1-src.tar.gz",
+              "archiveFileName": "esptool-v4.5.1-src.tar.gz",
+              "checksum": "SHA-256:aa06831a7d88d8ccde4ea21241e983a08dbdae967290e181658b0d18bffc8f86",
+              "size": "96922"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.7/esptool-v4.5.1-src.tar.gz",
+              "archiveFileName": "esptool-v4.5.1-src.tar.gz",
+              "checksum": "SHA-256:aa06831a7d88d8ccde4ea21241e983a08dbdae967290e181658b0d18bffc8f86",
+              "size": "96922"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.7/esptool-v4.5.1-macos.tar.gz",
+              "archiveFileName": "esptool-v4.5.1-macos.tar.gz",
+              "checksum": "SHA-256:78b52acfd51541ceb97cee893b7d4d49b8ddc284602be8c73ea47e3d849e0956",
+              "size": "5850888"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.7/esptool-v4.5.1-win64.zip",
+              "archiveFileName": "esptool-v4.5.1-win64.zip",
+              "checksum": "SHA-256:64d0c24499d46b80d6bd7a05c98bdacc3455ab6d503cc2a99e35711310216045",
+              "size": "6638448"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/arduino-esp32/releases/download/2.0.7/esptool-v4.5.1-win64.zip",
+              "archiveFileName": "esptool-v4.5.1-win64.zip",
+              "checksum": "SHA-256:64d0c24499d46b80d6bd7a05c98bdacc3455ab6d503cc2a99e35711310216045",
+              "size": "6638448"
+            }
+          ]
+        },
+        {
+          "version": "3.0.0-gnu12-dc7f933",
+          "name": "mklittlefs",
+          "systems": [
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/3.0.0-gnu12/aarch64-linux-gnu.mklittlefs-c41e51a.200706.tar.gz",
+              "archiveFileName": "aarch64-linux-gnu.mklittlefs-c41e51a.200706.tar.gz",
+              "checksum": "SHA-256:fc56e389383749e4cf4fab0fcf75cc0ebc41e59383caf6c2eff1c3d9794af200",
+              "size": "44651"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/3.0.0-gnu12/arm-linux-gnueabihf.mklittlefs-c41e51a.200706.tar.gz",
+              "archiveFileName": "arm-linux-gnueabihf.mklittlefs-c41e51a.200706.tar.gz",
+              "checksum": "SHA-256:52b642dd0545eb3bd8dfb75dde6601df21700e4867763fd2696274be279294c5",
+              "size": "37211"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/3.0.0-gnu12/i686-linux-gnu.mklittlefs-c41e51a.200706.tar.gz",
+              "archiveFileName": "i686-linux-gnu.mklittlefs-c41e51a.200706.tar.gz",
+              "checksum": "SHA-256:7886051d8ccc54aed0af2e7cdf6ff992bb51638df86f3b545955697720b6d062",
+              "size": "48033"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/3.0.0-gnu12/i686-w64-mingw32.mklittlefs-c41e51a.200706.zip",
+              "archiveFileName": "i686-w64-mingw32.mklittlefs-c41e51a.200706.zip",
+              "checksum": "SHA-256:43740db30ce451454f2337331f10ab4ed41bd83dbf0fa0cb4387107388b59f42",
+              "size": "332655"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/3.0.0-gnu12/x86_64-apple-darwin14.mklittlefs-c41e51a.200706.tar.gz",
+              "archiveFileName": "x86_64-apple-darwin14.mklittlefs-c41e51a.200706.tar.gz",
+              "checksum": "SHA-256:e3edd5e05b70db3c7df6b9d626558348ad04804022fe955c799aeb51808c7dc3",
+              "size": "362608"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/3.0.0-gnu12/x86_64-linux-gnu.mklittlefs-c41e51a.200706.tar.gz",
+              "archiveFileName": "x86_64-linux-gnu.mklittlefs-c41e51a.200706.tar.gz",
+              "checksum": "SHA-256:66e84dda0aad747517da3785125e05738a540948aab2b7eaa02855167a1eea53",
+              "size": "46778"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/earlephilhower/esp-quick-toolchain/releases/download/3.0.0-gnu12/x86_64-w64-mingw32.mklittlefs-c41e51a.200706.zip",
+              "archiveFileName": "x86_64-w64-mingw32.mklittlefs-c41e51a.200706.zip",
+              "checksum": "SHA-256:2e319077491f8e832e96eb4f2f7a70dd919333cee4b388c394e0e848d031d542",
+              "size": "345132"
+            }
+          ]
+        },
+        {
+          "name": "mkspiffs",
+          "version": "0.2.3",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/igrr/mkspiffs/releases/download/0.2.3/mkspiffs-0.2.3-arduino-esp32-win32.zip",
+              "archiveFileName": "mkspiffs-0.2.3-arduino-esp32-win32.zip",
+              "checksum": "SHA-256:b647f2c2efe6949819c85ea9404271b55c7c9c25bcb98d3b98a1d0ba771adf56",
+              "size": "249809"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/igrr/mkspiffs/releases/download/0.2.3/mkspiffs-0.2.3-arduino-esp32-osx.tar.gz",
+              "archiveFileName": "mkspiffs-0.2.3-arduino-esp32-osx.tar.gz",
+              "checksum": "SHA-256:9f43fc74a858cf564966b5035322c3e5e61c31a647c5a1d71b388ed6efc48423",
+              "size": "130270"
+            },
+            {
+              "host": "i386-apple-darwin",
+              "url": "https://github.com/igrr/mkspiffs/releases/download/0.2.3/mkspiffs-0.2.3-arduino-esp32-osx.tar.gz",
+              "archiveFileName": "mkspiffs-0.2.3-arduino-esp32-osx.tar.gz",
+              "checksum": "SHA-256:9f43fc74a858cf564966b5035322c3e5e61c31a647c5a1d71b388ed6efc48423",
+              "size": "130270"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/igrr/mkspiffs/releases/download/0.2.3/mkspiffs-0.2.3-arduino-esp32-linux64.tar.gz",
+              "archiveFileName": "mkspiffs-0.2.3-arduino-esp32-linux64.tar.gz",
+              "checksum": "SHA-256:5e1a4ff41385e842f389f6b5254102a547e566a06b49babeffa93ef37115cb5d",
+              "size": "50646"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/igrr/mkspiffs/releases/download/0.2.3/mkspiffs-0.2.3-arduino-esp32-linux32.tar.gz",
+              "archiveFileName": "mkspiffs-0.2.3-arduino-esp32-linux32.tar.gz",
+              "checksum": "SHA-256:464463a93e8833209cdc29ba65e1a12fec31718dc10075c195a2445b2c3f6cb0",
+              "size": "48751"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/igrr/mkspiffs/releases/download/0.2.3/mkspiffs-0.2.3-arduino-esp32-linux-armhf.tar.gz",
+              "archiveFileName": "mkspiffs-0.2.3-arduino-esp32-linux-armhf.tar.gz",
+              "checksum": "SHA-256:ade3dc00117912ac08a1bdbfbfe76b12d21a34bc5fa1de0cfc45fe7a8d0a0185",
+              "size": "40665"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/igrr/mkspiffs/releases/download/0.2.3/mkspiffs-0.2.3-arduino-esp32-linux-armhf.tar.gz",
+              "archiveFileName": "mkspiffs-0.2.3-arduino-esp32-linux-armhf.tar.gz",
+              "checksum": "SHA-256:ade3dc00117912ac08a1bdbfbfe76b12d21a34bc5fa1de0cfc45fe7a8d0a0185",
+              "size": "40665"
             }
           ]
         }

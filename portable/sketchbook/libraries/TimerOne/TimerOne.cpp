@@ -6,6 +6,7 @@
  *  Modified Oct 2009 by Dan Clemens to work with timer1 of the ATMega1280 or Arduino Mega
  *  Modified April 2012 by Paul Stoffregen
  *  Modified again, June 2014 by Paul Stoffregen
+ *  Modified July 2017 by Stoyko Dimitrov - added support for ATTiny85 except for the PWM functionality
  *
  *  This is free software. You can redistribute it and/or modify it under
  *  the terms of Creative Commons Attribution 3.0 United States License. 
@@ -20,16 +21,20 @@ TimerOne Timer1;              // preinstatiate
 
 unsigned short TimerOne::pwmPeriod = 0;
 unsigned char TimerOne::clockSelectBits = 0;
-void (*TimerOne::isrCallback)() = NULL;
+void (*TimerOne::isrCallback)() = TimerOne::isrDefaultUnused;
 
 // interrupt service routine that wraps a user defined function supplied by attachInterrupt
-#if defined(__AVR__)
+#if defined (__AVR_ATtiny85__)
+ISR(TIMER1_COMPA_vect)
+{
+  Timer1.isrCallback();
+}
+#elif defined(__AVR__)
 ISR(TIMER1_OVF_vect)
 {
   Timer1.isrCallback();
 }
-
-#elif defined(__arm__) && defined(CORE_TEENSY)
+#elif defined(__arm__) && defined(TEENSYDUINO) && (defined(KINETISK) || defined(KINETISL))
 void ftm1_isr(void)
 {
   uint32_t sc = FTM1_SC;
@@ -40,5 +45,15 @@ void ftm1_isr(void)
   #endif
   Timer1.isrCallback();
 }
+#elif defined(__arm__) && defined(TEENSYDUINO) && defined(__IMXRT1062__)
+void TimerOne::isr(void)
+{
+  FLEXPWM1_SM3STS = FLEXPWM_SMSTS_RF;
+  Timer1.isrCallback();
+}
 
 #endif
+
+void TimerOne::isrDefaultUnused()
+{
+}

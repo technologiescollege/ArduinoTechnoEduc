@@ -37,6 +37,8 @@
  */
 #include <Arduino.h>
 
+#define DISABLE_CODE_FOR_RECEIVER // Disables restarting receiver after each send. Saves 450 bytes program memory and 269 bytes RAM if receiving functions are not used.
+
 //#define SEND_PWM_BY_TIMER         // Disable carrier PWM generation in software and use (restricted) hardware PWM.
 //#define USE_NO_SEND_PWM           // Use no carrier PWM, just simulate an active low receiver signal. Overrides SEND_PWM_BY_TIMER definition
 //#define NO_LED_FEEDBACK_CODE      // Saves 566 bytes program memory
@@ -54,14 +56,9 @@ void setup() {
 #endif
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
+    Serial.println(F("Send IR signals at pin " STR(IR_SEND_PIN)));
 
-#if defined(IR_SEND_PIN)
     IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
-#else
-    IrSender.begin(3, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
-#endif
-
-    Serial.println(F("Ready to send IR signals at pin "  STR(IR_SEND_PIN)));
 }
 
 /*
@@ -75,7 +72,10 @@ void setup() {
  * e.g. use 560 (instead of 11 * 50) for NEC or use 432 for Panasonic. But in this cases,
  * you better use the timing generation functions e.g. sendNEC() directly.
  */
-const uint8_t rawDataP[] PROGMEM
+const uint8_t rawDataP[]
+#if defined(__AVR__)
+PROGMEM
+#endif
 = { 180, 90 /*Start bit*/, 11, 11, 11, 11, 11, 34, 11, 34/*0011 0xC of 16 bit address LSB first*/, 11, 11, 11, 11, 11, 11, 11,
         11/*0000*/, 11, 34, 11, 34, 11, 11, 11, 34/*1101 0xB*/, 11, 34, 11, 34, 11, 34, 11, 34/*1111*/, 11, 11, 11, 11, 11, 11, 11,
         34/*0001 0x08 of command LSB first*/, 11, 34, 11, 11, 11, 11, 11, 11/*1000 0x01*/, 11, 34, 11, 34, 11, 34, 11,
@@ -114,7 +114,7 @@ void loop() {
 
     Serial.println(F("Send NEC 16 bit address 0x0102, 8 bit data 0x34 with generated timing"));
     Serial.flush();
-    IrSender.sendNEC(0x0102, 0x34, true, 0);
+    IrSender.sendNEC(0x0102, 0x34, 0);
 
     delay(3000);
 }

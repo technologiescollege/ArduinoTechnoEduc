@@ -8,7 +8,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2021 Armin Joachimsmeyer
+ * Copyright (c) 2021-2023 Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,13 +34,15 @@
 
 // select only NEC and the universal decoder for pulse distance protocols
 #define DECODE_NEC          // Includes Apple and Onkyo
-#define DECODE_DISTANCE     // in case NEC is not received correctly
+#define DECODE_DISTANCE_WIDTH // In case NEC is not received correctly. Universal decoder for pulse distance width protocols
 
 //#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program memory.
-//#define EXCLUDE_EXOTIC_PROTOCOLS
-//#define SEND_PWM_BY_TIMER
-//#define USE_NO_SEND_PWM
-//#define NO_LED_FEEDBACK_CODE // saves 500 bytes program memory
+//#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 650 bytes program memory if all other protocols are active
+//#define NO_LED_FEEDBACK_CODE      // saves 92 bytes program memory
+//#define RECORD_GAP_MICROS 12000   // Default is 5000. Activate it for some LG air conditioner protocols
+//#define SEND_PWM_BY_TIMER         // Disable carrier PWM generation in software and use (restricted) hardware PWM.
+//#define USE_NO_SEND_PWM           // Use no carrier PWM, just simulate an active low receiver signal. Overrides SEND_PWM_BY_TIMER definition
+
 //#define DEBUG // Activate this for lots of lovely debug output from the decoders.
 
 #include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
@@ -60,18 +62,11 @@ void setup() {
     // Start the receiver and if not 3. parameter specified, take LED_BUILTIN pin from the internal boards definition as default feedback LED
     IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
 
-#if defined(IR_SEND_PIN)
-    IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
-#else
-    IrSender.begin(3, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
-#endif
-
     Serial.print(F("Ready to receive IR signals of protocols: "));
     printActiveIRProtocols(&Serial);
     Serial.println(F("at pin " STR(IR_RECEIVE_PIN)));
-
-    Serial.println(F("Ready to send IR signals at pin " STR(IR_SEND_PIN)));
-
+    IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
+    Serial.println(F("Send IR signals at pin " STR(IR_SEND_PIN)));
 
 #if FLASHEND >= 0x3FFF  // For 16k flash or more, like ATtiny1604
 // For esp32 we use PWM generation by ledcWrite() for each pin.
@@ -109,6 +104,7 @@ void send_ir_data() {
     Serial.print(sAddress, HEX);
     Serial.print(sCommand, HEX);
     Serial.println(sRepeats, HEX);
+    Serial.flush(); // To avoid disturbing the software PWM generation by serial output interrupts
 
     // clip repeats at 4
     if (sRepeats > 4) {
@@ -122,8 +118,12 @@ void receive_ir_data() {
     if (IrReceiver.decode()) {
         Serial.print(F("Decoded protocol: "));
         Serial.print(getProtocolString(IrReceiver.decodedIRData.protocol));
-        Serial.print(F("Decoded raw data: "));
+        Serial.print(F(", decoded raw data: "));
+#if (__INT_WIDTH__ < 32)
         Serial.print(IrReceiver.decodedIRData.decodedRawData, HEX);
+#else
+        PrintULL::print(&Serial, IrReceiver.decodedIRData.decodedRawData, HEX);
+#endif
         Serial.print(F(", decoded address: "));
         Serial.print(IrReceiver.decodedIRData.address, HEX);
         Serial.print(F(", decoded command: "));
@@ -146,6 +146,8 @@ void loop() {
     Serial.flush();
 
     send_ir_data();
+    IrReceiver.restartAfterSend(); // Is a NOP if sending does not require a timer.
+
     // wait for the receiver state machine to detect the end of a protocol
     delay((RECORD_GAP_MICROS / 1000) + 5);
     receive_ir_data();

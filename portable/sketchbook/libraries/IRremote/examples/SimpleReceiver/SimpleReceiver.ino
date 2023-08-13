@@ -1,14 +1,14 @@
 /*
  * SimpleReceiver.cpp
  *
- * Demonstrates receiving NEC IR codes with IRrecv
+ * Demonstrates receiving NEC IR codes with IRremote
  *
  *  This file is part of Arduino-IRremote https://github.com/Arduino-IRremote/Arduino-IRremote.
  *
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2020-2022 Armin Joachimsmeyer
+ * Copyright (c) 2020-2023 Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,12 +32,13 @@
 
 /*
  * Specify which protocol(s) should be used for decoding.
- * If no protocol is defined, all protocols are active.
+ * If no protocol is defined, all protocols (except Bang&Olufsen) are active.
+ * This must be done before the #include <IRremote.hpp>
  */
 //#define DECODE_DENON        // Includes Sharp
 //#define DECODE_JVC
 //#define DECODE_KASEIKYO
-//#define DECODE_PANASONIC    // the same as DECODE_KASEIKYO
+//#define DECODE_PANASONIC    // alias for DECODE_KASEIKYO
 //#define DECODE_LG
 #define DECODE_NEC          // Includes Apple and Onkyo
 //#define DECODE_SAMSUNG
@@ -49,16 +50,24 @@
 //#define DECODE_LEGO_PF
 //#define DECODE_MAGIQUEST
 //#define DECODE_WHYNTER
+//#define DECODE_FAST
 
-//#define DECODE_DISTANCE     // universal decoder for pulse distance protocols
+//#define DECODE_DISTANCE_WIDTH // Universal decoder for pulse distance width protocols
 //#define DECODE_HASH         // special decoder for all protocols
+
+//#define DECODE_BEO          // This protocol must always be enabled manually, i.e. it is NOT enabled if no protocol is defined. It prevents decoding of SONY!
 
 //#define DEBUG               // Activate this for lots of lovely debug output from the decoders.
 
+//#define RAW_BUFFER_LENGTH  180  // Default is 112 if DECODE_MAGIQUEST is enabled, otherwise 100.
+
 #include <Arduino.h>
 
-#include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
-#include <IRremote.hpp>
+/*
+ * This include defines the actual pin number for pins like IR_RECEIVE_PIN, IR_SEND_PIN for many different boards and architectures
+ */
+#include "PinDefinitionsAndMore.h"
+#include <IRremote.hpp> // include the library
 
 void setup() {
     Serial.begin(115200);
@@ -84,7 +93,9 @@ void loop() {
      */
     if (IrReceiver.decode()) {
 
-        // Print a short summary of received data
+        /*
+         * Print a short summary of received data
+         */
         IrReceiver.printIRResultShort(&Serial);
         IrReceiver.printIRSendUsage(&Serial);
         if (IrReceiver.decodedIRData.protocol == UNKNOWN) {

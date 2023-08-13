@@ -11,25 +11,19 @@
 #ifndef BlynkProtocolDefs_h
 #define BlynkProtocolDefs_h
 
-// Command definitions from:
-//   https://github.com/blynkkk/blynk-server/blob/master/server/core/src/main/java/cc/blynk/server/core/protocol/enums/Command.java
-
 enum BlynkCmd
 {
     BLYNK_CMD_RESPONSE       = 0,
 
-    BLYNK_CMD_LOGIN          = 2,
     BLYNK_CMD_PING           = 6,
 
-    BLYNK_CMD_TWEET          = 12,
-    BLYNK_CMD_EMAIL          = 13,
-    BLYNK_CMD_NOTIFY         = 14,
     BLYNK_CMD_BRIDGE         = 15,
     BLYNK_CMD_HARDWARE_SYNC  = 16,
     BLYNK_CMD_INTERNAL       = 17,
-    BLYNK_CMD_SMS            = 18,
     BLYNK_CMD_PROPERTY       = 19,
     BLYNK_CMD_HARDWARE       = 20,
+    BLYNK_CMD_GROUP          = 21,
+
     BLYNK_CMD_HW_LOGIN       = 29,
 
     BLYNK_CMD_REDIRECT       = 41,
@@ -78,7 +72,7 @@ struct BlynkHeader
 BLYNK_ATTR_PACKED;
 
 #if defined(ESP32) || defined(ESP8266)
-    #include <lwip/ip_addr.h>
+    #include <lwip/def.h>
 #elif !defined(htons) && (defined(ARDUINO) || defined(PARTICLE) || defined(__MBED__))
     #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
         #define htons(x) ( ((x)<<8) | (((x)>>8)&0xFF) )
@@ -94,7 +88,7 @@ BLYNK_ATTR_PACKED;
         #define ntohs(x) (x)
         #define ntohl(x) (x)
     #else
-        #error byte order problem
+        #error "Byte order not defined"
     #endif
 #endif
 

@@ -16,8 +16,8 @@
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/gpl.html>.
@@ -30,7 +30,7 @@
  * Choose the library to be used for IR receiving
  */
 #define USE_TINY_IR_RECEIVER // Recommended, but only for NEC protocol!!! If disabled and IRMP_INPUT_PIN is defined, the IRMP library is used for decoding
-//#define TINY_RECEIVER_USE_ARDUINO_ATTACH_INTERRUPT // costs 112 bytes program memory + 4 bytes RAM
+//#define TINY_RECEIVER_USE_ARDUINO_ATTACH_INTERRUPT // Requires additional 112 bytes program memory + 4 bytes RAM
 
 #include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
 // Some kind of auto detect library if USE_TINY_IR_RECEIVER is deactivated
@@ -123,7 +123,7 @@ void doTone2200();
  */
 #define INFO // to see some informative output
 #include "IRCommandDispatcher.h" // Only for required declarations, the library itself is included below after the definitions of the commands
-#include "IRCommandMapping.h" // must be included before IRCommandDispatcher.hpp to define IR_ADDRESS and IRMapping and string "unknown".
+#include "DemoIRCommandMapping.h" // must be included before IRCommandDispatcher.hpp to define IR_ADDRESS and IRMapping and string "unknown".
 #include "IRCommandDispatcher.hpp"
 
 /*

@@ -15,7 +15,7 @@
 #include <WiFi101.h>
 #include "arduino_secrets.h"
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
-/////// Wifi Settings ///////
+/////// WiFi Settings ///////
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 

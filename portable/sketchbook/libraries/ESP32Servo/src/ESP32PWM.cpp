@@ -235,12 +235,19 @@ void ESP32PWM::attachPin(uint8_t pin) {
 		ledcAttachPin(pin, getChannel());
 	} else {
 		Serial.println(
-				"ERROR PWM channel unavailible on pin requested! " + String(pin)
-#if defined(ARDUINO_ESP32S2_DEV)
-						+ "\r\nPWM availible on: 1-21,26,33-42"
+				"ERROR PWM channel unavailable on pin requested! " + String(pin)
+#if defined(CONFIG_IDF_TARGET_ESP32S2)
+						+ "\r\nPWM available on: 1-21,26,33-42"
+#elif defined(CONFIG_IDF_TARGET_ESP32S3)
+						+ "\r\nPWM available on: 1-21,35-45,47-48"
+#elif defined(CONFIG_IDF_TARGET_ESP32C3)
+						+ "\r\nPWM available on: 1-10,18-21"
 #else
-						+ "\r\nPWM availible on: 2,4,5,12-19,21-23,25-27,32-33"
+						+ "\r\nPWM available on: 2,4,5,12-19,21-23,25-27,32-33"
 #endif
+
+// Possible PWM GPIO pins on the ESP32-S3: 0(used by on-board button),1-21,35-45,47,48(used by on-board LED)
+// Possible PWM GPIO pins on the ESP32-C3: 0(used by on-board button),1-7,8(used by on-board LED),9-10,18-21
 		);
 		return;
 	}

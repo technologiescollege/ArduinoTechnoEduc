@@ -15,9 +15,12 @@
  */
 // These constants won't change.  They're used to give names
 // to the pins used:
-#if defined(ARDUINO_ESP32S2_DEV)
+#if defined(ARDUINO_ESP32S2_DEV) || defined(ARDUINO_ESP32S3_DEV)
 const int lowestPin = 1;
 const int highestPin = 42;
+#elif defined(ARDUINO_ESP32C3_DEV)
+const int lowestPin = 1;
+const int highestPin = 19;
 #else
 const int lowestPin = 2;
 const int highestPin = 33;
@@ -51,6 +54,8 @@ void loop() {
 #if defined(ARDUINO_ESP32S2_DEV)
 				if (thisPin == 17 || // one of the 2 DAC outputs, no timer needed
 						thisPin == 18)
+#elif defined(ARDUINO_ESP32C3_DEV) || defined(ARDUINO_ESP32S3_DEV)
+				if (1 == 0) //  no DAC outputs for these chips
 #else
 				if (thisPin == 25 || // one of the 2 DAC outputs, no timer needed
 						thisPin == 26)

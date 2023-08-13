@@ -23,8 +23,8 @@
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/gpl.html>.
@@ -193,9 +193,7 @@ void loop()
  * The interrupt handler.
  * Just add to the appropriate timing structure.
  */
-#if defined(ESP8266)
-void ICACHE_RAM_ATTR measureTimingISR()
-#elif defined(ESP32)
+#if defined(ESP8266) || defined(ESP32)
 void IRAM_ATTR measureTimingISR()
 #else
 #  if defined(EICRA) && defined(EIFR) && defined(EIMSK)

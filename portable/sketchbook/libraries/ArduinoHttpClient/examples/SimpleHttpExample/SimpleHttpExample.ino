@@ -2,7 +2,7 @@
 // Released under Apache License, version 2.0
 //
 // Simple example to show how to use the HttpClient library
-// Get's the web page given at http://<kHostname><kPath> and
+// Gets the web page given at http://<kHostname><kPath> and
 // outputs the content to the serial port
 
 #include <SPI.h>
@@ -14,7 +14,7 @@
 #include "arduino_secrets.h"
 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
-/////// Wifi Settings ///////
+/////// WiFi Settings ///////
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 
@@ -42,7 +42,7 @@ void setup()
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  // attempt to connect to Wifi network:
+  // attempt to connect to WiFi network:
   Serial.print("Attempting to connect to WPA SSID: ");
   Serial.println(ssid);
   while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
@@ -129,5 +129,3 @@ void loop()
   // And just stop, now that we've tried a download
   while(1);
 }
-
-

@@ -51,6 +51,13 @@ Parola A-to-Z Blog Articles
 If you like and use this library please consider making a small donation using [PayPal](https://paypal.me/MajicDesigns/4USD)
 
 \page pageRevHistory Revision History
+Jul 2023 - version 3.7.1
+- added getIntensity() to Parola object
+
+Jun 2023 - version 3.7.0
+- begin() returns bool status
+- fixed intensity initialisation of multi-zone displays at startup
+
 Nov 2022 - version 3.6.2
 - Fixed uninitialised _intensity class variable
 
@@ -599,8 +606,9 @@ public:
    * new data for the class that cannot be done during the object creation.
    *
    * \param p pointer to the parent's MD_MAX72xx object.
+   * \return true if initialization completed successfully, false otherwise
    */
-  void begin(MD_MAX72XX *p);
+  bool begin(MD_MAX72XX *p);
 
   /**
    * Class Destructor.
@@ -1247,8 +1255,10 @@ public:
    * Initialize the object data. This needs to be called during setup() to initialize new
    * data for the class that cannot be done during the object creation. This form of the
    * method is for backward compatibility and creates one zone for the entire display.
+   *
+   * \return true if the initialization complete successfully, false otherwise
    */
-  void begin(void) { begin(1); };
+  bool begin(void) { return(begin(1)); };
 
   /**
    * Initialize the object.
@@ -1262,8 +1272,9 @@ public:
    * \sa setZone()
    *
    * \param numZones  maximum number of zones
+   * \return true if the initialization complete successfully, false otherwise
    */
-  void begin(uint8_t numZones);
+  bool begin(uint8_t numZones);
 
   /**
    * Class Destructor.
@@ -1517,6 +1528,25 @@ public:
    * \return the inverted boolean value for the specified zone.
    */
   inline bool getInvert(uint8_t z) { return (z < _numZones ? _Z[z].getInvert() : false); }
+
+  /**
+   * Get the current display intensity.
+   *
+   * See the setIntensity() method.
+   *
+   * \return the intensity setting (0-15). Assumes one zone only.
+   */
+  inline uint8_t getIntensity(void) { return getIntensity(0); }
+
+  /**
+   * Get the current display intensity for a specific zone.
+   *
+   * See the setIntensity() method.
+   *
+   * \param z   zone number.
+   * \return the intensity value (0-15) for the specified zone.
+   */
+  inline uint8_t getIntensity(uint8_t z) { return (z < _numZones ? _Z[z].getIntensity() : 0); }
 
   /**
    * Get the current pause time.

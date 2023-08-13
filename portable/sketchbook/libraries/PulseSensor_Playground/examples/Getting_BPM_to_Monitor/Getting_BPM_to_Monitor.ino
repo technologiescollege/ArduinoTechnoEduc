@@ -14,7 +14,7 @@
 
 //  Variables
 const int PulseWire = 0;       // PulseSensor PURPLE WIRE connected to ANALOG PIN 0
-const int LED = LED_BULITIN;          // The on-board Arduino LED, close to PIN 13.
+const int LED = LED_BUILTIN;          // The on-board Arduino LED, close to PIN 13.
 int Threshold = 550;           // Determine which Signal to "count as a beat" and which to ignore.
                                // Use the "Gettting Started Project" to fine-tune Threshold Value beyond default setting.
                                // Otherwise leave the default "550" value. 
@@ -41,10 +41,11 @@ void setup() {
 
 void loop() {
 
- int myBPM = pulseSensor.getBeatsPerMinute();  // Calls function on our pulseSensor object that returns BPM as an "int".
-                                               // "myBPM" hold this BPM value now. 
+ 
 
-if (pulseSensor.sawStartOfBeat()) {            // Constantly test to see if "a beat happened". 
+if (pulseSensor.sawStartOfBeat()) {            // Constantly test to see if "a beat happened".
+int myBPM = pulseSensor.getBeatsPerMinute();  // Calls function on our pulseSensor object that returns BPM as an "int".
+                                               // "myBPM" hold this BPM value now. 
  Serial.println("♥  A HeartBeat Happened ! "); // If test is "true", print a message "a heartbeat happened".
  Serial.print("BPM: ");                        // Print phrase "BPM: " 
  Serial.println(myBPM);                        // Print the value inside of myBPM. 

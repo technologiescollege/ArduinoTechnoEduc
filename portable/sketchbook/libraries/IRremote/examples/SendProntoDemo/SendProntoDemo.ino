@@ -32,6 +32,8 @@
  */
 #include <Arduino.h>
 
+#define DISABLE_CODE_FOR_RECEIVER // Disables restarting receiver after each send. Saves 450 bytes program memory and 269 bytes RAM if receiving functions are not used.
+
 #include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
 #include <IRremote.hpp>
 
@@ -40,7 +42,10 @@
 // The first number, here 0000, denotes the type of the signal. 0000 denotes a raw IR signal with modulation.
 // The second number, here 006C, denotes a frequency code. 006C corresponds to 1000000/(0x006c * 0.241246) = 38381 Hertz.
 // The third and the forth number denote the number of pairs (= half the number of durations) in the start- and the repeat sequence respectively.
-const char yamahaVolDown[] PROGMEM
+const char yamahaVolDown[]
+#if defined(__AVR__)
+PROGMEM
+#endif
 = "0000 006C 0022 0002 015B 00AD " /* Pronto header + start bit */
         "0016 0016 0016 0041 0016 0016 0016 0041 0016 0041 0016 0041 0016 0041 0016 0016 " /* Lower address byte */
         "0016 0041 0016 0016 0016 0041 0016 0016 0016 0016 0016 0016 0016 0016 0016 0041 " /* Upper address byte (inverted at 8 bit mode) */
@@ -57,15 +62,9 @@ void setup() {
 
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
+    Serial.println(F("Send IR signals at pin " STR(IR_SEND_PIN)));
 
-#if defined(IR_SEND_PIN)
     IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
-#else
-    IrSender.begin(3, ENABLE_LED_FEEDBACK); // Specify send pin and enable feedback LED at default feedback LED pin
-#endif
-
-    Serial.print(F("Ready to send IR signals at pin "));
-    Serial.println(IR_SEND_PIN);
 }
 
 void loop() {

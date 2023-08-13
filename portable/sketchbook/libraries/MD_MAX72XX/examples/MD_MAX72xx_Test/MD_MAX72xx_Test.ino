@@ -53,8 +53,7 @@ void scrollText(const char *p)
     for (uint8_t i=0; i<=charWidth; i++)	// allow space between characters
     {
       mx.transform(MD_MAX72XX::TSL);
-      if (i < charWidth)
-        mx.setColumn(0, cBuf[i]);
+      mx.setColumn(0, (i < charWidth) ? cBuf[i] : 0); 
       delay(DELAYTIME);
     }
   }
@@ -583,13 +582,13 @@ void showCharset(void)
 
 void setup()
 {
-  mx.begin();
-
 #if  DEBUG
   Serial.begin(57600);
 #endif
   PRINTS("\n[MD_MAX72XX Test & Demo]");
-//  scrollText("MD_MAX72xx Test  ");
+
+  if (!mx.begin())
+    PRINTS("\nMD_MAX72XX initialization failed");
 }
 
 void loop()

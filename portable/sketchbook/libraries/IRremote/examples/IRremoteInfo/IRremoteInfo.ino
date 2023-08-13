@@ -296,6 +296,13 @@ void dumpProtocols() {
 
 #if !defined(EXCLUDE_EXOTIC_PROTOCOLS) // saves around 2000 bytes program memory
 
+    Serial.print(F("BANG_OLUFSEN: "));
+#if defined(DECODE_BEO)
+    Serial.println(F("Enabled"));
+#else
+    Serial.println(F("Disabled"));
+#endif
+
     Serial.print(F("BOSEWAVE:     "));
 #if defined(DECODE_BOSEWAVE)
     Serial.println(F("Enabled"));
@@ -310,6 +317,12 @@ void dumpProtocols() {
     Serial.println(F("Disabled"));
 #endif
 
+    Serial.print(F("FAST:         "));
+#if defined(DECODE_FAST)
+    Serial.println(F("Enabled"));
+#else
+    Serial.println(F("Disabled"));
+#endif
 #endif
 }
 
