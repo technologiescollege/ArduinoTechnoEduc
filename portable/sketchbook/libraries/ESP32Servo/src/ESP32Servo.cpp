@@ -174,6 +174,12 @@ void Servo::writeMicroseconds(int value)
     }
 }
 
+void Servo::release()
+{
+    if (this->attached())   // ensure channel is valid
+        pwm.write(0);
+}
+
 int Servo::read() // return the value as degrees
 {
     return (map(readMicroseconds()+1, this->min, this->max, 0, 180));

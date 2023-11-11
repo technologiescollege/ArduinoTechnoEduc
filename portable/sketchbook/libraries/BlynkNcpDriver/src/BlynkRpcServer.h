@@ -4,12 +4,6 @@
 #include "BlynkRpc.h"
 
 /*
- * Infra
- */
-
-static uint16_t _rpc_seq;
-
-/*
  * Shims
  */
 

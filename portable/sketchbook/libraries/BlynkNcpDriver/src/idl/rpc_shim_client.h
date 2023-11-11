@@ -11,11 +11,8 @@ extern "C" {
 
 static inline
 void rpc_client_blynkVPinChange(uint16_t vpin, buffer_t param) {
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_ONEWAY);
-  MessageWriter_writeUInt16(RPC_UID_CLIENT_BLYNKVPINCHANGE);
-
-  /* Serialize inputs */
+  /* Send request */
+  MessageWriter_beginOneway(RPC_UID_CLIENT_BLYNKVPINCHANGE);
   MessageWriter_writeUInt16(vpin);
   MessageWriter_writeBinary(param);
   MessageWriter_end();
@@ -26,11 +23,8 @@ void rpc_client_blynkVPinChange(uint16_t vpin, buffer_t param) {
 
 static inline
 void rpc_client_blynkStateChange(uint8_t state) {
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_ONEWAY);
-  MessageWriter_writeUInt16(RPC_UID_CLIENT_BLYNKSTATECHANGE);
-
-  /* Serialize inputs */
+  /* Send request */
+  MessageWriter_beginOneway(RPC_UID_CLIENT_BLYNKSTATECHANGE);
   MessageWriter_writeUInt8(state);
   MessageWriter_end();
 
@@ -40,11 +34,8 @@ void rpc_client_blynkStateChange(uint8_t state) {
 
 static inline
 void rpc_client_processEvent(uint8_t event) {
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_ONEWAY);
-  MessageWriter_writeUInt16(RPC_UID_CLIENT_PROCESSEVENT);
-
-  /* Serialize inputs */
+  /* Send request */
+  MessageWriter_beginOneway(RPC_UID_CLIENT_PROCESSEVENT);
   MessageWriter_writeUInt8(event);
   MessageWriter_end();
 
@@ -59,12 +50,8 @@ bool rpc_client_otaUpdateAvailable(const char* filename, uint32_t filesize, cons
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_CLIENT_OTAUPDATEAVAILABLE);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_CLIENT_OTAUPDATEAVAILABLE);
   MessageWriter_writeString(filename);
   MessageWriter_writeUInt32(filesize);
   MessageWriter_writeString(fw_type);
@@ -72,6 +59,7 @@ bool rpc_client_otaUpdateAvailable(const char* filename, uint32_t filesize, cons
   MessageWriter_writeString(fw_build);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -96,17 +84,14 @@ bool rpc_client_otaUpdateWrite(uint32_t offset, buffer_t chunk, uint32_t crc32) 
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_CLIENT_OTAUPDATEWRITE);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_CLIENT_OTAUPDATEWRITE);
   MessageWriter_writeUInt32(offset);
   MessageWriter_writeBinary(chunk);
   MessageWriter_writeUInt32(crc32);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, 5000);
@@ -131,12 +116,11 @@ bool rpc_client_otaUpdateFinish(void) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_CLIENT_OTAUPDATEFINISH);
-  MessageWriter_writeUInt16(++_rpc_seq);
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_CLIENT_OTAUPDATEFINISH);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, 5000);
@@ -157,12 +141,11 @@ bool rpc_client_otaUpdateFinish(void) {
 static inline
 void rpc_client_otaUpdateCancel(void) {
   RpcStatus _rpc_res;
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_CLIENT_OTAUPDATECANCEL);
-  MessageWriter_writeUInt16(++_rpc_seq);
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_CLIENT_OTAUPDATECANCEL);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);

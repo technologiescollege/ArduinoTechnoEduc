@@ -64,9 +64,9 @@
 
 #ifndef ESP32_Servo_h
 #define ESP32_Servo_h
-#include "analogWrite.h"
+//#include "analogWrite.h"
 #include "ESP32PWM.h"
-#include "ESP32Tone.h"
+//#include "ESP32Tone.h"
 //Enforce only using PWM pins on the ESP32
 #define ENFORCE_PINS
 // Default Arduino Servo.h
@@ -136,6 +136,7 @@ public:
 	void detach();
 	void write(int value); // if value is < MIN_PULSE_WIDTH its treated as an angle, otherwise as pulse width in microseconds
 	void writeMicroseconds(int value);     // Write pulse width in microseconds
+	void release();
 	int read(); // returns current pulse width as an angle between 0 and 180 degrees
 	int readMicroseconds(); // returns current pulse width in microseconds for this servo
 	bool attached(); // return true if this servo is attached, otherwise false

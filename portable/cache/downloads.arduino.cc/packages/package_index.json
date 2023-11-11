@@ -9889,6 +9889,646 @@
           ]
         },
         {
+          "name": "Arduino Mbed OS Edge Boards",
+          "architecture": "mbed_edge",
+          "version": "4.0.6",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-edge-4.0.6.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-edge-4.0.6.tar.bz2",
+          "checksum": "SHA-256:83e2c0d48a7deb605a3bb8885e2a8c40255d86eb10d554a16e3af2e9a856d803",
+          "size": "5411915",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Edge Control"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nano Boards",
+          "architecture": "mbed_nano",
+          "version": "4.0.6",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nano-4.0.6.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nano-4.0.6.tar.bz2",
+          "checksum": "SHA-256:30a9a31f1314d4459d29b1ffaa568e8d4cc8e02b18324886574f2ea44553a7f5",
+          "size": "6691202",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            },
+            {
+              "name": "Arduino Nano 33 BLE Sense"
+            },
+            {
+              "name": "Arduino Nano RP2040 Connect"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Portenta Boards",
+          "architecture": "mbed_portenta",
+          "version": "4.0.6",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-portenta-4.0.6.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-portenta-4.0.6.tar.bz2",
+          "checksum": "SHA-256:af8886ff30c960f0f8c2cda9b9f8ce566d6da8e32f9b0992185921f63d73602e",
+          "size": "20892662",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Portenta X8"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            },
+            {
+              "packager": "arduino",
+              "version": "32.0.0",
+              "name": "adb"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS RP2040 Boards",
+          "architecture": "mbed_rp2040",
+          "version": "4.0.6",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-RP2040-4.0.6.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-RP2040-4.0.6.tar.bz2",
+          "checksum": "SHA-256:f4e720f4b196fb651671346959e4b9557eac64ead8db97abfca7adba400a759c",
+          "size": "4235421",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Raspberry Pi Pico"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nicla Boards",
+          "architecture": "mbed_nicla",
+          "version": "4.0.6",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nicla-4.0.6.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nicla-4.0.6.tar.bz2",
+          "checksum": "SHA-256:32494ef0f5bb88bd73aed0cf0a9bac81f2a46dac057eda8a29284c58f619bd19",
+          "size": "19681872",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Nicla Sense ME"
+            },
+            {
+              "name": "Nicla Voice"
+            },
+            {
+              "name": "Nicla Vision"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Opta Boards",
+          "architecture": "mbed_opta",
+          "version": "4.0.6",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-opta-4.0.6.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-opta-4.0.6.tar.bz2",
+          "checksum": "SHA-256:33d85b1a69fc9cb6aa4805faf7ce2c34fdbaa1de31ae72fb0d42b3522882dc7f",
+          "size": "15654346",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Finder Opta"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Giga Boards",
+          "architecture": "mbed_giga",
+          "version": "4.0.6",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-giga-4.0.6.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-giga-4.0.6.tar.bz2",
+          "checksum": "SHA-256:6f0a25768dc75c82ff37f92331aec98c4270cf6be99290b965bd6c19f6af34a4",
+          "size": "15769961",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Giga"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Edge Boards",
+          "architecture": "mbed_edge",
+          "version": "4.0.8",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-edge-4.0.8.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-edge-4.0.8.tar.bz2",
+          "checksum": "SHA-256:633b40af1dae10fc72f522b41f094c1bbbbed03e546758f06a080263cfba7a9f",
+          "size": "5422701",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Edge Control"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nano Boards",
+          "architecture": "mbed_nano",
+          "version": "4.0.8",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nano-4.0.8.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nano-4.0.8.tar.bz2",
+          "checksum": "SHA-256:939c6828a56f9e5c8649db97e33fe1294ba5d7d52f5d5336f336cfb69b1aeedc",
+          "size": "6732651",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            },
+            {
+              "name": "Arduino Nano 33 BLE Sense"
+            },
+            {
+              "name": "Arduino Nano RP2040 Connect"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Portenta Boards",
+          "architecture": "mbed_portenta",
+          "version": "4.0.8",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-portenta-4.0.8.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-portenta-4.0.8.tar.bz2",
+          "checksum": "SHA-256:cb30adaabd8edbcb56e30fd264e498496e27fc9253c9c9e5b70523e959ec7c1d",
+          "size": "20864770",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Portenta X8"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            },
+            {
+              "packager": "arduino",
+              "version": "32.0.0",
+              "name": "adb"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS RP2040 Boards",
+          "architecture": "mbed_rp2040",
+          "version": "4.0.8",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-RP2040-4.0.8.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-RP2040-4.0.8.tar.bz2",
+          "checksum": "SHA-256:c5d106120e8d79518d682bde2113884ac28c7018b82891c1e388e5d5c1bed171",
+          "size": "4257029",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Raspberry Pi Pico"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nicla Boards",
+          "architecture": "mbed_nicla",
+          "version": "4.0.8",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nicla-4.0.8.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nicla-4.0.8.tar.bz2",
+          "checksum": "SHA-256:9d46302ef7548cd7efceb298db8dd93b88ea0d1a4fbdd1caebf77c6b4cf0c279",
+          "size": "19772500",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Nicla Sense ME"
+            },
+            {
+              "name": "Nicla Voice"
+            },
+            {
+              "name": "Nicla Vision"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.0.6",
+              "name": "rp2040tools"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Opta Boards",
+          "architecture": "mbed_opta",
+          "version": "4.0.8",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-opta-4.0.8.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-opta-4.0.8.tar.bz2",
+          "checksum": "SHA-256:f9c8fc8fbf9d80d23153504a5633d366f33aef85afa68dfd7a27dc586ccfa911",
+          "size": "15722710",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Finder Opta"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Giga Boards",
+          "architecture": "mbed_giga",
+          "version": "4.0.8",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-giga-4.0.8.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-giga-4.0.8.tar.bz2",
+          "checksum": "SHA-256:03513e4050ba63e281a9e175e687376dd662932d3b5284567c0c18e2eaf0fff9",
+          "size": "15874891",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Giga"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.8.0-arduino.2",
+              "name": "imgtool"
+            }
+          ]
+        },
+        {
           "name": "Arduino Renesas Portenta Boards",
           "architecture": "renesas_portenta",
           "version": "1.0.0",
@@ -10125,7 +10765,197 @@
           ]
         },
         {
-          "name": "esp32",
+          "name": "Arduino UNO R4 Boards",
+          "architecture": "renesas_uno",
+          "version": "1.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_uno-1.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_uno-1.0.4.tar.bz2",
+          "checksum": "SHA-256:39e24f12aa1f2b2890760666ff8879cf1b055b5d4155068ed8ef95f1dc35184a",
+          "size": "10138227",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino UNO R4 Minima"
+            },
+            {
+              "name": "Arduino UNO R4 WiFi"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Renesas Portenta Boards",
+          "architecture": "renesas_portenta",
+          "version": "1.0.4",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_portenta-1.0.4.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_portenta-1.0.4.tar.bz2",
+          "checksum": "SHA-256:8c99b506c86471d3097c1a38dbee29bc95a0a45af7f844fcfde7c94d6304dcc2",
+          "size": "16179573",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta C33"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "Arduino UNO R4 Boards",
+          "architecture": "renesas_uno",
+          "version": "1.0.5",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_uno-1.0.5.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_uno-1.0.5.tar.bz2",
+          "checksum": "SHA-256:51ae66bcac5f3f647171b6dfb6101da0575526cfd1d99dae8ab0314661263bb1",
+          "size": "10269077",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino UNO R4 Minima"
+            },
+            {
+              "name": "Arduino UNO R4 WiFi"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Renesas Portenta Boards",
+          "architecture": "renesas_portenta",
+          "version": "1.0.5",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-renesas_portenta-1.0.5.tar.bz2",
+          "archiveFileName": "ArduinoCore-renesas_portenta-1.0.5.tar.bz2",
+          "checksum": "SHA-256:1208897ca369bafb062d0e172b58ecfc82b3cad69a740637c7184a6863008db7",
+          "size": "16360600",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-renesas/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta C33"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.11.0-arduino5",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "arduino",
+              "version": "1.9.1-arduino5",
+              "name": "bossac"
+            }
+          ],
+          "discoveryDependencies": [
+            {
+              "packager": "builtin",
+              "name": "dfu-discovery"
+            }
+          ]
+        },
+        {
+          "name": "Arduino ESP32 Boards",
           "architecture": "esp32",
           "version": "2.0.10",
           "category": "ESP32",
@@ -10245,6 +11075,136 @@
             {
               "packager": "esp32",
               "name": "riscv32-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.11.0-esp32-20221026"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.5.1"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
+            }
+          ]
+        },
+        {
+          "name": "Arduino ESP32 Boards",
+          "architecture": "esp32",
+          "version": "2.0.12",
+          "category": "ESP32",
+          "url": "https://github.com/arduino/arduino-esp32/releases/download/2.0.12/esp32-2.0.12.zip",
+          "archiveFileName": "esp32-2.0.12.zip",
+          "checksum": "SHA-256:75938602ae4c6c7a39747596e0525fed40b2b278c3253415ef32825e005f3a58",
+          "size": "253627291",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano ESP32"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s2-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s3-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gdb",
+              "version": "11.2_20220823"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.11.0-esp32-20221026"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.5.1"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
+            }
+          ]
+        },
+        {
+          "name": "Arduino ESP32 Boards",
+          "architecture": "esp32",
+          "version": "2.0.13",
+          "category": "ESP32",
+          "url": "https://github.com/arduino/arduino-esp32/releases/download/2.0.13/esp32-2.0.13.zip",
+          "archiveFileName": "esp32-2.0.13.zip",
+          "checksum": "SHA-256:37ea9ab016617de17b3c2676cd8e1d76f7f8d8df239c911d6bb283de2e4facc9",
+          "size": "86625150",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano ESP32"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp32s3-elf-gcc",
+              "version": "esp-2021r2-patch5-8.4.0"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
               "version": "11.2_20220823"
             },
             {
@@ -14680,6 +15640,130 @@
           ]
         },
         {
+          "name": "arduino-fwuploader",
+          "version": "2.4.0",
+          "systems": [
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.0_Linux_32bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.0_Linux_32bit.tar.gz",
+              "checksum": "SHA-256:54c087a2a9513e2d53a42a417031a21b1bd6b97f80a8dbcbb1c4adfa769e9140",
+              "size": "9685879"
+            },
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.0_Linux_64bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.0_Linux_64bit.tar.gz",
+              "checksum": "SHA-256:50c21df34438bc306435374da251c2329d80af113e48f61d517a0985005d4815",
+              "size": "9808266"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.0_Windows_32bit.zip",
+              "archiveFileName": "arduino-fwuploader_2.4.0_Windows_32bit.zip",
+              "checksum": "SHA-256:548447ce2028eb26257d2fdaa193680c61ccea65b0de981c60c6439d2397faae",
+              "size": "9887673"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.0_Windows_64bit.zip",
+              "archiveFileName": "arduino-fwuploader_2.4.0_Windows_64bit.zip",
+              "checksum": "SHA-256:e6c0c2fb1d82f87ab5c3026ad699a5e99eacc41e995dc8a2204204f99daa141c",
+              "size": "9878592"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.0_macOS_64bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.0_macOS_64bit.tar.gz",
+              "checksum": "SHA-256:f948545aaa1cda145516637b88bf51221a8a532393c80e831a31c4f62a305738",
+              "size": "9828777"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.0_macOS_ARM64.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.0_macOS_ARM64.tar.gz",
+              "checksum": "SHA-256:6ba5f8562df74721563ba7e1f0b2a64398abcc11a7ed37864e83a61d2bd7ac26",
+              "size": "9291781"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.0_Linux_ARMv6.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.0_Linux_ARMv6.tar.gz",
+              "checksum": "SHA-256:f7ae4fb2496ba2a443dddc63303cbf762d999ac16f5905f2fb9d315a1c2787f9",
+              "size": "9271485"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.0_Linux_ARM64.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.0_Linux_ARM64.tar.gz",
+              "checksum": "SHA-256:3d67ea645bef96b47d7496fb150a00ccecd3b15bb54c333b451199e62ec62e56",
+              "size": "9179419"
+            }
+          ]
+        },
+        {
+          "name": "arduino-fwuploader",
+          "version": "2.4.1",
+          "systems": [
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.1_Linux_32bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.1_Linux_32bit.tar.gz",
+              "checksum": "SHA-256:6f00694f0e1baaea8e1ebbd9067afcf2677970ab5a8986646ccf7a784b18f3c7",
+              "size": "9685731"
+            },
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.1_Linux_64bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.1_Linux_64bit.tar.gz",
+              "checksum": "SHA-256:a21ea7596d0b883b24fc09bcfc3000f3a77b195004eb508f9a2deb70003f538e",
+              "size": "9810467"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.1_Windows_32bit.zip",
+              "archiveFileName": "arduino-fwuploader_2.4.1_Windows_32bit.zip",
+              "checksum": "SHA-256:8a2fcd9b66e6eebc09b7eeb7435ba36c5095384890a5d30317d1b162da76e816",
+              "size": "9887872"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.1_Windows_64bit.zip",
+              "archiveFileName": "arduino-fwuploader_2.4.1_Windows_64bit.zip",
+              "checksum": "SHA-256:6fc728f8b9edb42eaf80e375abd07624396dbe218d91364116a761ae733fee59",
+              "size": "9874283"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.1_macOS_64bit.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.1_macOS_64bit.tar.gz",
+              "checksum": "SHA-256:28b8a57ec94277b8145e3d99bbc703f44a4c3d1ae7c1219aa97ef04306510891",
+              "size": "9829523"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.1_macOS_ARM64.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.1_macOS_ARM64.tar.gz",
+              "checksum": "SHA-256:82f45d960b1d0d61300232e47c394c865237c8d70a9bf85285de4a9e0ce25e72",
+              "size": "9292450"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.1_Linux_ARMv6.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.1_Linux_ARMv6.tar.gz",
+              "checksum": "SHA-256:59c59919c4619b9fa36458fa3983d969665214a9711202370ab064376972f224",
+              "size": "9272850"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/arduino-fwuploader_2.4.1_Linux_ARM64.tar.gz",
+              "archiveFileName": "arduino-fwuploader_2.4.1_Linux_ARM64.tar.gz",
+              "checksum": "SHA-256:00412715a4d1dca4b2a524bfd9f856bc0aafbdd1d14c8b805543fcf9d632ca18",
+              "size": "9180830"
+            }
+          ]
+        },
+        {
           "name": "nrf5x-cl-tools",
           "version": "9.3.1",
           "systems": [
@@ -14723,6 +15807,13 @@
               "url": "https://downloads.arduino.cc/tools/espflash_2.0.0_Linux_64bit.tar.gz",
               "size": 3168742,
               "checksum": "SHA-256:b234547df8a08339e461d0aab8130c344be6c48279642fac92bfe77084a5f0f9"
+            },
+            {
+              "host": "i686-mingw32",
+              "archiveFileName": "espflash_2.0.0_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/tools/espflash_2.0.0_Windows_64bit.zip",
+              "size": 2898625,
+              "checksum": "SHA-256:8e6c5f6a39bd5358663766417e676dcc7236c8d5ab57bb51760c20bc99f394e1"
             },
             {
               "host": "x86_64-mingw32",
@@ -14771,6 +15862,13 @@
               "url": "https://downloads.arduino.cc/tools/esptool_3.3.3_Linux_64bit.tar.gz",
               "size": 12850181,
               "checksum": "SHA-256:bdcab463fe2d1eb65d4d0d575ac2be2efbef470994998021a99bd8fe63853335"
+            },
+            {
+              "host": "i686-mingw32",
+              "archiveFileName": "esptool_3.3.3_Windows_64bit.zip",
+              "url": "https://downloads.arduino.cc/tools/esptool_3.3.3_Windows_64bit.zip",
+              "size": 6347021,
+              "checksum": "SHA-256:b12354d11596397d3a84970d16c9267d6f5770fba5c75d78e1adfc5a7088f4de"
             },
             {
               "host": "x86_64-mingw32",
@@ -14950,6 +16048,40 @@
               "archiveFileName": "nina-fwuploader-plugin_1.0.0_Linux_ARM64.tar.gz",
               "checksum": "SHA-256:8a6fd11271329fd06a0690a3798b8bb74ce4b2e983064f84d71246f1f824841f",
               "size": "4451720"
+            }
+          ]
+        },
+        {
+          "name": "portenta-c33-fwuploader-plugin",
+          "version": "1.0.0",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/portenta-c33-fwuploader-plugin/portenta-c33-fwuploader-plugin_1.0.0_Linux_64bit.tar.gz",
+              "archiveFileName": "portenta-c33-fwuploader-plugin_1.0.0_Linux_64bit.tar.gz",
+              "checksum": "SHA-256:04cab94965341e932a35fab698a2f0411922f05f3d48e6b5eb6b808ae5000b52",
+              "size": "4132728"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/portenta-c33-fwuploader-plugin/portenta-c33-fwuploader-plugin_1.0.0_Windows_64bit.zip",
+              "archiveFileName": "portenta-c33-fwuploader-plugin_1.0.0_Windows_64bit.zip",
+              "checksum": "SHA-256:ef8376c5086845dadad84cb18d4b9deded05bf3629c3cd508544e21159322faf",
+              "size": "4334081"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/portenta-c33-fwuploader-plugin/portenta-c33-fwuploader-plugin_1.0.0_Windows_64bit.zip",
+              "archiveFileName": "portenta-c33-fwuploader-plugin_1.0.0_Windows_64bit.zip",
+              "checksum": "SHA-256:ef8376c5086845dadad84cb18d4b9deded05bf3629c3cd508544e21159322faf",
+              "size": "4334081"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/arduino-fwuploader/plugins/portenta-c33-fwuploader-plugin/portenta-c33-fwuploader-plugin_1.0.0_macOS_64bit.tar.gz",
+              "archiveFileName": "portenta-c33-fwuploader-plugin_1.0.0_macOS_64bit.tar.gz",
+              "checksum": "SHA-256:fc2f3031aada65ce198acf156fc48542f68e3f5bc333a7afb90bf77c98bdb9b0",
+              "size": "4084329"
             }
           ]
         }

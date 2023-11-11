@@ -251,6 +251,25 @@
 				"toolsDependencies":
 				 [				
 				 ]
+			 },
+			 {
+				"name": "uStepper",
+				"architecture": "avr",
+				"version": "2.2.5",
+				"category": "uStepper",
+				"url": "https://github.com/uStepper/uStepperHardware/blob/master/releases/uStepperHardware_2.2.5.zip?raw=true",
+				"checksum": "SHA-256:b98b3c7a2525a866db2cc319060ee44b1fb311bcb1f3986a4c31eb11bbc5b955",
+				"archiveFileName": "uStepperHardware_2.2.5.zip",
+				"size": "281721", 
+				"boards":
+				 [
+				   { "name": "uStepper" },
+				   { "name": "uStepper S-lite" },
+				   { "name": "uStepperS" }
+					],
+				"toolsDependencies":
+				 [				
+				 ]
 			 }
 	     ],      	
 		 "tools":

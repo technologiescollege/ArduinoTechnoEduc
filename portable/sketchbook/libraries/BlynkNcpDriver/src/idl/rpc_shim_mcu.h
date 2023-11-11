@@ -12,12 +12,11 @@ extern "C" {
 static inline
 RpcStatus rpc_mcu_ping(void) {
   RpcStatus _rpc_res;
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_MCU_PING);
-  MessageWriter_writeUInt16(++_rpc_seq);
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_MCU_PING);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, 100);
@@ -34,12 +33,11 @@ bool rpc_mcu_reboot(void) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_MCU_REBOOT);
-  MessageWriter_writeUInt16(++_rpc_seq);
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_MCU_REBOOT);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -64,15 +62,12 @@ bool rpc_mcu_hasUID(uint16_t uid) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_MCU_HASUID);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_MCU_HASUID);
   MessageWriter_writeUInt16(uid);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);

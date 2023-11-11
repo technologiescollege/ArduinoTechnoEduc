@@ -283,6 +283,7 @@
         /* Arduino megaAVR */
         #elif defined(ARDUINO_AVR_UNO_WIFI_REV2)
         #define BLYNK_INFO_DEVICE  "Arduino UNO WiFi Rev2"
+        #define BLYNK_USE_INTERNAL_ATOLL
 
         /* Arduino SAM */
         #elif defined(ARDUINO_SAM_DUE)
@@ -321,6 +322,7 @@
         #define BLYNK_INFO_DEVICE  "UNO R4 WiFi"
         #elif defined(ARDUINO_PORTENTA_C33)
         #define BLYNK_INFO_DEVICE  "Portenta C33"
+        #define BLYNK_USE_INTERNAL_DTOSTRF
 
         /* RapsberryPi */
         #elif defined(ARDUINO_RASPBERRY_PI_PICO_W)

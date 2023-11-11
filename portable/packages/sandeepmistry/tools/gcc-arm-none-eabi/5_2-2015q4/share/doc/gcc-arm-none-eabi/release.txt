@@ -1,0 +1,82 @@
+Release notes for
+*************************************************
+GNU Tools for ARM Embedded Processors 5.0
+                               - Q4 2015
+*************************************************
+
+This release includes the following items:
+* Bare metal EABI pre-built binaries for running on a Windows host
+* Bare metal EABI pre-built binaries for running on a Linux host
+* Bare metal EABI pre-built binaries for running on a Mac OS X host
+* Source code package (together with build scripts and instructions to setup
+  build environment), composed of:
+  * gcc : ARM/embedded-5-branch revision 231848
+    http://gcc.gnu.org/svn/gcc/branches/ARM/embedded-5-branch/
+
+  * binutils : 2.26 prerelease with mainline backports
+    git://sourceware.org/git/binutils-gdb.git commit 03f87942b6a216bc5cd07c5cfbb5ce5ad8185133
+
+  * newlib and newlib-nano : current master with mainline backports
+    git://sourceware.org/git/newlib.git commit 725532a3b2019ff7804a44b4cd97242e60a919b1
+
+  * gdb : 7.10 without target sim support
+    git://sourceware.org/git/gdb.git commit 88cb7d0234c24377205ea10b4778224532f4a239
+
+  * cloog 0.18.0 :
+    ftp://gcc.gnu.org/pub/gcc/infrastructure/cloog-0.18.0.tar.gz
+
+  * expat 2.0.1 :
+    http://jaist.dl.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz
+
+  * gmp 4.3.2 : ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-4.3.2.tar.bz2
+
+  * libelf 0.8.13 : http://www.mr511.de/software/libelf-0.8.13.tar.gz
+
+  * libiconv 1.14 :
+    http://ftp.gnu.org/gnu/libiconv/libiconv-1.14.tar.gz
+
+  * mpc 0.8.1 : ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-0.8.1.tar.gz
+
+  * mpfr 2.4.2 : ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-2.4.2.tar.bz2
+
+  * isl 0.12.2 : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.12.2.tar.bz2
+
+  * zlib 1.2.8
+    http://sourceforge.net/projects/libpng/files/zlib/1.2.8/zlib-1.2.8.tar.gz/download
+
+Supported hosts:
+* Windows 7 32/64 bits (with installer and alternative zip package)
+* Linux 32/64 bits
+  - Ubuntu 8.x or later (tarball)
+  - Ubuntu 10.04/12.04/13.04/13.10/14.04 (tarball and PPA)
+  - RHEL 4/5/6 (tarball)
+* Mac OS X 10.7.3 and newer 64 bits (tarball)
+
+Supported target OS:
+* Bare metal EABI only.
+
+Features:
+* All GCC 5 features, plus latest mainline features:
+  + Cortex-M7 performance tuning
+  + optimization of manual little endian and big endian loads
+  + improved jump threading removing the need for -ftree-switch-shortcut
+* ARMv8-M Baseline and Mainline alpha support:
+  + atomics not included for ARMv8-M Baseline
+  + ARMv8-M Security Extensions only supported for assembling and basic linking
+* Thumb-1 library optimizations
+  + https://gcc.gnu.org/ml/gcc-patches/2015-10/msg01282.html
+* CRC optimization
+  + https://gcc.gnu.org/ml/gcc-patches/2015-11/msg02046.html
+
+Tests:
+* Tested on a variety of Cortex-M0/M0+/M3/M4/M7/A9 boards
+* Tested on Qemu
+* Tested on ARM Fast Models
+
+Important bugs fixed in 5 release: none
+
+Known Changes and Issues:
+* Thumb1 code size regression due to new register allocation:
+  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61578
+  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=59535
+A workaround is to disable it by option -mno-lra.

@@ -16,15 +16,12 @@ bool rpc_hw_setUartBaudRate(uint32_t baud) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_HW_SETUARTBAUDRATE);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_HW_SETUARTBAUDRATE);
   MessageWriter_writeUInt32(baud);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -49,16 +46,13 @@ bool rpc_hw_initUserButton(uint16_t gpio, bool active_low) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_HW_INITUSERBUTTON);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_HW_INITUSERBUTTON);
   MessageWriter_writeUInt16(gpio);
   MessageWriter_writeBool(active_low);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -83,16 +77,13 @@ bool rpc_hw_initLED(uint16_t gpio, bool active_low) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_HW_INITLED);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_HW_INITLED);
   MessageWriter_writeUInt16(gpio);
   MessageWriter_writeBool(active_low);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -117,18 +108,15 @@ bool rpc_hw_initRGB(uint16_t gpio_r, uint16_t gpio_g, uint16_t gpio_b, bool comm
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_HW_INITRGB);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_HW_INITRGB);
   MessageWriter_writeUInt16(gpio_r);
   MessageWriter_writeUInt16(gpio_g);
   MessageWriter_writeUInt16(gpio_b);
   MessageWriter_writeBool(common_anode);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -153,17 +141,14 @@ bool rpc_hw_initARGB(uint16_t gpio, uint8_t mode, uint8_t count) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_HW_INITARGB);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_HW_INITARGB);
   MessageWriter_writeUInt16(gpio);
   MessageWriter_writeUInt8(mode);
   MessageWriter_writeUInt8(count);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -188,15 +173,12 @@ bool rpc_hw_setLedBrightness(uint8_t value) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_HW_SETLEDBRIGHTNESS);
-  MessageWriter_writeUInt16(++_rpc_seq);
-
-  /* Serialize inputs */
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_HW_SETLEDBRIGHTNESS);
   MessageWriter_writeUInt8(value);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -221,12 +203,11 @@ bool rpc_hw_getWiFiMAC(const char** mac) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_HW_GETWIFIMAC);
-  MessageWriter_writeUInt16(++_rpc_seq);
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_HW_GETWIFIMAC);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);
@@ -252,12 +233,11 @@ bool rpc_hw_getEthernetMAC(const char** mac) {
   bool _rpc_ret_val;
   memset(&_rpc_ret_val, 0, sizeof(_rpc_ret_val));
 
-  MessageWriter_begin();
-  MessageWriter_writeUInt16(RPC_OP_INVOKE);
-  MessageWriter_writeUInt16(RPC_UID_HW_GETETHERNETMAC);
-  MessageWriter_writeUInt16(++_rpc_seq);
+  /* Send request */
+  const uint16_t _rpc_seq = MessageWriter_beginInvoke(RPC_UID_HW_GETETHERNETMAC);
   MessageWriter_end();
 
+  /* Wait response */
   MessageBuffer _rsp_buff;
   MessageBuffer_init(&_rsp_buff, NULL, 0);
   _rpc_res = rpc_wait_result(_rpc_seq, &_rsp_buff, RPC_TIMEOUT_DEFAULT);

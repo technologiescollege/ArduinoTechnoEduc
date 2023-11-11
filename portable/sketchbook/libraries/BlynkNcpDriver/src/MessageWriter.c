@@ -1,6 +1,9 @@
 #include "MessageBuffer.h"
 #include "MessageWriter.h"
 #include "BlynkRpcUartFraming.h"
+#include "BlynkRpc.h"
+
+extern uint32_t _rpc_last_tx_time;
 
 size_t MessageWriter_writeString(const char* value) {
     if (!value) {
@@ -61,12 +64,40 @@ size_t MessageWriter_writeFloat(const float value) {
     return MessageWriter_write(&value, sizeof(float));
 }
 
+uint16_t MessageWriter_beginInvoke(uint16_t uid) {
+    uint16_t seq = rpc_next_seq();
+    MessageWriter_begin();
+    MessageWriter_writeUInt16(RPC_OP_INVOKE);
+    MessageWriter_writeUInt16(uid);
+    MessageWriter_writeUInt16(seq);
+    return seq;
+}
+
+void MessageWriter_beginOneway(uint16_t uid) {
+    MessageWriter_begin();
+    MessageWriter_writeUInt16(RPC_OP_ONEWAY);
+    MessageWriter_writeUInt16(uid);
+}
+
+void MessageWriter_beginResult(uint16_t seq, uint8_t status) {
+    MessageWriter_begin();
+    MessageWriter_writeUInt16(RPC_OP_RESULT);
+    MessageWriter_writeUInt16(seq);
+    MessageWriter_writeUInt8(status);
+}
+
+void MessageWriter_sendResultStatus(uint16_t seq, uint8_t status) {
+    MessageWriter_beginResult(seq, status);
+    MessageWriter_end();
+}
+
 size_t MessageWriter_begin(void) {
     RpcUartFraming_beginPacket();
     return 1;
 }
 size_t MessageWriter_end(void) {
     RpcUartFraming_endPacket();
+    _rpc_last_tx_time = rpc_system_millis();
     return 1;
 }
 
