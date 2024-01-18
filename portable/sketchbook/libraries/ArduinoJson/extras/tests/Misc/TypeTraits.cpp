@@ -1,5 +1,5 @@
 // ArduinoJson - https://arduinojson.org
-// Copyright © 2014-2023, Benoit BLANCHON
+// Copyright © 2014-2024, Benoit BLANCHON
 // MIT License
 
 #include <ArduinoJson.h>
@@ -193,9 +193,7 @@ TEST_CASE("Polyfills/type_traits") {
     CHECK(is_convertible<MemberProxy<JsonObject, const char*>,
                          JsonVariantConst>::value == true);
     CHECK(is_convertible<JsonObjectConst, JsonVariantConst>::value == true);
-    CHECK(is_convertible<DynamicJsonDocument, JsonVariantConst>::value == true);
-    CHECK(is_convertible<StaticJsonDocument<10>, JsonVariantConst>::value ==
-          true);
+    CHECK(is_convertible<JsonDocument, JsonVariantConst>::value == true);
   }
 
   SECTION("is_class") {

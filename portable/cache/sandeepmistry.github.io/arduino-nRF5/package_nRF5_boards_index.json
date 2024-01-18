@@ -352,6 +352,60 @@
               "version": "0.10.0-dev.nrf5"
             }
           ]
+        },
+        {
+          "name": "Nordic Semiconductor nRF5 Boards",
+          "architecture": "nRF5",
+          "version": "0.8.0",
+          "category": "Contributed",
+          "help": {
+            "online": "https://github.com/sandeepmistry/arduino-nRF5/issues"
+          },
+          "url": "https://github.com/sandeepmistry/arduino-nRF5/archive/0.8.0.tar.gz",
+          "archiveFileName": "arduino-nRF52-0.8.0.tar.gz",
+          "checksum": "MD5:84da4097f5518bcaa0752ff31927504f",
+          "size": "1488561",
+          "boards": [
+            {"name": "BBC micro:bit"},
+            {"name": "BBC micro:bit v2"},
+            {"name": "Bluz DK"},
+            {"name": "Calliope mini"},
+            {"name": "Calliope mini V3"},
+            {"name": "decaWave DWM1001 Module Development Board"},
+            {"name": "Electronut labs bluey"},
+            {"name": "Electronut labs hackaBLE"},
+            {"name": "Electronut labs hackaBLE v2"},
+            {"name": "Generic nRF51822"},
+            {"name": "Generic nRF52823"},
+            {"name": "Generic nRF52833"},
+            {"name": "OSHChip"},
+            {"name": "ng-beacon"},
+            {"name": "nRF51 Dongle"},
+            {"name": "nRF51822 Development Kit"},
+            {"name": "nRF52 DK"},
+            {"name": "Nordic Beacon Kit"},
+            {"name": "RedBear BLE Nano 2"},
+            {"name": "RedBear Blend 2"},
+            {"name": "RedBearLab BLE Nano"},
+            {"name": "RedBearLab nRF51822"},
+            {"name": "Seeed Arch Link"},
+            {"name": "Sino:bit"},
+            {"name": "Taida Century nRF52 mini board"},
+            {"name": "TinyBLE"},
+            {"name": "Waveshare BLE400"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "sandeepmistry",
+              "name": "gcc-arm-none-eabi",
+              "version": "5_2-2015q4"
+            },
+            {
+              "packager": "sandeepmistry",
+              "name": "openocd",
+              "version": "0.10.0-dev.nrf5"
+            }
+          ]
         }
       ],
       "tools":[
