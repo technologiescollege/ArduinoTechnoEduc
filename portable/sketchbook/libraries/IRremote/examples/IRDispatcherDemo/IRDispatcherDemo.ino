@@ -49,37 +49,11 @@
 #if defined(USE_TINY_IR_RECEIVER)
 //#define NO_LED_FEEDBACK_CODE   // Activate this if you want to suppress LED feedback or if you do not have a LED. This saves 14 bytes code and 2 clock cycles per interrupt.
 
-/*
- * Set sensible receive pin for different CPU's
- */
-#if defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__) || defined(__AVR_ATtiny87__) || defined(__AVR_ATtiny167__)
-#include "ATtinySerialOut.hpp" // Available as Arduino library "ATtinySerialOut"
-#    if defined(ARDUINO_AVR_DIGISPARKPRO)
-#define IR_INPUT_PIN    9 // PA3 - on Digispark board labeled as pin 9
-#    else
-#define IR_INPUT_PIN    0 // PCINT0
-#    endif
-#  elif defined(__AVR_ATtiny1616__)  || defined(__AVR_ATtiny3216__) || defined(__AVR_ATtiny3217__)
-#define IR_INPUT_PIN    10
-#  elif (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__))
-#define IR_INPUT_PIN    21 // INT0
-#  elif defined(ESP8266)
-#define IR_INPUT_PIN    14 // D5
-#  elif defined(ESP32)
-#define IR_INPUT_PIN    15
-#  elif defined(ARDUINO_ARCH_MBED) && defined(ARDUINO_ARCH_MBED_NANO)
-#define IR_INPUT_PIN    3   // GPIO15 Use pin 3 since pin 2|GPIO25 is connected to LED on Pi pico
-#  elif defined(ARDUINO_ARCH_RP2040) // Pi Pico with arduino-pico core https://github.com/earlephilhower/arduino-pico
-#define IR_INPUT_PIN    15  // to be compatible with the Arduino Nano RP2040 Connect (pin3)
-#  else
-#define IR_INPUT_PIN    2   // INT0
-#  endif
-
 #elif defined(USE_IRMP_LIBRARY)
 /*
  * IRMP version
  */
-#define IR_INPUT_PIN    2
+#define IR_RECEIVE_PIN    2
 #define IRMP_USE_COMPLETE_CALLBACK       1 // Enable callback functionality. It is required if IRMP library is used.
 #if defined(ALTERNATIVE_IR_FEEDBACK_LED_PIN)
 #define FEEDBACK_LED_PIN    ALTERNATIVE_IR_FEEDBACK_LED_PIN
@@ -135,7 +109,11 @@ void doTone2200();
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/|| defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
+    while (!Serial)
+        ; // Wait for Serial to become available. Is optimized away for some cores.
+
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/ \
+    || defined(SERIALUSB_PID)  || defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
 #if defined(ESP8266)
@@ -159,7 +137,7 @@ void setup() {
 
     IRDispatcher.init(); // This just calls irmp_init()
 #if defined(USE_TINY_IR_RECEIVER)
-    Serial.println(F("Ready to receive NEC IR signals at pin " STR(IR_INPUT_PIN)));
+    Serial.println(F("Ready to receive NEC IR signals at pin " STR(IR_RECEIVE_PIN)));
 #else
     irmp_register_complete_callback_function(&handleReceivedIRData); // fixed function in IRCommandDispatcher.hpp
 
@@ -189,8 +167,7 @@ void loop() {
         DELAY_AND_RETURN_IF_STOP(sBlinkDelay);
     }
 
-    if (millis() - IRDispatcher.IRReceivedData.MillisOfLastCode > 120000)
-    {
+    if (millis() - IRDispatcher.IRReceivedData.MillisOfLastCode > 120000) {
         //Short beep as remainder, if we did not receive any command in the last 2 minutes
         IRDispatcher.IRReceivedData.MillisOfLastCode += 120000;
         doTone1800();
@@ -199,7 +176,7 @@ void loop() {
 //    delay(10);
 }
 
-void doPrintMenu(){
+void doPrintMenu() {
     Serial.println();
     Serial.println(F("Press 1 for tone 1800 Hz"));
     Serial.println(F("Press 2 for tone 2200 Hz"));
@@ -256,7 +233,6 @@ void doLedBlink20times() {
         DELAY_AND_RETURN_IF_STOP(200);
     }
 }
-
 
 void doTone1800() {
 #if defined(USE_IRMP_LIBRARY) && !defined(IRMP_ENABLE_PIN_CHANGE_INTERRUPT)

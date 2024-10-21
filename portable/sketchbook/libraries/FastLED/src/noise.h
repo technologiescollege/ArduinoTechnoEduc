@@ -1,7 +1,9 @@
 #ifndef __INC_NOISE_H
 #define __INC_NOISE_H
 
-#include "FastLED.h"
+#include <stdint.h>
+#include "crgb.h"
+#include "namespace.h"
 
 /// @file noise.h
 /// Functions to generate and fill arrays with noise.
@@ -102,6 +104,18 @@ extern int8_t inoise8_raw(uint16_t x);
 /// @} NoiseGeneration
 
 
+/// @name 32 bit simplex noise functions
+///@{
+/// 32 bit, fixed point implementation of simplex noise functions.
+/// The inputs are 20.12 fixed-point value. The result covers the full
+/// range of a uint16_t averaging around 32768.
+uint16_t snoise16(uint32_t x);
+uint16_t snoise16(uint32_t x, uint32_t y);
+uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z);
+uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z, uint32_t w);
+///@}
+
+
 
 /// @defgroup NoiseFill Noise Fill Functions
 /// Functions to fill a buffer with noise data.
@@ -134,25 +148,25 @@ void fill_raw_noise16into8(uint8_t *pData, uint8_t num_points, uint8_t octaves, 
 /// @param y y-axis coordinate on noise map (2D)
 /// @param scaley the scale (distance) between y points when filling in noise
 /// @param time the time position for the noise field
-void fill_raw_2dnoise8(uint8_t *pData, int width, int height, uint8_t octaves, uint16_t x, int scalex, uint16_t y, int scaley, uint16_t time);
+void fill_raw_2dnoise8(uint8_t *pData, int width, int height, uint8_t octaves, uint16_t x, int16_t scalex, uint16_t y, int16_t scaley, uint16_t time);
 
 /// Fill a 2D 8-bit buffer with noise, using inoise16() 
-/// @copydetails fill_raw_2dnoise8(uint8_t*, int, int, uint8_t, uint16_t, int, uint16_t, int, uint16_t)
-void fill_raw_2dnoise16into8(uint8_t *pData, int width, int height, uint8_t octaves, uint32_t x, int scalex, uint32_t y, int scaley, uint32_t time);
+/// @copydetails fill_raw_2dnoise8(uint8_t*, int, int, uint8_t, uint16_t, int16_t, uint16_t, int16_t, uint16_t)
+void fill_raw_2dnoise16into8(uint8_t *pData, int width, int height, uint8_t octaves, uint32_t x, int32_t scalex, uint32_t y, int32_t scaley, uint32_t time);
 
 /// Fill a 2D 16-bit buffer with noise, using inoise16() 
-/// @copydetails fill_raw_2dnoise8(uint8_t*, int, int, uint8_t, uint16_t, int, uint16_t, int, uint16_t)
+/// @copydetails fill_raw_2dnoise8(uint8_t*, int, int, uint8_t, uint16_t, int16_t, uint16_t, int16_t, uint16_t)
 /// @param freq88 starting octave frequency
 /// @param amplitude noise amplitude
 /// @param skip how many noise maps to skip over, incremented recursively per octave
-void fill_raw_2dnoise16(uint16_t *pData, int width, int height, uint8_t octaves, q88 freq88, fract16 amplitude, int skip, uint32_t x, int scalex, uint32_t y, int scaley, uint32_t time);
+void fill_raw_2dnoise16(uint16_t *pData, int width, int height, uint8_t octaves, q88 freq88, fract16 amplitude, int skip, uint32_t x, int32_t scalex, uint32_t y, int32_t scaley, uint32_t time);
 
 /// Fill a 2D 8-bit buffer with noise, using inoise16() 
-/// @copydetails fill_raw_2dnoise8(uint8_t*, int, int, uint8_t, uint16_t, int, uint16_t, int, uint16_t)
+/// @copydetails fill_raw_2dnoise8(uint8_t*, int, int, uint8_t, uint16_t, int16_t, uint16_t, int16_t, uint16_t)
 /// @param freq44 starting octave frequency
 /// @param amplitude noise amplitude
 /// @param skip how many noise maps to skip over, incremented recursively per octave
-void fill_raw_2dnoise16into8(uint8_t *pData, int width, int height, uint8_t octaves, q44 freq44, fract8 amplitude, int skip, uint32_t x, int scalex, uint32_t y, int scaley, uint32_t time);
+void fill_raw_2dnoise16into8(uint8_t *pData, int width, int height, uint8_t octaves, q44 freq44, fract8 amplitude, int skip, uint32_t x, int32_t scalex, uint32_t y, int32_t scaley, uint32_t time);
 
 /// @} Raw Fill Functions
 

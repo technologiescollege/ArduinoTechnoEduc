@@ -1,6 +1,8 @@
 #ifndef __INC_FASTPIN_ARM_SAM_H
 #define __INC_FASTPIN_ARM_SAM_H
 
+#include "force_inline.h"
+
 FASTLED_NAMESPACE_BEGIN
 
 #if defined(FASTLED_FORCE_SOFTWARE_PINS)
@@ -55,7 +57,7 @@ public:
 };
 
 #define _R(T) struct __gen_struct_ ## T
-#define _RD32(T) struct __gen_struct_ ## T { static __attribute__((always_inline)) inline volatile PortGroup * r() { return T; } };
+#define _RD32(T) struct __gen_struct_ ## T { static FASTLED_FORCE_INLINE volatile PortGroup * r() { return T; } };
 
 #define _FL_IO(L) _RD32(GPIO ## L)
 
@@ -240,6 +242,20 @@ _FL_DEFPIN( 41, 0, 1) //APA102 Data
 
 #define SPI_DATA  29
 #define SPI_CLOCK 30
+
+#define HAS_HARDWARE_PIN_SUPPORT 1
+
+#elif defined(ADAFRUIT_PIXELTRINKEY_M0)
+
+#define MAX_PIN 5
+_FL_DEFPIN( 0, 2, 0); // D0
+_FL_DEFPIN( 1, 1, 0); // D1 (Internal NeoPixel)
+_FL_DEFPIN( 2, 4, 0); // D2 (MOSI)
+_FL_DEFPIN( 3, 5, 0); // D3 (SCK)
+_FL_DEFPIN( 4, 6, 0); // D4 (MISO)
+
+#define SPI_DATA  2
+#define SPI_CLOCK 3
 
 #define HAS_HARDWARE_PIN_SUPPORT 1
 

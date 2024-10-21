@@ -2,10 +2,22 @@
 #define __INC_PIXELSET_H
 
 #include "FastLED.h"
+#include "force_inline.h"
 
 #ifndef abs
 #include <stdlib.h>
 #endif
+
+template<class PIXEL_TYPE>
+class CPixelView;
+
+/// CPixelView for CRGB arrays
+typedef CPixelView<CRGB> CRGBSet;
+
+/// Retrieve a pointer to a CRGB array, using a CRGBSet and an LED offset
+FASTLED_FORCE_INLINE
+CRGB *operator+(const CRGBSet & pixels, int offset);
+
 
 /// @file pixelset.h
 /// Declares classes for managing logical groups of LEDs
@@ -190,7 +202,7 @@ public:
     /// @param color the color to fill with
     inline CPixelView & fill_solid(const PIXEL_TYPE & color) { *this = color; return *this; }
     /// @copydoc CPixelView::fill_solid(const PIXEL_TYPE&)
-    inline CPixelView & fill_solid(const CHSV & color) { if(dir>0) { *this = color; return *this; } }
+    inline CPixelView & fill_solid(const CHSV & color) { *this = color; return *this; }
 
     /// Fill all of the LEDs with a rainbow of colors.
     /// @param initialhue the starting hue for the rainbow
@@ -360,21 +372,21 @@ public:
 
     public:
         /// Copy constructor
-        __attribute__((always_inline)) inline pixelset_iterator_base(const pixelset_iterator_base & rhs) : leds(rhs.leds), dir(rhs.dir) {}
+        FASTLED_FORCE_INLINE pixelset_iterator_base(const pixelset_iterator_base & rhs) : leds(rhs.leds), dir(rhs.dir) {}
 
         /// Base constructor
         /// @tparam the type of the LED array data
         /// @param _leds pointer to LED array
         /// @param _dir direction of LED array
-        __attribute__((always_inline)) inline pixelset_iterator_base(T * _leds, const char _dir) : leds(_leds), dir(_dir) {}
+        FASTLED_FORCE_INLINE pixelset_iterator_base(T * _leds, const char _dir) : leds(_leds), dir(_dir) {}
 
-        __attribute__((always_inline)) inline pixelset_iterator_base& operator++() { leds += dir; return *this; }  ///< Increment LED pointer in data direction
-        __attribute__((always_inline)) inline pixelset_iterator_base operator++(int) { pixelset_iterator_base tmp(*this); leds += dir; return tmp; }  ///< @copydoc operator++()
+        FASTLED_FORCE_INLINE pixelset_iterator_base& operator++() { leds += dir; return *this; }  ///< Increment LED pointer in data direction
+        FASTLED_FORCE_INLINE pixelset_iterator_base operator++(int) { pixelset_iterator_base tmp(*this); leds += dir; return tmp; }  ///< @copydoc operator++()
 
-        __attribute__((always_inline)) inline bool operator==(pixelset_iterator_base & other) const { return leds == other.leds; /* && set==other.set; */ }    ///< Check if iterator is at the same position
-        __attribute__((always_inline)) inline bool operator!=(pixelset_iterator_base & other) const { return leds != other.leds; /* || set != other.set; */ }  ///< Check if iterator is not at the same position
+        FASTLED_FORCE_INLINE bool operator==(pixelset_iterator_base & other) const { return leds == other.leds; /* && set==other.set; */ }    ///< Check if iterator is at the same position
+        FASTLED_FORCE_INLINE bool operator!=(pixelset_iterator_base & other) const { return leds != other.leds; /* || set != other.set; */ }  ///< Check if iterator is not at the same position
 
-        __attribute__((always_inline)) inline PIXEL_TYPE& operator*() const { return *leds; }  ///< Dereference operator, to get underlying pointer to the LEDs
+        FASTLED_FORCE_INLINE PIXEL_TYPE& operator*() const { return *leds; }  ///< Dereference operator, to get underlying pointer to the LEDs
     };
 
     typedef pixelset_iterator_base<PIXEL_TYPE> iterator;              ///< Iterator helper type for this class
@@ -392,12 +404,10 @@ public:
     /// @} Iterator
 };
 
-/// CPixelView for CRGB arrays
-typedef CPixelView<CRGB> CRGBSet;
-
-/// Retrieve a pointer to a CRGB array, using a CRGBSet and an LED offset
-__attribute__((always_inline))
-inline CRGB *operator+(const CRGBSet & pixels, int offset) { return (CRGB*)pixels + offset; }
+FASTLED_FORCE_INLINE
+CRGB *operator+(const CRGBSet & pixels, int offset) {
+    return (CRGB*)pixels + offset;
+}
 
 
 /// A version of CPixelView<CRGB> with an included array of CRGB LEDs

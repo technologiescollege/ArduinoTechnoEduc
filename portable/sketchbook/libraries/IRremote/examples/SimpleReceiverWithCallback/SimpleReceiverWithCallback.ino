@@ -59,7 +59,7 @@
 
 //#define DEBUG               // Activate this for lots of lovely debug output from the decoders.
 
-//#define RAW_BUFFER_LENGTH  180  // Default is 112 if DECODE_MAGIQUEST is enabled, otherwise 100.
+//#define RAW_BUFFER_LENGTH  750 // For air condition remotes it requires 750. Default is 200.
 
 #include <Arduino.h>
 
@@ -77,6 +77,9 @@ void ReceiveCompleteCallbackHandler();
 
 void setup() {
     Serial.begin(115200);
+    while (!Serial)
+        ; // Wait for Serial to become available. Is optimized away for some cores.
+
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
 
@@ -85,7 +88,7 @@ void setup() {
     IrReceiver.registerReceiveCompleteCallback(ReceiveCompleteCallbackHandler);
 
     Serial.print(F("Ready to receive IR signals of protocols: "));
-    printActiveIRProtocols (&Serial);
+    printActiveIRProtocols(&Serial);
     Serial.println(F("at pin " STR(IR_RECEIVE_PIN)));
 }
 
@@ -94,9 +97,7 @@ void loop() {
      * Print in loop (interrupts are enabled here) if received data is available.
      */
     if (sIRDataJustReceived) {
-        // Print a short summary of received data
-        IrReceiver.printIRResultShort(&Serial);
-        IrReceiver.printIRSendUsage(&Serial);
+        // Print a summary of received data
         if (IrReceiver.decodedIRData.protocol == UNKNOWN) {
             Serial.println(F("Received noise or an unknown (or not yet enabled) protocol"));
             /*
@@ -105,6 +106,9 @@ void loop() {
              * and the the first mark of the next (repeat) data was yet received
              */
             IrReceiver.printIRResultRawFormatted(&Serial, true); //
+        } else {
+            IrReceiver.printIRResultShort(&Serial);
+            IrReceiver.printIRSendUsage(&Serial);
         }
         Serial.println();
     }
@@ -124,6 +128,10 @@ IRAM_ATTR
 # endif
 void ReceiveCompleteCallbackHandler() {
     IrReceiver.decode(); // fill IrReceiver.decodedIRData
+    /*
+     * Enable receiving of the next value.
+     */
+    IrReceiver.resume();
 
     /*
      * Check the received data and perform actions according to the received command
@@ -146,13 +154,4 @@ void ReceiveCompleteCallbackHandler() {
      */
     sIRDataJustReceived = true;
 
-    /*
-     * Enable receiving of the next value.
-     * !!!Attention!!!
-     * After receiving the first mark of the next (repeat) data, 3 variables required for printing are reset/overwritten.
-     * - IrReceiver.irparams.rawlen
-     * - IrReceiver.irparams.rawbuf[0]
-     * - IrReceiver.irparams.OverflowFlag)
-     */
-    IrReceiver.resume();
 }

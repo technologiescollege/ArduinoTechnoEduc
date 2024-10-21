@@ -33,7 +33,9 @@
  */
 #include <Arduino.h>
 
-#define DISABLE_CODE_FOR_RECEIVER // Disables restarting receiver after each send. Saves 450 bytes program memory and 269 bytes RAM if receiving functions are not used.
+#if !defined(ARDUINO_ESP32C3_DEV) // This is due to a bug in RISC-V compiler, which requires unused function sections :-(.
+#define DISABLE_CODE_FOR_RECEIVER // Disables static receiver code like receive timer ISR handler and static IRReceiver and irparams data. Saves 450 bytes program memory and 269 bytes RAM if receiving functions are not required.
+#endif
 
 #include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
 #include <IRremote.hpp>
@@ -96,6 +98,10 @@
 //#define BOSE_CMD_ALARM_ON_OFF   0x22
 //#define BOSE_CMD_ALARM_WAKE_TO  0x70
 //#define BOSE_CMD_ALARM_TIME     0x23
+// Different last 3 codes for Wave Sound Touch IV
+//#define BOSE_CMD_ALARM_1        0x22
+//#define BOSE_CMD_ALARM_2        0x62
+//#define BOSE_CMD_ALARM_SETUP    0xA2
 
 bool sPrintMenu;
 void printMenu();
@@ -104,18 +110,26 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
 
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/|| defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
+    while (!Serial)
+        ; // Wait for Serial to become available. Is optimized away for some cores.
+
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/ \
+    || defined(SERIALUSB_PID)  || defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
 
 #if defined(IR_SEND_PIN)
-    IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
+    IrSender.begin(); // Start with IR_SEND_PIN -which is defined in PinDefinitionsAndMore.h- as send pin and enable feedback LED at default feedback LED pin
     Serial.println(F("Send IR signals at pin " STR(IR_SEND_PIN)));
 #else
-    IrSender.begin(3, ENABLE_LED_FEEDBACK, USE_DEFAULT_FEEDBACK_LED_PIN); // Specify send pin and enable feedback LED at default feedback LED pin
-    Serial.println(F("Send IR signals at pin 3"));
+    uint8_t tSendPin = 3;
+    IrSender.begin(tSendPin, ENABLE_LED_FEEDBACK, USE_DEFAULT_FEEDBACK_LED_PIN); // Specify send pin and enable feedback LED at default feedback LED pin
+    // You can change send pin later with IrSender.setSendPin();
+
+    Serial.print(F("Send IR signals at pin "));
+    Serial.println(tSendPin);
 #endif
 
     sPrintMenu = true;

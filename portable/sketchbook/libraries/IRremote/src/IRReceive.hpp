@@ -50,11 +50,6 @@
 //#define _IR_MEASURE_TIMING // for ISR
 //#define _IR_TIMING_TEST_PIN 7 // "pinModeFast(_IR_TIMING_TEST_PIN, OUTPUT);" is executed at start()
 //
-/*
- * Check for additional characteristics of timing like length of mark for a constant mark protocol,
- * where space length determines the bit value. Requires up to 194 additional bytes of program memory.
- */
-//#define DECODE_STRICT_CHECKS
 /** \addtogroup Receiving Receiving IR data for multiple protocols
  * @{
  */
@@ -67,6 +62,7 @@ IRrecv IrReceiver;
  * The control structure instance
  */
 struct irparams_struct irparams; // the irparams instance
+unsigned long sMicrosAtLastStopTimer = 0; // Used to adjust TickCounterForISR with uncounted ticks between stopTimer() and restartTimer()
 
 /**
  * Instantiate the IRrecv class. Multiple instantiation is not supported.
@@ -122,6 +118,8 @@ IRrecv::IRrecv(uint_fast8_t aReceivePin, uint_fast8_t aFeedbackLEDPin) {
  *
  **********************************************************************************************************************/
 #if defined(ESP8266) || defined(ESP32)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wvolatile"
 IRAM_ATTR
 #endif
 void IRReceiveTimerInterruptHandler() {
@@ -169,7 +167,8 @@ void IRReceiveTimerInterruptHandler() {
                  * Initialize all state machine variables
                  */
                 irparams.OverflowFlag = false;
-                irparams.rawbuf[0] = irparams.TickCounterForISR;
+//                irparams.rawbuf[0] = irparams.TickCounterForISR;
+                irparams.initialGapTicks = irparams.TickCounterForISR; // Enabling 8 bit buffer since 4.4
                 irparams.rawlen = 1;
                 irparams.StateForISR = IR_REC_STATE_MARK;
             } // otherwise stay in idle state
@@ -198,7 +197,7 @@ void IRReceiveTimerInterruptHandler() {
                 // Flag up a read OverflowFlag; Stop the state machine
                 irparams.OverflowFlag = true;
                 irparams.StateForISR = IR_REC_STATE_STOP;
-#if !IR_REMOTE_DISABLE_RECEIVE_COMPLETE_CALLBACK
+#if !defined(IR_REMOTE_DISABLE_RECEIVE_COMPLETE_CALLBACK)
                 /*
                  * Call callback if registered (not NULL)
                  */
@@ -223,8 +222,18 @@ void IRReceiveTimerInterruptHandler() {
              * Switch to IR_REC_STATE_STOP
              * Don't reset TickCounterForISR; keep counting width of next leading space
              */
-            irparams.StateForISR = IR_REC_STATE_STOP;
-#if !IR_REMOTE_DISABLE_RECEIVE_COMPLETE_CALLBACK
+            /*
+             * These 2 variables allow to call resume() directly after decode.
+             * After resume(), decodedIRData.rawDataPtr->initialGapTicks and decodedIRData.rawDataPtr->rawlen are
+             * the first variables, which are overwritten by the next received frame.
+             * since 4.3.0.
+             * For backward compatibility, there are the same 2 statements in decode() if IrReceiver is not used.
+             */
+            IrReceiver.decodedIRData.initialGapTicks = irparams.initialGapTicks;
+            IrReceiver.decodedIRData.rawlen = irparams.rawlen;
+
+            irparams.StateForISR = IR_REC_STATE_STOP; // This signals the decode(), that a complete frame was received
+#if !defined(IR_REMOTE_DISABLE_RECEIVE_COMPLETE_CALLBACK)
             /*
              * Call callback if registered (not NULL)
              */
@@ -248,7 +257,7 @@ void IRReceiveTimerInterruptHandler() {
     }
 
 #if !defined(NO_LED_FEEDBACK_CODE)
-    if (FeedbackLEDControl.LedFeedbackEnabled == LED_FEEDBACK_ENABLED_FOR_RECEIVE) {
+    if (FeedbackLEDControl.LedFeedbackEnabled & LED_FEEDBACK_ENABLED_FOR_RECEIVE) {
         setFeedbackLED(tIRInputLevel == INPUT_MARK);
     }
 #endif
@@ -287,7 +296,7 @@ void IRrecv::begin(uint_fast8_t aReceivePin, bool aEnableLEDFeedback, uint_fast8
 
     setReceivePin(aReceivePin);
 #if !defined(NO_LED_FEEDBACK_CODE)
-    bool tEnableLEDFeedback = DO_NOT_ENABLE_LED_FEEDBACK;
+    uint_fast8_t tEnableLEDFeedback = DO_NOT_ENABLE_LED_FEEDBACK;
     if (aEnableLEDFeedback) {
         tEnableLEDFeedback = LED_FEEDBACK_ENABLED_FOR_RECEIVE;
     }
@@ -309,19 +318,40 @@ void IRrecv::begin(uint_fast8_t aReceivePin, bool aEnableLEDFeedback, uint_fast8
 void IRrecv::setReceivePin(uint_fast8_t aReceivePinNumber) {
     irparams.IRReceivePin = aReceivePinNumber;
 #if defined(__AVR__)
-    irparams.IRReceivePinMask = digitalPinToBitMask(aReceivePinNumber);
-    irparams.IRReceivePinPortInputRegister = portInputRegister(digitalPinToPort(aReceivePinNumber));
+#  if defined(__digitalPinToBit)
+    if (__builtin_constant_p(aReceivePinNumber)) {
+        irparams.IRReceivePinMask = 1UL << (__digitalPinToBit(aReceivePinNumber));
+    } else {
+        irparams.IRReceivePinMask = digitalPinToBitMask(aReceivePinNumber); // requires 10 bytes PGM, even if not referenced (?because it is assembler code?)
+    }
+#  else
+    irparams.IRReceivePinMask = digitalPinToBitMask(aReceivePinNumber); // requires 10 bytes PGM, even if not referenced (?because it is assembler code?)
+#  endif
+#  if defined(__digitalPinToPINReg)
+    /*
+     * This code is 54 bytes smaller, if aReceivePinNumber is a constant :-), but 38 byte longer if it is not constant (,which is not likely).
+     */
+    if (__builtin_constant_p(aReceivePinNumber)) {
+        irparams.IRReceivePinPortInputRegister = __digitalPinToPINReg(aReceivePinNumber);
+    } else {
+        irparams.IRReceivePinPortInputRegister = portInputRegister(digitalPinToPort(aReceivePinNumber)); // requires 44 bytes PGM, even if not referenced
+    }
+#  else
+    irparams.IRReceivePinPortInputRegister = portInputRegister(digitalPinToPort(aReceivePinNumber)); // requires 44 bytes PGM, even if not referenced
+#  endif
 #endif
-    // Set pin mode once. pinModeFast makes no difference here :-(
-    pinMode(aReceivePinNumber, INPUT); // Seems to be at least required by ESP32
+    // Set pin mode once. pinModeFast makes no difference if used, but saves 224 if not referenced :-(
+    pinModeFast(aReceivePinNumber, INPUT); // Seems to be at least required by ESP32
 }
 
+#if !defined(IR_REMOTE_DISABLE_RECEIVE_COMPLETE_CALLBACK)
 /**
  * Sets the function to call if a protocol message has arrived
  */
 void IRrecv::registerReceiveCompleteCallback(void (*aReceiveCompleteCallbackFunction)(void)) {
     irparams.ReceiveCompleteCallbackFunction = aReceiveCompleteCallbackFunction;
 }
+#endif
 
 /**
  * Start the receiving process.
@@ -342,6 +372,23 @@ void IRrecv::start() {
     pinModeFast(_IR_TIMING_TEST_PIN, OUTPUT);
 #endif
 }
+
+/*
+ * Do not resume() reading of IR data
+ */
+void IRrecv::restartTimer() {
+    // Setup for cyclic 50 us interrupt
+    timerConfigForReceive(); // no interrupts enabled here!
+    // Timer interrupt is enabled after state machine reset
+    if (sMicrosAtLastStopTimer != 0) {
+        irparams.TickCounterForISR += (micros() - sMicrosAtLastStopTimer) / MICROS_PER_TICK; // adjust TickCounterForISR for correct gap value, which is used for repeat detection
+        sMicrosAtLastStopTimer = 0;
+    }
+    timerEnableReceiveInterrupt(); // Enables the receive sample timer interrupt which consumes a small amount of CPU every 50 us.
+#ifdef _IR_MEASURE_TIMING
+    pinModeFast(_IR_TIMING_TEST_PIN, OUTPUT);
+#endif
+}
 /**
  * Alias for start().
  */
@@ -351,25 +398,34 @@ void IRrecv::enableIRIn() {
 
 /**
  * Configures the timer and the state machine for IR reception.
+ * We assume, that timer interrupts are disabled here, otherwise it makes no sense to use this functions.
+ * Therefore we do not need to guard the change of the volatile TickCounterForISR here :-).
  * The tick counter value is already at 100 when decode() gets true, because of the 5000 us minimal gap defined in RECORD_GAP_MICROS.
+ * If TickCounterForISR is not adjusted with the value of the microseconds, the timer was stopped,
+ * it can happen, that a new IR frame is recognized as a repeat, because the value of RECORD_GAP_MICROS
+ * was not reached by TickCounterForISR counter before receiving the new IR frame.
  * @param aMicrosecondsToAddToGapCounter To compensate for the amount of microseconds the timer was stopped / disabled.
  */
-void IRrecv::start(uint32_t aMicrosecondsToAddToGapCounter) {
+void IRrecv::restartTimer(uint32_t aMicrosecondsToAddToGapCounter) {
     irparams.TickCounterForISR += aMicrosecondsToAddToGapCounter / MICROS_PER_TICK;
-    start();
+    timerConfigForReceive(); // no interrupts enabled here!
+    timerEnableReceiveInterrupt(); // Enables the receive sample timer interrupt which consumes a small amount of CPU every 50 us.
+#ifdef _IR_MEASURE_TIMING
+    pinModeFast(_IR_TIMING_TEST_PIN, OUTPUT);
+#endif
 }
-void IRrecv::startWithTicksToAdd(uint16_t aTicksToAddToGapCounter) {
+void IRrecv::restartTimerWithTicksToAdd(uint16_t aTicksToAddToGapCounter) {
     irparams.TickCounterForISR += aTicksToAddToGapCounter;
-    start();
+    timerConfigForReceive(); // no interrupts enabled here!
+    timerEnableReceiveInterrupt(); // Enables the receive sample timer interrupt which consumes a small amount of CPU every 50 us.
+#ifdef _IR_MEASURE_TIMING
+    pinModeFast(_IR_TIMING_TEST_PIN, OUTPUT);
+#endif
 }
+#if defined(ESP8266) || defined(ESP32)
+#pragma GCC diagnostic push
+#endif
 
-void IRrecv::addTicksToInternalTickCounter(uint16_t aTicksToAddToInternalTickCounter) {
-    irparams.TickCounterForISR += aTicksToAddToInternalTickCounter;
-}
-
-void IRrecv::addMicrosToInternalTickCounter(uint16_t aMicrosecondsToAddToInternalTickCounter) {
-    irparams.TickCounterForISR += aMicrosecondsToAddToInternalTickCounter / MICROS_PER_TICK;
-}
 /**
  * Restarts receiver after send. Is a NOP if sending does not require a timer.
  */
@@ -384,6 +440,14 @@ void IRrecv::restartAfterSend() {
  */
 void IRrecv::stop() {
     timerDisableReceiveInterrupt();
+}
+
+/*
+ * Stores microseconds of stop, to adjust TickCounterForISR in restartTimer()
+ */
+void IRrecv::stopTimer() {
+    timerDisableReceiveInterrupt();
+    sMicrosAtLastStopTimer = micros();
 }
 /**
  * Alias for stop().
@@ -407,10 +471,11 @@ bool IRrecv::isIdle() {
 }
 
 /**
- * Restart the ISR (Interrupt Service Routine) state machine, to enable receiving of the next IR frame
+ * Restart the ISR (Interrupt Service Routine) state machine, to enable receiving of the next IR frame.
+ * Internal counting of gap timing is independent of StateForISR and therefore independent of call time of resume().
  */
 void IRrecv::resume() {
-    // check allows to call resume at arbitrary places or more than once
+    // This check allows to call resume at arbitrary places or more than once
     if (irparams.StateForISR == IR_REC_STATE_STOP) {
         irparams.StateForISR = IR_REC_STATE_IDLE;
     }
@@ -433,7 +498,7 @@ void IRrecv::initDecodedIRData() {
     } else {
         decodedIRData.flags = IRDATA_FLAGS_EMPTY;
         // save last protocol, command and address for repeat handling (where they are compared or copied back :-))
-        lastDecodedProtocol = decodedIRData.protocol; // repeat patterns can be equal between protocols (e.g. NEC and LG), so we must keep the original one
+        lastDecodedProtocol = decodedIRData.protocol; // repeat patterns can be equal between protocols (e.g. NEC, Samsung and LG), so we must keep the original one
         lastDecodedCommand = decodedIRData.command;
         lastDecodedAddress = decodedIRData.address;
 
@@ -475,6 +540,14 @@ IRData* IRrecv::read() {
 bool IRrecv::decode() {
     if (irparams.StateForISR != IR_REC_STATE_STOP) {
         return false;
+    }
+
+    /*
+     * Support for old examples, which do not use the default IrReceiver instance
+     */
+    if (this != &IrReceiver) {
+        decodedIRData.initialGapTicks = irparams.initialGapTicks;
+        decodedIRData.rawlen = irparams.rawlen;
     }
 
     initDecodedIRData(); // sets IRDATA_FLAGS_WAS_OVERFLOW
@@ -628,29 +701,152 @@ bool IRrecv::decode() {
  * Common decode functions
  **********************************************************************************************************************/
 /**
- * Decode pulse distance width protocols.
+ * Decode pulse distance width protocols. We only check the mark or space length of a 1, otherwise we always assume a 0!
  *
  * We can have the following protocol timings
- * Pulse distance:          Pulses/marks are constant, pause/spaces have different length, like NEC.
- * Pulse width:             Pulses/marks have different length, pause/spaces are constant, like Sony.
- * Pulse distance width:    Pulses/marks and pause/spaces have different length, often the bit length is constant, like MagiQuest.
- * Pulse distance width can be decoded like pulse width decoder, if this decoder does not check the length of pause/spaces.
+ * PULSE_DISTANCE:       Pause/spaces have different length and determine the bit value, longer space is 1. Pulses/marks can be constant, like NEC.
+ * PULSE_WIDTH:          Pulses/marks have different length and determine the bit value, longer mark is 1. Pause/spaces can be constant, like Sony.
+ * PULSE_DISTANCE_WIDTH: Pulses/marks and pause/spaces have different length, often the bit length is constant, like MagiQuest. Can be decoded by PULSE_DISTANCE decoder.
  *
  * Input is     IrReceiver.decodedIRData.rawDataPtr->rawbuf[]
  * Output is    IrReceiver.decodedIRData.decodedRawData
  *
- * Assume pulse distance if aOneMarkMicros == aZeroMarkMicros
+ * Assume PULSE_DISTANCE if aOneMarkMicros == aZeroMarkMicros
  *
  * @param   aNumberOfBits       Number of bits to decode from decodedIRData.rawDataPtr->rawbuf[] array.
  * @param   aStartOffset        Offset in decodedIRData.rawDataPtr->rawbuf[] to start decoding. Must point to a mark.
- * @param   aOneMarkMicros      Taken as constant BitMarkMicros for pulse distance.
- * @param   aZeroMarkMicros     Not required if DECODE_STRICT_CHECKS is not defined.
- * @param   aOneSpaceMicros     Taken as (constant) BitSpaceMicros for pulse width.
- * @param   aZeroSpaceMicros    Not required if DECODE_STRICT_CHECKS is not defined.
+ * @param   aOneMarkMicros      Checked if PULSE_WIDTH
+ * @param   aZeroMarkMicros     Required for deciding if we have PULSE_DISTANCE.
+ * @param   aOneSpaceMicros     Checked if PULSE_DISTANCE.
  * @param   aMSBfirst           If true send Most Significant Bit first, else send Least Significant Bit (lowest bit) first.
  * @return  true                If decoding was successful
  */
-bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, uint_fast8_t aStartOffset, uint16_t aOneMarkMicros,
+bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, IRRawlenType aStartOffset, uint16_t aOneMarkMicros,
+        uint16_t aOneSpaceMicros, uint16_t aZeroMarkMicros, bool aMSBfirst) {
+
+    auto *tRawBufPointer = &decodedIRData.rawDataPtr->rawbuf[aStartOffset];
+
+    bool isPulseDistanceProtocol = (aOneMarkMicros == aZeroMarkMicros); // If true, we check aOneSpaceMicros -> pulse distance protocol
+
+    IRRawDataType tDecodedData = 0; // For MSB first tDecodedData is shifted left each loop
+    IRRawDataType tMask = 1UL; // Mask is only used for LSB first
+
+    for (uint_fast8_t i = aNumberOfBits; i > 0; i--) {
+        // get one mark and space pair
+        unsigned int tMarkTicks;
+        unsigned int tSpaceTicks;
+        bool tBitValue;
+
+        if (isPulseDistanceProtocol) {
+            /*
+             * PULSE_DISTANCE -including PULSE_DISTANCE_WIDTH- here.
+             * !!!We only check variable length space indicating a 1 or 0!!!
+             */
+            tRawBufPointer++;
+            tSpaceTicks = *tRawBufPointer++; // maybe buffer overflow for last bit, but we do not evaluate this value :-)
+            tBitValue = matchSpace(tSpaceTicks, aOneSpaceMicros); // Check for variable length space indicating a 1 or 0
+
+        } else {
+            /*
+             * PULSE_WIDTH here.
+             * !!!We only check variable length mark indicating a 1 or 0!!!
+             */
+            tMarkTicks = *tRawBufPointer++;
+            tBitValue = matchMark(tMarkTicks, aOneMarkMicros); // Check for variable length mark indicating a 1 or 0
+            tRawBufPointer++;
+        }
+
+        if (aMSBfirst) {
+            tDecodedData <<= 1;
+        }
+
+        if (tBitValue) {
+            // It's a 1 -> set the bit
+            if (aMSBfirst) {
+                tDecodedData |= 1;
+            } else {
+                tDecodedData |= tMask;
+            }
+            IR_TRACE_PRINTLN(F("=> 1"));
+        } else {
+            // do not set the bit
+            IR_TRACE_PRINTLN(F("=> 0"));
+        }
+        tMask <<= 1;
+    }
+    decodedIRData.decodedRawData = tDecodedData;
+    return true;
+}
+
+/*
+ * Old deprecated version with 7 parameters and unused aZeroSpaceMicros parameter
+ */
+bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, IRRawlenType aStartOffset, uint16_t aOneMarkMicros,
+        uint16_t aZeroMarkMicros, uint16_t aOneSpaceMicros, uint16_t aZeroSpaceMicros, bool aMSBfirst) {
+
+    (void) aZeroSpaceMicros;
+    auto *tRawBufPointer = &decodedIRData.rawDataPtr->rawbuf[aStartOffset];
+    bool isPulseDistanceProtocol = (aOneMarkMicros == aZeroMarkMicros); // If true, we have a constant mark -> pulse distance protocol
+
+    IRRawDataType tDecodedData = 0; // For MSB first tDecodedData is shifted left each loop
+    IRRawDataType tMask = 1UL; // Mask is only used for LSB first
+
+    for (uint_fast8_t i = aNumberOfBits; i > 0; i--) {
+        // get one mark and space pair
+        unsigned int tMarkTicks;
+        unsigned int tSpaceTicks;
+        bool tBitValue;
+
+        if (isPulseDistanceProtocol) {
+            /*
+             * Pulse distance here, it is not required to check constant mark duration (aOneMarkMicros) and zero space duration.
+             */
+
+            (void) aZeroSpaceMicros;
+            tRawBufPointer++;
+            tSpaceTicks = *tRawBufPointer++; // maybe buffer overflow for last bit, but we do not evaluate this value :-)
+            tBitValue = matchSpace(tSpaceTicks, aOneSpaceMicros); // Check for variable length space indicating a 1 or 0
+        } else {
+            /*
+             * Pulse width here, it is not required to check (constant) space duration and zero mark duration.
+             */
+            tMarkTicks = *tRawBufPointer++;
+            tBitValue = matchMark(tMarkTicks, aOneMarkMicros); // Check for variable length mark indicating a 1 or 0
+            tRawBufPointer++;
+        }
+
+        if (aMSBfirst) {
+            tDecodedData <<= 1;
+        }
+
+        if (tBitValue) {
+            // It's a 1 -> set the bit
+            if (aMSBfirst) {
+                tDecodedData |= 1;
+            } else {
+                tDecodedData |= tMask;
+            }
+            IR_TRACE_PRINTLN(F("=> 1"));
+        } else {
+            // do not set the bit
+            IR_TRACE_PRINTLN(F("=> 0"));
+        }
+        tMask <<= 1;
+    }
+    decodedIRData.decodedRawData = tDecodedData;
+    return true;
+}
+
+/*
+ * Check for additional required characteristics of timing like length of mark for a constant mark protocol,
+ * where space length determines the bit value. Requires up to 194 additional bytes of program memory.
+ * Only sensible for development or very exotic requirements.
+ * @param   aZeroMarkMicros     For strict checks
+ * @param   aZeroSpaceMicros    For strict checks
+ *
+ * Not used yet
+ */
+bool IRrecv::decodePulseDistanceWidthDataStrict(uint_fast8_t aNumberOfBits, IRRawlenType aStartOffset, uint16_t aOneMarkMicros,
         uint16_t aZeroMarkMicros, uint16_t aOneSpaceMicros, uint16_t aZeroSpaceMicros, bool aMSBfirst) {
 
     auto *tRawBufPointer = &decodedIRData.rawDataPtr->rawbuf[aStartOffset];
@@ -668,21 +864,15 @@ bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, uint_fast8
 
         if (isPulseDistanceProtocol) {
             /*
-             * Pulse distance here, it is not required to check constant mark duration (aOneMarkMicros) and zero space duration.
+             * PULSE_DISTANCE here, it is not required to check constant mark duration (aOneMarkMicros) and zero space duration.
              */
-#if defined DECODE_STRICT_CHECKS
             tMarkTicks = *tRawBufPointer++;
-#else
-            (void) aZeroSpaceMicros;
-            tRawBufPointer++;
-#endif
             tSpaceTicks = *tRawBufPointer++; // maybe buffer overflow for last bit, but we do not evaluate this value :-)
             tBitValue = matchSpace(tSpaceTicks, aOneSpaceMicros); // Check for variable length space indicating a 1 or 0
 
-#if defined DECODE_STRICT_CHECKS
             // Check for constant length mark
             if (!matchMark(tMarkTicks, aOneMarkMicros)) {
-#  if defined(LOCAL_DEBUG)
+#if defined(LOCAL_DEBUG)
                 Serial.print(F("Mark="));
                 Serial.print(tMarkTicks * MICROS_PER_TICK);
                 Serial.print(F(" is not "));
@@ -690,25 +880,19 @@ bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, uint_fast8
                 Serial.print(F(". Index="));
                 Serial.print(aNumberOfBits - i);
                 Serial.print(' ');
-#  endif
+#endif
                 return false;
             }
-#endif
 
         } else {
             /*
-             * Pulse width here, it is not required to check (constant) space duration and zero mark duration.
+             * PULSE_DISTANCE -including PULSE_DISTANCE_WIDTH- here.
+             * !!!We only check variable length mark indicating a 1 or 0!!!
+             * It is not required to check space duration and zero mark duration.
              */
             tMarkTicks = *tRawBufPointer++;
             tBitValue = matchMark(tMarkTicks, aOneMarkMicros); // Check for variable length mark indicating a 1 or 0
-
-#if defined DECODE_STRICT_CHECKS
             tSpaceTicks = *tRawBufPointer++; // maybe buffer overflow for last bit, but we do not evaluate this value :-)
-#else
-            (void) aZeroMarkMicros;
-            (void) aZeroSpaceMicros;
-            tRawBufPointer++;
-#endif
         }
 
         if (aMSBfirst) {
@@ -722,15 +906,15 @@ bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, uint_fast8
             } else {
                 tDecodedData |= tMask;
             }
-            IR_TRACE_PRINTLN('1');
+            IR_TRACE_PRINTLN(F("=> 1"));
         } else {
-#if defined DECODE_STRICT_CHECKS
             /*
-             * Additionally check length of length parameter which determine a zero
+             * Additionally check length of tSpaceTicks parameter for PULSE_DISTANCE or tMarkTicks for PULSE_WIDTH
+             * which determine a zero
              */
             if (isPulseDistanceProtocol) {
                 if (!matchSpace(tSpaceTicks, aZeroSpaceMicros)) {
-#  if defined(LOCAL_DEBUG)
+#if defined(LOCAL_DEBUG)
                     Serial.print(F("Space="));
                     Serial.print(tSpaceTicks * MICROS_PER_TICK);
                     Serial.print(F(" is not "));
@@ -740,12 +924,12 @@ bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, uint_fast8
                     Serial.print(F(". Index="));
                     Serial.print(aNumberOfBits - i);
                     Serial.print(' ');
-#  endif
+#endif
                     return false;
                 }
             } else {
                 if (!matchMark(tMarkTicks, aZeroMarkMicros)) {
-#  if defined(LOCAL_DEBUG)
+#if defined(LOCAL_DEBUG)
                     Serial.print(F("Mark="));
                     Serial.print(tMarkTicks * MICROS_PER_TICK);
                     Serial.print(F(" is not "));
@@ -755,21 +939,19 @@ bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, uint_fast8
                     Serial.print(F(". Index="));
                     Serial.print(aNumberOfBits - i);
                     Serial.print(' ');
-#  endif
+#endif
                     return false;
                 }
             }
-#endif
             // do not set the bit
-            IR_TRACE_PRINTLN('0');
+            IR_TRACE_PRINTLN(F("=> 0"));
         }
-#if defined DECODE_STRICT_CHECKS
         // If we have no stop bit, assume that last space, which is not recorded, is correct, since we can not check it
         if (aZeroSpaceMicros == aOneSpaceMicros
                 && tRawBufPointer < &decodedIRData.rawDataPtr->rawbuf[decodedIRData.rawDataPtr->rawlen]) {
             // Check for constant length space (of pulse width protocol) here
             if (!matchSpace(tSpaceTicks, aOneSpaceMicros)) {
-#  if defined(LOCAL_DEBUG)
+#if defined(LOCAL_DEBUG)
                 Serial.print(F("Space="));
                 Serial.print(tSpaceTicks * MICROS_PER_TICK);
                 Serial.print(F(" is not "));
@@ -777,11 +959,10 @@ bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, uint_fast8
                 Serial.print(F(". Index="));
                 Serial.print(aNumberOfBits - i);
                 Serial.print(' ');
-#  endif
+#endif
                 return false;
             }
         }
-#endif
         tMask <<= 1;
     }
     decodedIRData.decodedRawData = tDecodedData;
@@ -793,19 +974,19 @@ bool IRrecv::decodePulseDistanceWidthData(uint_fast8_t aNumberOfBits, uint_fast8
  * @return  true if decoding was successful
  */
 bool IRrecv::decodePulseDistanceWidthData(PulseDistanceWidthProtocolConstants *aProtocolConstants, uint_fast8_t aNumberOfBits,
-        uint_fast8_t aStartOffset) {
+        IRRawlenType aStartOffset) {
 
     return decodePulseDistanceWidthData(aNumberOfBits, aStartOffset, aProtocolConstants->DistanceWidthTimingInfo.OneMarkMicros,
-            aProtocolConstants->DistanceWidthTimingInfo.ZeroMarkMicros, aProtocolConstants->DistanceWidthTimingInfo.OneSpaceMicros,
-            aProtocolConstants->DistanceWidthTimingInfo.ZeroSpaceMicros, aProtocolConstants->Flags);
+            aProtocolConstants->DistanceWidthTimingInfo.OneSpaceMicros, aProtocolConstants->DistanceWidthTimingInfo.ZeroMarkMicros,
+            aProtocolConstants->Flags);
 }
 
 /*
  * Static variables for the getBiphaselevel function
  */
-uint_fast8_t sBiphaseDecodeRawbuffOffset; // Index into raw timing array
+uint_fast8_t sBiphaseDecodeRawbuffOffset;   // Index into raw timing array
 uint16_t sBiphaseCurrentTimingIntervals; // 1, 2 or 3. Number of aBiphaseTimeUnit intervals of the current rawbuf[sBiphaseDecodeRawbuffOffset] timing.
-uint_fast8_t sBiphaseUsedTimingIntervals;       // Number of already used intervals of sCurrentTimingIntervals.
+uint_fast8_t sBiphaseUsedTimingIntervals;   // Number of already used intervals of sCurrentTimingIntervals.
 uint16_t sBiphaseTimeUnit;
 
 void IRrecv::initBiphaselevel(uint_fast8_t aRCDecodeRawbuffOffset, uint16_t aBiphaseTimeUnit) {
@@ -833,7 +1014,7 @@ void IRrecv::initBiphaselevel(uint_fast8_t aRCDecodeRawbuffOffset, uint16_t aBip
 uint_fast8_t IRrecv::getBiphaselevel() {
     uint_fast8_t tLevelOfCurrentInterval; // 0 (SPACE) or 1 (MARK)
 
-    if (sBiphaseDecodeRawbuffOffset >= decodedIRData.rawDataPtr->rawlen) {
+    if (sBiphaseDecodeRawbuffOffset >= decodedIRData.rawlen) {
         return SPACE;  // After end of recorded buffer, assume space.
     }
 
@@ -872,10 +1053,12 @@ uint_fast8_t IRrecv::getBiphaselevel() {
     return tLevelOfCurrentInterval;
 }
 
-#if defined(DECODE_HASH)
 /**********************************************************************************************************************
  * Internal Hash decode function
  **********************************************************************************************************************/
+#define FNV_PRIME_32 16777619   ///< used for decodeHash()
+#define FNV_BASIS_32 2166136261 ///< used for decodeHash()
+
 /**
  * Compare two (tick) values for Hash decoder
  * Use a tolerance of 20% to enable e.g. 500 and 600 (NEC timing) to be equal
@@ -891,19 +1074,15 @@ uint_fast8_t IRrecv::compare(uint16_t oldval, uint16_t newval) {
     return 1;
 }
 
-#define FNV_PRIME_32 16777619   ///< used for decodeHash()
-#define FNV_BASIS_32 2166136261 ///< used for decodeHash()
-
 /**
  * decodeHash - decode an arbitrary IR code.
  * Instead of decoding using a standard encoding scheme
  * (e.g. Sony, NEC, RC5), the code is hashed to a 32-bit value.
  *
- * The algorithm: look at the sequence of MARK signals, and see if each one
- * is shorter (0), the same length (1), or longer (2) than the previous.
- * Do the same with the SPACE signals.  Hash the resulting sequence of 0's,
- * 1's, and 2's to a 32-bit value.  This will give a unique value for each
- * different code (probably), for most code systems.
+ * The algorithm: look at the sequence of MARK and SPACE signals, and see if each one
+ * is shorter (0), the same length (1), or longer (2) than the previous MARK or SPACE.
+ * Hash the resulting sequence of 0's, 1's, and 2's to a 32-bit value.
+ * This will give a unique value for each different code (probably), for most code systems.
  *
  * Use FNV hash algorithm: http://isthe.com/chongo/tech/comp/fnv/#FNV-param
  * Converts the raw code values into a 32-bit hash code.
@@ -916,15 +1095,15 @@ bool IRrecv::decodeHash() {
     unsigned long hash = FNV_BASIS_32; // the result is the same no matter if we use a long or unsigned long variable
 
 // Require at least 6 samples to prevent triggering on noise
-    if (decodedIRData.rawDataPtr->rawlen < 6) {
+    if (decodedIRData.rawlen < 6) {
+        IR_DEBUG_PRINT(F("HASH: "));
+        IR_DEBUG_PRINT(F("Data length="));
+        IR_DEBUG_PRINT(decodedIRData.rawlen);
+        IR_DEBUG_PRINTLN(F(" is less than 6"));
         return false;
     }
-#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program memory and speeds up ISR
-    uint_fast8_t i;
-#else
-    unsigned int i;
-#endif
-    for (i = 1; (i + 2) < decodedIRData.rawDataPtr->rawlen; i++) {
+    for (IRRawlenType i = 1; (i + 2) < decodedIRData.rawlen; i++) {
+        // Compare mark with mark and space with space
         uint_fast8_t value = compare(decodedIRData.rawDataPtr->rawbuf[i], decodedIRData.rawDataPtr->rawbuf[i + 2]);
         // Add value into the hash
         hash = (hash * FNV_PRIME_32) ^ value;
@@ -958,7 +1137,6 @@ bool IRrecv::decodeHashOld(decode_results *aResults) {
 
     return true;
 }
-#endif // DECODE_HASH
 
 /**********************************************************************************************************************
  * Match functions
@@ -992,7 +1170,7 @@ bool IRrecv::checkHeader(PulseDistanceWidthProtocolConstants *aProtocolConstants
  * And we have still no RC6 toggle bit check for detecting a second press on the same button.
  */
 void IRrecv::checkForRepeatSpaceTicksAndSetFlag(uint16_t aMaximumRepeatSpaceTicks) {
-    if (decodedIRData.rawDataPtr->rawbuf[0] < aMaximumRepeatSpaceTicks
+    if (decodedIRData.initialGapTicks < aMaximumRepeatSpaceTicks
 #if defined(ENABLE_FULL_REPEAT_CHECK)
             && decodedIRData.address == lastDecodedAddress && decodedIRData.command == lastDecodedCommand /* requires around 85 bytes program space */
 #endif
@@ -1003,6 +1181,7 @@ void IRrecv::checkForRepeatSpaceTicksAndSetFlag(uint16_t aMaximumRepeatSpaceTick
 
 /**
  * Match function without compensating for marks exceeded or spaces shortened by demodulator hardware
+ * @return true, if values match
  * Currently not used
  */
 bool matchTicks(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros) {
@@ -1031,6 +1210,7 @@ bool MATCH(uint16_t measured_ticks, uint16_t desired_us) {
 
 /**
  * Compensate for marks exceeded by demodulator hardware
+ * @return true, if values match
  */
 bool matchMark(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros) {
 #if defined(LOCAL_TRACE)
@@ -1064,6 +1244,7 @@ bool MATCH_MARK(uint16_t measured_ticks, uint16_t desired_us) {
 
 /**
  * Compensate for spaces shortened by demodulator hardware
+ * @return true, if values match
  */
 bool matchSpace(uint16_t aMeasuredTicks, uint16_t aMatchValueMicros) {
 #if defined(LOCAL_TRACE)
@@ -1113,10 +1294,10 @@ bool IRrecv::checkForRecordGapsMicros(Print *aSerial) {
      * is smaller than known value for protocols (Sony with around 24 ms)
      */
     if (decodedIRData.protocol <= PULSE_DISTANCE
-            && decodedIRData.rawDataPtr->rawbuf[0] < (RECORD_GAP_MICROS_WARNING_THRESHOLD / MICROS_PER_TICK)) {
+            && decodedIRData.initialGapTicks < (RECORD_GAP_MICROS_WARNING_THRESHOLD / MICROS_PER_TICK)) {
         aSerial->println();
         aSerial->print(F("Space of "));
-        aSerial->print(decodedIRData.rawDataPtr->rawbuf[0] * MICROS_PER_TICK);
+        aSerial->print(decodedIRData.initialGapTicks * MICROS_PER_TICK);
         aSerial->print(F(" us between two detected transmission is smaller than the minimal gap of "));
         aSerial->print(RECORD_GAP_MICROS_WARNING_THRESHOLD);
         aSerial->println(F(" us known for implemented protocols like NEC, Sony, RC% etc.."));
@@ -1182,7 +1363,7 @@ void printActiveIRProtocols(Print *aSerial) {
     aSerial->print(F("Lego Power Functions, "));
 #endif
 #if defined(DECODE_BOSEWAVE)
-    aSerial->print(F("Bosewave , "));
+    aSerial->print(F("Bosewave, "));
 #endif
 #if defined(DECODE_MAGIQUEST)
     aSerial->print(F("MagiQuest, "));
@@ -1231,9 +1412,55 @@ void IRrecv::printDistanceWidthTimingInfo(Print *aSerial, DistanceWidthTimingInf
     aSerial->print(aDistanceWidthTimingInfo->ZeroSpaceMicros);
 }
 
+/*
+ * Get maximum of mark ticks in rawDataPtr.
+ * Skip leading start and trailing stop bit.
+ */
+uint8_t IRrecv::getMaximumMarkTicksFromRawData() {
+    uint8_t tMaximumTick = 0;
+    for (IRRawlenType i = 3; i < decodedIRData.rawlen - 2; i += 2) { // Skip leading start and trailing stop bit.
+        auto tTick = decodedIRData.rawDataPtr->rawbuf[i];
+        if (tMaximumTick < tTick) {
+            tMaximumTick = tTick;
+        }
+    }
+    return tMaximumTick;
+}
+uint8_t IRrecv::getMaximumSpaceTicksFromRawData() {
+    uint8_t tMaximumTick = 0;
+    for (IRRawlenType i = 4; i < decodedIRData.rawlen - 2; i += 2) { // Skip leading start and trailing stop bit.
+        auto tTick = decodedIRData.rawDataPtr->rawbuf[i];
+        if (tMaximumTick < tTick) {
+            tMaximumTick = tTick;
+        }
+    }
+    return tMaximumTick;
+}
+
+/*
+ * The optimizing compiler internally generates this function, if getMaximumMarkTicksFromRawData() and getMaximumSpaceTicksFromRawData() is used.
+ */
+uint8_t IRrecv::getMaximumTicksFromRawData(bool aSearchSpaceInsteadOfMark) {
+    uint8_t tMaximumTick = 0;
+    IRRawlenType i;
+    if (aSearchSpaceInsteadOfMark) {
+        i = 4;
+    } else {
+        i = 3;
+    }
+    for (; i < decodedIRData.rawlen - 2; i += 2) { // Skip leading start and trailing stop bit.
+        auto tTick = decodedIRData.rawDataPtr->rawbuf[i];
+        if (tMaximumTick < tTick) {
+            tMaximumTick = tTick;
+        }
+    }
+    return tMaximumTick;
+}
+
 uint32_t IRrecv::getTotalDurationOfRawData() {
     uint16_t tSumOfDurationTicks = 0;
-    for (uint_fast8_t i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
+
+    for (IRRawlenType i = 1; i < decodedIRData.rawlen; i++) {
         tSumOfDurationTicks += decodedIRData.rawDataPtr->rawbuf[i];
     }
     return tSumOfDurationTicks * (uint32_t) MICROS_PER_TICK;
@@ -1241,23 +1468,27 @@ uint32_t IRrecv::getTotalDurationOfRawData() {
 
 /**
  * Function to print values and flags of IrReceiver.decodedIRData in one line.
+ * do not print for repeats except IRDATA_FLAGS_IS_PROTOCOL_WITH_DIFFERENT_REPEAT.
  * Ends with println().
+ * !!!Attention: The result differs on a 8 bit or 32 bit platform!!!
  *
  * @param aSerial The Print object on which to write, for Arduino you can use &Serial.
  */
 void IRrecv::printIRSendUsage(Print *aSerial) {
     if (decodedIRData.protocol != UNKNOWN
-            && (decodedIRData.flags & (IRDATA_FLAGS_IS_AUTO_REPEAT | IRDATA_FLAGS_IS_REPEAT)) == 0x00) {
+            && ((decodedIRData.flags & (IRDATA_FLAGS_IS_AUTO_REPEAT | IRDATA_FLAGS_IS_REPEAT)) == 0x00
+                    || (decodedIRData.flags & IRDATA_FLAGS_IS_PROTOCOL_WITH_DIFFERENT_REPEAT))) {
 #if defined(DECODE_DISTANCE_WIDTH)
-        aSerial->print(F("Send with:"));
         uint_fast8_t tNumberOfArrayData = 0;
         if (decodedIRData.protocol == PULSE_DISTANCE || decodedIRData.protocol == PULSE_WIDTH) {
 #  if __INT_WIDTH__ < 32
+            aSerial->print(F("Send on a 8 bit platform with: "));
             tNumberOfArrayData = ((decodedIRData.numberOfBits - 1) / 32) + 1;
             if(tNumberOfArrayData > 1) {
                 aSerial->println();
                 aSerial->print(F("    uint32_t tRawData[]={0x"));
 #  else
+                aSerial->print(F("Send on a 32 bit platform with: "));
             tNumberOfArrayData = ((decodedIRData.numberOfBits - 1) / 64) + 1;
             if(tNumberOfArrayData > 1) {
                 aSerial->println();
@@ -1274,10 +1505,13 @@ void IRrecv::printIRSendUsage(Print *aSerial) {
                     }
                 }
                 aSerial->println(F("};"));
-                aSerial->print(F("   "));
+                aSerial->print(F("    "));
             }
+        } else {
+            aSerial->print(F("Send with: "));
         }
-        aSerial->print(F(" IrSender.send"));
+        aSerial->print(F("IrSender.send"));
+
 #else
         aSerial->print(F("Send with: IrSender.send"));
 #endif
@@ -1318,11 +1552,11 @@ void IRrecv::printIRSendUsage(Print *aSerial) {
             /*
              * Pulse distance or pulse width here
              */
-            aSerial->print("PulseDistanceWidth");
+            aSerial->print(F("PulseDistanceWidth"));
             if(tNumberOfArrayData > 1) {
-                aSerial->print("FromArray(38, ");
+                aSerial->print(F("FromArray(38, "));
             } else {
-                aSerial->print("(38, ");
+                aSerial->print(F("(38, "));
             }
             printDistanceWidthTimingInfo(aSerial, &decodedIRData.DistanceWidthTimingInfo);
 
@@ -1348,8 +1582,8 @@ void IRrecv::printIRSendUsage(Print *aSerial) {
             aSerial->print(F("SB_FIRST, <RepeatPeriodMillis>, <numberOfRepeats>"));
         }
 #endif
-#if defined(DECODE_PANASONIC) || defined(DECODE_KASEIKYO)
-        if ((decodedIRData.flags & IRDATA_FLAGS_EXTRA_INFO) && decodedIRData.protocol == KASEIKYO) {
+#if defined(DECODE_PANASONIC) || defined(DECODE_KASEIKYO) || defined(DECODE_RC6)
+        if ((decodedIRData.flags & IRDATA_FLAGS_EXTRA_INFO) && (decodedIRData.protocol == KASEIKYO || decodedIRData.protocol == RC6A)) {
             aSerial->print(F(", 0x"));
             aSerial->print(decodedIRData.extra, HEX);
         }
@@ -1378,7 +1612,7 @@ void IRrecv::printIRResultMinimal(Print *aSerial) {
 #  endif
 #endif
         aSerial->print(' ');
-        aSerial->print((decodedIRData.rawDataPtr->rawlen + 1) / 2, DEC);
+        aSerial->print((decodedIRData.rawlen + 1) / 2, DEC);
         aSerial->println(F(" bits received"));
     } else {
         /*
@@ -1411,10 +1645,9 @@ void IRrecv::printIRResultMinimal(Print *aSerial) {
  */
 void IRrecv::printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsInsteadOfTicks) {
 
-    uint8_t tRawlen = decodedIRData.rawDataPtr->rawlen; // Get it once here in order to print quite consistent data, even if ISR is running
 // Print Raw data
     aSerial->print(F("rawData["));
-    aSerial->print(tRawlen, DEC);
+    aSerial->print(decodedIRData.rawlen, DEC);
     aSerial->println(F("]: "));
 
     /*
@@ -1422,15 +1655,10 @@ void IRrecv::printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsI
      */
     aSerial->print(F(" -"));
     if (aOutputMicrosecondsInsteadOfTicks) {
-        aSerial->println((uint32_t) decodedIRData.rawDataPtr->rawbuf[0] * MICROS_PER_TICK, DEC);
+        aSerial->println((uint32_t) decodedIRData.initialGapTicks * MICROS_PER_TICK, DEC);
     } else {
-        aSerial->println(decodedIRData.rawDataPtr->rawbuf[0], DEC);
+        aSerial->println(decodedIRData.initialGapTicks, DEC);
     }
-#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program memory and speeds up ISR
-    uint_fast8_t i;
-#else
-    unsigned int i;
-#endif
 
 // Newline is printed every 8. value, if tCounterForNewline % 8 == 0
     uint_fast8_t tCounterForNewline = 6; // first newline is after the 2 values of the start bit
@@ -1451,7 +1679,7 @@ void IRrecv::printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsI
 
     uint32_t tDuration;
     uint16_t tSumOfDurationTicks = 0;
-    for (i = 1; i < tRawlen; i++) {
+    for (IRRawlenType i = 1; i < decodedIRData.rawlen; i++) {
         auto tCurrentTicks = decodedIRData.rawDataPtr->rawbuf[i];
         if (aOutputMicrosecondsInsteadOfTicks) {
             tDuration = tCurrentTicks * MICROS_PER_TICK;
@@ -1478,7 +1706,7 @@ void IRrecv::printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsI
         }
         aSerial->print(tDuration, DEC);
 
-        if ((i & 1) && (i + 1) < tRawlen) {
+        if ((i & 1) && (i + 1) < decodedIRData.rawlen) {
             aSerial->print(','); //',' not required for last one
         }
 
@@ -1489,7 +1717,7 @@ void IRrecv::printIRResultRawFormatted(Print *aSerial, bool aOutputMicrosecondsI
     }
 
     aSerial->println();
-    aSerial->print("Sum: ");
+    aSerial->print(F("Sum: "));
     if (aOutputMicrosecondsInsteadOfTicks) {
         aSerial->println((uint32_t) tSumOfDurationTicks * MICROS_PER_TICK, DEC);
     } else {
@@ -1516,16 +1744,11 @@ void IRrecv::compensateAndPrintIRResultAsCArray(Print *aSerial, bool aOutputMicr
         aSerial->print(F("uint8_t rawTicks["));          // variable type, array name
     }
 
-    aSerial->print(decodedIRData.rawDataPtr->rawlen - 1, DEC);    // array size
+    aSerial->print(decodedIRData.rawlen - 1, DEC);    // array size
     aSerial->print(F("] = {"));    // Start declaration
 
 // Dump data
-#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program memory and speeds up ISR
-    uint_fast8_t i;
-#else
-    unsigned int i;
-#endif
-    for (i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
+    for (IRRawlenType i = 1; i < decodedIRData.rawlen; i++) {
         uint32_t tDuration = decodedIRData.rawDataPtr->rawbuf[i] * MICROS_PER_TICK;
 
         if (i & 1) {
@@ -1545,10 +1768,8 @@ void IRrecv::compensateAndPrintIRResultAsCArray(Print *aSerial, bool aOutputMicr
             tTicks = (tTicks > UINT8_MAX) ? UINT8_MAX : tTicks;
             aSerial->print(tTicks);
         }
-        if (i + 1 < decodedIRData.rawDataPtr->rawlen)
-            aSerial->print(',');                // ',' not required on last one
-        if (!(i & 1))
-            aSerial->print(' ');
+        if (i + 1 < decodedIRData.rawlen) aSerial->print(',');                // ',' not required on last one
+        if (!(i & 1)) aSerial->print(' ');
     }
 
 // End declaration
@@ -1559,7 +1780,7 @@ void IRrecv::compensateAndPrintIRResultAsCArray(Print *aSerial, bool aOutputMicr
     printIRResultShort(aSerial);
 
 // Newline
-    aSerial->println("");
+    aSerial->println();
 }
 
 /**
@@ -1574,12 +1795,8 @@ void IRrecv::compensateAndPrintIRResultAsCArray(Print *aSerial, bool aOutputMicr
 void IRrecv::compensateAndStoreIRResultInArray(uint8_t *aArrayPtr) {
 
 // Store data, skip leading space#
-#if RAW_BUFFER_LENGTH <= 254        // saves around 75 bytes program memory and speeds up ISR
-    uint_fast8_t i;
-#else
-        unsigned int i;
-#endif
-    for (i = 1; i < decodedIRData.rawDataPtr->rawlen; i++) {
+    IRRawlenType i;
+    for (i = 1; i < decodedIRData.rawlen; i++) {
         uint32_t tDuration = decodedIRData.rawDataPtr->rawbuf[i] * MICROS_PER_TICK;
         if (i & 1) {
             // Mark
@@ -1657,7 +1874,10 @@ bool IRrecv::decode_old(decode_results *aResults) {
     }
 
 // copy for usage by legacy programs
-    aResults->rawbuf = irparams.rawbuf;
+    aResults->rawbuf[0] = irparams.initialGapTicks;
+    for (int i = 1; i < RAW_BUFFER_LENGTH; ++i) {
+        aResults->rawbuf[i] = irparams.rawbuf[i]; // copy 8 bit array into a 16 bit array
+    }
     aResults->rawlen = irparams.rawlen;
     if (irparams.OverflowFlag) {
         // Copy overflow flag to decodedIRData.flags

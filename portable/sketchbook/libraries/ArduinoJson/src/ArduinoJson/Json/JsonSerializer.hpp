@@ -19,19 +19,20 @@ class JsonSerializer : public VariantDataVisitor<size_t> {
   JsonSerializer(TWriter writer, const ResourceManager* resources)
       : formatter_(writer), resources_(resources) {}
 
-  FORCE_INLINE size_t visit(const ArrayData& array) {
+  size_t visit(const ArrayData& array) {
     write('[');
 
-    auto it = array.createIterator(resources_);
+    auto slotId = array.head();
 
-    while (!it.done()) {
-      it->accept(*this);
+    while (slotId != NULL_SLOT) {
+      auto slot = resources_->getVariant(slotId);
 
-      it.next(resources_);
-      if (it.done())
-        break;
+      slot->accept(*this, resources_);
 
-      write(',');
+      slotId = slot->next();
+
+      if (slotId != NULL_SLOT)
+        write(',');
     }
 
     write(']');
@@ -41,25 +42,28 @@ class JsonSerializer : public VariantDataVisitor<size_t> {
   size_t visit(const ObjectData& object) {
     write('{');
 
-    auto it = object.createIterator(resources_);
+    auto slotId = object.head();
 
-    while (!it.done()) {
-      formatter_.writeString(it.key());
-      write(':');
-      it->accept(*this);
+    bool isKey = true;
 
-      it.next(resources_);
-      if (it.done())
-        break;
+    while (slotId != NULL_SLOT) {
+      auto slot = resources_->getVariant(slotId);
+      slot->accept(*this, resources_);
 
-      write(',');
+      slotId = slot->next();
+
+      if (slotId != NULL_SLOT)
+        write(isKey ? ':' : ',');
+
+      isKey = !isKey;
     }
 
     write('}');
     return bytesWritten();
   }
 
-  size_t visit(JsonFloat value) {
+  template <typename T>
+  enable_if_t<is_floating_point<T>::value, size_t> visit(T value) {
     formatter_.writeFloat(value);
     return bytesWritten();
   }
@@ -126,7 +130,8 @@ ARDUINOJSON_BEGIN_PUBLIC_NAMESPACE
 // Produces a minified JSON document.
 // https://arduinojson.org/v7/api/json/serializejson/
 template <typename TDestination>
-size_t serializeJson(JsonVariantConst source, TDestination& destination) {
+detail::enable_if_t<!detail::is_pointer<TDestination>::value, size_t>
+serializeJson(JsonVariantConst source, TDestination& destination) {
   using namespace detail;
   return serialize<JsonSerializer>(source, destination);
 }
@@ -148,8 +153,8 @@ inline size_t measureJson(JsonVariantConst source) {
 
 #if ARDUINOJSON_ENABLE_STD_STREAM
 template <typename T>
-inline typename detail::enable_if<
-    detail::is_convertible<T, JsonVariantConst>::value, std::ostream&>::type
+inline detail::enable_if_t<detail::is_convertible<T, JsonVariantConst>::value,
+                           std::ostream&>
 operator<<(std::ostream& os, const T& source) {
   serializeJson(source, os);
   return os;

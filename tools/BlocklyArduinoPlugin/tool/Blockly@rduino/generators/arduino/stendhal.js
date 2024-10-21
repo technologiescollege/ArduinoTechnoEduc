@@ -232,11 +232,38 @@ Blockly.Arduino.stendhal_logic_water_sensor = function() {
 };
 
 Blockly.Arduino.stendhal_ultrasonic_ranger = function() {
-  var dropdown_pin = this.getFieldValue('PIN');
-  var dropdown_unit = this.getFieldValue('UNIT');
-  Blockly.Arduino.includes_['define_ultrasonic'] = '#include <Ultrasonic.h>\n';
-  Blockly.Arduino.definitions_['var_ultrasonic'+dropdown_pin] = 'Ultrasonic ultrasonic_'+dropdown_pin+'('+dropdown_pin+');\n';
-  var code = 'ultrasonic_'+dropdown_pin+'.MeasureInCentimeters()';
+  var trig_pin = this.getFieldValue('TRIG');
+  var echo_pin = this.getFieldValue('ECHO');
+  var speed = this.getFieldValue('SPEED');
+  Blockly.Arduino.definitions_['define_mesure_distance_cm'] = "int distance_cm(byte trig_pin,byte echo_pin)\n"+
+    "{\n"+
+    "  // état haut de 10 µs sur la broche 'Trig'\n"+
+    "  digitalWrite(trig_pin, HIGH);\n"+
+    "  // puis on attend 10 µs\n"+
+    "  delayMicroseconds(10);\n"+
+    "  // on remet la broche 'Trig' à l’état bas\n"+
+    "  digitalWrite(trig_pin, LOW);\n"+
+    "  // lit la durée de l’état haut de la broche 'Echo'\n"+
+    "  unsigned long duree = pulseIn(echo_pin, HIGH);\n"+
+    "  float distance = 0;\n"+
+    "  // si la durée est supérieure à 30ms,\n"+
+    "  // l'onde est perdue, sinon\n"+
+    "  if (duree < 30000) {\n"+
+    "    // on divise la durée par deux pour n'avoir qu'un trajet\n"+
+    "    duree = duree / 2;\n"+
+    "    int vitesse = " + speed + ";  // vitesse du son en m/s\n"+
+    "    // on passe en secondes\n"+
+    "    float temps = duree / 1000000.0;\n"+
+    "    // on multiplie par la vitesse, d=v*t\n"+
+    "    distance = vitesse * temps;\n"+
+    "    // on passe en centimètres\n"+
+    "    distance = distance * 100;\n"+
+    "  };\n"+
+    "  return distance;\n"+
+    "}";
+  Blockly.Arduino.setups_['setup_sonar_' + trig_pin] = 'pinMode('+trig_pin+',OUTPUT); //Sonar triger pin\n'
+  + '  pinMode('+echo_pin+',INPUT); //Sonar echo pin';
+  var code = 'distance_cm('+trig_pin+','+echo_pin+')';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
@@ -483,5 +510,65 @@ Blockly.Arduino.definitions_[' AF_DCMotor motor_dc_'+dropdown_moteur] = 'AF_DCMo
   var code = 'motor_dc_'+dropdown_moteur+'.setSpeed('+value_vitesse+');\n';
      code += 'motor_dc_'+dropdown_moteur+'.run('+dropdown_etat+');\n';
  
+  return code;
+};
+
+Blockly.Arduino.stendhal_l298n_motor_init = function() {
+  var id = this.getFieldValue('L298_NAME');
+  var PinEN = this.getFieldValue("PIN-EN");
+  var PinIN1 = this.getFieldValue("PIN-IN1");
+  var PinIN2 = this.getFieldValue("PIN-IN2");
+  var mysetup = "";
+
+  mysetup += "// pin assignation for L298N : " + id + "\n";
+  mysetup += " pinMode("+PinIN1+",OUTPUT);//IN1_" + id +" Pin\n" ;
+  mysetup += " pinMode("+PinIN2+",OUTPUT);//IN2_" + id +" Pin\n";
+  mysetup += " pinMode("+PinEN+",OUTPUT);//PWM_" + id +" Pin\n" ;
+  Blockly.Arduino.setups_["setup_l298n_motor" + id] = mysetup;
+  Blockly.Arduino.definitions_["setup_l298n_motor" + id] = "// pin assignation for L298N : " + id + "\n"+
+	"int l298n_" + id + "[3] = {"+PinEN+", "+PinIN1+", "+PinIN2+"};\n";
+  var code = "";
+  return code;
+};
+
+Blockly.Arduino.stendhal_l298n_motor = function() {
+  var dropdown_direction = this.getFieldValue('DIRECTION'); 
+  var id = this.getFieldValue('L298_NAME');
+  var speed = Blockly.Arduino.valueToCode(this, 'SPEED', Blockly.Arduino.ORDER_ATOMIC) || '127';
+
+  var code = "";
+  if(dropdown_direction==="forward"){
+    Blockly.Arduino.definitions_['define_l298n_forward'] = "void l298n_forward(int speed,int Pins[3])\n"+
+"{\n"+
+     "  analogWrite(Pins[0],speed);//Motor speed\n"+
+     "  digitalWrite(Pins[1],HIGH);//turn DC Motor move clockwise\n"+
+     "  digitalWrite(Pins[2],LOW);//turn DC Motor move clockwise\n"+
+"}\n";
+    code="l298n_forward("+speed+", l298n_" + id + ");\n";
+  } else if (dropdown_direction==="backward") {
+    Blockly.Arduino.definitions_['define_l298n_backward'] = "void l298n_backward(int speed,int Pins[3])\n"+
+"{\n"+
+     "  analogWrite(Pins[0],speed);//Motor speed\n"+
+     "  digitalWrite(Pins[1],LOW);//turn DC Motor move anti-clockwise\n"+
+     "  digitalWrite(Pins[2],HIGH);//turn DC Motor move anti-clockwise\n"+
+"}\n\n";
+    code="l298n_backward("+speed+", l298n_" + id + ");\n";
+  } else if (dropdown_direction==="stop"){
+    Blockly.Arduino.definitions_['define_l298n_stop'] = "void l298n_stop(int Pins[3])\n"+
+"{\n"+
+     "  analogWrite(Pins[0],0);//Motor speed\n"+
+     "  digitalWrite(Pins[1],LOW);//turn DC Motor off\n"+
+     "  digitalWrite(Pins[2],LOW);//turn DC Motor off\n"+
+"}\n\n";
+    code="l298n_stop(l298n_" + id + ");\n";
+  } else if (dropdown_direction==="brake"){
+    Blockly.Arduino.definitions_['define_l298n_brake'] = "void l298n_brake(int Pins[3])\n"+
+"{\n"+
+     "  analogWrite(Pins[0],255);//Motor speed\n"+
+     "  digitalWrite(Pins[1],LOW);//turn DC Motor off\n"+
+     "  digitalWrite(Pins[2],LOW);//turn DC Motor off\n"+
+"}\n\n";
+    code="l298n_brake(l298n_" + id + ");\n";
+  }
   return code;
 };

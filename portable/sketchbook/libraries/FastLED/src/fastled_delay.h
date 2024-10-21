@@ -2,6 +2,8 @@
 #define __INC_FL_DELAY_H
 
 #include "FastLED.h"
+#include "types.h"
+#include "force_inline.h"
 
 /// @file fastled_delay.h
 /// Utility functions and classes for managing delay cycles
@@ -76,11 +78,11 @@ public:
 /// Delay N clock cycles. 
 /// @tparam CYCLES the number of clock cycles to delay
 /// @note No delay is applied if CYCLES is less than or equal to zero.
-template<int CYCLES> inline void delaycycles();
+template<cycle_t CYCLES> inline void delaycycles();
 
 /// A variant of ::delaycycles that will always delay
 /// at least one cycle.
-template<int CYCLES> inline void delaycycles_min1() {
+template<cycle_t CYCLES> inline void delaycycles_min1() {
 	delaycycles<1>();
 	delaycycles<CYCLES-1>();
 }
@@ -91,7 +93,7 @@ template<int CYCLES> inline void delaycycles_min1() {
 // usable definition
 #if defined(FASTLED_AVR)
 // worker template - this will nop for LOOP * 3 + PAD cycles total
-template<int LOOP, int PAD> inline void _delaycycles_AVR() {
+template<int LOOP, cycle_t PAD> inline void _delaycycles_AVR() {
 	delaycycles<PAD>();
 	// the loop below is 3 cycles * LOOP.  the LDI is one cycle,
 	// the DEC is 1 cycle, the BRNE is 2 cycles if looping back and
@@ -106,11 +108,14 @@ template<int LOOP, int PAD> inline void _delaycycles_AVR() {
 		);
 }
 
-template<int CYCLES> __attribute__((always_inline)) inline void delaycycles() {
+template<cycle_t CYCLES> FASTLED_FORCE_INLINE void delaycycles() {
 	_delaycycles_AVR<CYCLES / 3, CYCLES % 3>();
 }
+
+
+
 #else
-// template<int LOOP, int PAD> inline void _delaycycles_ARM() {
+// template<int LOOP, cycle_t PAD> inline void _delaycycles_ARM() {
 // 	delaycycles<PAD>();
 // 	// the loop below is 3 cycles * LOOP.  the LDI is one cycle,
 // 	// the DEC is 1 cycle, the BRNE is 2 cycles if looping back and
@@ -126,10 +131,14 @@ template<int CYCLES> __attribute__((always_inline)) inline void delaycycles() {
 // }
 
 
-template<int CYCLES> __attribute__((always_inline)) inline void delaycycles() {
+template<cycle_t CYCLES> FASTLED_FORCE_INLINE void delaycycles() {
 	// _delaycycles_ARM<CYCLES / 3, CYCLES % 3>();
 	FL_NOP; delaycycles<CYCLES-1>();
 }
+
+
+
+ 
 #endif
 
 // pre-instantiations for values small enough to not need the loop, as well as sanity holders
@@ -137,22 +146,47 @@ template<int CYCLES> __attribute__((always_inline)) inline void delaycycles() {
 
 // These are hidden from Doxygen because they match the expected behavior of the class. 
 /// @cond
-template<> __attribute__((always_inline)) inline void delaycycles<-10>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-9>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-8>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-7>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-6>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-5>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-4>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-3>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-2>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<-1>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<0>() {}
-template<> __attribute__((always_inline)) inline void delaycycles<1>() {FL_NOP;}
-template<> __attribute__((always_inline)) inline void delaycycles<2>() {FL_NOP2;}
-template<> __attribute__((always_inline)) inline void delaycycles<3>() {FL_NOP;FL_NOP2;}
-template<> __attribute__((always_inline)) inline void delaycycles<4>() {FL_NOP2;FL_NOP2;}
-template<> __attribute__((always_inline)) inline void delaycycles<5>() {FL_NOP2;FL_NOP2;FL_NOP;}
+template<> FASTLED_FORCE_INLINE void delaycycles<-10>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-9>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-8>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-7>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-6>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-5>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-4>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-3>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-2>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<-1>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<0>() {}
+template<> FASTLED_FORCE_INLINE void delaycycles<1>() {FL_NOP;}
+template<> FASTLED_FORCE_INLINE void delaycycles<2>() {FL_NOP2;}
+template<> FASTLED_FORCE_INLINE void delaycycles<3>() {FL_NOP;FL_NOP2;}
+template<> FASTLED_FORCE_INLINE void delaycycles<4>() {FL_NOP2;FL_NOP2;}
+template<> FASTLED_FORCE_INLINE void delaycycles<5>() {FL_NOP2;FL_NOP2;FL_NOP;}
+#if defined(ESP32)
+template<> FASTLED_FORCE_INLINE void delaycycles<4294966398>() {
+	// specialization for a gigantic amount of cycles, apparently this is needed
+	// or esp32 will blow the stack with cycles = 4294966398.
+	const uint32_t termination = 4294966398 / 10;
+	const uint32_t remainder = 4294966398 % 10;
+	for (uint32_t i = 0; i < termination; i++) {
+		FL_NOP; FL_NOP; FL_NOP; FL_NOP; FL_NOP;
+		FL_NOP; FL_NOP; FL_NOP; FL_NOP; FL_NOP;
+	}
+
+	// remainder
+	switch (remainder) {
+		case 9: FL_NOP;
+		case 8: FL_NOP;
+		case 7: FL_NOP;
+		case 6: FL_NOP;
+		case 5: FL_NOP;
+		case 4: FL_NOP;
+		case 3: FL_NOP;
+		case 2: FL_NOP;
+		case 1: FL_NOP;
+	}
+}
+#endif
 /// @endcond
 
 /// @}

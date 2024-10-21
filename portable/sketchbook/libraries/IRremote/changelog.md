@@ -2,6 +2,53 @@
 The latest version may not be released!
 See also the commit log at github: https://github.com/Arduino-IRremote/Arduino-IRremote/commits/master
 
+# 4.4.1
+- Support for ESP 3.0 by akellai.
+- restartTimer() now uses variable sMicrosAtLastStopTimer to keep track of uncounted ticks between stopTimer() and restartTimer().
+- Removed functions addTicksToInternalTickCounter() and addMicrosToInternalTickCounter(), which were added in 4.1.0.
+- Version 2.2.0 of TinyIR with new TinyReceiverDecode() function to be used as drop in for IrReceiver.decode().
+- Support of RC6A.
+
+# 4.4.0
+- Using 8 bit raw timing buffer for all timings except frame gap (former rawbuf[0]).
+- Renamed decodedIRData.initialGap to decodedIRData.initialGapTicks.
+- sendNEC() and sendNEC2() now accepts 16 bit command to better map to NECext protocol found in IRDB databases.
+- ir_DistanceWidthProtocol() now decodes up to 10 ms mark or spaces if RAM is bigger than 2 k.
+- Improved sensitivity and decoding of PULSE_DISTANCE + PULSE_WIDTH protocols.
+- Changed TOLERANCE_FOR_DECODERS_MARK_OR_SPACE_MATCHING to TOLERANCE_FOR_DECODERS_MARK_OR_SPACE_MATCHING_PERCENT.
+- Improved examples AllProtocolsOnLCD, UnitTest and SimpleReceiver.
+- New functions decodePulseDistanceWidthData() with 6 parameters and decodePulseDistanceWidthDataStrict() with 7 parameters.
+
+# 4.3.2
+- Added sendSonyMSB(unsigned long data, int nbits) as a clone of sendSony(unsigned long data, int nbits) to be more consistent.
+- Added sendSamsungMSB(unsigned long data, int nbits) as a clone of sendSAMSUNG(unsigned long data, int nbits) to be more consistent.
+- Added ESP32 core 3.x error message.
+
+# 4.3.1
+ - Fixed overflow bug for rawlen > 254.
+ - Removed deprecated sendPulseDistance... functions with parameter aSendStopBit.
+
+# 4.3.0
+- Removed default value USE_DEFAULT_FEEDBACK_LED_PIN for last parameter of IRsend::begin(bool aEnableLEDFeedback, uint_fast8_t aFeedbackLEDPin).
+    Therefore IrSender.begin(DISABLE_LED_FEEDBACK) will not longer work!
+- Added convenience function isIRReceiverAttachedForTinyReceiver().
+- Added Extended NEC Protocol macro to TinyIR by Buzzerb.
+- Fixed sendSamsung() / sendSamsungLG() bug.
+- Added functions stopTimer(), restartTimer() and restartTimerWithTicksToAdd().
+- Added rawlen and initialGap to IRData.
+- Added ReceiveAndSendHobToHood example.
+- Changed RECORD_GAP_MICROS default value from 5000 to 8000.
+
+# 4.2.1
+- Fix wrong type of tEnableLEDFeedback in IRSend.hpp and IRReceive.hpp.
+- TinyReceiver 2.0
+  - New TinyIRReceiverData which is filled with address, command and flags.
+  - Removed parameters address, command and flags from callback handleReceivedTinyIRData() and printTinyReceiverResultMinimal().
+  - Callback function now only enabled if USE_CALLBACK_FOR_TINY_RECEIVER is activated.
+- Fix changing IR_SEND_PIN dynamically for ESP32.
+- Fix wrong type of tEnableLEDFeedback.
+- Support for ESP32-C3.
+
 # 4.2.0
 - The old decode function is renamed to decode_old(decode_results *aResults). decode (decode_results *aResults) is only available in IRremote.h and prints a message.
 - Added DECODE_ONKYO, to force 16 bit command and data decoding.

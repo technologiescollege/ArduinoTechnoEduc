@@ -54,9 +54,11 @@
 
 namespace SDLib {
 
-  // Used by `getNextPathComponent`
-#define MAX_COMPONENT_LEN 12 // What is max length?
-#define PATH_COMPONENT_BUFFER_LEN MAX_COMPONENT_LEN+1
+// Used by `getNextPathComponent`
+#define MAX_COMPONENT_LEN 12
+#define PATH_COMPONENT_BUFFER_LEN (MAX_COMPONENT_LEN + 1)
+// BASENAME:char(8) + '.':char(1) + EXT:char(3) = 12 (a.k.a short 8.3 name)
+// And an extra space for '\0' for path buffer
 
   bool getNextPathComponent(const char *path, unsigned int *p_offset,
                             char *buffer) {
@@ -117,12 +119,12 @@ namespace SDLib {
 
 
 
-  boolean walkPath(const char *filepath, SdFile& parentDir,
-                   boolean(*callback)(SdFile& parentDir,
-                                      const char *filePathComponent,
-                                      boolean isLastComponent,
-                                      void *object),
-                   void *object = NULL) {
+  bool walkPath(const char *filepath, SdFile& parentDir,
+                bool(*callback)(SdFile& parentDir,
+                                const char *filePathComponent,
+                                bool isLastComponent,
+                                void *object),
+                void *object = NULL) {
     /*
 
        When given a file path (and parent directory--normally root),
@@ -170,9 +172,9 @@ namespace SDLib {
 
     while (true) {
 
-      boolean moreComponents = getNextPathComponent(filepath, &offset, buffer);
+      bool moreComponents = getNextPathComponent(filepath, &offset, buffer);
 
-      boolean shouldContinue = callback((*p_parent), buffer, !moreComponents, object);
+      bool shouldContinue = callback((*p_parent), buffer, !moreComponents, object);
 
       if (!shouldContinue) {
         // TODO: Don't repeat this code?
@@ -188,7 +190,7 @@ namespace SDLib {
         break;
       }
 
-      boolean exists = (*p_child).open(*p_parent, buffer, O_RDONLY);
+      bool exists = (*p_child).open(*p_parent, buffer, O_RDONLY);
 
       // If it's one we've created then we
       // don't need the parent handle anymore.
@@ -232,8 +234,8 @@ namespace SDLib {
 
   */
 
-  boolean callback_pathExists(SdFile& parentDir, const char *filePathComponent,
-                              boolean /* isLastComponent */, void * /* object */) {
+  bool callback_pathExists(SdFile& parentDir, const char *filePathComponent,
+                           bool /* isLastComponent */, void * /* object */) {
     /*
 
       Callback used to determine if a file/directory exists in parent
@@ -244,7 +246,7 @@ namespace SDLib {
     */
     SdFile child;
 
-    boolean exists = child.open(parentDir, filePathComponent, O_RDONLY);
+    bool exists = child.open(parentDir, filePathComponent, O_RDONLY);
 
     if (exists) {
       child.close();
@@ -255,8 +257,8 @@ namespace SDLib {
 
 
 
-  boolean callback_makeDirPath(SdFile& parentDir, const char *filePathComponent,
-                               boolean isLastComponent, void *object) {
+  bool callback_makeDirPath(SdFile& parentDir, const char *filePathComponent,
+                            bool isLastComponent, void *object) {
     /*
 
       Callback used to create a directory in the parent directory if
@@ -265,7 +267,7 @@ namespace SDLib {
       Returns true if a directory was created or it already existed.
 
     */
-    boolean result = false;
+    bool result = false;
     SdFile child;
 
     result = callback_pathExists(parentDir, filePathComponent, isLastComponent, object);
@@ -279,8 +281,8 @@ namespace SDLib {
 
   /*
 
-    boolean callback_openPath(SdFile& parentDir, char *filePathComponent,
-  		  boolean isLastComponent, void *object) {
+    bool callback_openPath(SdFile& parentDir, char *filePathComponent,
+  	  bool isLastComponent, void *object) {
 
     Callback used to open a file specified by a filepath that may
     specify one or more directories above it.
@@ -310,16 +312,16 @@ namespace SDLib {
 
 
 
-  boolean callback_remove(SdFile& parentDir, const char *filePathComponent,
-                          boolean isLastComponent, void * /* object */) {
+  bool callback_remove(SdFile& parentDir, const char *filePathComponent,
+                       bool isLastComponent, void * /* object */) {
     if (isLastComponent) {
       return SdFile::remove(parentDir, filePathComponent);
     }
     return true;
   }
 
-  boolean callback_rmdir(SdFile& parentDir, const char *filePathComponent,
-                         boolean isLastComponent, void * /* object */) {
+  bool callback_rmdir(SdFile& parentDir, const char *filePathComponent,
+                      bool isLastComponent, void * /* object */) {
     if (isLastComponent) {
       SdFile f;
       if (!f.open(parentDir, filePathComponent, O_READ)) {
@@ -336,7 +338,7 @@ namespace SDLib {
 
 
 
-  boolean SDClass::begin(uint8_t csPin) {
+  bool SDClass::begin(uint8_t csPin) {
     if (root.isOpen()) {
       root.close();
     }
@@ -353,7 +355,7 @@ namespace SDLib {
            root.openRoot(volume);
   }
 
-  boolean SDClass::begin(uint32_t clock, uint8_t csPin) {
+  bool SDClass::begin(uint32_t clock, uint8_t csPin) {
     if (root.isOpen()) {
       root.close();
     }
@@ -453,7 +455,7 @@ namespace SDLib {
 
     */
 
-    int pathidx;
+    int pathidx = 0;
 
     // do the interactive search
     SdFile parentdir = getParentDir(filepath, &pathidx);
@@ -523,7 +525,7 @@ namespace SDLib {
   */
 
 
-  //boolean SDClass::close() {
+  //bool SDClass::close() {
   //  /*
   //
   //    Closes the file opened by the `open` method.
@@ -533,7 +535,7 @@ namespace SDLib {
   //}
 
 
-  boolean SDClass::exists(const char *filepath) {
+  bool SDClass::exists(const char *filepath) {
     /*
 
        Returns true if the supplied file path exists.
@@ -543,7 +545,7 @@ namespace SDLib {
   }
 
 
-  //boolean SDClass::exists(char *filepath, SdFile& parentDir) {
+  //bool SDClass::exists(char *filepath, SdFile& parentDir) {
   //  /*
   //
   //     Returns true if the supplied file path rooted at `parentDir`
@@ -554,7 +556,7 @@ namespace SDLib {
   //}
 
 
-  boolean SDClass::mkdir(const char *filepath) {
+  bool SDClass::mkdir(const char *filepath) {
     /*
 
       Makes a single directory or a hierarchy of directories.
@@ -565,7 +567,7 @@ namespace SDLib {
     return walkPath(filepath, root, callback_makeDirPath);
   }
 
-  boolean SDClass::rmdir(const char *filepath) {
+  bool SDClass::rmdir(const char *filepath) {
     /*
 
       Remove a single directory or a hierarchy of directories.
@@ -576,7 +578,7 @@ namespace SDLib {
     return walkPath(filepath, root, callback_rmdir);
   }
 
-  boolean SDClass::remove(const char *filepath) {
+  bool SDClass::remove(const char *filepath) {
     return walkPath(filepath, root, callback_remove);
   }
 

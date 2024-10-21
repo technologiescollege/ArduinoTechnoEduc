@@ -75,22 +75,22 @@
  */
 // http://www.hifi-remote.com/johnsfine/DecodeIR.html#Panasonic
 // http://www.hifi-remote.com/johnsfine/DecodeIR.html#Kaseikyo
+// LSB first
 // The first two (8-bit) bytes contains the vendor code.
+// The next 4 bit is VendorID parity.
+// The last byte is parity (XOR) of the 3 bytes before.
 // There are multiple interpretations of the next fields:
 // IRP: {37k,432}<1,-1|1,-3>(8,-4,M:8,N:8,X:4,D:4,S:8,F:8,G:8,1,-173)+ {X=M:4:0^M:4:4^N:4:0^N:4:4}
-// 1. interpretation: After the vendor code, the next byte is 4 bit VendorID parity and 4 bit Device and Subdevice
-//    The 5th byte is the function and the last (6.th) byte is xor of the three bytes before it.
-//    0_______ 1_______  2______ 3_______ 4_______ 5
+// 1. interpretation: 4 bit Device, 8 bitSubdevice and 8 bit function.
+//    0_______ 1_______  2______  3_______ 4_______ 5_______
 //    01234567 89ABCDEF  01234567 01234567 01234567 01234567
-//    01000000 00100100  Dev____  Sub_Dev_ Fun____  XOR( B2, B3, B4) - showing Panasonic vendor code 0x2002
+//    01000000 00100100  0110Dev_ Sub_Dev_ Fun____  XOR( B2, B3, B4) - Byte 0,1 and vendor parity showing Panasonic vendor code 0x2002.
+// 1. interpretation: <start bit><VendorID:16><VendorID parity:4><Device:4><Subdevice:8><Function:8><Parity:8><stop bit>
 // see: http://www.remotecentral.com/cgi-bin/mboard/rc-pronto/thread.cgi?26152
-//
-// 2. interpretation: LSB first, start bit + 16 VendorID + 4 VendorID parity + 4 Genre1 + 4 Genre2 + 10 Command + 2 ID + 8 Parity + stop bit
+// 2. interpretation (Flipper Zero style): <start bit><VendorID:16><VendorID parity:4><Genre1:4><Genre2:4><Command:10><ID:2><Parity:8><stop bit>
 // see: https://www.mikrocontroller.net/articles/IRMP_-_english#KASEIKYO
-// 32 bit raw data LSB is VendorID parity.
-//
-// We reduce it to: IRP: {37k,432}<1,-1|1,-3>(8,-4,V:16,X:4,D:4,S:8,F:8,(X^D^S^F):8,1,-173)+ {X=M:4:0^M:4:4^N:4:0^N:4:4}
-// start bit + 16 VendorID + 4 VendorID parity + 12 Address + 8 Command + 8 Parity of VendorID parity, Address and Command + stop bit
+// Implemented is Samsung style:  <start bit><VendorID:16><VendorID parity:4><Address:12><Command:8><Parity of VendorID parity, Address and Command:8><stop bit>
+//                  which is derived from Samsung remotes and may not be optimal for Denon kind of Kaseikyo protokol usage.
 //
 #define KASEIKYO_VENDOR_ID_BITS     16
 #define KASEIKYO_VENDOR_ID_PARITY_BITS   4
@@ -127,7 +127,7 @@ KASEIKYO_HEADER_SPACE, KASEIKYO_BIT_MARK, KASEIKYO_ONE_SPACE, KASEIKYO_BIT_MARK,
  ************************************/
 
 /**
- * Address can be interpreted as sub-device << 8 + device
+ * Address can be interpreted as sub-device << 4 + 4 bit device
  */
 void IRsend::sendKaseikyo(uint16_t aAddress, uint8_t aCommand, int_fast8_t aNumberOfRepeats, uint16_t aVendorCode) {
     // Set IR carrier frequency
@@ -140,9 +140,9 @@ void IRsend::sendKaseikyo(uint16_t aAddress, uint8_t aCommand, int_fast8_t aNumb
 #if __INT_WIDTH__ < 32
     LongUnion tSendValue;
     // Compute parity
-    tSendValue.UWord.LowWord = (aAddress << KASEIKYO_VENDOR_ID_PARITY_BITS) | tVendorParity; // set low nibble to parity
+    tSendValue.UWord.LowWord = (aAddress << KASEIKYO_VENDOR_ID_PARITY_BITS) | tVendorParity; // set low nibble with vendor parity
     tSendValue.UBytes[2] = aCommand;
-    tSendValue.UBytes[3] = aCommand ^ tSendValue.UBytes[0] ^ tSendValue.UBytes[1]; // Parity
+    tSendValue.UBytes[3] = aCommand ^ tSendValue.UBytes[0] ^ tSendValue.UBytes[1]; // 8 bit parity of 3 bytes command, address and vendor parity
     IRRawDataType tRawKaseikyoData[2];
     tRawKaseikyoData[0] = (uint32_t) tSendValue.UWord.LowWord << 16 | aVendorCode; // LSB of tRawKaseikyoData[0] is sent first
     tRawKaseikyoData[1] = tSendValue.UWord.HighWord;
@@ -200,10 +200,10 @@ bool IRrecv::decodeKaseikyo() {
 
     decode_type_t tProtocol;
     // Check we have enough data (96 + 4) 4 for initial gap, start bit mark and space + stop bit mark
-    if (decodedIRData.rawDataPtr->rawlen != ((2 * KASEIKYO_BITS) + 4)) {
+    if (decodedIRData.rawlen != ((2 * KASEIKYO_BITS) + 4)) {
         IR_DEBUG_PRINT(F("Kaseikyo: "));
         IR_DEBUG_PRINT(F("Data length="));
-        IR_DEBUG_PRINT(decodedIRData.rawDataPtr->rawlen);
+        IR_DEBUG_PRINT(decodedIRData.rawlen);
         IR_DEBUG_PRINTLN(F(" is not 100"));
         return false;
     }

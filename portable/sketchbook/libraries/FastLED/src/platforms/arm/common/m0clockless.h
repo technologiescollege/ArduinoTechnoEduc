@@ -1,6 +1,40 @@
 #ifndef __INC_M0_CLOCKLESS_H
 #define __INC_M0_CLOCKLESS_H
 
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+// Some platforms have a missing definition for SysTick, in that
+// case fill that in now.
+// BEGIN SysTick DEFINITION
+#ifndef SysTick
+// Define the SysTick base address
+#define SCS_BASE            (0xE000E000UL)                            /*!< System Control Space Base Address */
+#define SysTick_BASE        (SCS_BASE +  0x0010UL)                    /*!< SysTick Base Address */
+#define SysTick             ((SysTick_Type   *)     SysTick_BASE  )   /*!< SysTick configuration struct */
+
+
+// Define the SysTick structure
+typedef struct {
+    volatile uint32_t CTRL;
+    volatile uint32_t LOAD;
+    volatile uint32_t VAL;
+    volatile const uint32_t CALIB;
+} SysTick_Type;
+
+#endif
+// END SysTick DEFINITION
+
+
+#ifdef __cplusplus
+}
+#endif
+
+
 struct M0ClocklessData {
   uint8_t d[3];
   uint8_t e[3];

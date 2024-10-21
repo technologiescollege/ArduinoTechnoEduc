@@ -6,6 +6,7 @@
 #include <catch.hpp>
 
 #include "Allocators.hpp"
+#include "Literals.hpp"
 
 TEST_CASE("JsonDocument assignment") {
   SpyingAllocator spyingAllocator;
@@ -21,8 +22,8 @@ TEST_CASE("JsonDocument assignment") {
     REQUIRE(doc2.as<std::string>() == "{\"hello\":\"world\"}");
 
     REQUIRE(spyingAllocator.log() == AllocatorLog{
-                                         Allocate(sizeofString("hello")),
                                          Allocate(sizeofPool()),
+                                         Allocate(sizeofString("hello")),
                                          Allocate(sizeofString("world")),
                                      });
   }
@@ -53,8 +54,8 @@ TEST_CASE("JsonDocument assignment") {
 
     REQUIRE(doc2.as<std::string>() == "{\"hello\":\"world\"}");
     REQUIRE(spyingAllocator.log() == AllocatorLog{
-                                         Allocate(sizeofString("hello")),
                                          Allocate(sizeofPool()),
+                                         Allocate(sizeofString("hello")),
                                          Allocate(sizeofString("world")),
                                      });
   }
@@ -62,7 +63,7 @@ TEST_CASE("JsonDocument assignment") {
   SECTION("Move assign") {
     {
       JsonDocument doc1(&spyingAllocator);
-      doc1[std::string("hello")] = std::string("world");
+      doc1["hello"_s] = "world"_s;
       JsonDocument doc2(&spyingAllocator);
 
       doc2 = std::move(doc1);
@@ -71,8 +72,8 @@ TEST_CASE("JsonDocument assignment") {
       REQUIRE(doc1.as<std::string>() == "null");
     }
     REQUIRE(spyingAllocator.log() == AllocatorLog{
-                                         Allocate(sizeofString("hello")),
                                          Allocate(sizeofPool()),
+                                         Allocate(sizeofString("hello")),
                                          Allocate(sizeofString("world")),
                                          Deallocate(sizeofString("hello")),
                                          Deallocate(sizeofString("world")),

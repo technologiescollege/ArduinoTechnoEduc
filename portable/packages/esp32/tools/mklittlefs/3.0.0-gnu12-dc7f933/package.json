@@ -1,0 +1,7 @@
+{
+   "description": "littlefs-utility",
+   "name": "mklittlefs",
+   "system": [ "windows_x86" ],
+   "url": "https://github.com/earlephilhower/esp-quick-toolchain",
+   "version": "5.01010.200706"
+}

@@ -52,7 +52,7 @@
  // 7 command bits
  +1300,- 450 +1350,- 450 +1300,- 450 + 700,- 450
  + 700,- 450 + 750,- 450 + 700,- 400
- // (5,8,) 13 address bits
+ // (5,8,) 13 address bits and NO stop bit!
  +1300,- 500
  + 700,- 450 + 700,- 450 +1300,- 500 +1300,- 450
  +1300,- 450 + 700,- 450 +1350,- 400 + 750,- 450
@@ -113,16 +113,16 @@ bool IRrecv::decodeSony() {
     }
 
     // Check we have enough data. +2 for initial gap and start bit mark and space minus the last/MSB space. NO stop bit! 26, 32, 42
-    if (decodedIRData.rawDataPtr->rawlen != (2 * SONY_BITS_MIN) + 2 && decodedIRData.rawDataPtr->rawlen != (2 * SONY_BITS_MAX) + 2
-            && decodedIRData.rawDataPtr->rawlen != (2 * SONY_BITS_15) + 2) {
+    if (decodedIRData.rawlen != (2 * SONY_BITS_MIN) + 2 && decodedIRData.rawlen != (2 * SONY_BITS_MAX) + 2
+            && decodedIRData.rawlen != (2 * SONY_BITS_15) + 2) {
         IR_DEBUG_PRINT(F("Sony: "));
         IR_DEBUG_PRINT(F("Data length="));
-        IR_DEBUG_PRINT(decodedIRData.rawDataPtr->rawlen);
+        IR_DEBUG_PRINT(decodedIRData.rawlen);
         IR_DEBUG_PRINTLN(F(" is not 12, 15 or 20"));
         return false;
     }
 
-    if (!decodePulseDistanceWidthData(&SonyProtocolConstants, (decodedIRData.rawDataPtr->rawlen - 1) / 2, 3)) {
+    if (!decodePulseDistanceWidthData(&SonyProtocolConstants, (decodedIRData.rawlen - 1) / 2, 3)) {
 #if defined(LOCAL_DEBUG)
         Serial.print(F("Sony: "));
         Serial.println(F("Decode failed"));
@@ -134,7 +134,7 @@ bool IRrecv::decodeSony() {
 //    decodedIRData.flags = IRDATA_FLAGS_IS_LSB_FIRST; // Not required, since this is the start value
     decodedIRData.command = decodedIRData.decodedRawData & 0x7F;  // first 7 bits
     decodedIRData.address = decodedIRData.decodedRawData >> 7;    // next 5 or 8 or 13 bits
-    decodedIRData.numberOfBits = (decodedIRData.rawDataPtr->rawlen - 1) / 2;
+    decodedIRData.numberOfBits = (decodedIRData.rawlen - 1) / 2;
     decodedIRData.protocol = SONY;
 
     //Check for repeat
@@ -213,7 +213,7 @@ bool IRrecv::decodeSonyMSB(decode_results *aResults) {
 /**
  * Old version with MSB first data
  */
-void IRsend::sendSony(unsigned long data, int nbits) {
+void IRsend::sendSonyMSB(unsigned long data, int nbits) {
     // Set IR carrier frequency
     enableIROut (SONY_KHZ);
 
@@ -223,6 +223,9 @@ void IRsend::sendSony(unsigned long data, int nbits) {
 
     // Old version with MSB first Data
     sendPulseDistanceWidthData(SONY_ONE_MARK, SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, data, nbits, PROTOCOL_IS_MSB_FIRST);
+}
+void IRsend::sendSony(unsigned long data, int nbits) {
+    sendSonyMSB(data, nbits);
 }
 
 /** @}*/

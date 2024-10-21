@@ -1,0 +1,1 @@
+-T esp32c6.peripherals.ld -T esp32c6.rom.ld -T esp32c6.rom.api.ld -T esp32c6.rom.rvfp.ld -T esp32c6.rom.newlib.ld -T esp32c6.rom.version.ld -T esp32c6.rom.phy.ld -T esp32c6.rom.coexist.ld -T esp32c6.rom.net80211.ld -T esp32c6.rom.pp.ld -T esp32c6.rom.wdt.ld -T esp32c6.rom.newlib-normal.ld -T esp32c6.rom.heap.ld -T memory.ld -T sections.ld 

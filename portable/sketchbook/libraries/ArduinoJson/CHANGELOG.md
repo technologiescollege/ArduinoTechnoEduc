@@ -1,6 +1,74 @@
 ArduinoJson: change log
 =======================
 
+v7.2.0 (2024-09-18)
+------
+
+* Store object members with two slots: one for the key and one for the value
+* Store 64-bit numbers (`double` and `long long`) in an additional slot
+* Reduce the slot size (see table below)
+* Improve message when user forgets third arg of `serializeJson()` et al.
+* Set `ARDUINOJSON_USE_DOUBLE` to `0` by default on 8-bit architectures
+* Deprecate `containsKey()` in favor of `doc["key"].is<T>()`
+* Add support for escape sequence `\'` (issue #2124)
+
+| Architecture | before   | after    |
+|--------------|----------|----------|
+| 8-bit        | 8 bytes  | 6 bytes  |
+| 32-bit       | 16 bytes | 8 bytes  |
+| 64-bit       | 24 bytes | 16 bytes |
+
+> ### BREAKING CHANGES
+>
+> After being on the death row for years, the `containsKey()` method has finally been deprecated.
+> You should replace `doc.containsKey("key")` with `doc["key"].is<T>()`, which not only checks that the key exists but also that the value is of the expected type.
+>
+> ```cpp
+> // Before
+> if (doc.containsKey("value")) {
+>   int value = doc["value"];
+>   // ...
+> }
+>
+> // After
+> if (doc["value"].is<int>()) {
+>   int value = doc["value"];
+>   // ...
+> }
+> ```
+
+v7.1.0 (2024-06-27)
+------
+
+* Add `ARDUINOJSON_STRING_LENGTH_SIZE` to the namespace name
+* Add support for MsgPack binary (PR #2078 by @Sanae6)
+* Add support for MsgPack extension
+* Make string support even more generic (PR #2084 by @d-a-v)
+* Optimize `deserializeMsgPack()`
+* Allow using a `JsonVariant` as a key or index (issue #2080)
+  Note: works only for reading, not for writing
+* Support `ElementProxy` and `MemberProxy` in `JsonDocument`'s constructor
+* Don't add partial objects when allocation fails (issue #2081)
+* Read MsgPack's 64-bit integers even if `ARDUINOJSON_USE_LONG_LONG` is `0`
+  (they are set to `null` if they don't fit in a `long`)
+
+v7.0.4 (2024-03-12)
+------
+
+* Make `JSON_STRING_SIZE(N)` return `N+1` to fix third-party code (issue #2054)
+
+v7.0.3 (2024-02-05)
+------
+
+* Improve error messages when using `char` or `char*` (issue #2043)
+* Reduce stack consumption (issue #2046)
+* Fix compatibility with GCC 4.8 (issue #2045)
+
+v7.0.2 (2024-01-19)
+------
+
+* Fix assertion `poolIndex < count_` after `JsonDocument::clear()` (issue #2034)
+
 v7.0.1 (2024-01-10)
 ------
 

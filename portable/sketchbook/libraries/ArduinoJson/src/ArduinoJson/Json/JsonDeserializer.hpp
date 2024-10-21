@@ -283,7 +283,7 @@ class JsonDeserializer {
           if (!member)
             return DeserializationError::NoMemory;
         } else {
-          member->setNull(resources_);
+          member->clear(resources_);
         }
 
         // Parse value
@@ -517,10 +517,37 @@ class JsonDeserializer {
     }
     buffer_[n] = 0;
 
-    if (!parseNumber(buffer_, result))
-      return DeserializationError::InvalidInput;
+    auto number = parseNumber(buffer_);
+    switch (number.type()) {
+      case NumberType::UnsignedInteger:
+        if (result.setInteger(number.asUnsignedInteger(), resources_))
+          return DeserializationError::Ok;
+        else
+          return DeserializationError::NoMemory;
 
-    return DeserializationError::Ok;
+      case NumberType::SignedInteger:
+        if (result.setInteger(number.asSignedInteger(), resources_))
+          return DeserializationError::Ok;
+        else
+          return DeserializationError::NoMemory;
+
+      case NumberType::Float:
+        if (result.setFloat(number.asFloat(), resources_))
+          return DeserializationError::Ok;
+        else
+          return DeserializationError::NoMemory;
+
+#if ARDUINOJSON_USE_DOUBLE
+      case NumberType::Double:
+        if (result.setFloat(number.asDouble(), resources_))
+          return DeserializationError::Ok;
+        else
+          return DeserializationError::NoMemory;
+#endif
+
+      default:
+        return DeserializationError::InvalidInput;
+    }
   }
 
   DeserializationError::Code skipNumericValue() {
@@ -671,9 +698,8 @@ ARDUINOJSON_BEGIN_PUBLIC_NAMESPACE
 // Parses a JSON input, filters, and puts the result in a JsonDocument.
 // https://arduinojson.org/v7/api/json/deserializejson/
 template <typename TDestination, typename... Args>
-typename detail::enable_if<
-    detail::is_deserialize_destination<TDestination>::value,
-    DeserializationError>::type
+detail::enable_if_t<detail::is_deserialize_destination<TDestination>::value,
+                    DeserializationError>
 deserializeJson(TDestination&& dst, Args&&... args) {
   using namespace detail;
   return deserialize<JsonDeserializer>(detail::forward<TDestination>(dst),
@@ -683,9 +709,8 @@ deserializeJson(TDestination&& dst, Args&&... args) {
 // Parses a JSON input, filters, and puts the result in a JsonDocument.
 // https://arduinojson.org/v7/api/json/deserializejson/
 template <typename TDestination, typename TChar, typename... Args>
-typename detail::enable_if<
-    detail::is_deserialize_destination<TDestination>::value,
-    DeserializationError>::type
+detail::enable_if_t<detail::is_deserialize_destination<TDestination>::value,
+                    DeserializationError>
 deserializeJson(TDestination&& dst, TChar* input, Args&&... args) {
   using namespace detail;
   return deserialize<JsonDeserializer>(detail::forward<TDestination>(dst),

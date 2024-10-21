@@ -51,9 +51,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
 #include <ESP32Servo.h>
-#include "Arduino.h"
+#if defined(ARDUINO)
+	#include "Arduino.h"
+#endif
 
-//
+static const char* TAG = "ESP32Servo";
+
 Servo::Servo()
 {		// initialize this channel with plausible values, except pin # (we set pin # when attached)
 	REFRESH_CPS = 50;
@@ -78,6 +81,7 @@ int Servo::attach(int pin)
 
 int Servo::attach(int pin, int min, int max)
 {
+    ESP_LOGW(TAG, "Attempting to Attach servo on pin=%d min=%d max=%d",pin,min,max);
 
 #ifdef ENFORCE_PINS
         // ESP32 Recommend only the following pins 2,4,12-19,21-23,25-27,32-33
@@ -101,17 +105,16 @@ int Servo::attach(int pin, int min, int max)
 #ifdef __XTENSA_esp32s3__
 if(
 #endif
-        	Serial.println("This pin can not be a servo: "+String(pin)+
+
 #if defined(CONFIG_IDF_TARGET_ESP32S2)
-				"\r\nServo available on: 1-21,26,33-42"
+				ESP_LOGE(TAG, "This pin can not be a servo: %d Servo available on: 1-21,26,33-42", pin);
 #elif defined(CONFIG_IDF_TARGET_ESP32S3)
-			        "\r\nPWM available on: 1-21,35-45,47-48"
+			    ESP_LOGE(TAG, "This pin can not be a servo: %d Servo available on: 1-21,35-45,47-48", pin);
 #elif defined(CONFIG_IDF_TARGET_ESP32C3)
-				"\r\nPWM available on: 1-10,18-21"
+				ESP_LOGE(TAG, "This pin can not be a servo: %d Servo available on: 1-10,18-21", pin);
 #else
-				"\r\nServo available on: 2,4,5,12-19,21-23,25-27,32-33"
+				ESP_LOGE(TAG, "This pin can not be a servo: %d Servo available on: 2,4,5,12-19,21-23,25-27,32-33",pin);
 #endif
-			);
             return 0;
         }
 #endif
@@ -126,8 +129,10 @@ if(
         this->max = max;    //store this value in uS
         // Set up this channel
         // if you want anything other than default timer width, you must call setTimerWidth() before attach
+
         pwm.attachPin(this->pinNumber,REFRESH_CPS, this->timer_width );   // GPIO pin assigned to channel
-        //Serial.println("Attaching servo : "+String(pin)+" on PWM "+String(pwm.getChannel()));
+        ESP_LOGW(TAG, "Success to Attach servo : %d on PWM %d",pin,pwm.getChannel());
+
         return pwm.getChannel();
 }
 
@@ -159,15 +164,18 @@ void Servo::write(int value)
 
 void Servo::writeMicroseconds(int value)
 {
+    writeTicks(usToTicks(value));  // convert to ticks
+}
+
+void Servo::writeTicks(int value)
+{
     // calculate and store the values for the given channel
     if (this->attached())   // ensure channel is valid
     {
-        if (value < this->min)          // ensure pulse width is valid
-            value = this->min;
-        else if (value > this->max)
-            value = this->max;
-
-        value = usToTicks(value);  // convert to ticks
+        if (value < usToTicks(this->min))      // ensure ticks are in range
+            value = usToTicks(this->min);
+        else if (value > usToTicks(this->max))
+            value = usToTicks(this->max);
         this->ticks = value;
         // do the actual write
         pwm.write( this->ticks);
@@ -182,7 +190,7 @@ void Servo::release()
 
 int Servo::read() // return the value as degrees
 {
-    return (map(readMicroseconds()+1, this->min, this->max, 0, 180));
+    return (map(readMicroseconds(), this->min, this->max, 0, 180));
 }
 
 int Servo::readMicroseconds()
@@ -198,6 +206,11 @@ int Servo::readMicroseconds()
     }
 
     return (pulsewidthUsec);
+}
+
+int Servo::readTicks()
+{
+    return this->ticks;
 }
 
 bool Servo::attached()

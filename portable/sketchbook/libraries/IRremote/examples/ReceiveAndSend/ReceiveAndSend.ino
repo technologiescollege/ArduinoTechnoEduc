@@ -14,6 +14,7 @@
  * A button must be connected between the input SEND_BUTTON_PIN and ground.
  * A visible LED can be connected to STATUS_PIN to provide status.
  *
+ * See also https://dronebotworkshop.com/ir-remotes/#ReceiveAndSend_Code
  *
  * Initially coded 2009 Ken Shirriff http://www.righto.com
  *
@@ -22,7 +23,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2009-2023 Ken Shirriff, Armin Joachimsmeyer
+ * Copyright (c) 2009-2024 Ken Shirriff, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -69,12 +70,10 @@
 //#define DECODE_WHYNTER
 //#define DECODE_FAST
 //
+
 #if !defined(RAW_BUFFER_LENGTH)
-#  if RAMEND <= 0x4FF || RAMSIZE < 0x4FF
-#define RAW_BUFFER_LENGTH  120
-#  elif RAMEND <= 0xAFF || RAMSIZE < 0xAFF // 0xAFF for LEONARDO
-#define RAW_BUFFER_LENGTH  400 // 600 is too much here, because we have additional uint8_t rawCode[RAW_BUFFER_LENGTH];
-#  else
+// For air condition remotes it requires 750. Default is 200.
+#  if !((defined(RAMEND) && RAMEND <= 0x4FF) || (defined(RAMSIZE) && RAMSIZE < 0x4FF))
 #define RAW_BUFFER_LENGTH  750
 #  endif
 #endif
@@ -82,7 +81,7 @@
 //#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program memory.
 //#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 650 bytes program memory if all other protocols are active
 //#define NO_LED_FEEDBACK_CODE      // saves 92 bytes program memory
-//#define RECORD_GAP_MICROS 12000   // Default is 5000. Activate it for some LG air conditioner protocols
+//#define RECORD_GAP_MICROS 12000   // Default is 8000. Activate it for some LG air conditioner protocols
 //#define SEND_PWM_BY_TIMER         // Disable carrier PWM generation in software and use (restricted) hardware PWM.
 //#define USE_NO_SEND_PWM           // Use no carrier PWM, just simulate an active low receiver signal. Overrides SEND_PWM_BY_TIMER definition
 
@@ -115,7 +114,11 @@ void setup() {
     pinMode(SEND_BUTTON_PIN, INPUT_PULLUP);
 
     Serial.begin(115200);
-#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/|| defined(SERIALUSB_PID) || defined(ARDUINO_attiny3217)
+    while (!Serial)
+        ; // Wait for Serial to become available. Is optimized away for some cores.
+
+#if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/ \
+    || defined(SERIALUSB_PID)  || defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_attiny3217)
     delay(4000); // To be able to connect Serial monitor after reset or power up and before first print out. Do not wait for an attached Serial Monitor!
 #endif
     // Just to know which program is running on my Arduino
@@ -127,7 +130,7 @@ void setup() {
     printActiveIRProtocols(&Serial);
     Serial.println(F("at pin " STR(IR_RECEIVE_PIN)));
 
-    IrSender.begin(); // Start with IR_SEND_PIN as send pin and enable feedback LED at default feedback LED pin
+    IrSender.begin(); // Start with IR_SEND_PIN -which is defined in PinDefinitionsAndMore.h- as send pin and enable feedback LED at default feedback LED pin
     Serial.print(F("Ready to send IR signals at pin " STR(IR_SEND_PIN) " on press of button at pin "));
     Serial.println(SEND_BUTTON_PIN);
 }

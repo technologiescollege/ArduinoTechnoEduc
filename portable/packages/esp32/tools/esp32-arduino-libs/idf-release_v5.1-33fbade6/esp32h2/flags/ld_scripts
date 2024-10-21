@@ -1,0 +1,1 @@
+-T esp32h2.peripherals.ld -T esp32h2.rom.ld -T esp32h2.rom.api.ld -T esp32h2.rom.libgcc.ld -T esp32h2.rom.newlib.ld -T esp32h2.rom.version.ld -T esp32h2.rom.wdt.ld -T esp32h2.rom.heap.ld -T memory.ld -T sections.ld 

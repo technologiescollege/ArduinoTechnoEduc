@@ -30,21 +30,20 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
   }
 
   // Move-constructor
-  JsonDocument(JsonDocument&& src) : JsonDocument() {
+  JsonDocument(JsonDocument&& src)
+      : JsonDocument(detail::DefaultAllocator::instance()) {
     swap(*this, src);
   }
 
   // Construct from variant, array, or object
   template <typename T>
-  JsonDocument(const T& src,
-               Allocator* alloc = detail::DefaultAllocator::instance(),
-               typename detail::enable_if<
-                   detail::is_same<T, JsonVariant>::value ||
-                   detail::is_same<T, JsonVariantConst>::value ||
-                   detail::is_same<T, JsonArray>::value ||
-                   detail::is_same<T, JsonArrayConst>::value ||
-                   detail::is_same<T, JsonObject>::value ||
-                   detail::is_same<T, JsonObjectConst>::value>::type* = 0)
+  JsonDocument(
+      const T& src, Allocator* alloc = detail::DefaultAllocator::instance(),
+      detail::enable_if_t<detail::IsVariant<T>::value ||
+                          detail::is_same<T, JsonArray>::value ||
+                          detail::is_same<T, JsonArrayConst>::value ||
+                          detail::is_same<T, JsonObject>::value ||
+                          detail::is_same<T, JsonObjectConst>::value>* = 0)
       : JsonDocument(alloc) {
     set(src);
   }
@@ -65,7 +64,7 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
   }
 
   // Reduces the capacity of the memory pool to match the current usage.
-  // https://arduinojson.org/v7/api/JsonDocument/shrinktofit/
+  // https://arduinojson.org/v7/api/jsondocument/shrinktofit/
   void shrinkToFit() {
     resources_.shrinkToFit();
   }
@@ -138,9 +137,8 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
   // Replaces the root with the specified value.
   // https://arduinojson.org/v7/api/jsondocument/set/
   template <typename T>
-  typename detail::enable_if<!detail::is_base_of<JsonDocument, T>::value,
-                             bool>::type
-  set(const T& src) {
+  detail::enable_if_t<!detail::is_base_of<JsonDocument, T>::value, bool> set(
+      const T& src) {
     return to<JsonVariant>().set(src);
   }
 
@@ -152,26 +150,37 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
     return getVariant().template to<T>();
   }
 
-  // Returns true if the root object contains the specified key.
+  // DEPRECATED: use obj["key"].is<T>() instead
   // https://arduinojson.org/v7/api/jsondocument/containskey/
   template <typename TChar>
+  ARDUINOJSON_DEPRECATED("use doc[\"key\"].is<T>() instead")
   bool containsKey(TChar* key) const {
     return data_.getMember(detail::adaptString(key), &resources_) != 0;
   }
 
-  // Returns true if the root object contains the specified key.
+  // DEPRECATED: use obj[key].is<T>() instead
   // https://arduinojson.org/v7/api/jsondocument/containskey/
   template <typename TString>
-  bool containsKey(const TString& key) const {
+  ARDUINOJSON_DEPRECATED("use doc[key].is<T>() instead")
+  detail::enable_if_t<detail::IsString<TString>::value, bool> containsKey(
+      const TString& key) const {
     return data_.getMember(detail::adaptString(key), &resources_) != 0;
+  }
+
+  // DEPRECATED: use obj[key].is<T>() instead
+  // https://arduinojson.org/v7/api/jsondocument/containskey/
+  template <typename TVariant>
+  ARDUINOJSON_DEPRECATED("use doc[key].is<T>() instead")
+  detail::enable_if_t<detail::IsVariant<TVariant>::value, bool> containsKey(
+      const TVariant& key) const {
+    return containsKey(key.template as<const char*>());
   }
 
   // Gets or sets a root object's member.
   // https://arduinojson.org/v7/api/jsondocument/subscript/
   template <typename TString>
-  FORCE_INLINE typename detail::enable_if<
-      detail::IsString<TString>::value,
-      detail::MemberProxy<JsonDocument&, TString>>::type
+  detail::enable_if_t<detail::IsString<TString>::value,
+                      detail::MemberProxy<JsonDocument&, TString>>
   operator[](const TString& key) {
     return {*this, key};
   }
@@ -179,9 +188,8 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
   // Gets or sets a root object's member.
   // https://arduinojson.org/v7/api/jsondocument/subscript/
   template <typename TChar>
-  FORCE_INLINE typename detail::enable_if<
-      detail::IsString<TChar*>::value,
-      detail::MemberProxy<JsonDocument&, TChar*>>::type
+  detail::enable_if_t<detail::IsString<TChar*>::value,
+                      detail::MemberProxy<JsonDocument&, TChar*>>
   operator[](TChar* key) {
     return {*this, key};
   }
@@ -189,8 +197,7 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
   // Gets a root object's member.
   // https://arduinojson.org/v7/api/jsondocument/subscript/
   template <typename TString>
-  FORCE_INLINE typename detail::enable_if<detail::IsString<TString>::value,
-                                          JsonVariantConst>::type
+  detail::enable_if_t<detail::IsString<TString>::value, JsonVariantConst>
   operator[](const TString& key) const {
     return JsonVariantConst(
         data_.getMember(detail::adaptString(key), &resources_), &resources_);
@@ -199,8 +206,7 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
   // Gets a root object's member.
   // https://arduinojson.org/v7/api/jsondocument/subscript/
   template <typename TChar>
-  FORCE_INLINE typename detail::enable_if<detail::IsString<TChar*>::value,
-                                          JsonVariantConst>::type
+  detail::enable_if_t<detail::IsString<TChar*>::value, JsonVariantConst>
   operator[](TChar* key) const {
     return JsonVariantConst(
         data_.getMember(detail::adaptString(key), &resources_), &resources_);
@@ -208,22 +214,36 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
 
   // Gets or sets a root array's element.
   // https://arduinojson.org/v7/api/jsondocument/subscript/
-  FORCE_INLINE detail::ElementProxy<JsonDocument&> operator[](size_t index) {
-    return {*this, index};
+  template <typename T>
+  detail::enable_if_t<detail::is_integral<T>::value,
+                      detail::ElementProxy<JsonDocument&>>
+  operator[](T index) {
+    return {*this, size_t(index)};
   }
 
   // Gets a root array's member.
   // https://arduinojson.org/v7/api/jsondocument/subscript/
-  FORCE_INLINE JsonVariantConst operator[](size_t index) const {
+  JsonVariantConst operator[](size_t index) const {
     return JsonVariantConst(data_.getElement(index, &resources_), &resources_);
+  }
+
+  // Gets or sets a root object's member.
+  // https://arduinojson.org/v7/api/jsondocument/subscript/
+  template <typename TVariant>
+  detail::enable_if_t<detail::IsVariant<TVariant>::value, JsonVariantConst>
+  operator[](const TVariant& key) const {
+    if (key.template is<const char*>())
+      return operator[](key.template as<const char*>());
+    if (key.template is<size_t>())
+      return operator[](key.template as<size_t>());
+    return {};
   }
 
   // Appends a new (empty) element to the root array.
   // Returns a reference to the new element.
   // https://arduinojson.org/v7/api/jsondocument/add/
   template <typename T>
-  typename detail::enable_if<!detail::is_same<T, JsonVariant>::value, T>::type
-  add() {
+  detail::enable_if_t<!detail::is_same<T, JsonVariant>::value, T> add() {
     return add<JsonVariant>().to<T>();
   }
 
@@ -231,36 +251,36 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
   // Returns a reference to the new element.
   // https://arduinojson.org/v7/api/jsondocument/add/
   template <typename T>
-  typename detail::enable_if<detail::is_same<T, JsonVariant>::value, T>::type
-  add() {
+  detail::enable_if_t<detail::is_same<T, JsonVariant>::value, T> add() {
     return JsonVariant(data_.addElement(&resources_), &resources_);
   }
 
   // Appends a value to the root array.
   // https://arduinojson.org/v7/api/jsondocument/add/
   template <typename TValue>
-  FORCE_INLINE bool add(const TValue& value) {
-    return add<JsonVariant>().set(value);
+  bool add(const TValue& value) {
+    return data_.addValue(value, &resources_);
   }
 
   // Appends a value to the root array.
   // https://arduinojson.org/v7/api/jsondocument/add/
   template <typename TChar>
-  FORCE_INLINE bool add(TChar* value) {
-    return add<JsonVariant>().set(value);
+  bool add(TChar* value) {
+    return data_.addValue(value, &resources_);
   }
 
   // Removes an element of the root array.
   // https://arduinojson.org/v7/api/jsondocument/remove/
-  FORCE_INLINE void remove(size_t index) {
-    detail::VariantData::removeElement(getData(), index, getResourceManager());
+  template <typename T>
+  detail::enable_if_t<detail::is_integral<T>::value> remove(T index) {
+    detail::VariantData::removeElement(getData(), size_t(index),
+                                       getResourceManager());
   }
 
   // Removes a member of the root object.
   // https://arduinojson.org/v7/api/jsondocument/remove/
   template <typename TChar>
-  FORCE_INLINE typename detail::enable_if<detail::IsString<TChar*>::value>::type
-  remove(TChar* key) {
+  detail::enable_if_t<detail::IsString<TChar*>::value> remove(TChar* key) {
     detail::VariantData::removeMember(getData(), detail::adaptString(key),
                                       getResourceManager());
   }
@@ -268,18 +288,28 @@ class JsonDocument : public detail::VariantOperators<const JsonDocument&> {
   // Removes a member of the root object.
   // https://arduinojson.org/v7/api/jsondocument/remove/
   template <typename TString>
-  FORCE_INLINE
-      typename detail::enable_if<detail::IsString<TString>::value>::type
-      remove(const TString& key) {
+  detail::enable_if_t<detail::IsString<TString>::value> remove(
+      const TString& key) {
     detail::VariantData::removeMember(getData(), detail::adaptString(key),
                                       getResourceManager());
   }
 
-  FORCE_INLINE operator JsonVariant() {
+  // Removes a member of the root object or an element of the root array.
+  // https://arduinojson.org/v7/api/jsondocument/remove/
+  template <typename TVariant>
+  detail::enable_if_t<detail::IsVariant<TVariant>::value> remove(
+      const TVariant& key) {
+    if (key.template is<const char*>())
+      remove(key.template as<const char*>());
+    if (key.template is<size_t>())
+      remove(key.template as<size_t>());
+  }
+
+  operator JsonVariant() {
     return getVariant();
   }
 
-  FORCE_INLINE operator JsonVariantConst() const {
+  operator JsonVariantConst() const {
     return getVariant();
   }
 

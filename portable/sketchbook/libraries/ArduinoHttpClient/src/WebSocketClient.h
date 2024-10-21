@@ -8,6 +8,10 @@
 
 #include "HttpClient.h"
 
+#ifndef WS_TX_BUFFER_SIZE
+  #define WS_TX_BUFFER_SIZE 128
+#endif
+
 static const int TYPE_CONTINUATION     = 0x0;
 static const int TYPE_TEXT             = 0x1;
 static const int TYPE_BINARY           = 0x2;
@@ -86,7 +90,7 @@ private:
 private:
     bool iTxStarted;
     uint8_t iTxMessageType;
-    uint8_t iTxBuffer[128];
+    uint8_t iTxBuffer[WS_TX_BUFFER_SIZE];
     uint64_t iTxSize;
 
     uint8_t iRxOpCode;

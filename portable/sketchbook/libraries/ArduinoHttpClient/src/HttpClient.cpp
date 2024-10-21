@@ -40,6 +40,7 @@ void HttpClient::resetState()
   iIsChunked = false;
   iChunkLength = 0;
   iHttpResponseTimeout = kHttpResponseTimeout;
+  iHttpWaitForDataDelay = kHttpWaitForDataDelay;
 }
 
 void HttpClient::stop()
@@ -161,7 +162,7 @@ int HttpClient::sendInitialHeaders(const char* aURLPath, const char* aHttpMethod
         {
             iClient->print("Host: ");
             iClient->print(iServerName);
-            if (iServerPort != kHttpPort)
+            if (iServerPort != kHttpPort && iServerPort != kHttpsPort)
             {
               iClient->print(":");
               iClient->print(iServerPort);
@@ -421,7 +422,7 @@ int HttpClient::responseStatusCode()
         {
             if (available())
             {
-                c = read();
+                c = HttpClient::read();
                 if (c != -1)
                 {
                     switch(iState)
@@ -473,7 +474,7 @@ int HttpClient::responseStatusCode()
             {
                 // We haven't got any data, so let's pause to allow some to
                 // arrive
-                delay(kHttpWaitForDataDelay);
+                delay(iHttpWaitForDataDelay);
             }
         }
         if ( (c == '\n') && (iStatusCode < 200 && iStatusCode != 101) )
@@ -522,7 +523,7 @@ int HttpClient::skipResponseHeaders()
         {
             // We haven't got any data, so let's pause to allow some to
             // arrive
-            delay(kHttpWaitForDataDelay);
+            delay(iHttpWaitForDataDelay);
         }
     }
     if (endOfHeadersReached())
@@ -542,7 +543,7 @@ bool HttpClient::endOfHeadersReached()
     return (iState == eReadingBody || iState == eReadingChunkLength || iState == eReadingBodyChunk);
 };
 
-int HttpClient::contentLength()
+long HttpClient::contentLength()
 {
     // skip the response headers, if they haven't been read already 
     if (!endOfHeadersReached())
@@ -762,7 +763,7 @@ int HttpClient::read(uint8_t *buf, size_t size)
 
 int HttpClient::readHeader()
 {
-    char c = read();
+    char c = HttpClient::read();
 
     if (endOfHeadersReached())
     {
@@ -818,7 +819,11 @@ int HttpClient::readHeader()
     case eReadingContentLength:
         if (isdigit(c))
         {
-            iContentLength = iContentLength*10 + (c - '0');
+            long _iContentLength = iContentLength*10 + (c - '0');
+            // Only apply if the value didn't wrap around
+            if (_iContentLength > iContentLength) {
+                iContentLength = _iContentLength;
+            }
         }
         else
         {

@@ -1,7 +1,6 @@
 #ifndef __FASTPIN_ARM_NRF52_H
 #define __FASTPIN_ARM_NRF52_H
 
-
 /*
 //
 // Background:
@@ -140,6 +139,19 @@ public:
     FASTLED_NRF52_INLINE_ATTRIBUTE static uint32_t   nrf_pin()  { return NRF_GPIO_PIN_MAP(_PORT_NUMBER, _PIN_NUMBER); }
 };
 
+
+template <uint32_t _MASK, typename _PORT, uint8_t _PORT_NUMBER, uint8_t _PIN_NUMBER>
+class _INVALID_ARMPIN: public _ARMPIN<_MASK, _PORT, _PORT_NUMBER, _PIN_NUMBER> {
+public:
+    _INVALID_ARMPIN() {
+        Serial.print("For whatever reason pin "); Serial.print(_PIN_NUMBER);
+        Serial.println(" has been marked as invalid. Please use a different pin.");
+        Serial.println("Pausing execution for 2 seconds.");
+        delay(2000);  // Give time for the message to be printed.
+    }
+    
+};
+
 //
 // BOARD_PIN can be either the pin portion of a port.pin, or the combined NRF_GPIO_PIN_MAP() number.
 // For example both the following two defines refer to P1.15 (pin 47) as Arduino pin 3:
@@ -151,6 +163,16 @@ public:
 //     _FL_DEFPIN(47, 15, 1);
 //     _FL_DEFPIN(47, 47, 1);
 //
+
+#define _FL_DEF_INVALID_PIN(ARDUINO_PIN, BOARD_PIN, BOARD_PORT)                 \
+    template<> class FastPin<ARDUINO_PIN> :              \
+    public _INVALID_ARMPIN<                               \
+        0,                                                \
+        __generated_struct_NRF_P0,                        \
+        0,                                                \
+        0                                                 \
+        >                                                \
+    {}
 
 #define _FL_DEFPIN(ARDUINO_PIN, BOARD_PIN, BOARD_PORT)   \
     template<> class FastPin<ARDUINO_PIN> :              \

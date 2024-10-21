@@ -1,7 +1,8 @@
 /*
  * ir_FAST.hpp
  *
- *  Contains functions for receiving and sending FAST IR protocol with 8 bit command
+ *  Contains functions for receiving and sending FAST IR protocol
+ *  with no address and 16 bit data, interpreted as 8 bit command and 8 bit inverted command
  *
  *  This file is part of Arduino-IRremote https://github.com/Arduino-IRremote/Arduino-IRremote.
  *
@@ -96,13 +97,13 @@ void IRsend::sendFAST(uint8_t aCommand, int_fast8_t aNumberOfRepeats) {
 
 bool IRrecv::decodeFAST() {
 
-//    uint_fast8_t tRawlen = decodedIRData.rawDataPtr->rawlen; // Using a local variable does not improve code size
+//    uint_fast8_t tRawlen = decodedIRData.rawlen; // Using a local variable does not improve code size
 
     // Check we have the right amount of data (36). The +4 is for initial gap, start bit mark and space + stop bit mark.
-    if (decodedIRData.rawDataPtr->rawlen != ((2 * FAST_BITS) + 4)) {
+    if (decodedIRData.rawlen != ((2 * FAST_BITS) + 4)) {
         IR_DEBUG_PRINT(F("FAST: "));
         IR_DEBUG_PRINT(F("Data length="));
-        IR_DEBUG_PRINT(decodedIRData.rawDataPtr->rawlen);
+        IR_DEBUG_PRINT(decodedIRData.rawlen);
         IR_DEBUG_PRINTLN(F(" is not 36"));
         return false;
     }

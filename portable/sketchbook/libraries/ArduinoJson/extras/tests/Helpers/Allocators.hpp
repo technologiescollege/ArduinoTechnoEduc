@@ -5,10 +5,12 @@
 #pragma once
 
 #include <ArduinoJson/Memory/Allocator.hpp>
+#include <ArduinoJson/Memory/MemoryPool.hpp>
 #include <ArduinoJson/Memory/StringBuilder.hpp>
-#include <ArduinoJson/Memory/VariantPool.hpp>
 
 #include <sstream>
+
+namespace {
 
 struct FailingAllocator : ArduinoJson::Allocator {
   static FailingAllocator* instance() {
@@ -54,31 +56,31 @@ class AllocatorLogEntry {
 
 inline AllocatorLogEntry Allocate(size_t s) {
   char buffer[32];
-  sprintf(buffer, "allocate(%zu)", s);
+  snprintf(buffer, sizeof(buffer), "allocate(%zu)", s);
   return AllocatorLogEntry(buffer);
 }
 
 inline AllocatorLogEntry AllocateFail(size_t s) {
   char buffer[32];
-  sprintf(buffer, "allocate(%zu) -> nullptr", s);
+  snprintf(buffer, sizeof(buffer), "allocate(%zu) -> nullptr", s);
   return AllocatorLogEntry(buffer);
 }
 
 inline AllocatorLogEntry Reallocate(size_t s1, size_t s2) {
   char buffer[32];
-  sprintf(buffer, "reallocate(%zu, %zu)", s1, s2);
+  snprintf(buffer, sizeof(buffer), "reallocate(%zu, %zu)", s1, s2);
   return AllocatorLogEntry(buffer);
 }
 
 inline AllocatorLogEntry ReallocateFail(size_t s1, size_t s2) {
   char buffer[32];
-  sprintf(buffer, "reallocate(%zu, %zu) -> nullptr", s1, s2);
+  snprintf(buffer, sizeof(buffer), "reallocate(%zu, %zu) -> nullptr", s1, s2);
   return AllocatorLogEntry(buffer);
 }
 
 inline AllocatorLogEntry Deallocate(size_t s) {
   char buffer[32];
-  sprintf(buffer, "deallocate(%zu)", s);
+  snprintf(buffer, sizeof(buffer), "deallocate(%zu)", s);
   return AllocatorLogEntry(buffer);
 }
 
@@ -88,6 +90,10 @@ class AllocatorLog {
   AllocatorLog(std::initializer_list<AllocatorLogEntry> list) {
     for (auto& entry : list)
       append(entry);
+  }
+
+  void clear() {
+    log_.str("");
   }
 
   void append(const AllocatorLogEntry& entry) {
@@ -165,7 +171,7 @@ class SpyingAllocator : public ArduinoJson::Allocator {
   }
 
   void clearLog() {
-    log_ = AllocatorLog();
+    log_.clear();
   }
 
   const AllocatorLog& log() const {
@@ -256,14 +262,17 @@ class TimebombAllocator : public ArduinoJson::Allocator {
   size_t countdown_ = 0;
   Allocator* upstream_;
 };
+}  // namespace
 
 inline size_t sizeofPoolList(size_t n = ARDUINOJSON_INITIAL_POOL_COUNT) {
-  return sizeof(ArduinoJson::detail::VariantPool) * n;
+  using namespace ArduinoJson::detail;
+  return sizeof(MemoryPool<VariantData>) * n;
 }
 
 inline size_t sizeofPool(
     ArduinoJson::detail::SlotCount n = ARDUINOJSON_POOL_CAPACITY) {
-  return ArduinoJson::detail::VariantPool::slotsToBytes(n);
+  using namespace ArduinoJson::detail;
+  return MemoryPool<VariantData>::slotsToBytes(n);
 }
 
 inline size_t sizeofStringBuffer(size_t iteration = 1) {
