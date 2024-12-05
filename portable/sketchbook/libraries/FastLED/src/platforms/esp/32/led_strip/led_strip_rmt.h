@@ -10,27 +10,23 @@
 
 #include "esp_err.h"
 #include "led_strip_types.h"
-#include "esp_idf_version.h"
+#include "platforms/esp/esp_version.h"
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
 #include "driver/rmt_types.h"
+#else
+#error "This library is only designed to run on ESP-IDF v5.0.0 and later"
 #endif
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace fastled_rmt51_strip {
 
 /**
  * @brief LED Strip RMT specific configuration
  */
 typedef struct {
-#if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 0, 0)
-    uint8_t rmt_channel;        /*!< Specify the channel number, the legacy RMT driver doesn't support channel allocator */
-#else // new driver supports specify the clock source and clock resolution
     rmt_clock_source_t clk_src; /*!< RMT clock source */
     uint32_t resolution_hz;     /*!< RMT tick resolution, if set to zero, a default resolution (10MHz) will be applied */
-#endif
     size_t mem_block_symbols;   /*!< How many RMT symbols can one RMT channel hold at one time. Set to 0 will fallback to use the default size. */
     struct {
         uint32_t with_dma: 1;   /*!< Use DMA to transmit data */
@@ -49,10 +45,19 @@ typedef struct {
  *      - ESP_ERR_NO_MEM: create LED strip handle failed because of out of memory
  *      - ESP_FAIL: create LED strip handle failed because some other error
  */
-esp_err_t led_strip_new_rmt_device(const led_strip_config_t *led_config, const led_strip_rmt_config_t *rmt_config, led_strip_handle_t *ret_strip);
+esp_err_t led_strip_new_rmt_device(
+        const led_strip_config_t *led_config,
+        const led_strip_rmt_config_t *rmt_config,
+        led_strip_handle_t *ret_strip);
 
+// Create a new led strip with a pre-allocated pixel buffer.
+esp_err_t led_strip_new_rmt_device_with_buffer(
+        const led_strip_config_t *led_config,
+        const led_strip_rmt_config_t *rmt_config,
+        uint8_t *pixel_buf,
+        led_strip_handle_t *ret_strip);
 
-#ifdef __cplusplus
-}
-#endif
+// release_pixel_buffer is true then the pixel buffer will also be freed.
+esp_err_t led_strip_release_rmt_device(led_strip_handle_t strip, bool release_pixel_buffer);
 
+}  // namespace fastled_rmt51_strip

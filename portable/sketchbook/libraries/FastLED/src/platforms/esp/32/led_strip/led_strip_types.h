@@ -6,11 +6,10 @@
 #pragma once
 
 #include <stdint.h>
+#include "driver/rmt_encoder.h"
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace fastled_rmt51_strip {
 
 /**
  * @brief LED strip pixel format
@@ -43,15 +42,16 @@ typedef struct led_strip_t *led_strip_handle_t;
 typedef struct {
     int strip_gpio_num;      /*!< GPIO number that used by LED strip */
     uint32_t max_leds;       /*!< Maximum LEDs in a single strip */
-    led_pixel_format_t led_pixel_format; /*!< LED pixel format */
-    led_model_t led_model;   /*!< LED model */
-
+    //led_pixel_format_t led_pixel_format; /*!< LED pixel format */
+    // led_model_t led_model;   /*!< LED model */
+    rmt_bytes_encoder_config_t rmt_bytes_encoder_config; /*!< RMT bytes encoder configuration */
+    rmt_symbol_word_t reset_code; /*!< Reset code for LED strip */
     struct {
         uint32_t invert_out: 1; /*!< Invert output signal */
+        uint32_t rgbw: 1;       /*!< RGBW mode */
     } flags;                    /*!< Extra driver flags */
+
+
 } led_strip_config_t;
 
-
-#ifdef __cplusplus
-}
-#endif
+}  // namespace fastled_rmt51_strip

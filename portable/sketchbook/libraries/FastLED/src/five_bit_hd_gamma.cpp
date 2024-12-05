@@ -1,29 +1,38 @@
 
 
 #define FASTLED_INTERNAL 1
-
-#include "FastLED.h"
 #include "five_bit_hd_gamma.h"
+#include "FastLED.h"
+
 #include "fastled_progmem.h"
+#include "lib8tion/intmap.h"
+#include "lib8tion/math8.h"
 #include "lib8tion/scale8.h"
+#include "lib8tion/brightness_bitshifter.h"
 #include "namespace.h"
+
 
 // Author: Zach Vorhies
 
-#ifndef FASTLED_FIVE_BIT_HD_GAMMA_LOW_END_LINEAR_RAMP
-#define FASTLED_FIVE_BIT_HD_GAMMA_LOW_END_LINEAR_RAMP 0
-#endif
-
 FASTLED_NAMESPACE_BEGIN
+
+namespace {
+template <typename T> T mymax(T a, T b) { return (a > b) ? a : b; }
+
+template <typename T> T max3(T a, T b, T c) { return mymax(mymax(a, b), c); }
+
+} // namespace
 
 #ifndef FASTLED_FIVE_BIT_HD_GAMMA_FUNCTION_2_8
 // Fast a memory efficient gamma=2 function.
-void five_bit_hd_gamma_function(
-  uint8_t r8, uint8_t g8, uint8_t b8,
-  uint16_t* r16, uint16_t* g16, uint16_t* b16) {
-    *r16 = uint16_t(r8) * r8;
-    *g16 = uint16_t(g8) * g8;
-    *b16 = uint16_t(b8) * b8;
+void five_bit_hd_gamma_function(CRGB color, uint16_t *r16, uint16_t *g16,
+                                uint16_t *b16) {
+    uint16_t _r16 = map8_to_16(color.r);
+    uint16_t _g16 = map8_to_16(color.g);
+    uint16_t _b16 = map8_to_16(color.b);
+    *r16 = scale16by8(_r16, color.r);
+    *g16 = scale16by8(_g16, color.g);
+    *b16 = scale16by8(_b16, color.b);
 }
 #else
 // Using look up table for gamma16 correction at power of 2.8
@@ -53,138 +62,95 @@ static const uint16_t PROGMEM _gamma_2_8[256] = {
     57199, 57816, 58436, 59061, 59690, 60323, 60960, 61601, 62246, 62896, 63549,
     64207, 64869, 65535};
 
-void five_bit_hd_gamma_function(uint8_t r8, uint8_t g8,
-                                uint8_t b8, uint16_t *r16,
-                                uint16_t *g16,
+void five_bit_hd_gamma_function(CRGB rgb, uint16_t *r16, uint16_t *g16,
                                 uint16_t *b16) {
-  *r16 = _gamma_2_8[r8];
-  *g16 = _gamma_2_8[g8];
-  *b16 = _gamma_2_8[b8];
+    *r16 = _gamma_2_8[rgb.r];
+    *g16 = _gamma_2_8[rgb.g];
+    *b16 = _gamma_2_8[rgb.b];
 }
-#endif  // FASTLED_FIVE_BIT_HD_GAMMA_FUNCTION_2_8
+#endif // FASTLED_FIVE_BIT_HD_GAMMA_FUNCTION_2_8
+
+uint8_t five_bit_bitshift(uint16_t r16, uint16_t g16, uint16_t b16,
+                          uint8_t brightness, CRGB *out, uint8_t *out_power_5bit) {
+    if (!(r16 | g16 | b16) || brightness == 0) {
+        *out = CRGB(map16_to_8(r16), map16_to_8(g16), map16_to_8(b16));
+        *out_power_5bit = 31;
+        return brightness;
+    }
+
+    // Note: One day someone smarter than me will come along and invent a closed
+    // form solution for this. However, the numerical method works extremely
+    // well and has been optimized to avoid division performance penalties as
+    // much as possible.
+
+    // Step 1: Initialize brightness
+    static const uint8_t kStartBrightness = 0b00010000;
+    uint8_t v5 = kStartBrightness;
+    // Step 2: Boost brightness by swapping power with the driver brightness.
+    brightness_bitshifter8(&v5, &brightness, 4);
+
+    // Step 3: Boost brightness of the color channels by swapping power with the
+    // driver brightness.
+    uint16_t max_component = max3(r16, g16, b16);
+    // five_bit_color_bitshift(&r16, &g16, &b16, &v5);
+    uint8_t shifts = brightness_bitshifter16(&v5, &max_component, 4, 2);
+    if (shifts) {
+        r16 = r16 << shifts;
+        g16 = g16 << shifts;
+        b16 = b16 << shifts;
+    }
+
+    // Step 4: scale by final brightness factor.
+    if (brightness != 0xff) {
+        r16 = scale16by8(r16, brightness);
+        g16 = scale16by8(g16, brightness);
+        b16 = scale16by8(b16, brightness);
+    }
 
 
-void __builtin_five_bit_hd_gamma_bitshift(
-    uint8_t r8, uint8_t g8, uint8_t b8,
-    uint8_t r8_scale, uint8_t g8_scale, uint8_t b8_scale,
-    uint8_t* out_r8,
-    uint8_t* out_g8,
-    uint8_t* out_b8,
-    uint8_t* out_power_5bit) {
+    // brighten hardware brightness by turning on low order bits
+    if (v5 > 1) {
+        // since v5 is a power of two, subtracting one will invert the leading bit
+        // and invert all the bits below it.
+        // Example: 0b00010000 -1 = 0b00001111
+        // So 0b00010000 | 0b00001111 = 0b00011111
+        v5 = v5 | (v5 - 1);
+    }
+    // Step 5: Convert back to 8-bit and output.
+    *out = CRGB(map16_to_8(r16), map16_to_8(g16), map16_to_8(b16));
+    *out_power_5bit = v5;
+    return brightness;
+}
+
+void __builtin_five_bit_hd_gamma_bitshift(CRGB colors, CRGB colors_scale,
+                                          uint8_t global_brightness,
+                                          CRGB *out_colors,
+                                          uint8_t *out_power_5bit) {
+
+    if (global_brightness == 0) {
+        *out_colors = CRGB(0, 0, 0);
+        *out_power_5bit = 0;
+        return;
+    }
 
     // Step 1: Gamma Correction
     uint16_t r16, g16, b16;
-    five_bit_hd_gamma_function(r8, g8, b8, &r16, &g16, &b16);
+    five_bit_hd_gamma_function(colors, &r16, &g16, &b16);
 
-    // Step 2: Post gamma correction scale.
-    if (r8_scale != 0xff || g8_scale != 0xff || b8_scale != 0xff) {
-      r16 = scale16by8(r16, r8_scale);
-      g16 = scale16by8(g16, g8_scale);
-      b16 = scale16by8(b16, b8_scale);
+    // Step 2: Color correction step comes after gamma correction. These values
+    // are assumed to be be relatively close to 255.
+    if (colors_scale.r != 0xff) {
+        r16 = scale16by8(r16, colors_scale.r);
+    }
+    if (colors_scale.g != 0xff) {
+        g16 = scale16by8(g16, colors_scale.g);
+    }
+    if (colors_scale.b != 0xff) {
+        b16 = scale16by8(b16, colors_scale.b);
     }
 
-    // Step 3: Initialize 5-bit brightness.
-    // Note: we only get 5 levels of brightness
-    uint8_t v8 = 31;
-
-    uint16_t numerator = 1;
-    uint16_t denominator = 1;
-    const uint32_t r16_const = r16;
-    const uint32_t g16_const = g16;
-    const uint32_t b16_const = b16;
-
-    // Step 4: Bit Shifting Loop, can probably replaced with a
-    // single pass bit-twiddling hack.
-    do {
-        // Note that to avoid slow divisions, we multiply the max_value
-        // by the denominator.
-        uint32_t max_value = 0xfffful * 15;
-        if (r16_const * 31 > max_value) {
-          break;
-        }
-        if (g16_const * 31 > max_value) {
-          break;
-        }
-        if (b16_const * 31 > max_value) {
-          break;
-        }
-        numerator = 31;
-        denominator = 15;
-        v8 = 15;
-
-        max_value = 0xfffful * 15 * 7;
-        if (r16_const * 31 * 15 > max_value) {
-          break;
-        }
-        if (g16_const * 31 * 15 > max_value) {
-          break;
-        }
-        if (b16_const * 31 * 15 > max_value) {
-          break;
-        }
-        numerator = 31 * 15;
-        denominator = 15 * 7;
-        v8 = 7;
-
-        max_value = 0xfffful * 15 * 7 * 3;
-        if (r16_const * 31 * 15 * 7 > max_value) {
-          break;
-        }
-        if (g16_const * 31 * 15 * 7 > max_value) {
-          break;
-        }
-        if (b16_const * 31 * 15 * 7 > max_value) {
-          break;
-        }
-        numerator = 31 * 15 * 7;
-        denominator = 15 * 7 * 3;
-        v8 = 3;
-
-        max_value = 0xfffful * 15 * 7 * 3;
-        if (r16_const * 31 * 15 * 7 * 3 > max_value) {
-          break;
-        }
-        if (g16_const * 31 * 15 * 7 * 3 > max_value) {
-          break;
-        }
-        if (b16_const * 31 * 15 * 7 * 3 > max_value) {
-          break;
-        }
-        numerator = 31 * 15 * 7 * 3;
-        v8 = 1;
-    } while(false);
-
-    r16 = uint16_t(r16_const * numerator / denominator);
-    g16 = uint16_t(g16_const * numerator / denominator);
-    b16 = uint16_t(b16_const * numerator / denominator);
-
-    // Step 5: Conversion Back to 8-bit.
-    uint8_t r8_final = (r8 == 255 && uint8_t(r16 >> 8) >= 254) ? 255 : uint8_t(r16 >> 8);
-    uint8_t g8_final = (g8 == 255 && uint8_t(g16 >> 8) >= 254) ? 255 : uint8_t(g16 >> 8);
-    uint8_t b8_final = (b8 == 255 && uint8_t(b16 >> 8) >= 254) ? 255 : uint8_t(b16 >> 8);
-
-#if FASTLED_FIVE_BIT_HD_GAMMA_LOW_END_LINEAR_RAMP > 0
-    if (v8 == 1) {
-      // Linear tuning for the lowest possible brightness. x=y until
-      // the intersection point at 9.
-      if (r8 < FASTLED_FIVE_BIT_HD_GAMMA_LOW_END_LINEAR_RAMP && r16 > 0) {
-        r8_final = r8;
-      }
-      if (g8 < FASTLED_FIVE_BIT_HD_GAMMA_LOW_END_LINEAR_RAMP && g16 > 0) {
-        g8_final = g8;
-      }
-      if (b8 < FASTLED_FIVE_BIT_HD_GAMMA_LOW_END_LINEAR_RAMP && b16 > 0) {
-        b8_final = b8;
-      }
-    }
-#endif
-
-    // Step 6: Output
-    *out_r8 = r8_final;
-    *out_g8 = g8_final;
-    *out_b8 = b8_final;
-    *out_power_5bit = v8;
+    five_bit_bitshift(r16, g16, b16, global_brightness, out_colors,
+                      out_power_5bit);
 }
-
 
 FASTLED_NAMESPACE_END

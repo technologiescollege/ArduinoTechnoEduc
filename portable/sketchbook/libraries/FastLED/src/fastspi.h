@@ -11,12 +11,12 @@
 
 #include "fastspi_bitbang.h"
 
-FASTLED_NAMESPACE_BEGIN
+
 
 #if defined(FASTLED_TEENSY3) && (F_CPU > 48000000)
 #define DATA_RATE_MHZ(X) (((48000000L / 1000000L) / X))
 #define DATA_RATE_KHZ(X) (((48000000L / 1000L) / X))
-#elif defined(FASTLED_TEENSY4) || (defined(ESP32) && defined(FASTLED_ALL_PINS_HARDWARE_SPI)) || (defined(ESP8266) && defined(FASTLED_ALL_PINS_HARDWARE_SPI))
+#elif defined(FASTLED_TEENSY4) || (defined(ESP32) && defined(FASTLED_ALL_PINS_HARDWARE_SPI)) || (defined(ESP8266) && defined(FASTLED_ALL_PINS_HARDWARE_SPI) || defined(FASTLED_STUB_IMPL))
 // just use clocks
 #define DATA_RATE_MHZ(X) (1000000 * (X))
 #define DATA_RATE_KHZ(X) (1000 * (X))
@@ -33,6 +33,17 @@ FASTLED_NAMESPACE_BEGIN
 // mappings are known at compile time.
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+FASTLED_NAMESPACE_BEGIN
+
+#if defined(FASTLED_STUB_IMPL)
+
+
+template<uint8_t _DATA_PIN, uint8_t _CLOCK_PIN, uint32_t _SPI_CLOCK_DIVIDER>
+class SPIOutput : public StubSPIOutput {};
+
+
+#else
 
 #if !defined(FASTLED_ALL_PINS_HARDWARE_SPI)
 /// Hardware SPI output
@@ -71,10 +82,7 @@ template<uint8_t _DATA_PIN, uint8_t _CLOCK_PIN, uint32_t _SPI_CLOCK_DIVIDER>
 class SPIOutput : public ESP8266SPIOutput<_DATA_PIN, _CLOCK_PIN, _SPI_CLOCK_DIVIDER> {};
 #endif
 
-#if defined(FASTLED_STUB_IMPL)
-template<uint8_t _DATA_PIN, uint8_t _CLOCK_PIN, uint32_t _SPI_CLOCK_DIVIDER>
-class SPIOutput : public StubSPIOutput {};
-#endif
+
 
 
 #if defined(SPI_DATA) && defined(SPI_CLOCK)
@@ -181,6 +189,8 @@ class SPIOutput<SPI_DATA, SPI_CLOCK, SPI_SPEED> : public ArdunioCoreSPIOutput<SP
 #    endif
 #  endif
 #endif
+
+#endif  // !defined(FASTLED_STUB_IMPL)
 
 FASTLED_NAMESPACE_END
 

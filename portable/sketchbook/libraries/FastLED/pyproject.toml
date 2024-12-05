@@ -5,7 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "platformio==6.1.15",
+    "platformio==6.1.16",
+    "fastled-wasm",
     "python-dateutil",
     "ruff",
     "mypy",
@@ -13,7 +14,14 @@ dependencies = [
     "clang-format",
     "isort",
     "black",
-    "pip"
+    "pip",
+    "pytest",
+    "fpvgcc",
+    "uv",
+    "ziglang",
+    "ninja",
+    "cmake",
+    "download"
 ]
 
 [build-system]

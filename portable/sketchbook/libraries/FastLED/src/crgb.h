@@ -2,13 +2,27 @@
 #pragma once
 
 #include <stdint.h>
+
 #include "chsv.h"
 #include "namespace.h"
 #include "color.h"
 #include "lib8tion/types.h"
 #include "force_inline.h"
+#include "template_magic.h"
+
 
 FASTLED_NAMESPACE_BEGIN
+
+// Whether to allow HD_COLOR_MIXING
+#ifndef FASTLED_HD_COLOR_MIXING
+#ifdef __AVR__
+// Saves some memory on these constrained devices.
+#define FASTLED_HD_COLOR_MIXING 0
+#else
+#define FASTLED_HD_COLOR_MIXING 1
+#endif  // __AVR__
+#endif  // FASTLED_HD_COLOR_MIXING
+
 
 struct CRGB;
 
@@ -46,6 +60,8 @@ struct CRGB {
         uint8_t raw[3];
     };
 
+    static CRGB blend(const CRGB& p1, const CRGB& p2, fract8 amountOfP2);
+
     /// Array access operator to index into the CRGB object
     /// @param x the index to retrieve (0-2)
     /// @returns the CRGB::raw value for the given index
@@ -70,28 +86,35 @@ struct CRGB {
     /// @param ir input red value
     /// @param ig input green value
     /// @param ib input blue value
-    constexpr CRGB(uint8_t ir, uint8_t ig, uint8_t ib)  __attribute__((always_inline))
+    constexpr CRGB(uint8_t ir, uint8_t ig, uint8_t ib) noexcept
         : r(ir), g(ig), b(ib)
     {
     }
 
     /// Allow construction from 32-bit (really 24-bit) bit 0xRRGGBB color code
     /// @param colorcode a packed 24 bit color code
-    constexpr CRGB(uint32_t colorcode)  __attribute__((always_inline))
+    constexpr CRGB(uint32_t colorcode) noexcept
     : r((colorcode >> 16) & 0xFF), g((colorcode >> 8) & 0xFF), b((colorcode >> 0) & 0xFF)
     {
     }
 
+    constexpr uint32_t as_uint32_t() const noexcept {
+        return uint32_t(0xff000000) |
+               (uint32_t{r} << 16) |
+               (uint32_t{g} << 8) |
+               uint32_t{b};
+    }
+
     /// Allow construction from a LEDColorCorrection enum
     /// @param colorcode an LEDColorCorrect enumeration value
-    constexpr CRGB(LEDColorCorrection colorcode) __attribute__((always_inline))
+    constexpr CRGB(LEDColorCorrection colorcode) noexcept
     : r((colorcode >> 16) & 0xFF), g((colorcode >> 8) & 0xFF), b((colorcode >> 0) & 0xFF)
     {
     }
 
     /// Allow construction from a ColorTemperature enum
     /// @param colorcode an ColorTemperature enumeration value
-    constexpr CRGB(ColorTemperature colorcode) __attribute__((always_inline))
+    constexpr CRGB(ColorTemperature colorcode) noexcept
     : r((colorcode >> 16) & 0xFF), g((colorcode >> 8) & 0xFF), b((colorcode >> 0) & 0xFF)
     {
     }
@@ -183,37 +206,19 @@ struct CRGB {
     /// @note This is NOT an operator+= overload because the compiler
     /// can't usefully decide when it's being passed a 32-bit
     /// constant (e.g. CRGB::Red) and an 8-bit one (CRGB::Blue)
-    FASTLED_FORCE_INLINE CRGB& subtractFromRGB(uint8_t d );
+    FASTLED_FORCE_INLINE CRGB& subtractFromRGB(uint8_t d);
 
     /// Subtract a constant of '1' from each channel, saturating at 0x00
-    FASTLED_FORCE_INLINE CRGB& operator-- ()
-    {
-        subtractFromRGB(1);
-        return *this;
-    }
+    FASTLED_FORCE_INLINE CRGB& operator-- ();
 
     /// @copydoc operator--
-    FASTLED_FORCE_INLINE CRGB operator-- (int )
-    {
-        CRGB retval(*this);
-        --(*this);
-        return retval;
-    }
+    FASTLED_FORCE_INLINE CRGB operator-- (int );
 
     /// Add a constant of '1' from each channel, saturating at 0xFF
-    FASTLED_FORCE_INLINE CRGB& operator++ ()
-    {
-        addToRGB(1);
-        return *this;
-    }
+    FASTLED_FORCE_INLINE CRGB& operator++ ();
 
     /// @copydoc operator++
-    FASTLED_FORCE_INLINE CRGB operator++ (int )
-    {
-        CRGB retval(*this);
-        ++(*this);
-        return retval;
-    }
+    FASTLED_FORCE_INLINE CRGB operator++ (int );
 
     /// Divide each of the channels by a constant
     FASTLED_FORCE_INLINE CRGB& operator/= (uint8_t d )
@@ -265,6 +270,9 @@ struct CRGB {
     /// @see ::scale8
     FASTLED_FORCE_INLINE CRGB& nscale8 (const CRGB & scaledown );
 
+    constexpr CRGB nscale8_constexpr (const CRGB scaledown ) const;
+
+
     /// Return a CRGB object that is a scaled down version of this object
     FASTLED_FORCE_INLINE CRGB scale8 (uint8_t scaledown ) const;
 
@@ -312,13 +320,13 @@ struct CRGB {
     }
 
     /// This allows testing a CRGB for zero-ness
-    FASTLED_FORCE_INLINE explicit operator bool() const
+    constexpr explicit operator bool() const
     {
         return r || g || b;
     }
 
     /// Converts a CRGB to a 32-bit color having an alpha of 255.
-    FASTLED_FORCE_INLINE explicit operator uint32_t() const
+    constexpr explicit operator uint32_t() const
     {
         return uint32_t(0xff000000) |
                (uint32_t{r} << 16) |
@@ -327,13 +335,9 @@ struct CRGB {
     }
 
     /// Invert each channel
-    FASTLED_FORCE_INLINE CRGB operator- () const
+    constexpr CRGB operator-() const
     {
-        CRGB retval;
-        retval.r = 255 - r;
-        retval.g = 255 - g;
-        retval.b = 255 - b;
-        return retval;
+        return CRGB(255 - r, 255 - g, 255 - b);
     }
 
 #if (defined SmartMatrix_h || defined SmartMatrix3_h)
@@ -373,6 +377,13 @@ struct CRGB {
             blue =  (blue  * factor) / 256;
         }
     }
+
+    /// Calculates the combined color adjustment to the LEDs at a given scale, color correction, and color temperature
+    /// @param scale the scale value for the RGB data (i.e. brightness)
+    /// @param colorCorrection color correction to apply
+    /// @param colorTemperature color temperature to apply
+    /// @returns a CRGB object representing the adjustment, including color correction and color temperature
+    static CRGB computeAdjustment(uint8_t scale, const CRGB & colorCorrection, const CRGB & colorTemperature);
 
     /// Return a new CRGB object after performing a linear interpolation between this object and the passed in object
     FASTLED_FORCE_INLINE CRGB lerp8( const CRGB& other, fract8 frac) const;
@@ -716,4 +727,20 @@ FASTLED_FORCE_INLINE CRGB operator*( const CRGB& p1, uint8_t d);
 /// Scale using CRGB::nscale8_video()
 FASTLED_FORCE_INLINE CRGB operator%( const CRGB& p1, uint8_t d);
 
+
+
+// Make compatible with std::ostream and other ostream-like objects
+FASTLED_DEFINE_OUTPUT_OPERATOR(CRGB) {
+    os <<("CRGB(");
+    os <<(static_cast<int>(obj.r));
+    os <<(", ");
+    os <<(static_cast<int>(obj.g));
+    os <<(", ");
+    os <<(static_cast<int>(obj.b));
+    os <<(")");
+    return os;
+}
+
 FASTLED_NAMESPACE_END
+
+

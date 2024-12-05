@@ -1,10 +1,16 @@
-#ifndef __INC_FASTSPI_ARDUNIO_CORE_H
-#define __INC_FASTSPI_ARDUNIO_CORE_H
+#pragma once
 
-FASTLED_NAMESPACE_BEGIN
+#include <stdint.h>
+#pragma once
+
+#include "namespace.h"
+#include <stdint.h>
 
 #if defined(ARDUNIO_CORE_SPI)
-#include <SPI.h>
+#endif
+
+#if defined(ARDUNIO_CORE_SPI)
+FASTLED_NAMESPACE_BEGIN
 
 template <uint8_t _DATA_PIN, uint8_t _CLOCK_PIN, uint32_t _SPI_CLOCK_RATE, SPIClass & _SPIObject>
 class ArdunioCoreSPIOutput {
@@ -96,8 +102,9 @@ public:
 
 };
 
-
-#endif
-
 FASTLED_NAMESPACE_END
+
+
 #endif
+
+

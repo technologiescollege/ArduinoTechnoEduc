@@ -2761,6 +2761,61 @@
         {
           "name": "Arduino ESP32 Boards",
           "architecture": "esp32",
+          "version": "2.0.18-arduino.5",
+          "category": "Arduino",
+          "url": "https://downloads.arduino.cc/cores/staging/esp32-v2.0.17-arduino.5.zip",
+          "archiveFileName": "esp32-v2.0.17-arduino.5.zip",
+          "checksum": "SHA-256:03596062ab1745bf7847d09900e2aebfc1f49cf123d47ba8a57d652e110cda5c",
+          "size": "88321110",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano ESP32"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.5.1"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.12.0-esp32-20230921"
+            },
+            {
+              "packager": "esp32",
+              "name": "s3-gcc",
+              "version": "2021r2-p5"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "11.2_20220823"
+            }
+          ]
+        },
+        {
+          "name": "Arduino ESP32 Boards",
+          "architecture": "esp32",
           "version": "2.0.18-20240930.arduino3",
           "category": "Arduino",
           "url": "https://downloads.arduino.cc/cores/staging/esp32-v2.0.17-arduino3.zip",
@@ -3090,6 +3145,51 @@
               "packager": "esp32",
               "name": "xtensa-esp32s3-elf-gcc",
               "version": "esp-2021r2-patch5-8.4.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Edge Boards",
+          "architecture": "mbed_edge",
+          "version": "4.2.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-edge-4.2.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-edge-4.2.1.tar.bz2",
+          "checksum": "SHA-256:307cfce273f3afe6897895fd41fea0b4ae6ca3b4e18e708abe1e1cc88ee43783",
+          "size": "6085958",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Edge Control"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.10.0-arduino1"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "rp2040tools",
+              "version": "1.0.6"
             }
           ]
         },
@@ -4241,6 +4341,46 @@
         {
           "name": "Arduino Mbed OS Giga Boards",
           "architecture": "mbed_giga",
+          "version": "4.2.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-giga-4.2.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-giga-4.2.1.tar.bz2",
+          "checksum": "SHA-256:9d3b2fe45cde25a9dd60ee8c6623506307625d99e0455218ebb9147f3a52a8bf",
+          "size": "16485444",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Giga"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.10.0-arduino1"
+            },
+            {
+              "packager": "arduino",
+              "name": "imgtool",
+              "version": "1.8.0-arduino.2"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Giga Boards",
+          "architecture": "mbed_giga",
           "version": "4.1.5",
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-giga-4.1.5.tar.bz2",
@@ -4555,6 +4695,57 @@
               "packager": "arduino",
               "name": "openocd",
               "version": "0.11.0-arduino2"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nano Boards",
+          "architecture": "mbed_nano",
+          "version": "4.2.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nano-4.2.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nano-4.2.1.tar.bz2",
+          "checksum": "SHA-256:be336f4b30d6f7e0d0acf982f7eff02a7611071419dbfb6cc26a987eded968d2",
+          "size": "7265294",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            },
+            {
+              "name": "Arduino Nano 33 BLE Sense"
+            },
+            {
+              "name": "Arduino Nano RP2040 Connect"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.10.0-arduino1"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "rp2040tools",
+              "version": "1.0.6"
             }
           ]
         },
@@ -5856,6 +6047,57 @@
         {
           "name": "Arduino Mbed OS Nicla Boards",
           "architecture": "mbed_nicla",
+          "version": "4.2.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nicla-4.2.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-nicla-4.2.1.tar.bz2",
+          "checksum": "SHA-256:4c040d91b5054a2c80f7ad3e2b97c57c3caebe5933b58c26aee920ce9d870dfd",
+          "size": "20501586",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Nicla Sense ME"
+            },
+            {
+              "name": "Nicla Voice"
+            },
+            {
+              "name": "Nicla Vision"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.10.0-arduino1"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "rp2040tools",
+              "version": "1.0.6"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Nicla Boards",
+          "architecture": "mbed_nicla",
           "version": "4.1.5",
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-nicla-4.1.5.tar.bz2",
@@ -6953,6 +7195,46 @@
         {
           "name": "Arduino Mbed OS Opta Boards",
           "architecture": "mbed_opta",
+          "version": "4.2.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-opta-4.2.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-opta-4.2.1.tar.bz2",
+          "checksum": "SHA-256:c702836a0e527db12bdb3993552687283f86301a8af090f4d1afd04d271da604",
+          "size": "16348008",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Finder Opta"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.10.0-arduino1"
+            },
+            {
+              "packager": "arduino",
+              "name": "imgtool",
+              "version": "1.8.0-arduino.2"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Opta Boards",
+          "architecture": "mbed_opta",
           "version": "4.1.6",
           "category": "Arduino",
           "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-opta-4.1.6.tar.bz2",
@@ -7368,6 +7650,54 @@
             }
           ],
           "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.10.0-arduino1"
+            },
+            {
+              "packager": "arduino",
+              "name": "imgtool",
+              "version": "1.8.0-arduino.2"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS Portenta Boards",
+          "architecture": "mbed_portenta",
+          "version": "4.2.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-portenta-4.2.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-portenta-4.2.1.tar.bz2",
+          "checksum": "SHA-256:b390c8dafc90c1f5541b1010971b5a704a29d62f92651e6ff1f695c29900cd1b",
+          "size": "21679959",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Portenta H7"
+            },
+            {
+              "name": "Arduino Portenta X8"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "adb",
+              "version": "32.0.0"
+            },
             {
               "packager": "arduino",
               "name": "arm-none-eabi-gcc",
@@ -8454,6 +8784,51 @@
               "packager": "arduino",
               "name": "openocd",
               "version": "0.11.0-arduino1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino Mbed OS RP2040 Boards",
+          "architecture": "mbed_rp2040",
+          "version": "4.2.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/staging/ArduinoCore-mbed-RP2040-4.2.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-mbed-RP2040-4.2.1.tar.bz2",
+          "checksum": "SHA-256:365dcc2d1ea9eca957b5de25de16353479f4e61b6f819eb84c6bb94ffda8b4cc",
+          "size": "4771020",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-mbed/issues"
+          },
+          "boards": [
+            {
+              "name": "Raspberry Pi Pico"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.10.0-arduino1"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.11.0-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "rp2040tools",
+              "version": "1.0.6"
             }
           ]
         },
@@ -20602,6 +20977,190 @@
         {
           "name": "esp32",
           "architecture": "esp32",
+          "version": "3.0.7",
+          "category": "ESP32",
+          "url": "https://github.com/espressif/arduino-esp32/releases/download/3.0.7/esp32-3.0.7.zip",
+          "archiveFileName": "esp32-3.0.7.zip",
+          "checksum": "SHA-256:6b48f5bd889e55d7b93b95849dff77c6a5e4b9ee58c7298d7872d558a4d04931",
+          "size": "24546342",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "ESP32 Dev Board"
+            },
+            {
+              "name": "ESP32-S2 Dev Board"
+            },
+            {
+              "name": "ESP32-S3 Dev Board"
+            },
+            {
+              "name": "ESP32-C3 Dev Board"
+            },
+            {
+              "name": "Arduino Nano ESP32"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp-rv32",
+              "version": "2302"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp-x32",
+              "version": "2302"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp-xs2",
+              "version": "2302"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp-xs3",
+              "version": "2302"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp32-arduino-libs",
+              "version": "idf-release_v5.1-632e0c2a"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.6"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.12.0-esp32-20240821"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gdb",
+              "version": "12.1_20231023"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "12.1_20231023"
+            }
+          ]
+        },
+        {
+          "name": "esp32",
+          "architecture": "esp32",
+          "version": "3.0.6",
+          "category": "ESP32",
+          "url": "https://github.com/espressif/arduino-esp32/releases/download/3.0.6/esp32-3.0.6.zip",
+          "archiveFileName": "esp32-3.0.6.zip",
+          "checksum": "SHA-256:7b4d87d0a18e69cba81e7aa7e69f088dc7c4f6cc89a20adc256bf77c86992dc5",
+          "size": "24546256",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "ESP32 Dev Board"
+            },
+            {
+              "name": "ESP32-S2 Dev Board"
+            },
+            {
+              "name": "ESP32-S3 Dev Board"
+            },
+            {
+              "name": "ESP32-C3 Dev Board"
+            },
+            {
+              "name": "Arduino Nano ESP32"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "dfu-util",
+              "version": "0.11.0-arduino5"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp-rv32",
+              "version": "2302"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp-x32",
+              "version": "2302"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp-xs2",
+              "version": "2302"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp-xs3",
+              "version": "2302"
+            },
+            {
+              "packager": "esp32",
+              "name": "esp32-arduino-libs",
+              "version": "idf-release_v5.1-632e0c2a"
+            },
+            {
+              "packager": "esp32",
+              "name": "esptool_py",
+              "version": "4.6"
+            },
+            {
+              "packager": "esp32",
+              "name": "mklittlefs",
+              "version": "3.0.0-gnu12-dc7f933"
+            },
+            {
+              "packager": "esp32",
+              "name": "mkspiffs",
+              "version": "0.2.3"
+            },
+            {
+              "packager": "esp32",
+              "name": "openocd-esp32",
+              "version": "v0.12.0-esp32-20240821"
+            },
+            {
+              "packager": "esp32",
+              "name": "riscv32-esp-elf-gdb",
+              "version": "12.1_20231023"
+            },
+            {
+              "packager": "esp32",
+              "name": "xtensa-esp-elf-gdb",
+              "version": "12.1_20231023"
+            }
+          ]
+        },
+        {
+          "name": "esp32",
+          "architecture": "esp32",
           "version": "3.0.5",
           "category": "ESP32",
           "url": "https://github.com/espressif/arduino-esp32/releases/download/3.0.5/esp32-3.0.5.zip",
@@ -23033,6 +23592,68 @@
         },
         {
           "name": "esp32-arduino-libs",
+          "version": "idf-release_v5.1-632e0c2a",
+          "systems": [
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/esp32-arduino-lib-builder/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "archiveFileName": "esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "checksum": "SHA-256:41f67e1c11f68b57d651955c93b63d6a8d35808ce6aff6ba3d1e1476178758f2",
+              "size": "309895581"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/esp32-arduino-lib-builder/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "archiveFileName": "esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "checksum": "SHA-256:41f67e1c11f68b57d651955c93b63d6a8d35808ce6aff6ba3d1e1476178758f2",
+              "size": "309895581"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/esp32-arduino-lib-builder/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "archiveFileName": "esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "checksum": "SHA-256:41f67e1c11f68b57d651955c93b63d6a8d35808ce6aff6ba3d1e1476178758f2",
+              "size": "309895581"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/esp32-arduino-lib-builder/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "archiveFileName": "esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "checksum": "SHA-256:41f67e1c11f68b57d651955c93b63d6a8d35808ce6aff6ba3d1e1476178758f2",
+              "size": "309895581"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/esp32-arduino-lib-builder/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "archiveFileName": "esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "checksum": "SHA-256:41f67e1c11f68b57d651955c93b63d6a8d35808ce6aff6ba3d1e1476178758f2",
+              "size": "309895581"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/esp32-arduino-lib-builder/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "archiveFileName": "esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "checksum": "SHA-256:41f67e1c11f68b57d651955c93b63d6a8d35808ce6aff6ba3d1e1476178758f2",
+              "size": "309895581"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/esp32-arduino-lib-builder/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "archiveFileName": "esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "checksum": "SHA-256:41f67e1c11f68b57d651955c93b63d6a8d35808ce6aff6ba3d1e1476178758f2",
+              "size": "309895581"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/esp32-arduino-lib-builder/releases/download/idf-release_v5.1/esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "archiveFileName": "esp32-arduino-libs-idf-release_v5.1-632e0c2a.zip",
+              "checksum": "SHA-256:41f67e1c11f68b57d651955c93b63d6a8d35808ce6aff6ba3d1e1476178758f2",
+              "size": "309895581"
+            }
+          ]
+        },
+        {
+          "name": "esp32-arduino-libs",
           "version": "idf-release_v5.1-442a798083",
           "systems": [
             {
@@ -24657,6 +25278,68 @@
               "archiveFileName": "riscv32-esp-elf-gdb-11.2_20220823-x86_64-linux-gnu.tar.gz",
               "checksum": "SHA-256:6bf5b5d2d407e074af2a74fc826764934ac1625a1751c52fbc0d4d7772061f8f",
               "size": 26799809
+            }
+          ]
+        },
+        {
+          "name": "s3-gcc",
+          "version": "2021r2-p5",
+          "systems": [
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-arm64.tar.gz",
+              "checksum": "SHA-256:b218c11122e5565b6442376ebd21a652abdfcbf90981afa3e177ce978710225d",
+              "size": "64233211"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-armel.tar.gz",
+              "checksum": "SHA-256:967477434ad5483718915936a77ce915a10c5972a6b3fd02688a5c4e14182bfb",
+              "size": "63530586"
+            },
+            {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-macos-arm64.tar.gz",
+              "checksum": "SHA-256:c64b05be25d26916c65dcfe11de9e60b96d58980b2df706d3074cb70b1ef6cb9",
+              "size": "66791095"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-win32.zip",
+              "checksum": "SHA-256:658d3036ffdf11ddad6f0a784c8829f6ffd4dbd7c252d7f61722256d0ad43975",
+              "size": "82665716"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-i686.tar.gz",
+              "checksum": "SHA-256:07671d01a63ebd389912787efb2b263677c7b351c07fe430ded733cdae95e81d",
+              "size": "70025439"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-macos.tar.gz",
+              "checksum": "SHA-256:99b6d44cea5aebbedc8b6965e7bf551aa4a40ed83ddbe1c0e9b7cb255564ded5",
+              "size": "75719772"
+            },
+            {
+              "host": "x86_64-mingw32",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-win64.zip",
+              "checksum": "SHA-256:9000be38d44bf79c39b93a2aeb99b42e956c593ccbc02fe31cb9c71ae1bbcb22",
+              "size": "86022563"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-2021r2-patch5/xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "archiveFileName": "xtensa-esp32s3-elf-gcc8_4_0-esp-2021r2-patch5-linux-amd64.tar.gz",
+              "checksum": "SHA-256:8aa17a6adf01efa5b1628c8ac578063a44d26ae9581d39486b92223a41ef262f",
+              "size": "68099473"
             }
           ]
         },
@@ -27123,12 +27806,12 @@
         {
           "name": "RL78/G22 Fast Prototyping Board",
           "architecture": "rl78g22_fpb",
-          "version": "2.3.0",
+          "version": "2.4.0",
           "category": "Contributed",
-          "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.3.0/core-ArduinoCore-rl78g22-fpb-2.3.0.zip",
-          "archiveFileName": "core-ArduinoCore-rl78g22-fpb-2.3.0.zip",
-          "checksum": "SHA-256:09d512ece8c995843db156e30285dafa18c77fe1e911d51996e6ac60b8f347cc",
-          "size": "4529579",
+          "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.4.0/core-ArduinoCore-rl78g22-fpb-2.4.0.zip",
+          "archiveFileName": "core-ArduinoCore-rl78g22-fpb-2.4.0.zip",
+          "checksum": "SHA-256:e580e9660c471c63c1a300cfd41c693c84cbc799d3c06214a6a9792c866b561b",
+          "size": "4514431",
           "help": {
             "online": "https://github.com/renesas/Arduino/wiki"
           },
@@ -27141,7 +27824,7 @@
             {
               "packager": "renesas",
               "name": "llvm-rl78",
-              "version": "10.0.0.202312"
+              "version": "17.0.1.202406"
             },
             {
               "packager": "renesas",
@@ -27183,12 +27866,12 @@
         {
           "name": "RL78/G23-64p Fast Prototyping Board",
           "architecture": "rl78g23_fpb_p64",
-          "version": "2.3.2",
+          "version": "2.4.0",
           "category": "Contributed",
-          "url": "https://github.com/renesas/ArduinoCore-rl78g23_fpb_64p/releases/download/rl78-2.3.2/core-ArduinoCore-rl78g23-fpb-p64-2.3.2.zip",
-          "archiveFileName": "core-ArduinoCore-rl78g23-fpb-p64-2.3.2.zip",
-          "checksum": "SHA-256:43e92673d6235091cd07587baf091f91e8540c9a56ffa86c61339e8ce05a0d55",
-          "size": "4651755",
+          "url": "https://github.com/renesas/ArduinoCore-rl78g23_fpb_64p/releases/download/rl78-2.4.0/core-ArduinoCore-rl78g23-fpb-p64-2.4.0.zip",
+          "archiveFileName": "core-ArduinoCore-rl78g23-fpb-p64-2.4.0.zip",
+          "checksum": "SHA-256:ceae32a4ea4fd851ea76d459580435b1d3a479393f2ca925821e7a0f07abf980",
+          "size": "4636564",
           "help": {
             "online": "https://github.com/renesas/Arduino/wiki"
           },
@@ -27201,7 +27884,7 @@
             {
               "packager": "renesas",
               "name": "llvm-rl78",
-              "version": "10.0.0.202312"
+              "version": "17.0.1.202406"
             },
             {
               "packager": "renesas",
@@ -27244,21 +27927,28 @@
       "tools": [
         {
           "name": "llvm-rl78",
-          "version": "10.0.0.202312",
+          "version": "17.0.1.202406",
           "systems": [
             {
+              "host": "arm64-apple-darwin",
+              "url": "https://llvm-gcc-renesas.com/downloads/download.php?s=cdn&f=rl78/17.0.1.202406/llvm-17.0.1.202406-rl78-elf_macOS.tar.gz",
+              "archiveFileName": "llvm-17.0.1.202406-rl78-elf_macOS.tar.gz",
+              "checksum": "SHA-256:920e4456e690eb7c129a11676b41aadb4f70c5fd1d3617f10cf48258d1072ee8",
+              "size": "387033321"
+            },
+            {
               "host": "i686-mingw32",
-              "url": "https://llvm-gcc-renesas.com/downloads/download.php?s=cdn&f=rl78/10.0.0.202312/llvm-10.0.0.202312-rl78-elf.zip",
-              "archiveFileName": "llvm-10.0.0.202312-rl78-elf.zip",
-              "checksum": "SHA-256:7c2bb5d9fdf76971bd856f8314a7cbe471a7dab46324085ed2142240b198604f",
-              "size": "150890078"
+              "url": "https://llvm-gcc-renesas.com/downloads/download.php?s=cdn&f=rl78/17.0.1.202406/llvm-17.0.1.202406-rl78-elf.zip",
+              "archiveFileName": "llvm-17.0.1.202406-rl78-elf.zip",
+              "checksum": "SHA-256:e290eeb95974f61c20677c125790d3c9e297449ddbb6bddff6c9b64de45fb41b",
+              "size": "377831692"
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "url": "https://llvm-gcc-renesas.com/downloads/download.php?s=cdn&f=rl78/10.0.0.202312/llvm-10.0.0.202312-rl78-elf.tar.gz",
-              "archiveFileName": "llvm-10.0.0.202312-rl78-elf.tar.gz",
-              "checksum": "SHA-256:c2ea2e02333bf1376b5470c3609bbaaf954c45f84e3499c52de929499f810fb0",
-              "size": "224225570"
+              "url": "https://llvm-gcc-renesas.com/downloads/download.php?s=cdn&f=rl78/17.0.1.202406/llvm-17.0.1.202406-rl78-elf.tar.gz",
+              "archiveFileName": "llvm-17.0.1.202406-rl78-elf.tar.gz",
+              "checksum": "SHA-256:7244e9ae687b3e36522aa3bfc5a016a54d69ebcedd6d85198bff9a07d3da6bfe",
+              "size": "382683659"
             }
           ]
         },
@@ -27293,15 +27983,22 @@
           "version": "1.2.1-g2x",
           "systems": [
             {
+              "host": "arm64-apple-darwin",
+              "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.4.0/arm64-apple-darwin-tool-rl78g2x-1.1.0.zip",
+              "archiveFileName": "arm64-apple-darwin-tool-rl78g2x-1.1.0.zip",
+              "checksum": "SHA-256:3faea9032746ab861df8d43ddb0a3e36d357984984dbf8e15919e1bc4d631b5a",
+              "size": "47799"
+            },
+            {
               "host": "i686-mingw32",
-              "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.3.0/win32-tool-rl78g2x-1.2.1.zip",
+              "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.4.0/win32-tool-rl78g2x-1.2.1.zip",
               "archiveFileName": "win32-tool-rl78g2x-1.2.1.zip",
               "checksum": "SHA-256:832042bf716d8a8cea3ce10eca2c0faa2dae20518ea0e14f57ce8c2cda06ae3d",
               "size": "186894"
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.3.0/x86_64-linux-gnu-tool-rl78g2x-1.0.1.tar.gz",
+              "url": "https://github.com/renesas/ArduinoCore-rl78g22_fpb/releases/download/rl78-2.4.0/x86_64-linux-gnu-tool-rl78g2x-1.0.1.tar.gz",
               "archiveFileName": "x86_64-linux-gnu-tool-rl78g2x-1.0.1.tar.gz",
               "checksum": "SHA-256:aee9025e3149340a545c5e1815b4df2c8a022ab5e389f3421bde6e6886f122ef",
               "size": "138937"
@@ -27319,6 +28016,62 @@
         "online": "https://github.com/SiliconLabs/arduino"
       },
       "platforms": [
+        {
+          "name": "Silicon Labs",
+          "architecture": "silabs",
+          "version": "2.2.0",
+          "category": "Silicon Labs",
+          "url": "https://github.com/SiliconLabs/arduino/releases/download/2.2.0/silabs_arduino_core-2.2.0.zst",
+          "archiveFileName": "silabs_arduino_core-2.2.0.zst",
+          "checksum": "SHA-256:6ddf48877a3cdbbe6b5ad422ad0e1a15e50c3fe4e59f0bae33ad613b5e7520bc",
+          "size": 448097201,
+          "help": {
+            "online": "https://github.com/SiliconLabs/arduino"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano Matter"
+            },
+            {
+              "name": "SparkFun Thing Plus Matter"
+            },
+            {
+              "name": "xG24 Explorer Kit"
+            },
+            {
+              "name": "xG24 Dev Kit"
+            },
+            {
+              "name": "xG27 Dev Kit"
+            },
+            {
+              "name": "BGM220 Explorer Kit"
+            },
+            {
+              "name": "Ezurio Lyra 24P 20dBm Dev Kit"
+            },
+            {
+              "name": "Seeed Studio XIAO MG24 (Sense)"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "SiliconLabs",
+              "name": "gcc-arm-none-eabi",
+              "version": "12.2.rel1"
+            },
+            {
+              "packager": "SiliconLabs",
+              "name": "openocd",
+              "version": "0.12.0-arduino1-static"
+            },
+            {
+              "packager": "SiliconLabs",
+              "name": "simplicitycommander",
+              "version": "1.16.4"
+            }
+          ]
+        },
         {
           "name": "Silicon Labs",
           "architecture": "silabs",

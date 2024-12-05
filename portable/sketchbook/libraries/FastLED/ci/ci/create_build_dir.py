@@ -1,7 +1,9 @@
 import json
+import os
 import shutil
 import subprocess
 import warnings
+from os import stat
 from pathlib import Path
 
 from ci.boards import Board
@@ -70,6 +72,15 @@ def insert_tool_aliases(meta_json: dict[str, dict]) -> None:
         meta_json[board]["aliases"] = aliases
 
 
+def remove_readonly(func, path, _):
+    "Clear the readonly bit and reattempt the removal"
+    if os.name == "nt":
+        os.system(f"attrib -r {path}")
+    else:
+        os.chmod(path, stat.S_IWRITE)
+    func(path)
+
+
 def create_build_dir(
     board: Board,
     defines: list[str],
@@ -77,6 +88,7 @@ def create_build_dir(
     extra_packages: list[str],
     build_dir: str | None,
     board_dir: str | None,
+    build_flags: list[str] | None,
     extra_scripts: str | None,
 ) -> tuple[bool, str]:
     """Create the build directory for the given board."""
@@ -95,7 +107,7 @@ def create_build_dir(
     # recycled build directories for fastled to update. This is a fast operation.
     srcdir = builddir / "lib"
     if srcdir.exists():
-        shutil.rmtree(srcdir)
+        shutil.rmtree(srcdir, onerror=remove_readonly)
     platformio_ini = builddir / "platformio.ini"
     if platformio_ini.exists():
         try:
@@ -138,9 +150,12 @@ def create_build_dir(
         cmd_list.append(
             f"--project-option=board_build.filesystem_size={board.board_build_filesystem_size}"
         )
+    if build_flags is not None:
+        for build_flag in build_flags:
+            cmd_list.append(f"--project-option=build_flags={build_flag}")
     if defines:
-        build_flags = " ".join(f"-D{define}" for define in defines)
-        cmd_list.append(f"--project-option=build_flags={build_flags}")
+        build_flags_str = " ".join(f"-D{define}" for define in defines)
+        cmd_list.append(f"--project-option=build_flags={build_flags_str}")
     if extra_packages:
         cmd_list.append(f'--project-option=lib_deps={",".join(extra_packages)}')
     if no_install_deps:

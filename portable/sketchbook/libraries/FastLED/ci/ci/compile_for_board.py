@@ -45,6 +45,12 @@ def compile_for_board_and_example(
     locked_print(f"*** Building example {example} for board {board_name} ***")
     cwd: str | None = None
     shell: bool = False
+    # Copy all files from the example directory to the "src" directory
+    for src_file in example.rglob("*"):
+        if src_file.is_file():
+            locked_print(f"Copying {src_file} to {srcdir / src_file.name}")
+            os.makedirs(srcdir, exist_ok=True)
+            shutil.copy(src_file, srcdir / src_file.name)
     # libs = ["src", "ci"]
     if use_pio_run:
         # we have to copy a few folders of pio ci in order to get this to work.
@@ -54,11 +60,7 @@ def compile_for_board_and_example(
             build_lib = builddir / "lib" / lib
             shutil.rmtree(build_lib, ignore_errors=True)
             shutil.copytree(project_libdir, build_lib)
-        # now copy the example into the "src" directory
-        ino_file = example / f"{example.name}.ino"
-        locked_print(f"Copying {ino_file} to {srcdir / f'{example.name}.ino'}")
-        srcdir.mkdir(parents=True, exist_ok=True)
-        shutil.copy(ino_file, srcdir / f"{example.name}.ino")
+
         cwd = str(builddir)
         cmd_list = [
             "pio",
@@ -66,7 +68,7 @@ def compile_for_board_and_example(
         ]
         # in this case we need to manually copy the example to the src directory
         # because platformio doesn't support building a single file.
-        ino_file = example / f"{example.name}.ino"
+        # ino_file = example / f"{example.name}.ino"
     else:
         cmd_list = [
             "pio",

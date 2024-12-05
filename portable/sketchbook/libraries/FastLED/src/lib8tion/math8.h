@@ -1,7 +1,11 @@
-#ifndef __INC_LIB8TION_MATH_H
-#define __INC_LIB8TION_MATH_H
+#pragma once
 
 #include "scale8.h"
+#include "lib8tion/lib8static.h"
+#include "intmap.h"
+#include "namespace.h"
+
+FASTLED_NAMESPACE_BEGIN
 
 /// @file math8.h
 /// Fast, efficient 8-bit math functions specifically
@@ -546,6 +550,10 @@ LIB8STATIC uint8_t sqrt16(uint16_t x) {
     return low - 1;
 }
 
+LIB8STATIC_ALWAYS_INLINE uint8_t sqrt8(uint8_t x) {
+    return sqrt16(map8_to_16(x));
+}
+
 /// Blend a variable proportion (0-255) of one byte to another.
 /// @param a the starting byte value
 /// @param b the byte value to blend toward
@@ -672,4 +680,4 @@ LIB8STATIC uint8_t blend8(uint8_t a, uint8_t b, uint8_t amountOfB) {
 /// @} Math
 /// @} lib8tion
 
-#endif
+FASTLED_NAMESPACE_END

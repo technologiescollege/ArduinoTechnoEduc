@@ -1,11 +1,14 @@
 
 #pragma once
 
-#include "namespace.h"
-#include "rgbw.h"
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+
+#include "namespace.h"
+#include "rgbw.h"
+
+#include "crgb.h"
 
 FASTLED_NAMESPACE_BEGIN
 
@@ -44,6 +47,14 @@ struct PixelControllerVtable {
     PixelControllerT* pc = static_cast<PixelControllerT*>(pixel_controller);
     return pc->has(n);
   }
+
+  // function for getHdScale
+  #if FASTLED_HD_COLOR_MIXING
+  static void getHdScale(void* pixel_controller, uint8_t* c0, uint8_t* c1, uint8_t* c2, uint8_t* brightness) {
+    PixelControllerT* pc = static_cast<PixelControllerT*>(pixel_controller);
+    pc->getHdScale(c0, c1, c2, brightness);
+  }
+  #endif
 };
 
 typedef void (*loadAndScaleRGBWFunction)(void* pixel_controller, Rgbw rgbw, uint8_t* b0_out, uint8_t* b1_out, uint8_t* b2_out, uint8_t* b3_out);
@@ -53,6 +64,8 @@ typedef void (*stepDitheringFunction)(void* pixel_controller);
 typedef void (*advanceDataFunction)(void* pixel_controller);
 typedef int (*sizeFunction)(void* pixel_controller);
 typedef bool (*hasFunction)(void* pixel_controller, int n);
+typedef uint8_t (*globalBrightness)(void* pixel_controller);
+typedef void (*getHdScaleFunction)(void* pixel_controller, uint8_t* c0, uint8_t* c1, uint8_t* c2, uint8_t* brightness);
 
 
 // PixelIterator is turns a PixelController<> into a concrete object that can be used to iterate
@@ -95,6 +108,9 @@ class PixelIterator {
       mAdvanceData = &Vtable::advanceData;
       mSize = &Vtable::size;
       mHas = &Vtable::has;
+      #if FASTLED_HD_COLOR_MIXING
+      mGetHdScale = &Vtable::getHdScale;
+      #endif
     }
 
     bool has(int n) { return mHas(mPixelController, n); }
@@ -114,6 +130,12 @@ class PixelIterator {
     void set_rgbw(Rgbw rgbw) { mRgbw = rgbw; }
     Rgbw get_rgbw() const { return mRgbw; }
 
+    #if FASTLED_HD_COLOR_MIXING
+    void getHdScale(uint8_t* c0, uint8_t* c1, uint8_t* c2, uint8_t* brightness) {
+      mGetHdScale(mPixelController, c0, c1, c2, brightness);
+    }
+    #endif
+
   private:
     // vtable emulation
     void* mPixelController = nullptr;
@@ -125,6 +147,9 @@ class PixelIterator {
     advanceDataFunction mAdvanceData = nullptr;
     sizeFunction mSize = nullptr;
     hasFunction mHas = nullptr;
+    #if FASTLED_HD_COLOR_MIXING
+    getHdScaleFunction mGetHdScale = nullptr;
+    #endif
 };
 
 

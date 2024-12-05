@@ -10,7 +10,7 @@
 
 #if defined(NRF51) || defined(__RFduino__) || defined (__Simblee__)
 #include "platforms/arm/nrf51/led_sysdefs_arm_nrf51.h"
-#elif defined(NRF52_SERIES)
+#elif defined(NRF52_SERIES) || defined(NRF52840_XXAA)
 #include "platforms/arm/nrf52/led_sysdefs_arm_nrf52.h"
 #elif defined(__MK20DX128__) || defined(__MK20DX256__)
 // Include k20/T3 headers
@@ -48,7 +48,7 @@
 #include "platforms/apollo3/led_sysdefs_apollo3.h"
 #elif defined(ARDUINO_ARCH_RENESAS) || defined(ARDUINO_ARCH_RENESAS_UNO) || defined(ARDUINO_ARCH_RENESAS_PORTENTA)
 #include "platforms/arm/renesas/led_sysdef_arm_renesas.h"
-#elif defined(__x86_64__) || defined(FASTLED_STUB_IMPL)
+#elif defined(__x86_64__) || defined(FASTLED_STUB_IMPL) || defined(__APPLE__) || defined(__linux__) || defined(__unix__) || defined(__EMSCRIPTEN__)
 // Not on a microcontroller
 //#    ifdef FASTLED_HAS_PRAGMA_MESSAGE
 //#      pragma message "Using stub, no data will be written to pins"
@@ -74,8 +74,8 @@
 #include "namespace.h"
 
 // Arduino.h needed for convenience functions digitalPinToPort/BitMask/portOutputRegister and the pinMode methods.
-#ifdef ARDUINO
-#include <Arduino.h>
+#if defined(ARDUINO)
+#include <Arduino.h>  // ok include
 #endif
 
 /// Clock cycles per microsecond. 

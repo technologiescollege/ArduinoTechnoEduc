@@ -9,8 +9,9 @@
 // infact everything it touches. PixelIterator is concrete and doesn't have these
 // problems. See PixelController::as_iterator() for how to create a PixelIterator.
 
-#include "FastLED.h"
 #include <stddef.h>
+
+#include "FastLED.h"
 #include "rgbw.h"
 #include "five_bit_hd_gamma.h"
 #include "force_inline.h"
@@ -18,7 +19,7 @@
 #include "eorder.h"
 #include "dither_mode.h"
 #include "pixel_iterator.h"
-
+#include "crgb.h"
 
 FASTLED_NAMESPACE_BEGIN
 
@@ -51,6 +52,14 @@ FASTLED_NAMESPACE_BEGIN
 
 // operator byte *(struct CRGB[] arr) { return (byte*)arr; }
 
+struct ColorAdjustment {
+    CRGB premixed;       /// the per-channel scale values premixed with brightness.
+    #if FASTLED_HD_COLOR_MIXING
+    CRGB color;          /// the per-channel scale values assuming full brightness.
+    uint8_t brightness;  /// the global brightness value
+    #endif
+};
+
 
 /// Pixel controller class.  This is the class that we use to centralize pixel access in a block of data, including
 /// support for things like RGB reordering, scaling, dithering, skipping (for ARGB data), and eventually, we will
@@ -65,12 +74,24 @@ struct PixelController {
     int mLenRemaining;       ///< counter for the number of LEDs left to process
     uint8_t d[3];            ///< values for the scaled dither signal @see init_binary_dithering()
     uint8_t e[3];            ///< values for the scaled dither signal @see init_binary_dithering()
-    CRGB mScale;             ///< the per-channel scale values, provided by a color correction function such as CLEDController::computeAdjustment()
     int8_t mAdvance;         ///< how many bytes to advance the pointer by each time. For CRGB this is 3.
     int mOffsets[LANES];     ///< the number of bytes to offset each lane from the starting pointer @see initOffsets()
+    ColorAdjustment mColorAdjustment;
+
+    enum {
+        kLanes = LANES,
+        kMask = MASK
+    };
 
     PixelIterator as_iterator(const Rgbw& rgbw) {
         return PixelIterator(this, rgbw);
+    }
+
+    void disableColorAdjustment() {
+        #if FASTLED_HD_COLOR_MIXING
+        mColorAdjustment.premixed = CRGB(mColorAdjustment.brightness, mColorAdjustment.brightness, mColorAdjustment.brightness);
+        mColorAdjustment.color = CRGB(0xff, 0xff, 0xff);
+        #endif
     }
 
     /// Copy constructor
@@ -86,6 +107,8 @@ struct PixelController {
 
     template<typename PixelControllerT>
     void copy(const PixelControllerT& other) {
+        static_assert(int(kLanes) == int(PixelControllerT::kLanes), "PixelController lanes must match or mOffsets will be wrong");
+        static_assert(int(kMask) == int(PixelControllerT::kMask), "PixelController mask must match or else one or the other controls different lanes");
         d[0] = other.d[0];
         d[1] = other.d[1];
         d[2] = other.d[2];
@@ -93,7 +116,7 @@ struct PixelController {
         e[1] = other.e[1];
         e[2] = other.e[2];
         mData = other.mData;
-        mScale = other.mScale;
+        mColorAdjustment = other.mColorAdjustment;
         mAdvance = other.mAdvance;
         mLenRemaining = mLen = other.mLen;
         for(int i = 0; i < LANES; ++i) { mOffsets[i] = other.mOffsets[i]; }
@@ -112,14 +135,14 @@ struct PixelController {
     /// Constructor
     /// @param d pointer to LED data
     /// @param len length of the LED data
-    /// @param pre_mixed LED scale values premixed with global brightness, as CRGB struct
+    /// @param color_adjustment LED scale values
     /// @param dither dither setting for the LEDs
     /// @param advance whether the pointer (d) should advance per LED
     /// @param skip if the pointer is advancing, how many bytes to skip in addition to 3
     PixelController(
-            const uint8_t *d, int len, CRGB & pre_mixed,
+            const uint8_t *d, int len, ColorAdjustment color_adjustment,
             EDitherMode dither, bool advance, uint8_t skip)
-                : mData(d), mLen(len), mLenRemaining(len), mScale(pre_mixed) {
+                : mData(d), mLen(len), mLenRemaining(len), mColorAdjustment(color_adjustment) {
         enable_dithering(dither);
         mData += skip;
         mAdvance = (advance) ? 3+skip : 0;
@@ -129,12 +152,12 @@ struct PixelController {
     /// Constructor
     /// @param d pointer to LED data
     /// @param len length of the LED data
-    /// @param pre_mixed LED scale values premixed with global brightness, as CRGB struct
+    /// @param color_adjustment LED scale values
     /// @param dither dither setting for the LEDs
     PixelController(
-            const CRGB *d, int len, CRGB & pre_mixed,
+            const CRGB *d, int len, ColorAdjustment color_adjustment,
             EDitherMode dither)
-                : mData((const uint8_t*)d), mLen(len), mLenRemaining(len), mScale(pre_mixed) {
+                : mData((const uint8_t*)d), mLen(len), mLenRemaining(len), mColorAdjustment(color_adjustment) {
         enable_dithering(dither);
         mAdvance = 3;
         initOffsets(len);
@@ -143,15 +166,21 @@ struct PixelController {
     /// Constructor
     /// @param d pointer to LED data
     /// @param len length of the LED data
-    /// @param pre_mixed LED scale values premixed with global brightness, as CRGB struct
+    /// @param color_adjustment LED scale values
     /// @param dither dither setting for the LEDs
     PixelController(
-            const CRGB &d, int len, CRGB & pre_mixed, EDitherMode dither)
-                : mData((const uint8_t*)&d), mLen(len), mLenRemaining(len), mScale(pre_mixed) {
+            const CRGB &d, int len, ColorAdjustment color_adjustment, EDitherMode dither)
+                : mData((const uint8_t*)&d), mLen(len), mLenRemaining(len), mColorAdjustment(color_adjustment) {
         enable_dithering(dither);
         mAdvance = 0;
         initOffsets(len);
     }
+
+    #if FASTLED_HD_COLOR_MIXING
+    uint8_t global_brightness() const {
+        return mColorAdjustment.brightness;
+    }
+    #endif
 
 
 #if !defined(NO_DITHERING) || (NO_DITHERING != 1)
@@ -236,7 +265,7 @@ struct PixelController {
 
         // Setup the initial D and E values
         for(int i = 0; i < 3; ++i) {
-                uint8_t s = mScale.raw[i];
+                uint8_t s = mColorAdjustment.premixed.raw[i];
                 e[i] = s ? (256/s) + 1 : 0;
                 d[i] = scale8(Q, e[i]);
 #if (FASTLED_SCALE8_FIXED == 1)
@@ -329,7 +358,7 @@ struct PixelController {
     /// @param pc reference to the pixel controller
     /// @param b the color byte to scale
     /// @see PixelController::mScale
-    template<int SLOT>  FASTLED_FORCE_INLINE static uint8_t scale(PixelController & pc, uint8_t b) { return scale8(b, pc.mScale.raw[RO(SLOT)]); }
+    template<int SLOT>  FASTLED_FORCE_INLINE static uint8_t scale(PixelController & pc, uint8_t b) { return scale8(b, pc.mColorAdjustment.premixed.raw[RO(SLOT)]); }
     
     /// Scale a value
     /// @tparam SLOT The data slot in the output stream. This is used to select which byte of the output stream is being processed.
@@ -406,7 +435,7 @@ struct PixelController {
     /// @param pc reference to the pixel controller
     /// @returns scale data for the given channel
     /// @see PixelController::mScale
-    template<int SLOT>  FASTLED_FORCE_INLINE static uint8_t getscale(PixelController & pc) { return pc.mScale.raw[RO(SLOT)]; }
+    template<int SLOT>  FASTLED_FORCE_INLINE static uint8_t getscale(PixelController & pc) { return pc.mColorAdjustment.premixed.raw[RO(SLOT)]; }
 
     /// @} Data retrieval functions
 
@@ -438,6 +467,18 @@ struct PixelController {
     FASTLED_FORCE_INLINE uint8_t getScale1() { return getscale<1>(*this); }  ///< non-template alias of getscale<1>()
     FASTLED_FORCE_INLINE uint8_t getScale2() { return getscale<2>(*this); }  ///< non-template alias of getscale<2>()
 
+    #if FASTLED_HD_COLOR_MIXING
+    template<int SLOT>  FASTLED_FORCE_INLINE static uint8_t getScaleFullBrightness(PixelController & pc) { return pc.mColorAdjustment.color.raw[RO(SLOT)]; }
+    // Gets the color corection and also the brightness as seperate values.
+    // This is needed for the higher precision chipsets like the APA102.
+    FASTLED_FORCE_INLINE void getHdScale(uint8_t* c0, uint8_t* c1, uint8_t* c2, uint8_t* brightness) {
+        *c0 = getScaleFullBrightness<0>(*this);
+        *c1 = getScaleFullBrightness<1>(*this);
+        *c2 = getScaleFullBrightness<2>(*this);
+        *brightness = mColorAdjustment.brightness;
+    }
+    #endif
+
 
     FASTLED_FORCE_INLINE void loadAndScale_APA102_HD(uint8_t *b0_out, uint8_t *b1_out,
                                                      uint8_t *b2_out,
@@ -445,12 +486,19 @@ struct PixelController {
         CRGB rgb = CRGB(mData[0], mData[1], mData[2]);
         uint8_t brightness = 0;
         if (rgb) {
+            #if FASTLED_HD_COLOR_MIXING
+            brightness = mColorAdjustment.brightness;
+            CRGB scale = mColorAdjustment.color;
+            #else
+            brightness = 255;
+            CRGB scale = mColorAdjustment.premixed;
+            #endif
             five_bit_hd_gamma_bitshift(
-                rgb.r, rgb.g, rgb.b,
-                // Note this mScale has the global brightness scale mixed in
-                // with the color correction scale.
-                mScale.r, mScale.g, mScale.b,
-                &rgb.r, &rgb.g, &rgb.b, &brightness);
+                rgb,
+                scale,
+                brightness,
+                &rgb,
+                &brightness);
         }
         const uint8_t b0_index = RGB_BYTE0(RGB_ORDER);
         const uint8_t b1_index = RGB_BYTE1(RGB_ORDER);
@@ -495,7 +543,7 @@ struct PixelController {
         rgb_2_rgbw(rgbw.rgbw_mode,
                    rgbw.white_color_temp,
                    rgb.r, rgb.b, rgb.g,  // Input colors
-                   mScale.r, mScale.g, mScale.b,  // How these colors are scaled for color balance.
+                   mColorAdjustment.premixed.r, mColorAdjustment.premixed.g, mColorAdjustment.premixed.b,  // How these colors are scaled for color balance.
                    &rgb.r, &rgb.g, &rgb.b, &w);
         // Now finish the ordering so that the output is in the native led order for all of RGBW.
         rgbw_partial_reorder(

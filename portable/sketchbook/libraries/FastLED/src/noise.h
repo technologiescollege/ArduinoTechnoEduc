@@ -1,9 +1,10 @@
-#ifndef __INC_NOISE_H
-#define __INC_NOISE_H
+#pragma once
 
 #include <stdint.h>
+
 #include "crgb.h"
 #include "namespace.h"
+#include "qfx.h"
 
 /// @file noise.h
 /// Functions to generate and fill arrays with noise.
@@ -239,4 +240,3 @@ void fill_2dnoise16(CRGB *leds, int width, int height, bool serpentine,
 
 FASTLED_NAMESPACE_END
 
-#endif

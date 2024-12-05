@@ -6,7 +6,7 @@
 
 #include "led_strip/enabled.h"
 
-#if FASTLED_ESP32_COMPONENT_LED_STRIP_BUILT_IN!=1
+#if !FASTLED_RMT5
 
 #define FASTLED_INTERNAL
 
@@ -171,7 +171,7 @@ private:
 
 #pragma GCC diagnostic pop
 
-#endif // FASTLED_ESP32_COMPONENT_LED_STRIP_BUILT_IN
+#endif // FASTLED_RMT5
 
 #endif // ! FASTLED_ESP32_I2S
 

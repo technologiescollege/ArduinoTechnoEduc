@@ -1,6 +1,8 @@
+#pragma once
 #ifndef __INC_FASTSPI_LED2_H
 #define __INC_FASTSPI_LED2_H
 
+#include <stdint.h>
 
 /// @file FastLED.h
 /// central include file for FastLED, defines the CFastLED class/object
@@ -14,13 +16,13 @@
 /// * 1 digit for the major version
 /// * 3 digits for the minor version
 /// * 3 digits for the patch version
-#define FASTLED_VERSION 3007008
+#define FASTLED_VERSION 3009004
 #ifndef FASTLED_INTERNAL
 #  ifdef  FASTLED_SHOW_VERSION
 #    ifdef FASTLED_HAS_PRAGMA_MESSAGE
-#      pragma message "FastLED version 3.007.008"
+#      pragma message "FastLED version 3.009.004"
 #    else
-#      warning FastLED version 3.007.007  (Not really a warning, just telling you here.)
+#      warning FastLED version 3.009.004  (Not really a warning, just telling you here.)
 #    endif
 #  endif
 #endif
@@ -48,7 +50,7 @@
 #include <OctoWS2811.h>
 #endif
 
-#include <stdint.h>
+
 
 #include "force_inline.h"
 #include "cpp_compat.h"
@@ -80,6 +82,7 @@
 
 #include "fastspi.h"
 #include "chipsets.h"
+#include "engine_events.h"
 
 FASTLED_NAMESPACE_BEGIN
 
@@ -358,6 +361,10 @@ class CFastLED {
 public:
 	CFastLED();
 
+	// Useful when you want to know when an event like onFrameBegin or onFrameEnd is happening.
+	// This is disabled on AVR to save space.
+	void addListener(EngineEvents::Listener *listener) { EngineEvents::addListener(listener); }
+	void removeListener(EngineEvents::Listener *listener) { EngineEvents::removeListener(listener); }
 
 	/// Add a CLEDController instance to the world.  Exposed to the public to allow people to implement their own
 	/// CLEDController objects or instances.  There are two ways to call this method (as well as the other addLeds()
@@ -801,11 +808,11 @@ public:
 
 	/// Get the number of leds in the first controller
 	/// @returns the number of LEDs in the first controller
-	int size() { return (*this)[0].size(); }
+	int size();
 
 	/// Get a pointer to led data for the first controller
 	/// @returns pointer to the CRGB buffer for the first controller
-	CRGB *leds() { return (*this)[0].leds(); }
+	CRGB *leds();
 };
 
 /// Alias of the FastLED instance for legacy purposes
@@ -831,4 +838,8 @@ extern CFastLED FastLED;
 
 FASTLED_NAMESPACE_END
 
+#endif
+
+#if !defined(FASTLED_INTERNAL)
+FASTLED_USING_NAMESPACE
 #endif
