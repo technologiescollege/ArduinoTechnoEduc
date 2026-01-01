@@ -1,17 +1,18 @@
 #pragma once
 
-#include <stdint.h>
-#include "namespace.h"
+#include "fl/namespace.h"
+#include "fl/stdint.h"
+#include "fl/int.h"
 
-FASTLED_NAMESPACE_BEGIN
+namespace fl {
 
 // Logic to control the progression of a transition over time.
 class Transition {
-public:
+  public:
     Transition() : mStart(0), mDuration(0), mNotStarted(true) {}
     ~Transition() {}
 
-    uint8_t getProgress(uint32_t now) {
+    uint8_t getProgress(fl::u32 now) {
         if (mNotStarted) {
             return 0;
         }
@@ -24,29 +25,25 @@ public:
         }
     }
 
-    void start(uint32_t now, uint32_t duration) {
+    void start(fl::u32 now, fl::u32 duration) {
         mNotStarted = false;
         mStart = now;
         mDuration = duration;
     }
 
-    void end() {
-        mNotStarted = true;
-    }
+    void end() { mNotStarted = true; }
 
-    bool isTransitioning(uint32_t now) {
+    bool isTransitioning(fl::u32 now) {
         if (mNotStarted) {
             return false;
-        }   
+        }
         return now >= mStart && now < mStart + mDuration;
     }
 
-private:
-    uint32_t mStart;
-    uint32_t mDuration;
+  private:
+    fl::u32 mStart;
+    fl::u32 mDuration;
     bool mNotStarted;
 };
 
-
-FASTLED_NAMESPACE_END
-
+} // namespace fl

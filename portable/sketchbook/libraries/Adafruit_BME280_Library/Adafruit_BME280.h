@@ -354,14 +354,14 @@ protected:
     /// unused - don't set
     unsigned int none : 5;
 
-    // pressure oversampling
+    // humidity oversampling
     // 000 = skipped
     // 001 = x1
     // 010 = x2
     // 011 = x4
     // 100 = x8
     // 101 and above = x16
-    unsigned int osrs_h : 3; ///< pressure oversampling
+    unsigned int osrs_h : 3; ///< humidity oversampling
 
     /// @return combined ctrl hum register
     unsigned int get() { return (osrs_h); }

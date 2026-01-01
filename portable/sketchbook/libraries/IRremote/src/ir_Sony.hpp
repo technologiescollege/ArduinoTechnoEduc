@@ -30,7 +30,7 @@
 #ifndef _IR_SONY_HPP
 #define _IR_SONY_HPP
 
-#if defined(DEBUG) && !defined(LOCAL_DEBUG)
+#if defined(DEBUG)
 #define LOCAL_DEBUG
 #else
 //#define LOCAL_DEBUG // This enables debug output only for this file
@@ -90,8 +90,8 @@
 #define SONY_REPEAT_PERIOD          45000 // Commands are repeated every 45 ms (measured from start to start) for as long as the key on the remote control is held down.
 #define SONY_MAXIMUM_REPEAT_DISTANCE    (SONY_REPEAT_PERIOD - SONY_AVERAGE_DURATION_MIN) // 24 ms
 
-struct PulseDistanceWidthProtocolConstants SonyProtocolConstants = { SONY, SONY_KHZ, SONY_HEADER_MARK, SONY_SPACE, SONY_ONE_MARK,
-SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, PROTOCOL_IS_LSB_FIRST, (SONY_REPEAT_PERIOD / MICROS_IN_ONE_MILLI), NULL };
+struct PulseDistanceWidthProtocolConstants const SonyProtocolConstants PROGMEM = { SONY, SONY_KHZ, SONY_HEADER_MARK, SONY_SPACE, SONY_ONE_MARK,
+SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, PROTOCOL_IS_LSB_FIRST | PROTOCOL_IS_PULSE_WIDTH, (SONY_REPEAT_PERIOD / MICROS_IN_ONE_MILLI), nullptr };
 
 /************************************
  * Start of send and decode functions
@@ -103,12 +103,12 @@ SONY_SPACE, SONY_ZERO_MARK, SONY_SPACE, PROTOCOL_IS_LSB_FIRST, (SONY_REPEAT_PERI
 void IRsend::sendSony(uint16_t aAddress, uint8_t aCommand, int_fast8_t aNumberOfRepeats, uint8_t numberOfBits) {
     uint32_t tData = (uint32_t) aAddress << 7 | (aCommand & 0x7F);
     // send 5, 8, 13 address bits LSB first
-    sendPulseDistanceWidth(&SonyProtocolConstants, tData, numberOfBits, aNumberOfRepeats);
+    sendPulseDistanceWidth_P(&SonyProtocolConstants, tData, numberOfBits, aNumberOfRepeats);
 }
 
 bool IRrecv::decodeSony() {
 
-    if (!checkHeader(&SonyProtocolConstants)) {
+    if (!checkHeader_P(&SonyProtocolConstants)) {
         return false;
     }
 
@@ -122,13 +122,7 @@ bool IRrecv::decodeSony() {
         return false;
     }
 
-    if (!decodePulseDistanceWidthData(&SonyProtocolConstants, (decodedIRData.rawlen - 1) / 2, 3)) {
-#if defined(LOCAL_DEBUG)
-        Serial.print(F("Sony: "));
-        Serial.println(F("Decode failed"));
-#endif
-        return false;
-    }
+    decodePulseDistanceWidthData_P(&SonyProtocolConstants, (decodedIRData.rawlen - 1) / 2, 3);
 
     // Success
 //    decodedIRData.flags = IRDATA_FLAGS_IS_LSB_FIRST; // Not required, since this is the start value

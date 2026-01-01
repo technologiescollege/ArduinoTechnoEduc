@@ -10,6 +10,10 @@
 #pragma push_macro("ARDUINOJSON_ENABLE_ARDUINO_STREAM")
 #pragma push_macro("ARDUINOJSON_ENABLE_ARDUINO_PRINT")
 #pragma push_macro("ARDUINOJSON_ENABLE_PROGMEM")
+#pragma push_macro("min")
+#pragma push_macro("max")
+
+#define ARDUINOJSON_USE_LONG_LONG 1
 
 // Safely undefine FLArduinoJson macros if defined
 #ifdef ARDUINOJSON_ENABLE_STD_STREAM
@@ -25,7 +29,12 @@
 #ifdef ARDUINOJSON_ENABLE_STD_STRING
 #undef ARDUINOJSON_ENABLE_STD_STRING
 #endif
+
+#ifdef __EMSCRIPTEN__
+#define ARDUINOJSON_ENABLE_STD_STRING 1
+#else
 #define ARDUINOJSON_ENABLE_STD_STRING 0
+#endif
 
 #ifdef ARDUINOJSON_ENABLE_ARDUINO_STRING
 #undef ARDUINOJSON_ENABLE_ARDUINO_STRING
@@ -51,10 +60,22 @@
 #undef ARDUINO
 #endif
 
+#ifdef min
+#undef min
+#endif
+
+#ifdef max
+#undef max
+#endif
+
+
 #define FASTLED_JSON_GUARD
 #include "json.hpp"
 #undef FASTLED_JSON_GUARD
 
+
+#pragma pop_macro("max")
+#pragma pop_macro("min")
 #pragma pop_macro("ARDUINOJSON_ENABLE_PROGMEM")
 #pragma pop_macro("ARDUINOJSON_ENABLE_ARDUINO_PRINT")
 #pragma pop_macro("ARDUINOJSON_ENABLE_ARDUINO_STREAM")

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import csv
 import json
@@ -5,13 +7,15 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+from typing import List
 
-import dateutil.parser
+import dateutil.parser  # type: ignore
+
 
 HERE = Path(__file__).resolve().parent
 
 
-def run_command(command):
+def run_command(command: str):
     process = subprocess.Popen(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
     )
@@ -19,7 +23,7 @@ def run_command(command):
     return output.decode("utf-8"), error.decode("utf-8")
 
 
-def step_back_commits(steps):
+def step_back_commits(steps: int) -> bool:
     step_back_command = f"git reset --hard HEAD~{steps}"
     output, error = run_command(step_back_command)
     if error:
@@ -57,7 +61,7 @@ def check_firmware_size(board: str) -> int:
     return int(size_in_bytes)
 
 
-def get_commit_hash():
+def get_commit_hash() -> str | None:
     hash_command = "git rev-parse HEAD"
     output, error = run_command(hash_command)
     if error:
@@ -66,7 +70,7 @@ def get_commit_hash():
     return output.strip()
 
 
-def get_commit_date(commit_hash):
+def get_commit_date(commit_hash: str) -> str | None:
     date_command = f"git show -s --format=%ci {commit_hash}"
     output, error = run_command(date_command)
     if error:
@@ -152,7 +156,7 @@ def main(
         board_files = Path(".build") / board / ".pio" / "build" / board
         if board_files.exists():
             shutil.rmtree(str(board_files), ignore_errors=True)
-        compile_command = f"python3 ci/ci-compile.py {board} --examples Blink"
+        compile_command = f"uv run -m ci.ci-compile {board} --examples Blink"
         output, error = run_command(compile_command)
         if error:
             print(f"Error running ci-compile.py: {error}")
@@ -162,7 +166,18 @@ def main(
 
         # 3. Check firmware size and get commit hash
         print("Checking firmware size...")
-        size = check_firmware_size(board)
+        try:
+            size = check_firmware_size(board)
+        except FileNotFoundError as e:
+            print(f"Error checking firmware size: {e}")
+            if not step_back_commits(skip_step):
+                break
+            continue
+        except AssertionError as e:
+            print(f"Error: {e}")
+            if not step_back_commits(skip_step):
+                break
+            continue
         commit_hash = get_commit_hash()
         if size and commit_hash:
             commit_date = get_commit_date(commit_hash)

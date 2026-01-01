@@ -1,25 +1,27 @@
 
 // g++ --std=c++11 test.cpp
 
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "test.h"
 
-#include <stdint.h>
+#include "fl/stdint.h"
 
-#include "doctest.h"
-#include "fx/1d/cylon.hpp"
-#include "fx/1d/demoreel100.hpp"
-#include "fx/1d/noisewave.hpp"
-#include "fx/1d/pacifica.hpp"
-#include "fx/1d/pride2015.hpp" // needs XY defined or linker error.
-#include "fx/1d/twinklefox.hpp"
+#include "test.h"
+#include "fx/1d/cylon.h"
+#include "fx/1d/demoreel100.h"
+#include "fx/1d/noisewave.h"
+#include "fx/1d/pacifica.h"
+#include "fx/1d/pride2015.h" // needs XY defined or linker error.
+#include "fx/1d/twinklefox.h"
 #include "fx/2d/animartrix.hpp"
-#include "fx/2d/noisepalette.hpp"
-#include "fx/2d/scale_up.hpp"
-#include "fx/2d/redsquare.hpp"
-#include "fx/2d/video.hpp"
+#include "fx/2d/noisepalette.h"
+#include "fx/2d/scale_up.h"
+#include "fx/2d/redsquare.h"
+#include "fx/video.h"
 
-#include "namespace.h"
+#include "fl/namespace.h"
 FASTLED_USING_NAMESPACE
+
+uint16_t XY(uint8_t, uint8_t);  // declaration to fix compiler warning.
 
 // To satisfy the linker, we must also define uint16_t XY( uint8_t, uint8_t);
 // This should go away someday and only use functions supplied by the user.

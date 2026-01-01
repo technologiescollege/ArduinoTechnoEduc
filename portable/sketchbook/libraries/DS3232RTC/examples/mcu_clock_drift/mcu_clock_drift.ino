@@ -36,7 +36,7 @@ void setup()
     Serial.begin(115200);
     Serial.println(F("\n" __FILE__ " " __DATE__ " " __TIME__));
     myRTC.begin();
-    setSyncProvider(myRTC.get);     // the function to get the time from the RTC
+    setSyncProvider([](){return myRTC.get();}); // the function to get the time from the RTC
     Serial.print(F("RTC sync "));
     if (timeStatus() == timeSet)
         Serial.println(F("OK"));

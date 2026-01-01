@@ -8,6 +8,12 @@
    to connect and veiw the webpage. This code will not
    make the page available outside your local network.
 
+    This example code is fully described in our new book:
+    Heartbeat Sensor Projects with PulseSensor: Prototyping Biofeedback Devices with PulseSensor!
+    https://www.amazon.com/Heartbeat-Sensor-Projects-PulseSensor-Prototyping/dp/148429324X
+    There is also a tutorial online here:
+    https://pulsesensor.com/pages/wifi-server-with-esp32
+
    Check out the PulseSensor Playground Tools for explaination
    of all user functions and directives.
    https://github.com/WorldFamousElectronics/PulseSensorPlayground/blob/master/resources/PulseSensor%20Playground%20Tools.md
@@ -22,6 +28,10 @@
    should have been included with this software.
 
    This software is not intended for medical use.
+
+   For more information on the PulseSensor methods and functions
+   go to our Resources page
+   https://github.com/WorldFamousElectronics/PulseSensorPlayground/blob/master/resources/PulseSensor%20Playground%20Tools.md
 */
 
 
@@ -208,7 +218,7 @@ void setup() {
   beginWiFi();
   
 /*
-   ESP32 analogRead defaults to 13 bit resolution
+   ESP32 analogRead defaults to 12 bit resolution
    PulseSensor Playground library works with 10 bit
 */
   analogReadResolution(10);

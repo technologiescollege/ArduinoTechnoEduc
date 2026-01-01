@@ -1,32 +1,30 @@
 #pragma once
 
-#include <stdint.h>
+#include "fl/stdint.h"
 #include <string.h>
 
 #include "crgb.h"
-#include "fixed_vector.h"
-#include "fx/fx.h"
+#include "fl/namespace.h"
+#include "fl/memory.h"
+#include "fl/vector.h"
 #include "fx/detail/fx_layer.h"
-#include "namespace.h"
-#include "ref.h"
-
-
+#include "fx/fx.h"
 
 #ifndef FASTLED_FX_ENGINE_MAX_FX
 #define FASTLED_FX_ENGINE_MAX_FX 64
 #endif
 
-FASTLED_NAMESPACE_BEGIN
+namespace fl {
 
 // Takes two fx layers and composites them together to a final output buffer.
 class FxCompositor {
-public:
-    FxCompositor(uint16_t numLeds) : mNumLeds(numLeds) {
-        mLayers[0] = FxLayerRef::New();
-        mLayers[1] = FxLayerRef::New();
+  public:
+    FxCompositor(fl::u32 numLeds) : mNumLeds(numLeds) {
+        mLayers[0] = fl::make_shared<FxLayer>();
+        mLayers[1] = fl::make_shared<FxLayer>();
     }
 
-    void startTransition(uint32_t now, uint32_t duration, Ref<Fx> nextFx) {
+    void startTransition(fl::u32 now, fl::u32 duration, fl::shared_ptr<Fx> nextFx) {
         completeTransition();
         if (duration == 0) {
             mLayers[0]->setFx(nextFx);
@@ -44,21 +42,22 @@ public:
         mTransition.end();
     }
 
-    void draw(uint32_t now, uint32_t warpedTime, CRGB *finalBuffer);
+    void draw(fl::u32 now, fl::u32 warpedTime, CRGB *finalBuffer);
 
-private:
+  private:
     void swapLayers() {
-        FxLayerRef tmp = mLayers[0];
+        FxLayerPtr tmp = mLayers[0];
         mLayers[0] = mLayers[1];
         mLayers[1] = tmp;
     }
 
-    FxLayerRef mLayers[2];
-    const uint16_t mNumLeds;
+    FxLayerPtr mLayers[2];
+    const fl::u32 mNumLeds;
     Transition mTransition;
 };
 
-inline void FxCompositor::draw(uint32_t now, uint32_t warpedTime, CRGB *finalBuffer) {
+inline void FxCompositor::draw(fl::u32 now, fl::u32 warpedTime,
+                               CRGB *finalBuffer) {
     if (!mLayers[0]->getFx()) {
         return;
     }
@@ -69,12 +68,12 @@ inline void FxCompositor::draw(uint32_t now, uint32_t warpedTime, CRGB *finalBuf
         return;
     }
     mLayers[1]->draw(warpedTime);
-    const CRGB* surface0 = mLayers[0]->getSurface();
-    const CRGB* surface1 = mLayers[1]->getSurface();
+    const CRGB *surface0 = mLayers[0]->getSurface();
+    const CRGB *surface1 = mLayers[1]->getSurface();
 
-    for (uint16_t i = 0; i < mNumLeds; i++) {
-        const CRGB& p0 = surface0[i];
-        const CRGB& p1 = surface1[i];
+    for (fl::u32 i = 0; i < mNumLeds; i++) {
+        const CRGB &p0 = surface0[i];
+        const CRGB &p1 = surface1[i];
         CRGB out = CRGB::blend(p0, p1, progress);
         finalBuffer[i] = out;
     }
@@ -83,4 +82,4 @@ inline void FxCompositor::draw(uint32_t now, uint32_t warpedTime, CRGB *finalBuf
     }
 }
 
-FASTLED_NAMESPACE_END
+} // namespace fl

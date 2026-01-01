@@ -1,15 +1,15 @@
 // g++ --std=c++11 test_fixed_map.cpp -I../src
 
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.h"
-#include "fixed_set.h"
+#include "test.h"
+#include "test.h"
+#include "fl/set.h"
 
-#include "namespace.h"
+#include "fl/namespace.h"
 FASTLED_USING_NAMESPACE
 
 
 TEST_CASE("FixedSet operations") {
-    FixedSet<int, 5> set;
+    fl::FixedSet<int, 5> set;
 
     SUBCASE("Insert and find") {
         CHECK(set.insert(1));

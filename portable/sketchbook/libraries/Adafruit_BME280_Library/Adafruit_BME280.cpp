@@ -132,8 +132,6 @@ bool Adafruit_BME280::init() {
 /*!
  *   @brief  setup sensor with given parameters / settings
  *
- *   This is simply a overload to the normal begin()-function, so SPI users
- *   don't get confused about the library requiring an address.
  *   @param mode the power mode to use for the sensor
  *   @param tempSampling the temp samping rate to use
  *   @param pressSampling the pressure sampling rate to use
@@ -336,14 +334,14 @@ bool Adafruit_BME280::isReadingCalibration(void) {
 
 /*!
  *   @brief  Returns the temperature from the sensor
- *   @returns the temperature read from the device
+ *   @returns the temperature read from the device or NaN if sampling off
  */
 float Adafruit_BME280::readTemperature(void) {
   int32_t var1, var2;
+  if (_measReg.osrs_t == sensor_sampling::SAMPLING_NONE)
+    return NAN;
 
   int32_t adc_T = read24(BME280_REGISTER_TEMPDATA);
-  if (adc_T == 0x800000) // value in case temp measurement was disabled
-    return NAN;
   adc_T >>= 4;
 
   var1 = (int32_t)((adc_T / 8) - ((int32_t)_bme280_calib.dig_T1 * 2));
@@ -360,16 +358,16 @@ float Adafruit_BME280::readTemperature(void) {
 
 /*!
  *   @brief  Returns the pressure from the sensor
- *   @returns the pressure value (in Pascal) read from the device
+ *   @returns the pressure value (in Pascal) or NaN if sampling off
  */
 float Adafruit_BME280::readPressure(void) {
   int64_t var1, var2, var3, var4;
+  if (_measReg.osrs_p == sensor_sampling::SAMPLING_NONE)
+    return NAN;
 
   readTemperature(); // must be done first to get t_fine
 
   int32_t adc_P = read24(BME280_REGISTER_PRESSUREDATA);
-  if (adc_P == 0x800000) // value in case pressure measurement was disabled
-    return NAN;
   adc_P >>= 4;
 
   var1 = ((int64_t)t_fine) - 128000;
@@ -399,17 +397,16 @@ float Adafruit_BME280::readPressure(void) {
 
 /*!
  *  @brief  Returns the humidity from the sensor
- *  @returns the humidity value read from the device
+ *  @returns the humidity value read from the device or NaN if sampling off
  */
 float Adafruit_BME280::readHumidity(void) {
   int32_t var1, var2, var3, var4, var5;
+  if (_humReg.osrs_h == sensor_sampling::SAMPLING_NONE)
+    return NAN;
 
   readTemperature(); // must be done first to get t_fine
 
   int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
-  if (adc_H == 0x8000) // value in case humidity measurement was disabled
-    return NAN;
-
   var1 = t_fine - ((int32_t)76800);
   var2 = (int32_t)(adc_H * 16384);
   var3 = (int32_t)(((int32_t)_bme280_calib.dig_H4) * 1048576);

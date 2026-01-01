@@ -1,19 +1,18 @@
+#pragma once
+
 #ifndef __INC_HSV2RGB_H
 #define __INC_HSV2RGB_H
 
-#include "FastLED.h"
-
-#include "pixeltypes.h"
 
 /// @file hsv2rgb.h
 /// Functions to convert from the HSV colorspace to the RGB colorspace
 
 /// @defgroup HSV2RGB HSV to RGB Conversion Functions
-/// Functions to convert from the HSV colorspace to the RGB colorspace. 
+/// Functions to convert from the HSV colorspace to the RGB colorspace.
 ///
 /// These basically fall into two groups: spectra, and rainbows.
 /// pectra and rainbows are not the same thing.  Wikipedia has a good
-/// llustration that shows a "spectrum" and a "rainbow" side by side:  
+/// llustration that shows a "spectrum" and a "rainbow" side by side:
 ///   [![Spectra and Rainbow comparison](http://upload.wikimedia.org/wikipedia/commons/f/f6/Prism_compare_rainbow_01.png)](https://commons.wikimedia.org/wiki/File:Prism_compare_rainbow_01.png)
 ///
 ///   <sup>Source: http://en.wikipedia.org/wiki/Rainbow#Number_of_colours_in_spectrum_or_rainbow</sup>
@@ -29,14 +28,14 @@
 /// is in the "maximum brightness at any given hue" style, vs. the "uniform
 /// brightness for all hues" style.
 ///
-/// You can't have both; either purple is the same brightness as red, e.g:  
+/// You can't have both; either purple is the same brightness as red, e.g:
 ///   @code
 ///      red = 0xFF0000
 ///   purple = 0x800080
 ///   @endcode
 ///
 /// Where you have the same "total light" output. OR purple is "as bright
-/// as it can be", e.g.:  
+/// as it can be", e.g.:
 ///   @code
 ///      red = 0xFF0000
 ///   purple = 0xFF00FF
@@ -59,16 +58,9 @@
 
 FASTLED_NAMESPACE_BEGIN
 
+struct CRGB;
 
-/// Convert an HSV value to RGB using a visually balanced rainbow. 
-/// This "rainbow" yields better yellow and orange than a straight
-/// mathematical "spectrum".
-///
-/// ![FastLED 'Rainbow' Hue Chart](https://raw.githubusercontent.com/FastLED/FastLED/gh-pages/images/HSV-rainbow-with-desc.jpg)
-///
-/// @param hsv CHSV struct to convert to RGB. Max hue supported is HUE_MAX_RAINBOW
-/// @param rgb CRGB struct to store the result of the conversion (will be modified)
-void hsv2rgb_rainbow( const struct CHSV& hsv, struct CRGB& rgb);
+
 
 /// @copybrief hsv2rgb_rainbow(const struct CHSV&, struct CRGB&)
 /// @see hsv2rgb_rainbow(const struct CHSV&, struct CRGB&)
@@ -76,12 +68,14 @@ void hsv2rgb_rainbow( const struct CHSV& hsv, struct CRGB& rgb);
 /// @param prgb CRGB array to store the result of the conversion (will be modified)
 /// @param numLeds the number of array values to process
 void hsv2rgb_rainbow( const struct CHSV* phsv, struct CRGB * prgb, int numLeds);
+void hsv2rgb_rainbow( const struct CHSV& hsv, struct CRGB& rgb);
+CRGB hsv2rgb_rainbow( const struct CHSV& hsv);
 
 /// Max hue accepted for the hsv2rgb_rainbow() function
 #define HUE_MAX_RAINBOW 255
 
 
-/// Convert an HSV value to RGB using a mathematically straight spectrum. 
+/// Convert an HSV value to RGB using a mathematically straight spectrum.
 /// This "spectrum" will have more green and blue than a "rainbow",
 /// and less yellow and orange.
 ///
@@ -95,11 +89,7 @@ void hsv2rgb_rainbow( const struct CHSV* phsv, struct CRGB * prgb, int numLeds);
 void hsv2rgb_spectrum( const struct CHSV& hsv, struct CRGB& rgb);
 
 /// Inline version of hsv2rgb_spectrum which returns a CRGB object.
-inline CRGB hsv2rgb_spectrum( const struct CHSV& hsv) {
-    CRGB rgb;
-    hsv2rgb_spectrum(hsv, rgb);
-    return rgb;
-}
+CRGB hsv2rgb_spectrum( const struct CHSV& hsv);
 
 /// @copybrief hsv2rgb_spectrum(const struct CHSV&, struct CRGB&)
 /// @see hsv2rgb_spectrum(const struct CHSV&, struct CRGB&)
@@ -115,7 +105,7 @@ void hsv2rgb_spectrum( const struct CHSV* phsv, struct CRGB * prgb, int numLeds)
 
 /// @copybrief hsv2rgb_spectrum(const struct CHSV&, struct CRGB&)
 /// @see hsv2rgb_spectrum(const struct CHSV&, struct CRGB&)
-/// @note The hue is limited to the range 0-191 (HUE_MAX). This 
+/// @note The hue is limited to the range 0-191 (HUE_MAX). This
 /// results in a slightly faster conversion speed at the expense
 /// of color balance.
 /// @param hsv CHSV struct to convert to RGB. Max hue supported is HUE_MAX
@@ -133,8 +123,29 @@ void hsv2rgb_raw(const struct CHSV* phsv, struct CRGB * prgb, int numLeds);
 #define HUE_MAX 191
 
 
-/// Recover approximate HSV values from RGB. 
-/// These values are *approximate*, not exact. Why is this "only" an approximation? 
+
+/// Converts an HSV value to RGB using the algorithm from here:
+/// https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB_alternative
+/// By Shawn Silverman
+///
+/// @param hsv CHSV struct to convert to RGB
+/// @param rgb CRGB struct to store the result of the conversion (will be modified)
+void hsv2rgb_fullspectrum( const struct CHSV& hsv, struct CRGB& rgb);
+
+/// version of hsv2rgb_fullspectrum which returns a CRGB object.
+CRGB hsv2rgb_fullspectrum( const struct CHSV& hsv);
+
+/// @copybrief hsv2rgb_fullspectrum(const struct CHSV&, struct CRGB&)
+/// @see hsv2rgb_fullspectrum(const struct CHSV&, struct CRGB&)
+/// @param phsv CHSV array to convert to RGB
+/// @param prgb CRGB array to store the result of the conversion (will be modified)
+/// @param numLeds the number of array values to process
+void hsv2rgb_fullspectrum( const struct CHSV* phsv, struct CRGB * prgb, int numLeds);
+
+
+
+/// Recover approximate HSV values from RGB.
+/// These values are *approximate*, not exact. Why is this "only" an approximation?
 /// Because not all RGB colors have HSV equivalents!  For example, there
 /// is no HSV value that will ever convert to RGB(255,255,0) using
 /// the code provided in this library.   So if you try to

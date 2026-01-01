@@ -1,6 +1,8 @@
 #ifndef __INC_BLOCK_CLOCKLESS_ARM_K20_H
 #define __INC_BLOCK_CLOCKLESS_ARM_K20_H
 
+#include "fl/namespace.h"
+
 // Definition for a single channel clockless controller for the k20 family of chips, like that used in the teensy 3.0/3.1
 // See clockless.h for detailed info on how the template parameters are used.
 #if defined(FASTLED_TEENSY3)
@@ -12,7 +14,6 @@
 
 #define PORT_MASK (((1<<LANES)-1) & ((FIRST_PIN==2) ? 0xFF : 0xFFF))
 
-#define MIN(X,Y) (((X)<(Y)) ? (X):(Y))
 #define USED_LANES ((FIRST_PIN==2) ? MIN(LANES,8) : MIN(LANES,12))
 
 #include <kinetis.h>
@@ -190,7 +191,7 @@ public:
 #define PMASK_HI (PMASK>>8 & 0xFF)
 #define PMASK_LO (PMASK & 0xFF)
 
-template <uint8_t LANES, int T1, int T2, int T3, EOrder RGB_ORDER = GRB, int XTRA0 = 0, bool FLIP = false, int WAIT_TIME = 50>
+template <uint8_t LANES, int T1, int T2, int T3, EOrder RGB_ORDER = GRB, int XTRA0 = 0, bool FLIP = false, int WAIT_TIME = 280>
 class SixteenWayInlineBlockClocklessController : public CPixelLEDController<RGB_ORDER, LANES, PMASK> {
 	typedef typename FastPin<PORTC_FIRST_PIN>::port_ptr_t data_ptr_t;
 	typedef typename FastPin<PORTC_FIRST_PIN>::port_t data_t;

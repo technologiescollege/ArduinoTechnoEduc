@@ -2,60 +2,51 @@
 
 #include <string.h>
 
-#include "namespace.h"
 #include "crgb.h"
-#include "ref.h"
+#include "fl/namespace.h"
+#include "fl/memory.h"
+#include "fl/xymap.h"
+#include "fl/vector.h"
 
-#include "allocator.h"
+#include "fl/allocator.h"
+#include "fl/draw_mode.h"
 
-FASTLED_NAMESPACE_BEGIN
+namespace fl {
 
-FASTLED_SMART_REF(Frame);
+FASTLED_SMART_PTR(Frame);
 
-// Frames are used to hold led data. This includes an optional alpha channel. This object
-// is used by the fx and video engines. Most of the memory used for Fx and Video will be located
-// in instances of this class. See Frame::SetAllocator() for custom memory allocation.
-class Frame : public Referent {
-public:
+// Frames are used to hold led data. This includes an optional alpha channel.
+// This object is used by the fx and video engines. Most of the memory used for
+// Fx and Video will be located in instances of this class. See
+// Frame::SetAllocator() for custom memory allocation.
+class Frame {
+  public:
     // Frames take up a lot of memory. On some devices like ESP32 there is
-    // PSRAM available. You should see allocator.h -> SetLargeBlockAllocator(...)
-    // on setting a custom allocator for these large blocks.
-    explicit Frame(int pixels_per_frame, bool has_alpha = false);
-    ~Frame() override;
-    CRGB* rgb() { return mRgb.get(); }
-    const CRGB* rgb() const { return mRgb.get(); }
+    // PSRAM available. You should see allocator.h ->
+    // SetPSRamAllocator(...) on setting a custom allocator for these large
+    // blocks.
+    explicit Frame(int pixels_per_frame);
+    ~Frame();
+    CRGB *rgb() { return mRgb.data(); }
+    const CRGB *rgb() const { return mRgb.data(); }
     size_t size() const { return mPixelsCount; }
-    uint8_t* alpha() { return mAlpha.get(); }
-    const uint8_t* alpha() const { return mAlpha.get(); }
-    uint32_t getTimestamp() const { return mTimeStamp; }
-    uint32_t getFrameNumber() const { return mFrameNumber; }
-    void setFrameNumber(uint32_t n) { mFrameNumber = n; }
-    void setFrameNumberAndTime(uint32_t frameNumber, uint32_t timestamp) {
-        mFrameNumber = frameNumber;
-        mTimeStamp = timestamp;
-    }
-    void copy(const Frame& other);
-    void interpolate(const Frame& frame1, const Frame& frame2, uint8_t amountOfFrame2);
-    static void interpolate(const Frame& frame1, const Frame& frame2, uint8_t amountofFrame2, CRGB* pixels, uint8_t* alpha);
-    void draw(CRGB* leds, uint8_t* alpha) const;
-private:
+    void copy(const Frame &other);
+    void interpolate(const Frame &frame1, const Frame &frame2,
+                     uint8_t amountOfFrame2);
+    static void interpolate(const Frame &frame1, const Frame &frame2,
+                            uint8_t amountofFrame2, CRGB *pixels);
+    void draw(CRGB *leds, DrawMode draw_mode = DRAW_MODE_OVERWRITE) const;
+    void drawXY(CRGB *leds, const XYMap &xyMap,
+                DrawMode draw_mode = DRAW_MODE_OVERWRITE) const;
+    void clear();
+
+  private:
     const size_t mPixelsCount;
-    uint32_t mTimeStamp = 0;
-    scoped_array<CRGB> mRgb;
-    scoped_array<uint8_t> mAlpha;  // Optional alpha channel.
-    uint32_t mFrameNumber = 0;  // optional
+    fl::vector<CRGB, fl::allocator_psram<CRGB>> mRgb;
 };
 
-
-inline void Frame::copy(const Frame& other) {
-    memcpy(mRgb.get(), other.mRgb.get(), other.mPixelsCount * sizeof(CRGB));
-    mFrameNumber = other.mFrameNumber;
-    mTimeStamp = other.mTimeStamp;
-    if (other.mAlpha) {
-        // mAlpha.reset(new uint8_t[mPixelsCount]);
-        mAlpha.reset(LargeBlockAllocator<uint8_t>::Alloc(mPixelsCount));
-        memcpy(mAlpha.get(), other.mAlpha.get(), mPixelsCount);
-    }
+inline void Frame::copy(const Frame &other) {
+    memcpy(mRgb.data(), other.mRgb.data(), other.mPixelsCount * sizeof(CRGB));
 }
 
-FASTLED_NAMESPACE_END
+} // namespace fl

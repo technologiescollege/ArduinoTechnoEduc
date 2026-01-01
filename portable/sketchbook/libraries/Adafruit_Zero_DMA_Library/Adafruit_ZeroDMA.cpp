@@ -306,7 +306,11 @@ ZeroDMAstatus Adafruit_ZeroDMA::free(void) {
 
   cpu_irq_enter_critical(); // jobStatus is volatile
 
-  if (jobStatus == DMA_STATUS_BUSY) {
+#ifdef __SAMD51__
+  if (DMAC->Channel[channel].CHSTATUS.reg & DMAC_CHSTATUS_BUSY) {
+#else
+  if (DMAC->CHSTATUS.reg & DMAC_CHSTATUS_BUSY) {
+#endif
     status = DMA_STATUS_BUSY; // Can't leave when busy
   } else if ((channel < DMAC_CH_NUM) && (_channelMask & (1 << channel))) {
     // Valid in-use channel; release it
@@ -341,7 +345,11 @@ ZeroDMAstatus Adafruit_ZeroDMA::startJob(void) {
 
   cpu_irq_enter_critical(); // Job status is volatile
 
-  if (jobStatus == DMA_STATUS_BUSY) {
+#ifdef __SAMD51__
+  if (DMAC->Channel[channel].CHSTATUS.reg & DMAC_CHSTATUS_BUSY) {
+#else
+  if (DMAC->CHSTATUS.reg & DMAC_CHSTATUS_BUSY) {
+#endif
     status = DMA_STATUS_BUSY; // Resource is busy
   } else if (channel >= DMAC_CH_NUM) {
     status = DMA_STATUS_ERR_NOT_INITIALIZED; // Channel not in use
@@ -494,8 +502,12 @@ DmacDescriptor *Adafruit_ZeroDMA::addDescriptor(void *src, void *dst,
   if (channel >= DMAC_CH_NUM)
     return NULL;
 
-  // Can't do while job's busy
-  if (jobStatus == DMA_STATUS_BUSY)
+    // Can't do while job's busy
+#ifdef __SAMD51__
+  if (DMAC->Channel[channel].CHSTATUS.reg & DMAC_CHSTATUS_BUSY)
+#else
+  if (DMAC->CHSTATUS.reg & DMAC_CHSTATUS_BUSY)
+#endif
     return NULL;
 
   DmacDescriptor *desc;

@@ -32,7 +32,7 @@
 #ifndef _IR_JVC_HPP
 #define _IR_JVC_HPP
 
-#if defined(DEBUG) && !defined(LOCAL_DEBUG)
+#if defined(DEBUG)
 #define LOCAL_DEBUG
 #else
 //#define LOCAL_DEBUG // This enables debug output only for this file
@@ -62,7 +62,8 @@
 // IRP: {38k,525}<1,-1|1,-3>(16,-8,(D:8,F:8,1,-45)+)
 // LSB first, 1 start bit + 8 bit address + 8 bit command + 1 stop bit.
 // The JVC protocol repeats by skipping the header mark and space -> this leads to a poor repeat detection for JVC protocol.
-// Some JVC devices require to send 3 repeats. https://github.com/Arduino-IRremote/Arduino-IRremote/issues/21
+// Some JVC devices require to send 3 repeats.
+
 #define JVC_ADDRESS_BITS      8 // 8 bit address
 #define JVC_COMMAND_BITS      8 // Command
 
@@ -79,8 +80,8 @@
 #define JVC_REPEAT_DISTANCE   (uint16_t)(45 * JVC_UNIT)  // 23625 - Commands are repeated with a distance of 23 ms for as long as the key on the remote control is held down.
 #define JVC_REPEAT_PERIOD     65000 // assume around 40 ms for a JVC frame. JVC IR Remotes: RM-SA911U, RM-SX463U have 45 ms period
 
-struct PulseDistanceWidthProtocolConstants JVCProtocolConstants = { JVC, JVC_KHZ, JVC_HEADER_MARK, JVC_HEADER_SPACE, JVC_BIT_MARK,
-JVC_ONE_SPACE, JVC_BIT_MARK, JVC_ZERO_SPACE, PROTOCOL_IS_LSB_FIRST, (JVC_REPEAT_PERIOD / MICROS_IN_ONE_MILLI), NULL };
+struct PulseDistanceWidthProtocolConstants const JVCProtocolConstants PROGMEM = {JVC, JVC_KHZ, JVC_HEADER_MARK, JVC_HEADER_SPACE, JVC_BIT_MARK,
+    JVC_ONE_SPACE, JVC_BIT_MARK, JVC_ZERO_SPACE, PROTOCOL_IS_LSB_FIRST | PROTOCOL_IS_PULSE_DISTANCE, (JVC_REPEAT_PERIOD / MICROS_IN_ONE_MILLI), nullptr};
 
 /************************************
  * Start of send and decode functions
@@ -105,7 +106,7 @@ void IRsend::sendJVC(uint8_t aAddress, uint8_t aCommand, int_fast8_t aNumberOfRe
     while (tNumberOfCommands > 0) {
 
         // Address + command
-        sendPulseDistanceWidthData(&JVCProtocolConstants, aAddress | (aCommand << JVC_ADDRESS_BITS), JVC_BITS);
+        sendPulseDistanceWidthData_P(&JVCProtocolConstants, aAddress | (aCommand << JVC_ADDRESS_BITS), JVC_BITS);
 
         tNumberOfCommands--;
         // skip last delay!
@@ -136,8 +137,8 @@ bool IRrecv::decodeJVC() {
          * Check leading space and first and last mark length
          */
         if (decodedIRData.initialGapTicks < ((JVC_REPEAT_DISTANCE + (JVC_REPEAT_DISTANCE / 4) / MICROS_PER_TICK))
-                && matchMark(decodedIRData.rawDataPtr->rawbuf[1], JVC_BIT_MARK)
-                && matchMark(decodedIRData.rawDataPtr->rawbuf[decodedIRData.rawlen - 1], JVC_BIT_MARK)) {
+                && matchMark(irparams.rawbuf[1], JVC_BIT_MARK)
+                && matchMark(irparams.rawbuf[decodedIRData.rawlen - 1], JVC_BIT_MARK)) {
             /*
              * We have a repeat here, so do not check for start bit
              */
@@ -148,19 +149,12 @@ bool IRrecv::decodeJVC() {
         }
     } else {
 
-        if (!checkHeader(&JVCProtocolConstants)) {
+        if (!checkHeader_P(&JVCProtocolConstants)) {
             return false;
         }
 
-        if (!decodePulseDistanceWidthData(&JVCProtocolConstants, JVC_BITS)) {
-#if defined(LOCAL_DEBUG)
-            Serial.print(F("JVC: "));
-            Serial.println(F("Decode failed"));
-#endif
-            return false;
-        }
+        decodePulseDistanceWidthData_P(&JVCProtocolConstants, JVC_BITS);
 
-        // Success
 //    decodedIRData.flags = IRDATA_FLAGS_IS_LSB_FIRST; // Not required, since this is the start value
         decodedIRData.command = decodedIRData.decodedRawData >> JVC_ADDRESS_BITS;  // upper 8 bits of LSB first value
         decodedIRData.address = decodedIRData.decodedRawData & 0xFF;    // lowest 8 bit of LSB first value
@@ -207,9 +201,7 @@ bool IRrecv::decodeJVCMSB(decode_results *aResults) {
     }
     offset++;
 
-    if (!decodePulseDistanceWidthData(JVC_BITS, offset, JVC_BIT_MARK, JVC_ONE_SPACE, 0, PROTOCOL_IS_MSB_FIRST)) {
-        return false;
-    }
+    decodePulseDistanceWidthData(JVC_BITS, offset, JVC_BIT_MARK, JVC_ONE_SPACE, 0, PROTOCOL_IS_MSB_FIRST);
 
     // Stop bit
     if (!matchMark(aResults->rawbuf[offset + (2 * JVC_BITS)], JVC_BIT_MARK)) {

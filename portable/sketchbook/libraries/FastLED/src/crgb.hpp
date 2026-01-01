@@ -1,12 +1,24 @@
+/// @file crgb.hpp
+/// Defines utility functions for the red, green, and blue (RGB) pixel struct
 
 #pragma once
 
-#include <stdint.h>
+#include "fl/stdint.h"
 #include "chsv.h"
 #include "crgb.h"
 #include "lib8tion.h"
-#include "namespace.h"
-#include "force_inline.h"
+#include "fl/namespace.h"
+#include "fl/force_inline.h"
+#include "fl/str.h"
+
+#include "fl/compiler_control.h"
+
+FL_DISABLE_WARNING_PUSH
+FL_DISABLE_WARNING_UNUSED_PARAMETER
+FL_DISABLE_WARNING_RETURN_TYPE
+FL_DISABLE_WARNING_IMPLICIT_INT_CONVERSION
+FL_DISABLE_WARNING_FLOAT_CONVERSION
+FL_DISABLE_WARNING_SIGN_CONVERSION
 
 #if FASTLED_IS_USING_NAMESPACE
 #define FUNCTION_SCALE8(a,b) FASTLED_NAMESPACE::scale8(a,b)
@@ -15,15 +27,6 @@
 #endif
 
 FASTLED_NAMESPACE_BEGIN
-
-/// Add one CRGB to another, saturating at 0xFF for each channel
-FASTLED_FORCE_INLINE CRGB& CRGB::operator+= (const CRGB& rhs )
-{
-    r = qadd8( r, rhs.r);
-    g = qadd8( g, rhs.g);
-    b = qadd8( b, rhs.b);
-    return *this;
-}
 
 FASTLED_FORCE_INLINE CRGB& CRGB::addToRGB (uint8_t d )
 {
@@ -105,11 +108,6 @@ FASTLED_FORCE_INLINE CRGB CRGB::operator-- (int )
     return retval;
 }
 
-FASTLED_FORCE_INLINE CRGB& CRGB::nscale8 (uint8_t scaledown )
-{
-    nscale8x3( r, g, b, scaledown);
-    return *this;
-}
 
 constexpr CRGB CRGB::nscale8_constexpr(const CRGB scaledown) const
 {
@@ -145,11 +143,6 @@ FASTLED_FORCE_INLINE CRGB CRGB::scale8 (const CRGB & scaledown ) const
     return out;
 }
 
-inline CRGB& CRGB::fadeToBlackBy (uint8_t fadefactor )
-{
-    nscale8x3( r, g, b, 255 - fadefactor);
-    return *this;
-}
 
 FASTLED_FORCE_INLINE uint8_t CRGB::getLuma( )  const {
     //Y' = 0.2126 R' + 0.7152 G' + 0.0722 B'
@@ -175,16 +168,7 @@ FASTLED_FORCE_INLINE uint8_t CRGB::getAverageLight( )  const {
     return avg;
 }
 
-FASTLED_FORCE_INLINE CRGB CRGB::lerp8( const CRGB& other, fract8 frac) const
-{
-    CRGB ret;
 
-    ret.r = lerp8by8(r,other.r,frac);
-    ret.g = lerp8by8(g,other.g,frac);
-    ret.b = lerp8by8(b,other.b,frac);
-
-    return ret;
-}
 
 FASTLED_FORCE_INLINE CRGB CRGB::lerp16( const CRGB& other, fract16 frac) const
 {
@@ -233,3 +217,5 @@ FASTLED_FORCE_INLINE CRGB operator%( const CRGB& p1, uint8_t d)
 FASTLED_NAMESPACE_END
 
 #undef FUNCTION_SCALE8
+
+FL_DISABLE_WARNING_POP

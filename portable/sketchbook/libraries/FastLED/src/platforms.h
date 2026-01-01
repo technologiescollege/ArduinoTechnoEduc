@@ -29,7 +29,7 @@
 #elif defined(__SAM3X8E__)
 // Include sam/due headers
 #include "platforms/arm/sam/fastled_arm_sam.h"
-#elif defined(STM32F10X_MD) || defined(__STM32F1__) || defined(STM32F2XX) || defined(STM32F1)
+#elif defined(STM32F1) || defined(STM32F2XX) || defined(STM32F4)
 #include "platforms/arm/stm32/fastled_arm_stm32.h"
 #elif defined(__SAMD21G18A__) || defined(__SAMD21J18A__) || defined(__SAMD21E17A__) || defined(__SAMD21E18A__)
 #include "platforms/arm/d21/fastled_arm_d21.h"
@@ -46,6 +46,11 @@
 #include "platforms/apollo3/fastled_apollo3.h"
 #elif defined(ARDUINO_ARCH_RENESAS) || defined(ARDUINO_ARCH_RENESAS_UNO) || defined(ARDUINO_ARCH_RENESAS_PORTENTA)
 #include "platforms/arm/renesas/fastled_arm_renesas.h"
+#elif defined(ARDUINO_GIGA) || defined(ARDUINO_GIGA_M7)
+#include "platforms/arm/giga/fastled_arm_giga.h"
+#elif defined(ARDUINO_ARCH_SILABS)
+// Silicon Labs MGM240 (Arduino Nano Matter, SparkFun Thing Plus Matter)
+#include "platforms/arm/mgm240/fastled_arm_mgm240.h"
 #elif defined(__x86_64__) || defined(FASTLED_STUB_IMPL)
 
 // stub platform for testing (on cpu)
@@ -54,5 +59,3 @@
 // AVR platforms
 #include "platforms/avr/fastled_avr.h"
 #endif
-
-

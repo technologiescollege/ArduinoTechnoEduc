@@ -1,5 +1,5 @@
 // ArduinoJson - https://arduinojson.org
-// Copyright © 2014-2024, Benoit BLANCHON
+// Copyright © 2014-2025, Benoit BLANCHON
 // MIT License
 
 #define ARDUINOJSON_ENABLE_ARDUINO_STRING 1
@@ -26,12 +26,23 @@ TEST_CASE("JsonDocument::add(T)") {
                          });
   }
 
-  SECTION("const char*") {
+  SECTION("string literal") {
     doc.add("hello");
 
     REQUIRE(doc.as<std::string>() == "[\"hello\"]");
     REQUIRE(spy.log() == AllocatorLog{
                              Allocate(sizeofPool()),
+                         });
+  }
+
+  SECTION("const char*") {
+    const char* value = "hello";
+    doc.add(value);
+
+    REQUIRE(doc.as<std::string>() == "[\"hello\"]");
+    REQUIRE(spy.log() == AllocatorLog{
+                             Allocate(sizeofPool()),
+                             Allocate(sizeofString("hello")),
                          });
   }
 

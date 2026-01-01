@@ -25,6 +25,19 @@
 
 #include "BLELocalDevice.h"
 
+#ifdef __ZEPHYR__
+#undef ARDUINO_PORTENTA_H7_M7
+#undef ARDUINO_OPTA
+#undef ARDUINO_GIGA
+#undef ARDUINO_NICLA_VISION
+#undef ARDUINO_PORTENTA_C33
+#undef ARDUINO_UNO_Q
+#endif
+
+#if defined(ARDUINO_PORTENTA_C33)
+#include <EspChipManager.h>
+#endif
+
 #if defined(PORTENTA_H7_PINS) || defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_OPTA)
 #ifndef BT_REG_ON
 #define BT_REG_ON PJ_12
@@ -77,17 +90,9 @@ int BLELocalDevice::begin()
   digitalWrite(BT_REG_ON, HIGH);
   delay(500);
 #elif defined(ARDUINO_PORTENTA_C33)
-#define NINA_GPIO0      (100)
-#define NINA_RESETN     (101)
-  pinMode(NINA_GPIO0, OUTPUT);
-  pinMode(NINA_RESETN, OUTPUT);
-  Serial5.begin(921600);
 
-  digitalWrite(NINA_GPIO0, HIGH);
-  delay(100);
-  digitalWrite(NINA_RESETN, HIGH);
-  digitalWrite(NINA_RESETN, LOW);
-  digitalWrite(NINA_RESETN, HIGH);
+  Serial5.begin(921600);
+  CEspChipManager::getInstance().initialize();
   auto _start = millis();
   while (millis() - _start < 500) {
     if (Serial5.available()) {
@@ -224,7 +229,9 @@ void BLELocalDevice::end()
   digitalWrite(NINA_RESETN, LOW);
 #elif defined(ARDUINO_PORTENTA_H7_M4) || defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_NICLA_VISION) || defined(ARDUINO_GIGA) || defined(ARDUINO_OPTA)
   digitalWrite(BT_REG_ON, LOW);
-#endif
+#endif 
+  _advertisingData.clear();
+  _scanResponseData.clear();
 }
 
 void BLELocalDevice::poll()

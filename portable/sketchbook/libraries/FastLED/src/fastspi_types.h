@@ -1,12 +1,14 @@
+#pragma once
+
 /// @file fastspi_types.h
 /// Data types and constants used by SPI interfaces
 
 #ifndef __INC_FASTSPI_TYPES_H
 #define __INC_FASTSPI_TYPES_H
 
-#include "FastLED.h"
-#include "force_inline.h"
-#include "namespace.h"
+#include "fl/force_inline.h"
+#include "fl/namespace.h"
+#include "fl/unused.h"
 
 FASTLED_NAMESPACE_BEGIN
 
@@ -47,7 +49,9 @@ public:
 
     /// Hook called after a block of data is written to the output. 
     /// In this dummy version, no action is performed.
-    static FASTLED_FORCE_INLINE void postBlock(int /* len */, void* context = NULL) { }
+    static FASTLED_FORCE_INLINE void postBlock(int /* len */, void* context = NULL) {
+        FASTLED_UNUSED(context);
+    }
 };
 
 /// Flag for the start of an SPI transaction

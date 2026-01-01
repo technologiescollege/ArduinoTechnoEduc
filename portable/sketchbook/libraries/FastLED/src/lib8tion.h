@@ -1,8 +1,21 @@
+#pragma once
+
 #ifndef __INC_LIB8TION_H
 #define __INC_LIB8TION_H
 
 #include "FastLED.h"
 #include "lib8tion/types.h"
+#include "fl/deprecated.h"
+
+#include "fl/compiler_control.h"
+
+FL_DISABLE_WARNING_PUSH
+FL_DISABLE_WARNING_UNUSED_PARAMETER
+FL_DISABLE_WARNING_RETURN_TYPE
+FL_DISABLE_WARNING_IMPLICIT_INT_CONVERSION
+FL_DISABLE_WARNING_FLOAT_CONVERSION
+FL_DISABLE_WARNING_SIGN_CONVERSION
+
 
 #ifndef __INC_LED_SYSDEFS_H
 #error WTH?  led_sysdefs needs to be included first
@@ -12,9 +25,12 @@
 /// Fast, efficient 8-bit math functions specifically
 /// designed for high-performance LED programming. 
 
-#include <stdint.h>
+#include "fl/stdint.h"
 #include "lib8tion/lib8static.h"
-#include "qfx.h"
+#include "lib8tion/qfx.h"
+#include "lib8tion/memmove.h"
+#include "lib8tion/config.h"
+#include "fl/ease.h"
 
 
 #if !defined(__AVR__)
@@ -22,163 +38,6 @@
 // for memmove, memcpy, and memset if not defined here
 #endif // end of !defined(__AVR__)
 
-#if defined(__arm__)
-
-#if defined(FASTLED_TEENSY3)
-// Can use Cortex M4 DSP instructions
-#define QADD8_C 0
-#define QADD7_C 0
-#define QADD8_ARM_DSP_ASM 1
-#define QADD7_ARM_DSP_ASM 1
-#else
-// Generic ARM
-#define QADD8_C 1
-#define QADD7_C 1
-#endif // end of defined(FASTLED_TEENSY3)
-
-#define QSUB8_C 1
-#define SCALE8_C 1
-#define SCALE16BY8_C 1
-#define SCALE16_C 1
-#define ABS8_C 1
-#define MUL8_C 1
-#define QMUL8_C 1
-#define ADD8_C 1
-#define SUB8_C 1
-#define EASE8_C 1
-#define AVG8_C 1
-#define AVG8R_C 1
-#define AVG7_C 1
-#define AVG16_C 1
-#define AVG16R_C 1
-#define AVG15_C 1
-#define BLEND8_C 1
-
-// end of #if defined(__arm__)
-
-#elif defined(ARDUINO_ARCH_APOLLO3)
-
-// Default to using the standard C functions for now
-#define QADD8_C 1
-#define QADD7_C 1
-#define QSUB8_C 1
-#define SCALE8_C 1
-#define SCALE16BY8_C 1
-#define SCALE16_C 1
-#define ABS8_C 1
-#define MUL8_C 1
-#define QMUL8_C 1
-#define ADD8_C 1
-#define SUB8_C 1
-#define EASE8_C 1
-#define AVG8_C 1
-#define AVG8R_C 1
-#define AVG7_C 1
-#define AVG16_C 1
-#define AVG16R_C 1
-#define AVG15_C 1
-#define BLEND8_C 1
-
-// end of #elif defined(ARDUINO_ARCH_APOLLO3)
-
-#elif defined(__AVR__)
-
-// AVR ATmega and friends Arduino
-
-#define QADD8_C 0
-#define QADD7_C 0
-#define QSUB8_C 0
-#define ABS8_C 0
-#define ADD8_C 0
-#define SUB8_C 0
-#define AVG8_C 0
-#define AVG8R_C 0
-#define AVG7_C 0
-#define AVG16_C 0
-#define AVG16R_C 0
-#define AVG15_C 0
-
-#define QADD8_AVRASM 1
-#define QADD7_AVRASM 1
-#define QSUB8_AVRASM 1
-#define ABS8_AVRASM 1
-#define ADD8_AVRASM 1
-#define SUB8_AVRASM 1
-#define AVG8_AVRASM 1
-#define AVG8R_AVRASM 1
-#define AVG7_AVRASM 1
-#define AVG16_AVRASM 1
-#define AVG16R_AVRASM 1
-#define AVG15_AVRASM 1
-
-// Note: these require hardware MUL instruction
-//       -- sorry, ATtiny!
-#if !defined(LIB8_ATTINY)
-#define SCALE8_C 0
-#define SCALE16BY8_C 0
-#define SCALE16_C 0
-#define MUL8_C 0
-#define QMUL8_C 0
-#define EASE8_C 0
-#define BLEND8_C 0
-#define SCALE8_AVRASM 1
-#define SCALE16BY8_AVRASM 1
-#define SCALE16_AVRASM 1
-#define MUL8_AVRASM 1
-#define QMUL8_AVRASM 1
-#define EASE8_AVRASM 1
-#define CLEANUP_R1_AVRASM 1
-#define BLEND8_AVRASM 1
-#else
-// On ATtiny, we just use C implementations
-#define SCALE8_C 1
-#define SCALE16BY8_C 1
-#define SCALE16_C 1
-#define MUL8_C 1
-#define QMUL8_C 1
-#define EASE8_C 1
-#define BLEND8_C 1
-#define SCALE8_AVRASM 0
-#define SCALE16BY8_AVRASM 0
-#define SCALE16_AVRASM 0
-#define MUL8_AVRASM 0
-#define QMUL8_AVRASM 0
-#define EASE8_AVRASM 0
-#define BLEND8_AVRASM 0
-#endif // end of !defined(LIB8_ATTINY)
-
-// end of #elif defined(__AVR__)
-
-#else
-
-// Doxygen: ignore these macros
-/// @cond
-
-// unspecified architecture, so
-// no ASM, everything in C
-#define QADD8_C 1
-#define QADD7_C 1
-#define QSUB8_C 1
-#define SCALE8_C 1
-#define SCALE16BY8_C 1
-#define SCALE16_C 1
-#define ABS8_C 1
-#define MUL8_C 1
-#define QMUL8_C 1
-#define ADD8_C 1
-#define SUB8_C 1
-#define EASE8_C 1
-#define AVG8_C 1
-#define AVG8R_C 1
-#define AVG7_C 1
-#define AVG16_C 1
-#define AVG16R_C 1
-#define AVG15_C 1
-#define BLEND8_C 1
-
-/// @endcond
-
-#endif
 
 /// @defgroup lib8tion Fast Math Functions
 /// Fast, efficient 8-bit math functions specifically
@@ -397,7 +256,7 @@ FASTLED_NAMESPACE_BEGIN
 /// Conversion from 16-bit fixed point (::sfract15) to IEEE754 32-bit float.
 LIB8STATIC float sfract15ToFloat( sfract15 y)
 {
-    return y / 32768.0;
+    return y / 32768.0f;
 }
 
 /// Conversion from IEEE754 float in the range (-1,1) to 16-bit fixed point (::sfract15).
@@ -405,34 +264,13 @@ LIB8STATIC float sfract15ToFloat( sfract15 y)
 /// representable range is 0.99996948242 to -0.99996948242, in steps of 0.00003051757.
 LIB8STATIC sfract15 floatToSfract15( float f)
 {
-    return f * 32768.0;
+    return static_cast<sfract15>(f * 32768.0f);
 }
 
 /// @} FloatConversions
 
 
 
-///////////////////////////////////////////////////////////////////////
-///
-/// @defgroup FastMemory Fast Memory Functions for AVR
-/// Alternatives to memmove, memcpy, and memset that are
-/// faster on AVR than standard avr-libc 1.8. 
-/// @{
-
-#if defined(__AVR__) || defined(FASTLED_DOXYGEN)
-extern "C" {
-void * memmove8( void * dst, const void * src, uint16_t num );  ///< Faster alternative to memmove() on AVR
-void * memcpy8 ( void * dst, const void * src, uint16_t num )  __attribute__ ((noinline));  ///< Faster alternative to memcpy() on AVR
-void * memset8 ( void * ptr, uint8_t value, uint16_t num ) __attribute__ ((noinline)) ;  ///< Faster alternative to memset() on AVR
-}
-#else
-// on non-AVR platforms, these names just call standard libc.
-#define memmove8 memmove
-#define memcpy8 memcpy
-#define memset8 memset
-#endif
-
-/// @} FastMemory
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -620,20 +458,44 @@ LIB8STATIC uint8_t ease8InOutQuad(uint8_t val) {
 #error "No implementation for ease8InOutQuad available."
 #endif
 
-/// 16-bit quadratic ease-in / ease-out function. 
-/// C implementation at this point.
 LIB8STATIC uint16_t ease16InOutQuad( uint16_t i)
 {
+    // This is the legacy version, there is a slightly more accurate version in fl/ease.cpp
+    // with fl::easeInOutQuad16. However the difference is minimal.
+    //
+    // 16-bit quadratic ease-in / ease-out function
     uint16_t j = i;
-    if( j & 0x8000 ) {
+    if (j & 0x8000) {
         j = 65535 - j;
     }
-    uint16_t jj  = scale16( j, j);
+    uint16_t jj = scale16(j, j);
     uint16_t jj2 = jj << 1;
-    if( i & 0x8000 ) {
+    if (i & 0x8000) {
         jj2 = 65535 - jj2;
     }
     return jj2;
+}
+
+LIB8STATIC uint16_t ease16InOutCubic(uint16_t i)  {
+    // This function produces wrong results, use fl::easeInOutCubic16 instead
+    //
+    // 16-bit cubic ease-in / ease-out function
+    // Equivalent to ease8InOutCubic() but for 16-bit values
+    // Formula: 3(x^2) - 2(x^3) applied with proper ease-in-out curve
+
+    // Apply the cubic formula directly, similar to the 8-bit version
+    // scale16(a, b) computes (a * b) / 65536
+    uint32_t ii = scale16(i, i);   // i^2 scaled to 16-bit
+    uint32_t iii = scale16(ii, i); // i^3 scaled to 16-bit
+
+    // Apply cubic formula: 3x^2 - 2x^3
+    uint32_t r1 = (3 * ii) - (2 * iii);
+
+    // Clamp result to 16-bit range
+    if (r1 > 65535) {
+        return 65535;
+    }
+    return (uint16_t)r1;
 }
 
 
@@ -809,11 +671,6 @@ LIB8STATIC uint8_t squarewave8( uint8_t in, uint8_t pulsewidth=128)
 }
 
 /// @} WaveformGenerators
-
-
-
-
-/// @}
 
 /// @} lib8tion (excluding the timekeeping functions from the nested group)
 
@@ -1212,6 +1069,47 @@ public:
 };
 /// @} CEveryNTime Base Classes
 
+
+
+// ————————————————————————————————————————————————
+// Random‐interval version of EVERY_N_MILLISECONDS:
+// on each trigger, pick the next period randomly in [MIN..MAX].
+// ————————————————————————————————————————————————
+class CEveryNMillisRandom {
+public:
+    uint32_t mPrevTrigger;
+    uint32_t mPeriod;
+    uint32_t mMinPeriod;
+    uint32_t mMaxPeriod;
+
+    CEveryNMillisRandom(uint32_t minPeriod, uint32_t maxPeriod)
+      : mMinPeriod(minPeriod), mMaxPeriod(maxPeriod)
+    {
+        computeNext();
+        reset();
+    }
+
+    void computeNext() {
+        // random16(x) returns [0..x-1], so this yields MIN..MAX
+        uint32_t range = mMaxPeriod - mMinPeriod + 1;
+        mPeriod = mMinPeriod + random16(range);
+    }
+
+    uint32_t getTime() const { return GET_MILLIS(); }
+
+    bool ready() {
+        uint32_t now = getTime();
+        if (now - mPrevTrigger >= mPeriod) {
+            mPrevTrigger = now;
+            computeNext();
+            return true;
+        }
+        return false;
+    }
+
+    void reset() { mPrevTrigger = getTime(); }
+};
+
 #else
 
 // Under C++11 rules, we would be allowed to use not-external
@@ -1333,6 +1231,15 @@ typedef CEveryNTimePeriods<uint8_t,hours8> CEveryNHours;
     NAME.setPeriod(PERIOD_FUNC); \
     if( NAME )
 
+
+#define EVERY_N_MILLISECONDS_RANDOM(MIN, MAX)                                 \
+    EVERY_N_MILLISECONDS_RANDOM_I(                                           \
+        CONCAT_MACRO(_permRand, __COUNTER__), MIN, MAX)
+
+#define EVERY_N_MILLISECONDS_RANDOM_I(NAME, MIN, MAX)                        \
+    static CEveryNMillisRandom NAME(MIN, MAX);                               \
+    if (NAME.ready())
+
 /// @} Every_N
 /// @} Timekeeping
 
@@ -1349,3 +1256,5 @@ typedef CEveryNTimePeriods<uint8_t,hours8> CEveryNHours;
 FASTLED_NAMESPACE_END
 
 #endif
+
+FL_DISABLE_WARNING_POP

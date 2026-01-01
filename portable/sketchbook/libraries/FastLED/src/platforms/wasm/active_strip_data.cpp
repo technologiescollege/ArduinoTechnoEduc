@@ -1,92 +1,33 @@
 
+
 #ifdef __EMSCRIPTEN__
 
-#include <emscripten.h>
-#include <emscripten/bind.h>
-#include <emscripten/emscripten.h> // Include Emscripten headers
-#include <emscripten/html5.h>
-#include <emscripten/val.h>
+// ⚠️⚠️⚠️ WASM-SPECIFIC ACTIVE STRIP DATA WRAPPER ⚠️⚠️⚠️
+//
+// This file provides WASM-specific initialization for ActiveStripData.
+// The core logic has been moved to src/platforms/shared/active_strip_data/
+// for better testability and platform independence.
+//
+// WASM-specific functionality:
+// - Constructor attribute for early initialization
+// - Integration with StripIdMap for WASM strip ID management
+//
+// Core functionality is now in the shared implementation:
+// - JSON parsing and creation
+// - Strip data management
+// - Screen map handling
+// 
+// JavaScript bindings have been moved to js_bindings.cpp:
+// - getStripPixelData() function
+//
+// ⚠️⚠️⚠️ DO NOT DUPLICATE SHARED FUNCTIONALITY HERE ⚠️⚠️⚠️
 
-#include <memory>
-#include <stdio.h>
+#include "platforms/shared/active_strip_data/active_strip_data.h"
+#include "fl/id_tracker.h"
 
-
-
-#include "fixed_map.h"
-#include "singleton.h"
-#include "slice.h"
-
-#include "active_strip_data.h"
-#include "ui/events.h"
-#include "fixed_map.h"
-#include "js.h"
-#include "fl/str.h"
-#include "namespace.h"
-
-using namespace fl;
-
-
-FASTLED_NAMESPACE_BEGIN
-
-ActiveStripData& ActiveStripData::Instance() {
-    return Singleton<ActiveStripData>::instance();
+/// WASM-SPECIFIC: Early initialization using GCC constructor attribute.
+__attribute__((constructor)) void __init_ActiveStripData() {
+    fl::ActiveStripData::Instance();
 }
 
-void ActiveStripData::update(int id, uint32_t now, const uint8_t* pixel_data, size_t size) {
-    mStripMap.update(id, SliceUint8(pixel_data, size));
-}
-
-void ActiveStripData::updateScreenMap(int id, const ScreenMap& screenmap) {
-    mScreenMap.update(id, screenmap);
-}
-
-emscripten::val ActiveStripData::getPixelData_Uint8(int stripIndex) {
-    // Efficient, zero copy conversion from internal data to JavaScript.
-    SliceUint8 stripData;
-    if (mStripMap.get(stripIndex, &stripData)) {
-        const uint8_t *data = stripData.data();
-        uint8_t *data_mutable = const_cast<uint8_t *>(data);
-        size_t size = stripData.size();
-        return emscripten::val(
-            emscripten::typed_memory_view(size, data_mutable));
-    }
-    return emscripten::val::undefined();
-}
-
-Str ActiveStripData::infoJsonString() {
-    FLArduinoJson::JsonDocument doc;
-    auto array = doc.to<FLArduinoJson::JsonArray>();
-
-    for (const auto &[stripIndex, stripData] : mStripMap) {
-        auto obj = array.add<FLArduinoJson::JsonObject>();
-        obj["strip_id"] = stripIndex;
-        obj["type"] = "r8g8b8";
-    }
-
-    Str jsonBuffer;
-    serializeJson(doc, jsonBuffer);
-    return jsonBuffer;
-}
-
-static ActiveStripData* getActiveStripDataRef() {
-    ActiveStripData* instance = &Singleton<ActiveStripData>::instance();
-    return instance;
-}
-
-EMSCRIPTEN_BINDINGS(engine_events_constructors) {
-    emscripten::class_<ActiveStripData>("ActiveStripData")
-        .constructor(&getActiveStripDataRef, emscripten::allow_raw_pointers())
-        .function("getPixelData_Uint8", &ActiveStripData::getPixelData_Uint8);
-}
-
-
-// gcc constructor to get the 
-// ActiveStripData instance created.
-__attribute__((constructor))
-void __init_ActiveStripData() {
-    ActiveStripData::Instance();
-}
-
-FASTLED_NAMESPACE_END
-
-#endif
+#endif // __EMSCRIPTEN__

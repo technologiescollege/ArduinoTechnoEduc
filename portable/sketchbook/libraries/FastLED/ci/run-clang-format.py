@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# pyright: reportUnknownMemberType=false
 """A wrapper script around clang-format, suitable for linting multiple files
 and to use for continuous integration.
 
@@ -23,6 +24,8 @@ import subprocess
 import sys
 import traceback
 from functools import partial
+from typing import Any, Dict, Generator, List, Optional, Tuple, Union
+
 
 try:
     from subprocess import DEVNULL  # py3k
@@ -40,8 +43,8 @@ class ExitStatus:
     TROUBLE = 2
 
 
-def excludes_from_file(ignore_file):
-    excludes = []
+def excludes_from_file(ignore_file: str) -> List[str]:
+    excludes: List[str] = []
     try:
         with io.open(ignore_file, "r", encoding="utf-8") as f:
             for line in f:
@@ -59,13 +62,18 @@ def excludes_from_file(ignore_file):
     return excludes
 
 
-def list_files(files, recursive=False, extensions=None, exclude=None):
+def list_files(
+    files: List[str],
+    recursive: bool = False,
+    extensions: Optional[List[str]] = None,
+    exclude: Optional[List[str]] = None,
+) -> List[str]:
     if extensions is None:
         extensions = []
     if exclude is None:
         exclude = []
 
-    out = []
+    out: List[str] = []
     for file in files:
         if recursive and os.path.isdir(file):
             for dirpath, dnames, fnames in os.walk(file):
@@ -89,7 +97,7 @@ def list_files(files, recursive=False, extensions=None, exclude=None):
     return out
 
 
-def make_diff(file, original, reformatted):
+def make_diff(file: str, original: List[str], reformatted: List[str]) -> List[str]:
     return list(
         difflib.unified_diff(
             original,
@@ -102,19 +110,19 @@ def make_diff(file, original, reformatted):
 
 
 class DiffError(Exception):
-    def __init__(self, message, errs=None):
+    def __init__(self, message: str, errs: Optional[List[str]] = None):
         super(DiffError, self).__init__(message)
-        self.errs = errs or []
+        self.errs: List[str] = errs or []
 
 
 class UnexpectedError(Exception):
-    def __init__(self, message, exc=None):
+    def __init__(self, message: str, exc: Optional[Exception] = None):
         super(UnexpectedError, self).__init__(message)
         self.formatted_traceback = traceback.format_exc()
         self.exc = exc
 
 
-def run_clang_format_diff_wrapper(args, file):
+def run_clang_format_diff_wrapper(args: Any, file: str) -> Tuple[List[str], List[str]]:
     try:
         ret = run_clang_format_diff(args, file)
         return ret
@@ -124,7 +132,7 @@ def run_clang_format_diff_wrapper(args, file):
         raise UnexpectedError("{}: {}: {}".format(file, e.__class__.__name__, e), e)
 
 
-def run_clang_format_diff(args, file):
+def run_clang_format_diff(args: Any, file: str) -> Tuple[List[str], List[str]]:
     try:
         with io.open(file, "r", encoding="utf-8") as f:
             original = f.readlines()
@@ -161,18 +169,26 @@ def run_clang_format_diff(args, file):
     #   > -- http://clang.llvm.org/docs/InternalsManual.html#internals-diag-translation
     #
     # It's not pretty, due to Python 2 & 3 compatibility.
-    encoding_py3 = {}
+    encoding_py3: Dict[str, str] = {}
     if sys.version_info[0] >= 3:
         encoding_py3["encoding"] = "utf-8"
 
     try:
-        proc = subprocess.Popen(
-            invocation,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
-            **encoding_py3,
-        )
+        if sys.version_info[0] >= 3:
+            proc: subprocess.Popen[str] = subprocess.Popen(
+                invocation,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+                encoding="utf-8",
+            )
+        else:
+            proc: subprocess.Popen[str] = subprocess.Popen(
+                invocation,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+            )
     except OSError as exc:
         raise DiffError(
             "Command '{}' failed to start: {}".format(
@@ -181,6 +197,8 @@ def run_clang_format_diff(args, file):
         )
     proc_stdout = proc.stdout
     proc_stderr = proc.stderr
+    assert proc_stdout is not None
+    assert proc_stderr is not None
     if sys.version_info[0] < 3:
         # make the pipes compatible with Python 3,
         # reading lines should output unicode
@@ -203,21 +221,21 @@ def run_clang_format_diff(args, file):
     return make_diff(file, original, outs), errs
 
 
-def bold_red(s):
+def bold_red(s: str) -> str:
     return "\x1b[1m\x1b[31m" + s + "\x1b[0m"
 
 
-def colorize(diff_lines):
-    def bold(s):
+def colorize(diff_lines: List[str]) -> Generator[str, None, None]:
+    def bold(s: str) -> str:
         return "\x1b[1m" + s + "\x1b[0m"
 
-    def cyan(s):
+    def cyan(s: str) -> str:
         return "\x1b[36m" + s + "\x1b[0m"
 
-    def green(s):
+    def green(s: str) -> str:
         return "\x1b[32m" + s + "\x1b[0m"
 
-    def red(s):
+    def red(s: str) -> str:
         return "\x1b[31m" + s + "\x1b[0m"
 
     for line in diff_lines:
@@ -233,23 +251,23 @@ def colorize(diff_lines):
             yield line
 
 
-def print_diff(diff_lines, use_color):
+def print_diff(diff_lines: List[str], use_color: bool) -> None:
     if use_color:
-        diff_lines = colorize(diff_lines)
+        diff_lines = list(colorize(diff_lines))
     if sys.version_info[0] < 3:
         sys.stdout.writelines((line.encode("utf-8") for line in diff_lines))
     else:
         sys.stdout.writelines(diff_lines)
 
 
-def print_trouble(prog, message, use_colors):
+def print_trouble(prog: str, message: str, use_colors: bool) -> None:
     error_text = "error:"
     if use_colors:
         error_text = bold_red(error_text)
     print("{}: {} {}".format(prog, error_text, message), file=sys.stderr)
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--clang-format-executable",
@@ -291,7 +309,7 @@ def main():
         metavar="N",
         type=int,
         default=0,
-        help="run N clang-format jobs in parallel" " (default number of cpus + 1)",
+        help="run N clang-format jobs in parallel (default number of cpus + 1)",
     )
     parser.add_argument(
         "--color",
@@ -318,13 +336,14 @@ def main():
     # use default signal handling, like diff return SIGINT value on ^C
     # https://bugs.python.org/issue14229#msg156446
     signal.signal(signal.SIGINT, signal.SIG_DFL)
+
     try:
-        signal.SIGPIPE
+        signal.SIGPIPE  # type: ignore
     except AttributeError:
         # compatibility, SIGPIPE does not exist on Windows
         pass
     else:
-        signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+        signal.signal(signal.SIGPIPE, signal.SIG_DFL)  # type: ignore
 
     colored_stdout = False
     colored_stderr = False
@@ -364,7 +383,7 @@ def main():
     )
 
     if not files:
-        return
+        return retcode
 
     njobs = args.j
     if njobs == 0:

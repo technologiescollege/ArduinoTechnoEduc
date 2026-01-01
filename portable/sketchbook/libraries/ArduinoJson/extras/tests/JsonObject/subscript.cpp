@@ -1,5 +1,5 @@
 // ArduinoJson - https://arduinojson.org
-// Copyright © 2014-2024, Benoit BLANCHON
+// Copyright © 2014-2025, Benoit BLANCHON
 // MIT License
 
 #include <ArduinoJson.h>
@@ -158,7 +158,7 @@ TEST_CASE("JsonObject::operator[]") {
   }
 
   SECTION("should duplicate a non-static JsonString key") {
-    obj[JsonString("hello", JsonString::Copied)] = "world";
+    obj[JsonString("hello", false)] = "world";
     REQUIRE(spy.log() == AllocatorLog{
                              Allocate(sizeofPool()),
                              Allocate(sizeofString("hello")),
@@ -166,7 +166,7 @@ TEST_CASE("JsonObject::operator[]") {
   }
 
   SECTION("should not duplicate a static JsonString key") {
-    obj[JsonString("hello", JsonString::Linked)] = "world";
+    obj[JsonString("hello", true)] = "world";
     REQUIRE(spy.log() == AllocatorLog{
                              Allocate(sizeofPool()),
                          });

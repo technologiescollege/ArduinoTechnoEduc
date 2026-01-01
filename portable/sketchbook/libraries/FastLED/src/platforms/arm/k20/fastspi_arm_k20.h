@@ -1,6 +1,8 @@
 #ifndef __INC_FASTSPI_ARM_H
 #define __INC_FASTSPI_ARM_H
 
+#include "fl/namespace.h"
+
 FASTLED_NAMESPACE_BEGIN
 
 #if defined(FASTLED_TEENSY3) && defined(CORE_TEENSY)
@@ -34,8 +36,6 @@ template<int VAL> class BitWork<VAL, 0> {
 public:
 	static int highestBit() __attribute__((always_inline)) { return 0; }
 };
-
-#define MAX(A, B) (( (A) > (B) ) ? (A) : (B))
 
 #define USE_CONT 0
 // intra-frame backup data

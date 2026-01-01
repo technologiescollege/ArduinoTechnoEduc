@@ -9,14 +9,13 @@
 
 #include "IRremote.hpp"
 
-#warning Thank you for using the IRremote library!
-#warning It seems, that you are using a old version 2.0 code / example.
+#warning It seems, that you are using an old version 2.0 code / example.
 #warning This version is no longer supported!
-#warning Please use one of the new code examples from the library  available at "File > Examples > Examples from Custom Libraries / IRremote".
-#warning Or downgrade your library to version 2.6.0.
+#warning Upgrade instructions can be found here: "https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file#converting-your-2x-program-to-the-4x-version"
+#warning Please use one of the new code examples from the library, available at "File > Examples > Examples from Custom Libraries / IRremote".
 #warning Start with the SimpleReceiver or SimpleSender example.
-#warning The examples are documented here: https://github.com/Arduino-IRremote/Arduino-IRremote#examples-for-this-library
-#warning A guide how to convert your 2.0 program is here: https://github.com/Arduino-IRremote/Arduino-IRremote#converting-your-2x-program-to-the-4x-version
+#warning The examples are documented here: "https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file#examples-for-this-library"
+#warning Or just downgrade your library to version 2.6.0.
 
 /**********************************************************************************************************************
  * The OLD and DEPRECATED decode function with parameter aResults, kept for backward compatibility to old 2.0 tutorials
@@ -31,18 +30,19 @@ bool IRrecv::decode(decode_results *aResults) {
     if (!sMessageWasSent) {
         Serial.println(F("**************************************************************************************************"));
         Serial.println(F("Thank you for using the IRremote library!"));
-        Serial.println(F("It seems, that you are using a old version 2.0 code / example."));
+        Serial.println(F("It seems, that you are using an old version 2.0 code / example."));
         Serial.println(F("This version is no longer supported!"));
+        Serial.println();
+        Serial.println(F("Upgrade instructions can be found here:"));
+        Serial.println(F(" https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file#converting-your-2x-program-to-the-4x-version"));
+        Serial.println();
         Serial.println(F("Please use one of the new code examples from the library,"));
         Serial.println(F(" available at \"File > Examples > Examples from Custom Libraries / IRremote\"."));
-        Serial.println(F("Or downgrade your library to version 2.6.0."));
-        Serial.println();
         Serial.println(F("Start with the SimpleReceiver or SimpleSender example."));
-        Serial.println();
         Serial.println(F("The examples are documented here:"));
-        Serial.println(F(" https://github.com/Arduino-IRremote/Arduino-IRremote#examples-for-this-library"));
-        Serial.println(F("A guide how to convert your 2.0 program is here:"));
-        Serial.println(F(" https://github.com/Arduino-IRremote/Arduino-IRremote#converting-your-2x-program-to-the-4x-version"));
+        Serial.println(F(" https://github.com/Arduino-IRremote/Arduino-IRremote?tab=readme-ov-file#examples-for-this-library"));
+        Serial.println();
+        Serial.println(F("Or just downgrade your library to version 2.6.0."));
         Serial.println();
         Serial.println(F("Thanks"));
         Serial.println(F("**************************************************************************************************"));

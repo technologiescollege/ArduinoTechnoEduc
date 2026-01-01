@@ -44,12 +44,12 @@ WiFiClientSecure client;
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
 // io.adafruit.com SHA1 fingerprint
-/* WARNING - This value was last updated on 08/15/22 and may not be up-to-date!
+/* WARNING - This value was last updated on 07/14/25 and may not be up-to-date!
 *  If security is a concern for your project, we strongly recommend users impacted by this moving
 *  to ESP32 which has certificate verification by storing root certs and having a
 *  chain-of-trust rather than doing individual certificate fingerprints.
 */
-static const char *fingerprint PROGMEM = "4E C1 52 73 24 A8 36 D6 7A 4C 67 C7 91 0C 0A 22 B9 2D 5B CA";
+static const char *fingerprint PROGMEM = "47 D2 CB 14 DF 38 97 59 C6 65 1A 1F 3E 00 1E 53 CC A5 17 E0";
 
 /****************************** Feeds ***************************************/
 

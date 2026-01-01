@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file cpp_compat.h
 /// Compatibility functions based on C++ version
 
@@ -21,6 +23,6 @@
 // things that we can turn on if we're in a C++11 environment
 #endif
 
-#include "register.h"
+#include "fl/register.h"
 
 #endif

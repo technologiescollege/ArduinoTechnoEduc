@@ -8,7 +8,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2021-2024 Armin Joachimsmeyer
+ * Copyright (c) 2021-2025 Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public:
     IRrecv * MyIrReceiver;
     IRExtensionClass(IRrecv * aIrReceiver);
     bool decode();
-    bool printIRResultShort(Print *aSerial, bool aPrintRepeatGap = true, bool aCheckForRecordGapsMicros = true);
+    bool printIRResultShort(Print *aSerial, bool aCheckForRecordGapsMicros = true);
     void resume();
 };
 

@@ -1,54 +1,89 @@
 
 #include <string.h>
 
-#include "frame.h"
 #include "crgb.h"
-#include "namespace.h"
-#include "ref.h"
-#include "allocator.h"
+#include "fl/allocator.h"
+#include "fl/dbg.h"
+#include "fl/namespace.h"
+#include "fl/memory.h"
+#include "fl/warn.h"
+#include "fl/xymap.h"
+#include "frame.h"
 
+#include "fl/memfill.h"
+namespace fl {
 
-FASTLED_NAMESPACE_BEGIN
-
-
-Frame::Frame(int pixels_count, bool has_alpha)
-    : mPixelsCount(pixels_count), mRgb() {
-    mRgb.reset(reinterpret_cast<CRGB *>(LargeBlockAllocate(pixels_count * sizeof(CRGB))));
-    memset(mRgb.get(), 0, pixels_count * sizeof(CRGB));
-    if (has_alpha) {
-        mAlpha.reset(reinterpret_cast<uint8_t *>(LargeBlockAllocate(pixels_count)));
-        memset(mAlpha.get(), 0, pixels_count);
-    }
+Frame::Frame(int pixels_count) : mPixelsCount(pixels_count), mRgb() {
+    mRgb.resize(pixels_count);
+    fl::memfill((uint8_t*)mRgb.data(), 0, pixels_count * sizeof(CRGB));
 }
 
 Frame::~Frame() {
-    if (mRgb) {
-        LargeBlockDeallocate(mRgb.release());
-    }
-    if (mAlpha) {
-        LargeBlockDeallocate(mAlpha.release());
+    // Vector will handle memory cleanup automatically
+}
+
+void Frame::draw(CRGB *leds, DrawMode draw_mode) const {
+    if (!mRgb.empty()) {
+        switch (draw_mode) {
+        case DRAW_MODE_OVERWRITE: {
+            memcpy(leds, mRgb.data(), mPixelsCount * sizeof(CRGB));
+            break;
+        }
+        case DRAW_MODE_BLEND_BY_MAX_BRIGHTNESS: {
+            for (size_t i = 0; i < mPixelsCount; ++i) {
+                leds[i] = CRGB::blendAlphaMaxChannel(mRgb[i], leds[i]);
+            }
+            break;
+        }
+        }
     }
 }
 
-void Frame::draw(CRGB* leds, uint8_t* alpha) const {
-    if (mRgb) {
-        memcpy(leds, mRgb.get(), mPixelsCount * sizeof(CRGB));
-    }
-    if (alpha && mAlpha) {
-        memcpy(alpha, mAlpha.get(), mPixelsCount);
+void Frame::drawXY(CRGB *leds, const XYMap &xyMap, DrawMode draw_mode) const {
+    const uint16_t width = xyMap.getWidth();
+    const uint16_t height = xyMap.getHeight();
+    fl::u32 count = 0;
+    for (uint16_t h = 0; h < height; ++h) {
+        for (uint16_t w = 0; w < width; ++w) {
+            fl::u32 in_idx = xyMap(w, h);
+            fl::u32 out_idx = count++;
+            if (in_idx >= mPixelsCount) {
+                FASTLED_WARN(
+                    "Frame::drawXY: in index out of range: " << in_idx);
+                continue;
+            }
+            if (out_idx >= mPixelsCount) {
+                FASTLED_WARN(
+                    "Frame::drawXY: out index out of range: " << out_idx);
+                continue;
+            }
+            switch (draw_mode) {
+            case DRAW_MODE_OVERWRITE: {
+                leds[out_idx] = mRgb[in_idx];
+                break;
+            }
+            case DRAW_MODE_BLEND_BY_MAX_BRIGHTNESS: {
+                leds[out_idx] =
+                    CRGB::blendAlphaMaxChannel(mRgb[in_idx], leds[in_idx]);
+                break;
+            }
+            }
+        }
     }
 }
 
-void Frame::interpolate(const Frame& frame1, const Frame& frame2, uint8_t amountofFrame2, CRGB* pixels, uint8_t* alpha) {
-    (void)alpha;  // Reserved for future use.
+void Frame::clear() { fl::memfill((uint8_t*)mRgb.data(), 0, mPixelsCount * sizeof(CRGB)); }
+
+void Frame::interpolate(const Frame &frame1, const Frame &frame2,
+                        uint8_t amountofFrame2, CRGB *pixels) {
     if (frame1.size() != frame2.size()) {
-        return;  // Frames must have the same size
+        return; // Frames must have the same size
     }
 
-    const CRGB* rgbFirst = frame1.rgb();
-    const CRGB* rgbSecond = frame2.rgb();
+    const CRGB *rgbFirst = frame1.rgb();
+    const CRGB *rgbSecond = frame2.rgb();
 
-    if (!rgbFirst || !rgbSecond) {
+    if (frame1.mRgb.empty() || frame2.mRgb.empty()) {
         // Error, why are we getting null pointers?
         return;
     }
@@ -59,11 +94,13 @@ void Frame::interpolate(const Frame& frame1, const Frame& frame2, uint8_t amount
     // We will eventually do something with alpha.
 }
 
-void Frame::interpolate(const Frame& frame1, const Frame& frame2, uint8_t amountOfFrame2) {
+void Frame::interpolate(const Frame &frame1, const Frame &frame2,
+                        uint8_t amountOfFrame2) {
     if (frame1.size() != frame2.size() || frame1.size() != mPixelsCount) {
-        return;  // Frames must have the same size
+        FASTLED_DBG("Frames must have the same size");
+        return; // Frames must have the same size
     }
-    interpolate(frame1, frame2, amountOfFrame2, mRgb.get(), mAlpha.get());
+    interpolate(frame1, frame2, amountOfFrame2, mRgb.data());
 }
 
-FASTLED_NAMESPACE_END
+} // namespace fl

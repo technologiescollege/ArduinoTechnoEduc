@@ -24,10 +24,10 @@ Release notes should list highlight changes (not necessarily all minor bug fixes
 
 Git commands to commit and tag release'
 ```bash
-$ git commit -m "Rev 3.9.4 - Update with namespace and misc compiler fixes."
-$ git tag 3.9.4 master 
-$ git push 
-$ git push origin 3.9.4
+$ git commit -am "Rev 3.10.3"
+$ git tag 3.10.3 master
+$ git push
+$ git push origin 3.10.3
 ```
 
 Then use the GitHub UI to make a new “Release”:

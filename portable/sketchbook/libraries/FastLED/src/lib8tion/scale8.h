@@ -1,8 +1,18 @@
+#include "fl/compiler_control.h"
+
 #pragma once
 
-#include "lib8static.h"
+#include "lib8tion/config.h"
 #include "crgb.h"
-#include "namespace.h"
+#include "fl/namespace.h"
+#include "fastled_config.h"
+#include "lib8static.h"
+
+FL_DISABLE_WARNING_PUSH
+FL_DISABLE_WARNING_UNUSED_PARAMETER
+FL_DISABLE_WARNING_RETURN_TYPE
+FL_DISABLE_WARNING_IMPLICIT_INT_CONVERSION
+
 
 FASTLED_NAMESPACE_BEGIN
 
@@ -473,7 +483,7 @@ LIB8STATIC_ALWAYS_INLINE uint16_t scale16by8(uint16_t i, fract8 scale) {
 #if SCALE16BY8_C == 1
     uint16_t result;
 #if FASTLED_SCALE8_FIXED == 1
-    result = (i * (1 + ((uint16_t)scale))) >> 8;
+    result = (((uint32_t)(i) * (1 + ((uint32_t)scale))) >> 8);
 #else
     result = (i * scale) / 256;
 #endif
@@ -530,6 +540,7 @@ LIB8STATIC_ALWAYS_INLINE uint16_t scale16by8(uint16_t i, fract8 scale) {
 #error "No implementation for scale16by8 available."
 #endif
 }
+
 
 /// Scale a 16-bit unsigned value by an 16-bit value, which is treated
 /// as the numerator of a fraction whose denominator is 65536.
@@ -745,3 +756,5 @@ LIB8STATIC uint8_t brighten8_lin(uint8_t x) {
 /// @} lib8tion
 
 FASTLED_NAMESPACE_END
+
+#pragma GCC diagnostic pop

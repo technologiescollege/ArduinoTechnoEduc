@@ -1,47 +1,61 @@
 #pragma once
 
-#include "FastLED.h"
-#include "force_inline.h"
 
-#if FASTLED_IS_USING_NAMESPACE
-#define FUNCTION_FILL_RAINBOW(a,b,c,d) FASTLED_NAMESPACE::fill_rainbow(a,b,c,d)
-#define FUNCTION_NAPPLY_GAMMA(a,b,c) FASTLED_NAMESPACE::napplyGamma_video(a,b,c)
-#define FUNCTION_NAPPLY_GAMMA_RGB(a,b,c,d,e) FASTLED_NAMESPACE::napplyGamma_video(a,b,c,d,e)
-#define FUNCTION_BLUR1D(a,b,c) FASTLED_NAMESPACE::blur1d(a,b,c)
-#define FUNCTION_FILL_GRADIENT(a,b,c,d,e) FASTLED_NAMESPACE::fill_gradient(a,b,c,d,e)
-#define FUNCTION_FILL_GRADIENT3(a,b,c,d,e,f) FASTLED_NAMESPACE::fill_gradient(a,b,c,d,e,f)
-#define FUNCTION_FILL_GRADIENT4(a,b,c,d,e,f,g) FASTLED_NAMESPACE::fill_gradient(a,b,c,d,e,f,g)
-#define FUNCTION_NBLEND(a,b,c) FASTLED_NAMESPACE::nblend(a,b,c)
-#define FUNCTION_FILL_GRADIENT_RGB(a,b,c,d) FASTLED_NAMESPACE::fill_gradient_RGB(a,b,c,d)
-#define FUNCTION_FILL_GRADIENT_RGB3(a,b,c,d,e) FASTLED_NAMESPACE::fill_gradient_RGB(a,b,c,d,e)
-#define FUNCTION_FILL_GRADIENT_RGB4(a,b,c,d,e,f) FASTLED_NAMESPACE::fill_gradient_RGB(a,b,c,d,e,f)
-#else
-#define FUNCTION_FILL_RAINBOW(a,b,c,d) ::fill_rainbow(a,b,c,d)
-#define FUNCTION_NAPPLY_GAMMA(a,b,c) ::napplyGamma_video(a,b,c)
-#define FUNCTION_NAPPLY_GAMMA_RGB(a,b,c,d,e) ::napplyGamma_video(a,b,c,d,e)
-#define FUNCTION_BLUR1D(a,b,c) ::blur1d(a,b,c)
-#define FUNCTION_FILL_GRADIENT(a,b,c,d,e) ::fill_gradient(a,b,c,d,e)
-#define FUNCTION_FILL_GRADIENT3(a,b,c,d,e,f) ::fill_gradient(a,b,c,d,e,f)
-#define FUNCTION_FILL_GRADIENT4(a,b,c,d,e,f,g) ::fill_gradient(a,b,c,d,e,f,g)
-#define FUNCTION_NBLEND(a,b,c) ::nblend(a,b,c)
-#define FUNCTION_FILL_GRADIENT_RGB(a,b,c,d) ::fill_gradient_RGB(a,b,c,d)
-#define FUNCTION_FILL_GRADIENT_RGB3(a,b,c,d,e) ::fill_gradient_RGB(a,b,c,d,e)
-#define FUNCTION_FILL_GRADIENT_RGB4(a,b,c,d,e,f) ::fill_gradient_RGB(a,b,c,d,e,f)
-#endif
+#include "fl/force_inline.h"
+#include "fl/namespace.h"
+#include "fl/unused.h"
+#include "fl/colorutils.h"
+
+#include "fl/fill.h"
+#include "fl/blur.h"
+
+#include "FastLED.h"
+
+#define FUNCTION_FILL_RAINBOW(a,b,c,d) fl::fill_rainbow(a,b,c,d)
+#define FUNCTION_NAPPLY_GAMMA(a,b,c) fl::napplyGamma_video(a,b,c)
+#define FUNCTION_NAPPLY_GAMMA_RGB(a,b,c,d,e) fl::napplyGamma_video(a,b,c,d,e)
+#define FUNCTION_BLUR1D(a,b,c) fl::blur1d(a,b,c)
+#define FUNCTION_FILL_GRADIENT(a,b,c,d,e) fl::fill_gradient(a,b,c,d,e)
+#define FUNCTION_FILL_GRADIENT3(a,b,c,d,e,f) fl::fill_gradient(a,b,c,d,e,f)
+#define FUNCTION_FILL_GRADIENT4(a,b,c,d,e,f,g) fl::fill_gradient(a,b,c,d,e,f,g)
+#define FUNCTION_NBLEND(a,b,c) fl::nblend(a,b,c)
+#define FUNCTION_FILL_GRADIENT_RGB(a,b,c,d) fl::fill_gradient_RGB(a,b,c,d)
+#define FUNCTION_FILL_GRADIENT_RGB3(a,b,c,d,e) fl::fill_gradient_RGB(a,b,c,d,e)
+#define FUNCTION_FILL_GRADIENT_RGB4(a,b,c,d,e,f) fl::fill_gradient_RGB(a,b,c,d,e,f)
 
 #ifndef abs
 #include <stdlib.h>
 #endif
 
 
-#include "namespace.h"
+#include "fl/namespace.h"
 
 FASTLED_NAMESPACE_BEGIN
 
 template<class PIXEL_TYPE>
 class CPixelView;
 
-/// CPixelView for CRGB arrays
+/// @brief CPixelView specialized for CRGB pixel arrays - the most commonly used pixel view type.
+///
+/// CRGBSet provides all the functionality of CPixelView optimized for CRGB pixels.
+/// This is the primary interface for working with LED strips in FastLED.
+///
+/// **Quick Start:**
+/// ```cpp
+/// CRGB leds[NUM_LEDS];
+/// CRGBSet pixels(leds, NUM_LEDS);
+/// 
+/// // Basic operations
+/// pixels[0] = CRGB::Red;
+/// pixels.fill_solid(CRGB::Blue);
+/// pixels.fadeToBlackBy(64);
+/// 
+/// // Advanced effects
+/// pixels(0, 10).fill_rainbow(0, 25);      // Rainbow on first 10 LEDs
+/// pixels(20, 10).blur1d(128);             // Blur segment (reverse order)
+/// ```
+///
+/// @see CPixelView for full API documentation
 typedef CPixelView<CRGB> CRGBSet;
 
 /// Retrieve a pointer to a CRGB array, using a CRGBSet and an LED offset
@@ -57,10 +71,41 @@ CRGB *operator+(const CRGBSet & pixels, int offset);
 /// @brief Classes for managing logical groups of LEDs
 /// @{
 
-/// Represents a set of LED objects.  Provides the [] array operator, and works like a normal array in that case.
-/// This should be kept in sync with the set of functions provided by the other @ref PixelTypes as well as functions in colorutils.h.
-/// @tparam PIXEL_TYPE the type of LED data referenced in the class, e.g. CRGB.
-/// @note A pixel set is a window into another set of LED data, it is not its own set of LED data.
+/// @brief Represents a view/window into a set of LED pixels, providing array-like access and rich color operations.
+///
+/// CPixelView provides a non-owning view into LED pixel data with extensive manipulation capabilities.
+/// It supports forward and reverse iteration, subset operations, and a comprehensive set of color functions.
+/// 
+/// **Key Features:**
+/// - Array-like access with `operator[]`
+/// - Subset creation with `operator(start, end)` 
+/// - Reverse iteration when `start > end`
+/// - Rich color operations: fill, gradients, scaling, blending
+/// - Automatic conversion to `fl::span<T>` for modern C++ interop
+/// - Iterator support for range-based loops
+/// 
+/// **Common Usage Patterns:**
+/// ```cpp
+/// // Basic usage
+/// CRGB leds[100];
+/// CRGBSet pixels(leds, 100);
+/// pixels[0] = CRGB::Red;                    // Set individual pixel
+/// pixels.fill_solid(CRGB::Blue);           // Fill all pixels
+/// 
+/// // Subset operations  
+/// auto segment = pixels(10, 50);           // Forward subset (indices 10-50)
+/// auto reverse = pixels(50, 10);           // Reverse subset (50 down to 10)
+/// segment.fill_rainbow(0, 5);              // Apply rainbow to segment
+/// 
+/// // Modern C++ interop
+/// fl::span<CRGB> span = pixels;            // Automatic conversion
+/// std::fill(pixels.begin(), pixels.end(), CRGB::Green);  // STL algorithms
+/// ```
+///
+/// @tparam PIXEL_TYPE the type of LED data referenced, typically CRGB or CHSV
+/// @note This is a non-owning view - it references existing LED data, doesn't own it
+/// @see CRGBSet - typedef for CPixelView<CRGB>, the most common usage
+/// @see CRGBArray - version that owns its LED data
 template<class PIXEL_TYPE>
 class CPixelView {
 public:
@@ -165,12 +210,24 @@ public:
     /// Increment every pixel value in this set
     inline CPixelView & operator++() { for(iterator pixel = begin(), _end = end(); pixel != _end; ++pixel) { (*pixel)++; } return *this; }
     /// Increment every pixel value in this set
-    inline CPixelView & operator++(int DUMMY_ARG) { for(iterator pixel = begin(), _end = end(); pixel != _end; ++pixel) { (*pixel)++; } return *this; }
+    inline CPixelView & operator++(int DUMMY_ARG) {
+        FASTLED_UNUSED(DUMMY_ARG);
+        for(iterator pixel = begin(), _end = end(); pixel != _end; ++pixel) {
+            (*pixel)++;
+        }
+        return *this;
+    }
 
     /// Decrement every pixel value in this set
     inline CPixelView & operator--() { for(iterator pixel = begin(), _end = end(); pixel != _end; ++pixel) { (*pixel)--; } return *this; }
     /// Decrement every pixel value in this set
-    inline CPixelView & operator--(int DUMMY_ARG) { for(iterator pixel = begin(), _end = end(); pixel != _end; ++pixel) { (*pixel)--; } return *this; }
+    inline CPixelView & operator--(int DUMMY_ARG) {
+        FASTLED_UNUSED(DUMMY_ARG);
+        for(iterator pixel = begin(), _end = end(); pixel != _end; ++pixel) {
+            (*pixel)--;
+        }
+        return *this;
+    }
 
     /// Divide every LED by the given value
     inline CPixelView & operator/=(uint8_t d) { for(iterator pixel = begin(), _end = end(); pixel != _end; ++pixel) { (*pixel) /= d; } return *this; }
@@ -252,7 +309,7 @@ public:
     /// @param endcolor the end color for the gradient
     /// @param directionCode the direction to travel around the color wheel
     /// @see ::fill_gradient(T*, uint16_t, const CHSV&, const CHSV&, TGradientDirectionCode)
-    inline CPixelView & fill_gradient(const CHSV & startcolor, const CHSV & endcolor, TGradientDirectionCode directionCode  = SHORTEST_HUES) {
+    inline CPixelView & fill_gradient(const CHSV & startcolor, const CHSV & endcolor, TGradientDirectionCode directionCode  = fl::SHORTEST_HUES) {
         if(dir >= 0) {
             FUNCTION_FILL_GRADIENT(leds,len,startcolor, endcolor, directionCode);
         } else {
@@ -267,7 +324,7 @@ public:
     /// @param c3 the end color for the gradient
     /// @param directionCode the direction to travel around the color wheel
     /// @see ::fill_gradient(T*, uint16_t, const CHSV&, const CHSV&, const CHSV&, TGradientDirectionCode)
-    inline CPixelView & fill_gradient(const CHSV & c1, const CHSV & c2, const CHSV &  c3, TGradientDirectionCode directionCode = SHORTEST_HUES) {
+    inline CPixelView & fill_gradient(const CHSV & c1, const CHSV & c2, const CHSV &  c3, TGradientDirectionCode directionCode = fl::SHORTEST_HUES) {
         if(dir >= 0) {
             FUNCTION_FILL_GRADIENT3(leds, len, c1, c2, c3, directionCode);
         } else {
@@ -283,7 +340,7 @@ public:
     /// @param c4 the end color for the gradient
     /// @param directionCode the direction to travel around the color wheel
     /// @see ::fill_gradient(T*, uint16_t, const CHSV&, const CHSV&, const CHSV&, const CHSV&, TGradientDirectionCode)
-    inline CPixelView & fill_gradient(const CHSV & c1, const CHSV & c2, const CHSV & c3, const CHSV & c4, TGradientDirectionCode directionCode = SHORTEST_HUES) {
+    inline CPixelView & fill_gradient(const CHSV & c1, const CHSV & c2, const CHSV & c3, const CHSV & c4, TGradientDirectionCode directionCode = fl::SHORTEST_HUES) {
         if(dir >= 0) {
             FUNCTION_FILL_GRADIENT4(leds, len, c1, c2, c3, c4, directionCode);
         } else {
@@ -297,7 +354,8 @@ public:
     /// @param endcolor the end color for the gradient
     /// @param directionCode the direction to travel around the color wheel
     /// @see ::fill_gradient_RGB(CRGB*, uint16_t, const CRGB&, const CRGB&)
-    inline CPixelView & fill_gradient_RGB(const PIXEL_TYPE & startcolor, const PIXEL_TYPE & endcolor, TGradientDirectionCode directionCode  = SHORTEST_HUES) {
+    inline CPixelView & fill_gradient_RGB(const PIXEL_TYPE & startcolor, const PIXEL_TYPE & endcolor, TGradientDirectionCode directionCode  = fl::SHORTEST_HUES) {
+        FASTLED_UNUSED(directionCode); // TODO: why is this not used?
         if(dir >= 0) {
             FUNCTION_FILL_GRADIENT_RGB(leds,len,startcolor, endcolor);
         } else {
@@ -444,11 +502,14 @@ CRGB *operator+(const CRGBSet & pixels, int offset) {
 /// @tparam SIZE the number of LEDs to include in the array
 template<int SIZE>
 class CRGBArray : public CPixelView<CRGB> {
-    CRGB rawleds[SIZE];  ///< the LED data
+    CRGB rawleds[SIZE] = {0};  ///< the LED data
 
 public:
     CRGBArray() : CPixelView<CRGB>(rawleds, SIZE) {}
     using CPixelView::operator=;
+    CRGB* get() { return &rawleds[0]; }
+    const CRGB* get() const {  return &rawleds[0]; }
+    size_t size() const { return SIZE; }
 };
 
 /// @} PixelSet

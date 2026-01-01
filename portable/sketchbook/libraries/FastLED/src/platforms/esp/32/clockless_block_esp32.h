@@ -1,13 +1,13 @@
 #ifndef __INC_CLOCKLESS_BLOCK_ESP8266_H
 #define __INC_CLOCKLESS_BLOCK_ESP8266_H
 
-#include <stdint.h>
-#include "namespace.h"
+#include "fl/stdint.h"
+#include "fl/namespace.h"
 #include "clock_cycles.h"
 #include "esp_intr_alloc.h"
 #include "eorder.h"
 #include "transpose8x1_noinline.h"
-#include "force_inline.h"
+#include "fl/force_inline.h"
 
 #define FASTLED_HAS_BLOCKLESS 1
 
@@ -49,7 +49,7 @@ class InlineBlockClocklessController : public CPixelLEDController<RGB_ORDER, LAN
     typedef typename FastPin<FIRST_PIN>::port_t data_t;
 
 	// Verify that the pin is valid
-	static_assert(FastPin<FIRST_PIN>::validpin(), "Invalid pin specified");
+	static_assert(FastPin<FIRST_PIN>::validpin(), "This pin has been marked as an invalid pin, common reasons includes it being a ground pin, read only, or too noisy (e.g. hooked up to the uart).");
 
 	data_t mPinMask;
     data_ptr_t mPort;

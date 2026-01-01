@@ -1,10 +1,13 @@
+/// @file noisegen.h
+/// Noise generation classes
+
 #pragma once
 
-#include <stdint.h>
+#include "fl/stdint.h"
 #include "noise.h"
 
-#include "math_macros.h"
-#include "namespace.h"
+#include "fl/math_macros.h"
+#include "fl/namespace.h"
 
 FASTLED_NAMESPACE_BEGIN
 

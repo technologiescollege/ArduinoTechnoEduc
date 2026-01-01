@@ -1,9 +1,19 @@
+#pragma once
+
 #ifndef __INC_LED_SYSDEFS_H
 #define __INC_LED_SYSDEFS_H
 
 #include "FastLED.h"
 
 #include "fastled_config.h"
+
+// Include ARM platform detection before any ARM headers
+#include "platforms/arm/is_arm.h"
+
+// Arduino.h needed for convenience functions digitalPinToPort/BitMask/portOutputRegister and the pinMode methods.
+#if defined(ARDUINO) && !defined(__EMSCRIPTEN__)
+#include <Arduino.h>  // ok include
+#endif
 
 /// @file led_sysdefs.h
 /// Determines which platform system definitions to include
@@ -27,7 +37,7 @@
 #elif defined(__SAM3X8E__)
 // Include sam/due headers
 #include "platforms/arm/sam/led_sysdefs_arm_sam.h"
-#elif defined(STM32F10X_MD) || defined(__STM32F1__) || defined(STM32F2XX) || defined(STM32F1)
+#elif defined(STM32F1) || defined(STM32F2XX) || defined(STM32F4)
 #include "platforms/arm/stm32/led_sysdefs_arm_stm32.h"
 #elif defined(__SAMD21G18A__) || defined(__SAMD21J18A__) || defined(__SAMD21E17A__) || defined(__SAMD21E18A__) 
 #include "platforms/arm/d21/led_sysdefs_arm_d21.h"
@@ -48,6 +58,11 @@
 #include "platforms/apollo3/led_sysdefs_apollo3.h"
 #elif defined(ARDUINO_ARCH_RENESAS) || defined(ARDUINO_ARCH_RENESAS_UNO) || defined(ARDUINO_ARCH_RENESAS_PORTENTA)
 #include "platforms/arm/renesas/led_sysdef_arm_renesas.h"
+#elif defined(ARDUINO_GIGA)|| defined(ARDUINO_GIGA_M7)
+#include "platforms/arm/giga/led_sysdef_arm_giga.h"
+#elif defined(ARDUINO_ARCH_SILABS)
+// Silicon Labs MGM240 (Arduino Nano Matter, SparkFun Thing Plus Matter)
+#include "platforms/arm/mgm240/led_sysdefs_arm_mgm240.h"
 #elif defined(__x86_64__) || defined(FASTLED_STUB_IMPL) || defined(__APPLE__) || defined(__linux__) || defined(__unix__) || defined(__EMSCRIPTEN__)
 // Not on a microcontroller
 //#    ifdef FASTLED_HAS_PRAGMA_MESSAGE
@@ -71,12 +86,7 @@
 #error "This platform isn't recognized by FastLED... yet.  See comments in FastLED/led_sysdefs.h for options."
 #endif
 
-#include "namespace.h"
-
-// Arduino.h needed for convenience functions digitalPinToPort/BitMask/portOutputRegister and the pinMode methods.
-#if defined(ARDUINO)
-#include <Arduino.h>  // ok include
-#endif
+#include "fl/namespace.h"
 
 /// Clock cycles per microsecond. 
 /// Calculated using the F_CPU preprocessor define

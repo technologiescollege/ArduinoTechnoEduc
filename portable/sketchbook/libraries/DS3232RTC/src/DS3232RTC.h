@@ -11,6 +11,7 @@
 
 #include <Arduino.h>
 #include <TimeLib.h>        // https://github.com/PaulStoffregen/Time
+#include <GenericRTC.h>
 
 // define release-independent I2C functions
 #if defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
@@ -23,20 +24,20 @@
 #define i2cWrite TinyWireM.send
 #elif ARDUINO >= 100
 #include <Wire.h>
-#define i2cBegin Wire.begin
-#define i2cBeginTransmission Wire.beginTransmission
-#define i2cEndTransmission Wire.endTransmission
-#define i2cRequestFrom Wire.requestFrom
-#define i2cRead Wire.read
-#define i2cWrite Wire.write
+#define i2cBegin wire.begin
+#define i2cBeginTransmission wire.beginTransmission
+#define i2cEndTransmission wire.endTransmission
+#define i2cRequestFrom wire.requestFrom
+#define i2cRead wire.read
+#define i2cWrite wire.write
 #else
 #include <Wire.h>
-#define i2cBegin Wire.begin
-#define i2cBeginTransmission Wire.beginTransmission
-#define i2cEndTransmission Wire.endTransmission
-#define i2cRequestFrom Wire.requestFrom
-#define i2cRead Wire.receive
-#define i2cWrite Wire.send
+#define i2cBegin wire.begin
+#define i2cBeginTransmission wire.beginTransmission
+#define i2cEndTransmission wire.endTransmission
+#define i2cRequestFrom wire.requestFrom
+#define i2cRead wire.receive
+#define i2cWrite wire.send
 #endif
 
 #ifndef _BV
@@ -47,7 +48,7 @@
 #define BUFFER_LENGTH 32
 #endif
 
-class DS3232RTC
+class DS3232RTC : public GenericRTC
 {
     public:
         // Alarm masks
@@ -131,17 +132,16 @@ class DS3232RTC
             DS32_CENTURY     {7},        // Century bit in Month register
             DS32_DYDT        {6};        // Day/Date flag bit in alarm Day/Date registers
 
-        DS3232RTC() {};
-        DS3232RTC(bool initI2C) { (void)initI2C; }  // undocumented for backward compatibility
+        DS3232RTC(TwoWire& tw=Wire) : GenericRTC{tw} {};
         void begin();
-        static time_t get();    // static needed to work with setSyncProvider() in the Time library
-        uint8_t set(time_t t);
-        static uint8_t read(tmElements_t &tm);
+        time_t get();
+        uint8_t set(const time_t t);
+        uint8_t read(tmElements_t &tm);
         uint8_t write(tmElements_t &tm);
-        uint8_t writeRTC(uint8_t addr, uint8_t* values, uint8_t nBytes);
-        uint8_t writeRTC(uint8_t addr, uint8_t value);
-        uint8_t readRTC(uint8_t addr, uint8_t* values, uint8_t nBytes);
-        uint8_t readRTC(uint8_t addr);
+        uint8_t writeRTC(const uint8_t addr, const uint8_t* values, const uint8_t nBytes);
+        uint8_t writeRTC(const uint8_t addr, const uint8_t value);
+        uint8_t readRTC(const uint8_t addr, uint8_t* values, const uint8_t nBytes);
+        uint8_t readRTC(const uint8_t addr);
         void setAlarm(ALARM_TYPES_t alarmType, uint8_t seconds, uint8_t minutes, uint8_t hours, uint8_t daydate);
         void setAlarm(ALARM_TYPES_t alarmType, uint8_t minutes, uint8_t hours, uint8_t daydate);
         void alarmInterrupt(ALARM_NBR_t alarmNumber, bool alarmEnabled);
@@ -149,13 +149,15 @@ class DS3232RTC
         bool checkAlarm(ALARM_NBR_t alarmNumber);
         bool clearAlarm(ALARM_NBR_t alarmNumber);
         void squareWave(SQWAVE_FREQS_t freq);
+        void enable32kHz(bool enable);
         bool oscStopped(bool clearOSF = false);
         int16_t temperature();
-        static uint8_t errCode;
+        uint8_t errCode;
 
     private:
+        //TwoWire& wire;      // reference to Wire, Wire1, etc.
         uint8_t dec2bcd(uint8_t n);
-        static uint8_t bcd2dec(uint8_t n);
+        uint8_t bcd2dec(uint8_t n);
 };
 
 #endif

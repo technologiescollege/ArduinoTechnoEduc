@@ -1,3 +1,6 @@
+/// @file simplex.cpp
+/// Implements simplex noise functions
+
 #define FASTLED_INTERNAL
 #include "FastLED.h"
 
@@ -27,7 +30,9 @@
 
 FASTLED_NAMESPACE_BEGIN
 
-#define P(x) FL_PGM_READ_BYTE_NEAR(p + (x))
+namespace simplex_detail {
+
+#define SIMPLEX_P(x) FL_PGM_READ_BYTE_NEAR(simplex_detail::p + (x))
 
 // Permutation table. This is just a random jumble of all numbers.
 // This needs to be exactly the same for all instances on all platforms,
@@ -61,6 +66,8 @@ static uint8_t const simplex[64][4] = {
     {2, 0, 1, 3}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {3, 0, 1, 2}, {3, 0, 2, 1}, {0, 0, 0, 0}, {3, 1, 2, 0},
     {2, 1, 0, 3}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {3, 1, 0, 2}, {0, 0, 0, 0}, {3, 2, 0, 1}, {3, 2, 1, 0},
 };
+
+} // namespace simplex_detail
 
 // hash is 0..0xff, x is 0.12 fixed point
 // returns *.12 fixed-point value
@@ -105,12 +112,12 @@ uint16_t snoise16(uint32_t x) {
     int32_t t0 = 0x8000 - ((x0*x0)>>9);             // .15
     t0 = (t0 * t0) >> 15;                           // .15
     t0 = (t0 * t0) >> 15;                           // .15
-    int32_t n0 = (t0 * grad(P(i0&0xff), x0)) >> 12; // .15 * .12 = .15
+    int32_t n0 = (t0 * grad(SIMPLEX_P(i0&0xff), x0)) >> 12; // .15 * .12 = .15
 
     int32_t t1 = 0x8000 - ((x1*x1)>>9);             // .15
     t1 = (t1 * t1) >> 15;                           // .15
     t1 = (t1 * t1) >> 15;                           // .15
-    int32_t n1 = (t1 * grad(P(i1&0xff), x1)) >> 12; // .15 * .12 = .15
+    int32_t n1 = (t1 * grad(SIMPLEX_P(i1&0xff), x1)) >> 12; // .15 * .12 = .15
 
     int32_t n = n0 + n1;   // .15
     n += 2503;             // .15: fix offset, adjust to +0.03
@@ -161,21 +168,21 @@ uint16_t snoise16(uint32_t x, uint32_t y) {
     if (t0 > 0) {
         t0 = (t0 * t0) >> 16;                                      // .16
         t0 = (t0 * t0) >> 16;                                      // .16
-        n0 = t0 * grad(P((i+(uint32_t)(P(j&0xff)))&0xff), x0, y0); // .16 * .14 = .30
+        n0 = t0 * grad(SIMPLEX_P((i+(uint32_t)(SIMPLEX_P(j&0xff)))&0xff), x0, y0); // .16 * .14 = .30
     }
 
     int32_t t1 = (((int32_t)1 << 27) - x1*x1 - y1*y1) >> 12; // .16
     if (t1 > 0) {
         t1 = (t1 * t1) >> 16;                                              // .16
         t1 = (t1 * t1) >> 16;                                              // .16
-        n1 = t1 * grad(P((i+i1+(uint32_t)(P((j+j1)&0xff)))&0xff), x1, y1); // .16 * .14 = .30
+        n1 = t1 * grad(SIMPLEX_P((i+i1+(uint32_t)(SIMPLEX_P((j+j1)&0xff)))&0xff), x1, y1); // .16 * .14 = .30
     }
 
     int32_t t2 = (((int32_t)1 << 27) - x2*x2 - y2*y2) >> 12; // .16
     if (t2 > 0) {
         t2 = (t2 * t2) >> 16;                                            // .16
         t2 = (t2 * t2) >> 16;                                            // .16
-        n2 = t2 * grad(P((i+1+(uint32_t)(P((j+1)&0xff)))&0xff), x2, y2); // .16 * .14 = .30
+        n2 = t2 * grad(SIMPLEX_P((i+1+(uint32_t)(SIMPLEX_P((j+1)&0xff)))&0xff), x2, y2); // .16 * .14 = .30
     }
 
     // Add contributions from each corner to get the final noise value.
@@ -283,7 +290,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z) {
         t0 = (t0 * t0) >> 16; // .16
         t0 = (t0 * t0) >> 16; // .16
         // .16 * .14 = .30
-        n0 = t0 * grad(P((i+(uint32_t)P((j+(uint32_t)P(k&0xff))&0xff))&0xff), x0, y0, z0);
+        n0 = t0 * grad(SIMPLEX_P((i+(uint32_t)SIMPLEX_P((j+(uint32_t)SIMPLEX_P(k&0xff))&0xff))&0xff), x0, y0, z0);
     }
 
     int32_t t1 = (fix0_6 - x1*x1 - y1*y1 - z1*z1) >> 12; // .16
@@ -291,7 +298,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z) {
         t1 = (t1 * t1) >> 16; // .16
         t1 = (t1 * t1) >> 16; // .16
         // .16 * .14 = .30
-        n1 = t1 * grad(P((i+i1+(uint32_t)P((j+j1+(uint32_t)P((k+k1)&0xff))&0xff))&0xff), x1, y1, z1);
+        n1 = t1 * grad(SIMPLEX_P((i+i1+(uint32_t)SIMPLEX_P((j+j1+(uint32_t)SIMPLEX_P((k+k1)&0xff))&0xff))&0xff), x1, y1, z1);
     }
 
     int32_t t2 = (fix0_6 - x2*x2 - y2*y2 - z2*z2) >> 12; // .16
@@ -299,7 +306,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z) {
         t2 = (t2 * t2) >> 16; // .16
         t2 = (t2 * t2) >> 16; // .16
         // .16 * .14 = .30
-        n2 = t2 * grad(P((i+i2+(uint32_t)P((j+j2+(uint32_t)P((k+k2)&0xff))&0xff))&0xff), x2, y2, z2);
+        n2 = t2 * grad(SIMPLEX_P((i+i2+(uint32_t)SIMPLEX_P((j+j2+(uint32_t)SIMPLEX_P((k+k2)&0xff))&0xff))&0xff), x2, y2, z2);
     }
 
     int32_t t3 = (fix0_6 - x3*x3 - y3*y3 - z3*z3) >> 12; // .16
@@ -307,7 +314,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z) {
         t3 = (t3 * t3) >> 16; // .16
         t3 = (t3 * t3) >> 16; // .16
         // .16 * .14 = .30
-        n3 = t3 * grad(P((i+1+(uint32_t)P((j+1+(uint32_t)P((k+1)&0xff))&0xff))&0xff), x3, y3, z3);
+        n3 = t3 * grad(SIMPLEX_P((i+1+(uint32_t)SIMPLEX_P((j+1+(uint32_t)SIMPLEX_P((k+1)&0xff))&0xff))&0xff), x3, y3, z3);
     }
 
     // Add contributions from each corner to get the final noise value.
@@ -369,28 +376,28 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z, uint32_t w) {
         c += 1;
     }
 
-    // simplex[c] is a 4-vector with the numbers 0, 1, 2 and 3 in some order.
+    // simplex_detail::simplex[c] is a 4-vector with the numbers 0, 1, 2 and 3 in some order.
     // Many values of c will never occur, since e.g. x>y>z>w makes x<z, y<w and x<w
     // impossible. Only the 24 indices which have non-zero entries make any sense.
     // We use a thresholding to set the coordinates in turn from the largest magnitude.
     // The number 3 in the "simplex" array is at the position of the largest coordinate.
     // The integer offsets for the second simplex corner
-    uint32_t i1 = simplex[c][0] >= 3 ? 1 : 0;
-    uint32_t j1 = simplex[c][1] >= 3 ? 1 : 0;
-    uint32_t k1 = simplex[c][2] >= 3 ? 1 : 0;
-    uint32_t l1 = simplex[c][3] >= 3 ? 1 : 0;
+    uint32_t i1 = simplex_detail::simplex[c][0] >= 3 ? 1 : 0;
+    uint32_t j1 = simplex_detail::simplex[c][1] >= 3 ? 1 : 0;
+    uint32_t k1 = simplex_detail::simplex[c][2] >= 3 ? 1 : 0;
+    uint32_t l1 = simplex_detail::simplex[c][3] >= 3 ? 1 : 0;
     // The number 2 in the "simplex" array is at the second largest coordinate.
     // The integer offsets for the third simplex corner
-    uint32_t i2 = simplex[c][0] >= 2 ? 1 : 0;
-    uint32_t j2 = simplex[c][1] >= 2 ? 1 : 0;
-    uint32_t k2 = simplex[c][2] >= 2 ? 1 : 0;
-    uint32_t l2 = simplex[c][3] >= 2 ? 1 : 0;
+    uint32_t i2 = simplex_detail::simplex[c][0] >= 2 ? 1 : 0;
+    uint32_t j2 = simplex_detail::simplex[c][1] >= 2 ? 1 : 0;
+    uint32_t k2 = simplex_detail::simplex[c][2] >= 2 ? 1 : 0;
+    uint32_t l2 = simplex_detail::simplex[c][3] >= 2 ? 1 : 0;
     // The number 1 in the "simplex" array is at the second smallest coordinate.
     // The integer offsets for the fourth simplex corner
-    uint32_t i3 = simplex[c][0] >= 1 ? 1 : 0;
-    uint32_t j3 = simplex[c][1] >= 1 ? 1 : 0;
-    uint32_t k3 = simplex[c][2] >= 1 ? 1 : 0;
-    uint32_t l3 = simplex[c][3] >= 1 ? 1 : 0;
+    uint32_t i3 = simplex_detail::simplex[c][0] >= 1 ? 1 : 0;
+    uint32_t j3 = simplex_detail::simplex[c][1] >= 1 ? 1 : 0;
+    uint32_t k3 = simplex_detail::simplex[c][2] >= 1 ? 1 : 0;
+    uint32_t l3 = simplex_detail::simplex[c][3] >= 1 ? 1 : 0;
     // The fifth corner has all coordinate offsets = 1, so no need to look that up.
 
     int32_t x1 = x0 - ((int32_t)i1<<14) + (int32_t)(G4>>18); // .14: Offsets for second corner in (x,y,z,w) coords
@@ -419,7 +426,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z, uint32_t w) {
         t0 = (t0 * t0) >> 16;
         t0 = (t0 * t0) >> 16;
         // .16 * .14 = .30
-        n0 = t0 * grad(P((i+(uint32_t)(P((j+(uint32_t)(P((k+(uint32_t)(P(l&0xff)))&0xff)))&0xff)))&0xff), x0, y0, z0, w0);
+        n0 = t0 * grad(SIMPLEX_P((i+(uint32_t)(SIMPLEX_P((j+(uint32_t)(SIMPLEX_P((k+(uint32_t)(SIMPLEX_P(l&0xff)))&0xff)))&0xff)))&0xff), x0, y0, z0, w0);
     }
 
     int32_t t1 = (fix0_6 - x1*x1 - y1*y1 - z1*z1 - w1*w1) >> 12; // .16
@@ -427,7 +434,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z, uint32_t w) {
         t1 = (t1 * t1) >> 16;
         t1 = (t1 * t1) >> 16;
         // .16 * .14 = .30
-        n1 = t1 * grad(P((i+i1+(uint32_t)(P((j+j1+(uint32_t)(P((k+k1+(uint32_t)(P((l+l1)&0xff)))&0xff)))&0xff)))&0xff), x1, y1, z1, w1);
+        n1 = t1 * grad(SIMPLEX_P((i+i1+(uint32_t)(SIMPLEX_P((j+j1+(uint32_t)(SIMPLEX_P((k+k1+(uint32_t)(SIMPLEX_P((l+l1)&0xff)))&0xff)))&0xff)))&0xff), x1, y1, z1, w1);
     }
 
     int32_t t2 = (fix0_6 - x2*x2 - y2*y2 - z2*z2 - w2*w2) >> 12; // .16
@@ -435,7 +442,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z, uint32_t w) {
         t2 = (t2 * t2) >> 16;
         t2 = (t2 * t2) >> 16;
         // .16 * .14 = .30
-        n2 = t2 * grad(P((i+i2+(uint32_t)(P((j+j2+(uint32_t)(P((k+k2+(uint32_t)(P((l+l2)&0xff)))&0xff)))&0xff)))&0xff), x2, y2, z2, w2);
+        n2 = t2 * grad(SIMPLEX_P((i+i2+(uint32_t)(SIMPLEX_P((j+j2+(uint32_t)(SIMPLEX_P((k+k2+(uint32_t)(SIMPLEX_P((l+l2)&0xff)))&0xff)))&0xff)))&0xff), x2, y2, z2, w2);
     }
 
     int32_t t3 = (fix0_6 - x3*x3 - y3*y3 - z3*z3 - w3*w3) >> 12; // .16
@@ -443,7 +450,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z, uint32_t w) {
         t3 = (t3 * t3) >> 16;
         t3 = (t3 * t3) >> 16;
         // .16 * .14 = .30
-        n3 = t3 * grad(P((i+i3+(uint32_t)(P((j+j3+(uint32_t)(P((k+k3+(uint32_t)(P((l+l3)&0xff)))&0xff)))&0xff)))&0xff), x3, y3, z3, w3);
+        n3 = t3 * grad(SIMPLEX_P((i+i3+(uint32_t)(SIMPLEX_P((j+j3+(uint32_t)(SIMPLEX_P((k+k3+(uint32_t)(SIMPLEX_P((l+l3)&0xff)))&0xff)))&0xff)))&0xff), x3, y3, z3, w3);
     }
 
     int32_t t4 = (fix0_6 - x4*x4 - y4*y4 - z4*z4 - w4*w4) >> 12; // .16
@@ -451,7 +458,7 @@ uint16_t snoise16(uint32_t x, uint32_t y, uint32_t z, uint32_t w) {
         t4 = (t4 * t4) >> 16;
         t4 = (t4 * t4) >> 16;
         // .16 * .14 = .30
-        n4 = t4 * grad(P((i+1+(uint32_t)(P((j+1+(uint32_t)(P((k+1+(uint32_t)(P((l+1)&0xff)))&0xff)))&0xff)))&0xff), x4, y4, z4, w4);
+        n4 = t4 * grad(SIMPLEX_P((i+1+(uint32_t)(SIMPLEX_P((j+1+(uint32_t)(SIMPLEX_P((k+1+(uint32_t)(SIMPLEX_P((l+1)&0xff)))&0xff)))&0xff)))&0xff), x4, y4, z4, w4);
     }
 
     int32_t n = n0 + n1 + n2 + n3 + n4;  // .30

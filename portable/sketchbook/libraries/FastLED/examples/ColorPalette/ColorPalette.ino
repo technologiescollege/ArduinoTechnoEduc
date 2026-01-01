@@ -36,7 +36,18 @@ CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
 
 extern CRGBPalette16 myRedWhiteBluePalette;
-extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
+extern const TProgmemPalette16 myRedWhiteBluePalette_p FL_PROGMEM;
+
+// If you are using the fastled compiler, then you must declare your functions
+// before you use them. This is standard in C++ and C projects, but ino's are
+// special in that they do this for you. Eventually we will try to emulate this
+// feature ourselves but in the meantime you'll have to declare your functions
+// before you use them if you want to use our compiler.
+void ChangePalettePeriodically();
+void FillLEDsFromPaletteColors(uint8_t colorIndex);
+void SetupPurpleAndGreenPalette();
+void SetupTotallyRandomPalette();
+void SetupBlackAndWhiteStripedPalette();
 
 
 void setup() {
@@ -145,7 +156,7 @@ void SetupPurpleAndGreenPalette()
 // which is stored in PROGMEM (flash), which is almost always more
 // plentiful than RAM.  A static PROGMEM palette like this
 // takes up 64 bytes of flash.
-const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
+const TProgmemPalette16 myRedWhiteBluePalette_p FL_PROGMEM =
 {
     CRGB::Red,
     CRGB::Gray, // 'white' is too bright compared to red and blue

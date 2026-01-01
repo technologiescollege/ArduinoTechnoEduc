@@ -21,6 +21,10 @@
    should have been included with this software.
 
    This software is not intended for medical use.
+
+   For more information on the PulseSensor methods and functions
+   go to our Resources page
+   https://github.com/WorldFamousElectronics/PulseSensorPlayground/blob/master/resources/PulseSensor%20Playground%20Tools.md
 */
 
 /*
@@ -84,7 +88,7 @@ PulseSensorPlayground pulseSensor;
         Follow this tutorial:
         https://pulsesensor.com/pages/pulse-sensor-speaker-tutorial
 */
-const int SPEAKER_PIN = 3;    // speaker on pin3 makes a beep with your heartbeat
+const int SPEAKER_PIN = 3;    // speaker pin must have PWM capability!
 
 
 void setup() {
@@ -164,11 +168,11 @@ void loop() {
   */
     if (pulseSensor.sawNewSample()) {
       /*
-          Every so often, send the latest Sample.
+          Every 20 milliseconds, send the latest Sample.
           We don't print every sample, because our baud rate
           won't support that much I/O.
       */
-      if (--pulseSensor.samplesUntilReport == (byte) 0) {
+      if ((pulseSensor.samplesUntilReport--) == 0) {
         pulseSensor.samplesUntilReport = SAMPLES_PER_SERIAL_SAMPLE;
         pulseSensor.outputSample();
       }
@@ -196,12 +200,16 @@ void loop() {
 
 }
 /*
-  heartBeep(to beep or not to beep)
+  heartBeep(a pin, to beep or not to beep)
+    The pin parameter needs to be a PWM capable pin.
+    The beep parameter turns on or off the sound.
+    
   This function will reliably output a clean tone (500Hz on AVR, sounds about Bb). 
   You can try the tone() function that comes in the Arduino core if you want a different note, but it will be noisy.
     The Arduino tone() function starts up a hardware timer at a specific freqeuency, and initializes an interrupt.
     The problem with using tone() is that the interrupt needs to be called in order to toggle the pin at frequency.
-    The tone() interrupt collides with our PulseSensor interrupt and operations. Thankfully, tone() breaks and not PulseSensor!
+    The tone() interrupt collides with our PulseSensor interrupt and operations.
+    The collision causes noise in the tone(), and likely makes any BPM values incorrect!
     The arduino core needs to be updated so that the tone library operates 'hands free' like the PWM library.
     Or, the PWM library needs to be updated to accept a frequency parameter to ensure a clean(er) note.
     There are some architectures upon which the Tone library might work: nRF52? ESP32? 

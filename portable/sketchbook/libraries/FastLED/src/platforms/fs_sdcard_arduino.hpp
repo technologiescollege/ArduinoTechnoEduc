@@ -1,5 +1,7 @@
 #pragma once
 
+// fs card arduino implementation.
+
 #include "fs.h"
 
 #include <SPI.h>
@@ -9,54 +11,110 @@
 #include <SD.h>
 #endif
 
-#include "namespace.h"
-#include "ref.h"
 
-FASTLED_NAMESPACE_BEGIN
+
+#include "fl/namespace.h"
+#include "fl/memory.h"
+#include "fl/file_system.h"
+#include "fl/type_traits.h"
+
+namespace fl {
+
+// Forward declare the smart pointer type for FsArduino
+class FsArduino;
+FASTLED_SMART_PTR(FsArduino);
 
 #ifdef USE_SDFAT
 class SdFatFileHandle : public FileHandle {
 private:
     SdFile _file;
-    const char* _path;
+    Str _path;  // Changed to Str for proper memory management
 
 public:
-    SdFatFileHandle(SdFile file, const char* path) : _file(std::move(file)), _path(path) {}
-    ~SdFatFileHandle() override { _file.close(); }
+    SdFatFileHandle(SdFile file, const char* path) : _file(fl::move(file)), _path(path) {}
+    ~SdFatFileHandle() override { 
+        if (_file.isOpen()) {
+            _file.close(); 
+        }
+    }
 
     bool available() const override {
-        // return _file.available();
+        // SdFat's available() is not const, so we need const_cast
         auto f = const_cast<SdFatFileHandle*>(this);
-        return f->_file.available();
+        return f->_file.available() > 0;
     }
-    size_t size() const override { return _file.fileSize(); }
-    size_t read(uint8_t *dst, size_t bytesToRead) override { return _file.read(dst, bytesToRead); }
-    size_t pos() const override { return _file.curPosition(); }
-    const char* path() const override { return _path; }
-    void seek(size_t pos) override { _file.seekSet(pos); }
-    void close() override { _file.close(); }
+    fl::size size() const override { 
+        return _file.fileSize(); 
+    }
+    fl::size read(uint8_t *dst, fl::size bytesToRead) override { 
+        return _file.read(dst, bytesToRead); 
+    }
+    fl::size pos() const override { 
+        return _file.curPosition(); 
+    }
+    const char* path() const override { 
+        return _path.c_str(); 
+    }
+    bool seek(fl::size pos) override { 
+        return _file.seekSet(pos); 
+    }
+    void close() override { 
+        if (_file.isOpen()) {
+            _file.close(); 
+        }
+    }
+    bool valid() const override { 
+        return _file.isOpen(); 
+    }
 };
 #else
 class SDFileHandle : public FileHandle {
 private:
     File _file;
-    const char* _path;
+    Str _path;  // Changed to Str for proper memory management
 
 public:
     SDFileHandle(File file, const char* path) : _file(file), _path(path) {}
-    ~SDFileHandle() override { _file.close(); }
+    ~SDFileHandle() override { 
+        if (_file) {
+            _file.close(); 
+        }
+    }
 
     bool available() const override {
-        // return _file.available();
+        // Arduino's available() is not const, so we need const_cast
         auto f = const_cast<File&>(_file);
-        return f.available();
+        return f.available() > 0;
     }
-    size_t size() const override { return _file.size(); }
-    size_t read(uint8_t *dst, size_t bytesToRead) override { return _file.read(dst, bytesToRead); }
-    size_t pos() const override { return _file.position(); }
-    const char* path() const override { return _path; }
-    void seek(size_t pos) override { _file.seek(pos); }
-    void close() override { _file.close(); }
+    fl::size size() const override { 
+        // Arduino's size() is not const, so we need const_cast
+        auto f = const_cast<File&>(_file);
+        return f.size(); 
+    }
+    fl::size read(uint8_t *dst, fl::size bytesToRead) override { 
+        return _file.read(dst, bytesToRead); 
+    }
+    fl::size pos() const override { 
+        // Arduino's position() is not const, so we need const_cast
+        auto f = const_cast<File&>(_file);
+        return f.position(); 
+    }
+    const char* path() const override { 
+        return _path.c_str(); 
+    }
+    bool seek(fl::size pos) override { 
+        return _file.seek(pos); 
+    }
+    void close() override { 
+        if (_file) {
+            _file.close(); 
+        }
+    }
+    bool valid() const override { 
+        // Arduino's operator bool() is not const, so we need const_cast
+        auto f = const_cast<File&>(_file);
+        return f; 
+    }
 };
 #endif
 
@@ -72,49 +130,47 @@ public:
 
     bool begin() override {
 #ifdef USE_SDFAT
-        return _sd.begin(chipSelect, SPI_HALF_SPEED);
+        // Use the CS pin provided in constructor
+        return _sd.begin(_cs_pin, SPI_HALF_SPEED);
 #else
         return SD.begin(_cs_pin);
 #endif
     }
 
     void end() override {
-        // SD library doesn't have an end() method
+        // SD library doesn't have an end() method, but we can ensure files are closed
+        // Note: This is a limitation of the Arduino SD library
     }
 
-    FileHandleRef openRead(const char *name) override {
+    FileHandlePtr openRead(const char *name) override {
 #ifdef USE_SDFAT
         SdFile file;
-        if (!file.open(name, oflag)) {
-            return Ref<FileHandle>::TakeOwnership(nullptr);
+        // Open file for reading
+        if (!file.open(name, O_READ)) {
+            return FileHandlePtr();
         }
-        return Ref<FileHandle>::TakeOwnership(new SdFatFileHandle(std::move(file), name));
+        return fl::make_shared<SdFatFileHandle>(fl::move(file), name);
 #else
-
-        #ifdef ESP32
-        File file = SD.open(name);
-        #else
-        File file = SD.open(name);
-        #endif
+        File file = SD.open(name, FILE_READ);
         if (!file) {
-            return Ref<FileHandle>::TakeOwnership(nullptr);
+            return FileHandlePtr();
         }
-        return Ref<FileHandle>::TakeOwnership(new SDFileHandle(std::move(file), name));
+        return fl::make_shared<SDFileHandle>(fl::move(file), name);
 #endif
     }
 
-    void close(FileHandleRef file) override {
+    void close(FileHandlePtr file) override {
         // The close operation is now handled in the FileHandle wrapper classes
-        // This method is no longer necessary, but we keep it for compatibility
+        // This method ensures the file is properly closed
         if (file) {
             file->close();
         }
     }
 };
 
-inline FsImplRef make_sdcard_filesystem(int cs_pin) {
-    return FsImplRef::Null();
+// Implementation of the factory function to create SD card filesystem
+inline FsImplPtr make_sdcard_filesystem(int cs_pin) {
+    return fl::make_shared<FsArduino>(cs_pin);
 }
 
-
-FASTLED_NAMESPACE_END
+} // namespace fl

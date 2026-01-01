@@ -1,74 +1,37 @@
 #pragma once
 
-#include <stdint.h>
-#include <string.h>
 
+#include "fl/stdint.h"
 #include "crgb.h"
-#include "fixed_vector.h"
-#include "fx/fx.h"
-#include "namespace.h"
-#include "ref.h"
+#include "fl/namespace.h"
+#include "fl/memory.h"
+#include "fl/vector.h"
+#include "fl/warn.h"
 #include "fx/frame.h"
+#include "fx/fx.h"
 
-//#include <assert.h>
 
-FASTLED_NAMESPACE_BEGIN
+namespace fl {
 
-FASTLED_SMART_REF(FxLayer);
-class FxLayer : public Referent {
+FASTLED_SMART_PTR(FxLayer);
+class FxLayer {
   public:
-    void setFx(Ref<Fx> newFx) {
-        if (newFx != fx) {
-            release();
-            fx = newFx;
-        }
-    }
+    void setFx(fl::shared_ptr<Fx> newFx);
 
-    void draw(uint32_t now) {
-        //assert(fx);
-        if (!frame) {
-            frame = FrameRef::New(fx->getNumLeds());
-        }
+    void draw(fl::u32 now);
 
-        if (!running) {
-            // Clear the frame
-            memset(frame->rgb(), 0, frame->size() * sizeof(CRGB));
-            if (fx->hasAlphaChannel()) {
-                memset(frame->alpha(), 0, frame->size());
-            }
-            fx->resume();
-            running = true;
-        }
-        Fx::DrawContext context = {now, frame->rgb()};
-        if (fx->hasAlphaChannel()) {
-            context.alpha_channel = frame->alpha();
-        }
-        fx->draw(context);
-    }
+    void pause(fl::u32 now);
 
-    void pause() {
-        if (fx && running) {
-            fx->pause();
-            running = false;
-        }
-    }
+    void release();
 
-    void release() {
-        pause();
-        fx.reset();
-    }
+    fl::shared_ptr<Fx> getFx();
 
-    Ref<Fx> getFx() { return fx; }
-
-    CRGB *getSurface() { return frame->rgb(); }
-    uint8_t *getSurfaceAlpha() {
-        return fx->hasAlphaChannel() ? frame->alpha() : nullptr;
-    }
+    CRGB *getSurface();
 
   private:
-    Ref<Frame> frame;
-    Ref<Fx> fx;
+    fl::shared_ptr<Frame> frame;
+    fl::shared_ptr<Fx> fx;
     bool running = false;
 };
 
-FASTLED_NAMESPACE_END
+} // namespace fl

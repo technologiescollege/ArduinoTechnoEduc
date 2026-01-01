@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
+# pyright: reportUnknownMemberType=false
+
 import argparse
 import os
 import re
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any, List, Match, Optional
+
 
 HERE = Path(__file__).resolve().parent
 PROJECT_ROOT = HERE.parent
@@ -11,15 +16,26 @@ PROJECT_ROOT = HERE.parent
 IS_GITHUB = "GITHUB_ACTIONS" in os.environ
 
 
-def run_command(cmd, shell: bool = False, check=None, capture_output: bool = False):
-    check = check if check is not None else check
-    if shell:
-        cmd = subprocess.list2cmdline(cmd)
+def run_command(
+    cmd_list: List[str],
+    capture_output: bool = True,
+    shell: bool = False,
+    check: Optional[bool] = None,
+) -> Optional[str]:
+    """Run a command and return its output."""
+    actual_check = check if check is not None else False
+    cmd = cmd_list if not shell else subprocess.list2cmdline(cmd_list)
 
-    result = subprocess.run(
-        cmd, capture_output=capture_output, text=True, shell=shell, check=check
+    result: subprocess.CompletedProcess[str] = subprocess.run(
+        cmd, capture_output=capture_output, text=True, shell=shell, check=actual_check
     )
-    return result.stdout.strip() if capture_output else None
+
+    if not capture_output:
+        return None
+
+    stdout: str = result.stdout
+    stdout = stdout.strip()
+    return stdout
 
 
 def parse_args():
@@ -58,7 +74,9 @@ def main():
         cmd_list = [
             "uv",
             "run",
-            "ci/ci-compile.py",
+            "python",
+            "-m",
+            "ci.ci-compile",
             args.board,
             "--examples",
             args.example,
@@ -69,17 +87,21 @@ def main():
             run_command(cmd_list, shell=True, capture_output=False, check=True)
 
     output = run_command(
-        ["uv", "run", "ci/compiled_size.py", "--board", args.board],
+        ["uv", "run", "-m", "ci.compiled_size", "--board", args.board],
         capture_output=True,
     )
-    size_match = re.search(r": *(\d+)", output)
+    size_match = re.search(r": *(\d+)", output)  # type: ignore
 
     if not size_match:
         print("Error: Unable to extract size from output")
         print(f"Output: {output}")
         sys.exit(1)
 
-    size = int(size_match.group(1))
+    size_str = size_match.group(1)  # type: ignore
+    if not size_str:
+        print("Error: Size group is empty")
+        sys.exit(1)
+    size = int(size_str)  # type: ignore
 
     if args.max_size is not None and args.max_size > 0:
         max_size = args.max_size

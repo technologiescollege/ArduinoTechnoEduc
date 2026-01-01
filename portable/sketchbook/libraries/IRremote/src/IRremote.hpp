@@ -13,7 +13,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2015-2023 Ken Shirriff http://www.righto.com, Rafi Khan, Armin Joachimsmeyer
+ * Copyright (c) 2015-2025 Ken Shirriff http://www.righto.com, Rafi Khan, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,16 +46,21 @@
  *
  * - RAW_BUFFER_LENGTH                  Buffer size of raw input buffer. Must be even! 100 is sufficient for *regular* protocols of up to 48 bits.
  * - IR_SEND_PIN                        If specified (as constant), reduces program size and improves send timing for AVR.
+ * - USE_ACTIVE_LOW_OUTPUT_FOR_SEND_PIN Reverts the polarity at the send pin.
+ * - USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN Use or simulate open drain output mode at send pin. Attention, active state of open drain is LOW, so connect the send LED between positive supply and send pin!
  * - SEND_PWM_BY_TIMER                  Disable carrier PWM generation in software and use (restricted) hardware PWM.
  * - USE_NO_SEND_PWM                    Use no carrier PWM, just simulate an **active low** receiver signal. Overrides SEND_PWM_BY_TIMER definition.
- * - USE_OPEN_DRAIN_OUTPUT_FOR_SEND_PIN Use or simulate open drain output mode at send pin. Attention, active state of open drain is LOW, so connect the send LED between positive supply and send pin!
+ * - USE_ACTIVE_HIGH_OUTPUT_FOR_NO_SEND_PWM  Simulate an **active high** receiver signal instead of an active low signal.
  * - EXCLUDE_EXOTIC_PROTOCOLS           If activated, BANG_OLUFSEN, BOSEWAVE, WHYNTER, FAST and LEGO_PF are excluded in decode() and in sending with IrSender.write().
  * - EXCLUDE_UNIVERSAL_PROTOCOLS        If activated, the universal decoder for pulse distance protocols and decodeHash (special decoder for all protocols) are excluded in decode().
  * - DECODE_*                           Selection of individual protocols to be decoded. See below.
+ * - USE_THRESHOLD_DECODER              May give slightly better results especially for jittering signals and protocols with short 1 pulses / pauses.
  * - MARK_EXCESS_MICROS                 Value is subtracted from all marks and added to all spaces before decoding, to compensate for the signal forming of different IR receiver modules.
  * - RECORD_GAP_MICROS                  Minimum gap between IR transmissions, to detect the end of a protocol.
  * - FEEDBACK_LED_IS_ACTIVE_LOW         Required on some boards (like my BluePill and my ESP8266 board), where the feedback LED is active low.
  * - NO_LED_FEEDBACK_CODE               This completely disables the LED feedback code for send and receive.
+ * - NO_LED_RECEIVE_FEEDBACK_CODE       This disables the LED feedback code for receive.
+ * - NO_LED_SEND_FEEDBACK_CODE          This disables the LED feedback code for send.
  * - IR_INPUT_IS_ACTIVE_HIGH            Enable it if you use a RF receiver, which has an active HIGH output signal.
  * - IR_SEND_DUTY_CYCLE_PERCENT         Duty cycle of IR send signal.
  * - MICROS_PER_TICK                    Resolution of the raw input buffer data. Corresponds to 2 pulses of each 26.3 us at 38 kHz.
@@ -70,60 +75,7 @@
 // activate it for all cores that does not use the -flto flag, if you get false error messages regarding begin() during compilation.
 //#define SUPPRESS_ERROR_MESSAGE_FOR_BEGIN
 
-/*
- * If activated, BANG_OLUFSEN, BOSEWAVE, MAGIQUEST, WHYNTER, FAST and LEGO_PF are excluded in decoding and in sending with IrSender.write
- */
-//#define EXCLUDE_EXOTIC_PROTOCOLS
-/****************************************************
- *                     PROTOCOLS
- ****************************************************/
-/*
- * Supported IR protocols
- * Each protocol you include costs memory and, during decode, costs time
- * Copy the lines with the protocols you need in your program before the  #include <IRremote.hpp> line
- * See also SimpleReceiver example
- */
-
-#if !defined(NO_DECODER) // for sending raw only
-#  if (!(defined(DECODE_DENON) || defined(DECODE_JVC) || defined(DECODE_KASEIKYO) \
-|| defined(DECODE_PANASONIC) || defined(DECODE_LG) || defined(DECODE_NEC) || defined(DECODE_ONKYO) || defined(DECODE_SAMSUNG) \
-|| defined(DECODE_SONY) || defined(DECODE_RC5) || defined(DECODE_RC6) \
-|| defined(DECODE_DISTANCE_WIDTH) || defined(DECODE_HASH) || defined(DECODE_BOSEWAVE) \
-|| defined(DECODE_LEGO_PF) || defined(DECODE_MAGIQUEST) || defined(DECODE_FAST) || defined(DECODE_WHYNTER)))
-/*
- * If no protocol is explicitly enabled, we enable all protocols
- */
-#define DECODE_DENON        // Includes Sharp
-#define DECODE_JVC
-#define DECODE_KASEIKYO
-#define DECODE_PANASONIC    // alias for DECODE_KASEIKYO
-#define DECODE_LG
-#define DECODE_NEC          // Includes Apple and Onkyo
-#define DECODE_SAMSUNG
-#define DECODE_SONY
-#define DECODE_RC5
-#define DECODE_RC6
-
-#    if !defined(EXCLUDE_EXOTIC_PROTOCOLS) // saves around 2000 bytes program memory
-#define DECODE_BOSEWAVE
-#define DECODE_LEGO_PF
-#define DECODE_MAGIQUEST
-#define DECODE_WHYNTER
-#define DECODE_FAST
-#    endif
-
-#    if !defined(EXCLUDE_UNIVERSAL_PROTOCOLS)
-#define DECODE_DISTANCE_WIDTH     // universal decoder for pulse distance width protocols - requires up to 750 bytes additional program memory
-#define DECODE_HASH         // special decoder for all protocols - requires up to 250 bytes additional program memory
-#    endif
-#  endif
-#endif // !defined(NO_DECODER)
-
-//#define DECODE_BEO // Bang & Olufsen protocol always must be enabled explicitly. It prevents decoding of SONY!
-
-#if defined(DECODE_NEC) && !(~(~DECODE_NEC + 0) == 0 && ~(~DECODE_NEC + 1) == 1)
-#warning "The macros DECODE_XXX no longer require a value. Decoding is now switched by defining / non defining the macro."
-#endif
+#include "IRProtocol.h"
 
 //#define DEBUG // Activate this for lots of lovely debug output from the IRremote core.
 
@@ -132,22 +84,26 @@
  ****************************************************/
 /**
  * MARK_EXCESS_MICROS is subtracted from all marks and added to all spaces before decoding,
- * to compensate for the signal forming of different IR receiver modules
+ * to compensate for the signal forming of different IR receiver modules.
+ * 20 is taken as default if not otherwise specified / defined.
  * For Vishay TSOP*, marks tend to be too long and spaces tend to be too short.
- * If you set MARK_EXCESS_MICROS to approx. 50us then the TSOP4838 works best.
- * At 100us it also worked, but not as well.
- * Set MARK_EXCESS to 100us and the VS1838 doesn't work at all.
- *
- * The right value is critical for IR codes using short pulses like Denon / Sharp / Lego
+ * If you set MARK_EXCESS_MICROS to approx. 40 to 50 us then the TSOP4838 works best.
+ * At 100 us it also worked, but not as well.
+ * Set MARK_EXCESS to 100 us and the VS1838 doesn't work at all.
  *
  *  Observed values:
- *  Delta of each signal type is around 50 up to 100 and at low signals up to 200. TSOP is better, especially at low IR signal level.
- *  VS1838      Mark Excess -50 at low intensity to +50 us at high intensity
+ *  Delta of each signal type is around 50 up to 100 us and at low signals up to 200 us.
+ *  TSOP is better, especially at low IR signal level.
+ *  VS1838      Mark Excess -50 us at low intensity to +50 us at high intensity
  *  TSOP31238   Mark Excess 0 to +50
  */
 #if !defined(MARK_EXCESS_MICROS)
-// To change this value, you simply can add a line #define "MARK_EXCESS_MICROS <My_new_value>" in your ino file before the line "#include <IRremote.hpp>"
-#define MARK_EXCESS_MICROS    20
+#  if defined(USE_THRESHOLD_DECODER)
+#define MARK_EXCESS_MICROS    0 // MARK_EXCESS_MICROS is not very relevant here, so we set it to 0 to save up to 164 bytes programming space
+#  else
+// To override this value, you simply can add a line #define "MARK_EXCESS_MICROS <My_new_value>" in your ino file before the line "#include <IRremote.hpp>"
+#define MARK_EXCESS_MICROS    20 // a value != 0 requires up to 100 bytes program space
+#  endif
 #endif
 
 /**
@@ -243,6 +199,7 @@
 #define IR_SEND_DUTY_CYCLE_PERCENT 30 // 30 saves power and is compatible to the old existing code
 #endif
 
+
 /**
  * microseconds per clock interrupt tick
  */
@@ -254,17 +211,33 @@
 #define MICROS_IN_ONE_SECOND 1000000L
 #define MICROS_IN_ONE_MILLI 1000L
 
+#if defined(NO_LED_FEEDBACK_CODE)
+// convert to receive and send macros
+#  if !defined(NO_LED_RECEIVE_FEEDBACK_CODE)
+#define NO_LED_RECEIVE_FEEDBACK_CODE
+#  endif
+#  if !defined(NO_LED_SEND_FEEDBACK_CODE)
+#define NO_LED_SEND_FEEDBACK_CODE
+#  endif
+#endif
+#if defined(NO_LED_RECEIVE_FEEDBACK_CODE) && defined(NO_LED_SEND_FEEDBACK_CODE) && !defined(NO_LED_FEEDBACK_CODE)
+#define NO_LED_FEEDBACK_CODE
+#endif
+
 #include "IRremoteInt.h"
 /*
  * We always use digitalWriteFast() and digitalReadFast() functions to have a consistent mapping for pins.
  * For most non AVR cpu's, it is just a mapping to digitalWrite() and digitalRead() functions.
  */
+#if !defined(MEGATINYCORE) // megaTinyCore has it own digitalWriteFast function set, except digitalToggleFast().
 #include "digitalWriteFast.h"
+#endif
 
 #if !defined(USE_IRREMOTE_HPP_AS_PLAIN_INCLUDE)
 #include "private/IRTimer.hpp"  // defines IR_SEND_PIN for AVR and SEND_PWM_BY_TIMER
 
-#  if !defined(NO_LED_FEEDBACK_CODE)
+#  if !defined(NO_LED_FEEDBACK_CODE) && !(defined(DISABLE_CODE_FOR_RECEIVER) && defined(NO_LED_SEND_FEEDBACK_CODE))
+// Led feedback code enabled here
 #    if !defined(LED_BUILTIN)
 /*
  * print a warning
@@ -306,7 +279,7 @@ void disableLEDFeedback() {}; // dummy function for examples
 #include "ir_Others.hpp"
 #include "ir_Pronto.hpp" // pronto is an universal decoder and encoder
 #  if defined(DECODE_DISTANCE_WIDTH)     // universal decoder for pulse distance width protocols - requires up to 750 bytes additional program memory
-#include <ir_DistanceWidthProtocol.hpp>
+#include "ir_DistanceWidthProtocol.hpp"
 #  endif
 #endif // #if !defined(USE_IRREMOTE_HPP_AS_PLAIN_INCLUDE)
 

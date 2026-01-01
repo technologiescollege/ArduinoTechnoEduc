@@ -1,13 +1,14 @@
 // Compile with: g++ --std=c++11 test.cpp
 
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "test.h"
 
-#include "doctest.h"
-#include "fx/storage/bytestreammemory.h"
-#include "fx/detail/data_stream.h"
+#include "test.h"
+#include "fl/bytestreammemory.h"
+#include "fx/video/pixel_stream.h"
 
-#include "namespace.h"
-FASTLED_USING_NAMESPACE
+#include "fl/namespace.h"
+
+using namespace fl;
 
 TEST_CASE("ByteStreamMemory basic operations") {
 
@@ -217,7 +218,7 @@ TEST_CASE("byte stream memory basic operations") {
     
     // Create a ByteStreamMemory
     const uint32_t BUFFER_SIZE = BYTES_PER_FRAME * 10; // Enough for 10 frames
-    ByteStreamMemoryRef memoryStream = ByteStreamMemoryRef::New(BUFFER_SIZE);
+    ByteStreamMemoryPtr memoryStream = fl::make_shared<ByteStreamMemory>(BUFFER_SIZE);
 
     // Fill the ByteStreamMemory with test data
     uint8_t testData[BUFFER_SIZE];
@@ -226,13 +227,13 @@ TEST_CASE("byte stream memory basic operations") {
     }
     memoryStream->write(testData, BUFFER_SIZE);
 
-    // Create and initialize DataStream
-    DataStreamRef stream = DataStreamRef::New(BYTES_PER_FRAME);
+    // Create and initialize PixelStream
+    PixelStreamPtr stream = fl::make_shared<PixelStream>(BYTES_PER_FRAME);
     bool initSuccess = stream->beginStream(memoryStream);
     REQUIRE(initSuccess);
 
     // Test basic properties
-    CHECK(stream->getType() == DataStream::kStreaming);
+    CHECK(stream->getType() == PixelStream::kStreaming);
     CHECK(stream->bytesPerFrame() == BYTES_PER_FRAME);
 
     // Read a pixel
@@ -252,8 +253,8 @@ TEST_CASE("byte stream memory basic operations") {
     }
 
     // Check frame counting - streaming mode doesn't support this.
-    //CHECK(DataStream->framesDisplayed() == 0);
-    //CHECK(DataStream->framesRemaining() == 10); // We have 10 frames of data
+    //CHECK(PixelStream->framesDisplayed() == 0);
+    //CHECK(PixelStream->framesRemaining() == 10); // We have 10 frames of data
 
     // Close the stream
     stream->close();

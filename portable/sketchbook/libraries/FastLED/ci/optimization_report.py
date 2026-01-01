@@ -18,6 +18,12 @@ def main() -> int:
         root_build_dir = args.cwd / ".build"
     else:
         root_build_dir = Path(".build")
+
+    # Support nested PlatformIO structure: .build/pio/<board>
+    nested_pio_dir = root_build_dir / "pio"
+    if nested_pio_dir.is_dir():
+        root_build_dir = nested_pio_dir
+
     board_dirs = [d for d in root_build_dir.iterdir() if d.is_dir()]
     if not board_dirs:
         print(f"No board directories found in {root_build_dir.absolute()}")
@@ -33,7 +39,7 @@ def main() -> int:
     board_dir = board_dirs[which]
     # build_info_json = board_dir / "build_info.json"
     optimization_report = board_dir / "optimization_report.txt"
-    text = optimization_report.read_text()
+    text = optimization_report.read_text(encoding="utf-8", errors="replace")
     print(text)
     return 0
 

@@ -9,7 +9,7 @@ void setup() {
 	ESP32PWM::allocateTimer(2);
 	ESP32PWM::allocateTimer(3);
 	Serial.begin(115200);
-	pwm.attachPin(APin, freq, 10); // 1KHz 8 bit
+	pwm.attachPin(APin, freq, 10); // 1KHz 10 bits
 
 }
 void loop() {

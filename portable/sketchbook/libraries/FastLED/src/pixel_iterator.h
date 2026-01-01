@@ -1,17 +1,26 @@
+/// @file pixel_iterator.h
+/// Non-templated low level pixel data writing class
 
 #pragma once
 
-#include <stddef.h>
-#include <stdint.h>
-#include <string.h>
+#include "fl/stdint.h"
+#include "fl/string.h"
 
-#include "namespace.h"
+
 #include "rgbw.h"
 
 #include "crgb.h"
 
-FASTLED_NAMESPACE_BEGIN
+namespace fl {
 
+#ifndef FASTLED_PIXEL_ITERATOR_HAS_APA102_HD
+// Takes more memory, so disable by default.
+#define FASTLED_PIXEL_ITERATOR_HAS_APA102_HD 0
+#endif
+
+// Due to to the template nature of the PixelController class, the only way we can make
+// it a concrete polymorphic class is to manually bind the functions and make our own
+// vtable. The PixelControllerVtable is cheaper than doing fl::function<>.
 template<typename PixelControllerT>
 struct PixelControllerVtable {
   static void loadAndScaleRGBW(void* pixel_controller, Rgbw rgbw, uint8_t* b0_out, uint8_t* b1_out, uint8_t* b2_out, uint8_t* b3_out) {
@@ -24,9 +33,18 @@ struct PixelControllerVtable {
     pc->loadAndScaleRGB(r_out, g_out, b_out);
   }
 
+  #if FASTLED_PIXEL_ITERATOR_HAS_APA102_HD
+
   static void loadAndScale_APA102_HD(void* pixel_controller, uint8_t* b0_out, uint8_t* b1_out, uint8_t* b2_out, uint8_t* brightness_out) {
     PixelControllerT* pc = static_cast<PixelControllerT*>(pixel_controller);
     pc->loadAndScale_APA102_HD(b0_out, b1_out, b2_out, brightness_out);
+  }
+
+  #endif
+
+  static void loadAndScale_WS2816_HD(void* pixel_controller, uint16_t *s0_out, uint16_t* s1_out, uint16_t* s2_out) {
+    PixelControllerT* pc = static_cast<PixelControllerT*>(pixel_controller);
+    pc->loadAndScale_WS2816_HD(s0_out, s1_out, s2_out);
   }
 
   static void stepDithering(void* pixel_controller) {
@@ -59,7 +77,10 @@ struct PixelControllerVtable {
 
 typedef void (*loadAndScaleRGBWFunction)(void* pixel_controller, Rgbw rgbw, uint8_t* b0_out, uint8_t* b1_out, uint8_t* b2_out, uint8_t* b3_out);
 typedef void (*loadAndScaleRGBFunction)(void* pixel_controller, uint8_t* r_out, uint8_t* g_out, uint8_t* b_out);
+#if FASTLED_PIXEL_ITERATOR_HAS_APA102_HD
 typedef void (*loadAndScale_APA102_HDFunction)(void* pixel_controller, uint8_t* b0_out, uint8_t* b1_out, uint8_t* b2_out, uint8_t* brightness_out);
+#endif
+typedef void (*loadAndScale_WS2816_HDFunction)(void* pixel_controller, uint16_t* b0_out, uint16_t* b1_out, uint16_t* b2_out);
 typedef void (*stepDitheringFunction)(void* pixel_controller);
 typedef void (*advanceDataFunction)(void* pixel_controller);
 typedef int (*sizeFunction)(void* pixel_controller);
@@ -71,6 +92,9 @@ typedef void (*getHdScaleFunction)(void* pixel_controller, uint8_t* c0, uint8_t*
 // PixelIterator is turns a PixelController<> into a concrete object that can be used to iterate
 // over pixels and transform them into driver data. See PixelController<>::as_iterator() for how
 // to create a PixelIterator.
+// Note: This is designed for micro-controllers with a lot of memory. DO NOT use this in the core library
+// as a PixelIterator consumes a *lot* more instruction data than an instance of PixelController<RGB_ORDER>.
+// This iterator is designed for code in src/platforms/**.
 class PixelIterator {
   public:
     template<typename PixelControllerT>
@@ -103,7 +127,10 @@ class PixelIterator {
       typedef PixelControllerVtable<PixelControllerT> Vtable;
       mLoadAndScaleRGBW = &Vtable::loadAndScaleRGBW;
       mLoadAndScaleRGB = &Vtable::loadAndScaleRGB;
+      #if FASTLED_PIXEL_ITERATOR_HAS_APA102_HD
       mLoadAndScale_APA102_HD = &Vtable::loadAndScale_APA102_HD;
+      #endif
+      mLoadAndScale_WS2816_HD = &Vtable::loadAndScale_WS2816_HD;
       mStepDithering = &Vtable::stepDithering;
       mAdvanceData = &Vtable::advanceData;
       mSize = &Vtable::size;
@@ -120,8 +147,13 @@ class PixelIterator {
     void loadAndScaleRGB(uint8_t *r_out, uint8_t *g_out, uint8_t *b_out) {
       mLoadAndScaleRGB(mPixelController, r_out, g_out, b_out);
     }
+    #if FASTLED_PIXEL_ITERATOR_HAS_APA102_HD
     void loadAndScale_APA102_HD(uint8_t *b0_out, uint8_t *b1_out, uint8_t *b2_out, uint8_t *brightness_out) {
       mLoadAndScale_APA102_HD(mPixelController, b0_out, b1_out, b2_out, brightness_out);
+    }
+    #endif
+    void loadAndScale_WS2816_HD(uint16_t *s0_out, uint16_t *s1_out, uint16_t *s2_out) {
+      mLoadAndScale_WS2816_HD(mPixelController, s0_out, s1_out, s2_out);
     }
     void stepDithering() { mStepDithering(mPixelController); }
     void advanceData() { mAdvanceData(mPixelController); }
@@ -142,7 +174,10 @@ class PixelIterator {
     Rgbw mRgbw;
     loadAndScaleRGBWFunction mLoadAndScaleRGBW = nullptr;
     loadAndScaleRGBFunction mLoadAndScaleRGB = nullptr;
+    #if FASTLED_PIXEL_ITERATOR_HAS_APA102_HD
     loadAndScale_APA102_HDFunction mLoadAndScale_APA102_HD = nullptr;
+    #endif
+    loadAndScale_WS2816_HDFunction mLoadAndScale_WS2816_HD = nullptr;
     stepDitheringFunction mStepDithering = nullptr;
     advanceDataFunction mAdvanceData = nullptr;
     sizeFunction mSize = nullptr;
@@ -152,5 +187,7 @@ class PixelIterator {
     #endif
 };
 
+}  // namespace
 
-FASTLED_NAMESPACE_END
+
+using PixelIterator = fl::PixelIterator;

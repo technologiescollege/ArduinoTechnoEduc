@@ -23,7 +23,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2009-2024 Ken Shirriff, Armin Joachimsmeyer
+ * Copyright (c) 2009-2025 Ken Shirriff, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,7 +58,7 @@
 //#define DECODE_KASEIKYO
 //#define DECODE_PANASONIC    // alias for DECODE_KASEIKYO
 //#define DECODE_LG
-#define DECODE_NEC          // Includes Apple and Onkyo
+//#define DECODE_NEC          // Includes Apple and Onkyo
 //#define DECODE_SAMSUNG
 //#define DECODE_SONY
 //#define DECODE_RC5
@@ -72,22 +72,24 @@
 //
 
 #if !defined(RAW_BUFFER_LENGTH)
-// For air condition remotes it requires 750. Default is 200.
+// For air condition remotes it may require up to 750. Default is 200.
 #  if !((defined(RAMEND) && RAMEND <= 0x4FF) || (defined(RAMSIZE) && RAMSIZE < 0x4FF))
-#define RAW_BUFFER_LENGTH  750
+#define RAW_BUFFER_LENGTH  700 // we require 2 buffer of this size for this example
 #  endif
 #endif
 
 //#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program memory.
-//#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 650 bytes program memory if all other protocols are active
+#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 650 bytes program memory if all other protocols are active
 //#define NO_LED_FEEDBACK_CODE      // saves 92 bytes program memory
 //#define RECORD_GAP_MICROS 12000   // Default is 8000. Activate it for some LG air conditioner protocols
 //#define SEND_PWM_BY_TIMER         // Disable carrier PWM generation in software and use (restricted) hardware PWM.
 //#define USE_NO_SEND_PWM           // Use no carrier PWM, just simulate an active low receiver signal. Overrides SEND_PWM_BY_TIMER definition
+//#define NO_LED_FEEDBACK_CODE      // Saves 202 bytes program memory
 
 // MARK_EXCESS_MICROS is subtracted from all marks and added to all spaces before decoding,
-// to compensate for the signal forming of different IR receiver modules. See also IRremote.hpp line 142.
-#define MARK_EXCESS_MICROS    20    // Adapt it to your IR receiver module. 20 is recommended for the cheap VS1838 modules.
+// to compensate for the signal forming of different IR receiver modules. See also IRremote.hpp line 135.
+// 20 is taken as default if not otherwise specified / defined.
+//#define MARK_EXCESS_MICROS    40    // Adapt it to your IR receiver module. 40 is recommended for the cheap VS1838 modules at high intensity.
 
 //#define DEBUG // Activate this for lots of lovely debug output from the decoders.
 
@@ -114,8 +116,6 @@ void setup() {
     pinMode(SEND_BUTTON_PIN, INPUT_PULLUP);
 
     Serial.begin(115200);
-    while (!Serial)
-        ; // Wait for Serial to become available. Is optimized away for some cores.
 
 #if defined(__AVR_ATmega32U4__) || defined(SERIAL_PORT_USBVIRTUAL) || defined(SERIAL_USB) /*stm32duino*/|| defined(USBCON) /*STM32_stm32*/ \
     || defined(SERIALUSB_PID)  || defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_attiny3217)
@@ -130,9 +130,14 @@ void setup() {
     printActiveIRProtocols(&Serial);
     Serial.println(F("at pin " STR(IR_RECEIVE_PIN)));
 
-    IrSender.begin(); // Start with IR_SEND_PIN -which is defined in PinDefinitionsAndMore.h- as send pin and enable feedback LED at default feedback LED pin
-    Serial.print(F("Ready to send IR signals at pin " STR(IR_SEND_PIN) " on press of button at pin "));
-    Serial.println(SEND_BUTTON_PIN);
+    /*
+     * No IR library setup required :-)
+     * Default is to use IR_SEND_PIN -which is defined in PinDefinitionsAndMore.h- as send pin
+     * and use feedback LED at default feedback LED pin if not disabled by #define NO_LED_SEND_FEEDBACK_CODE
+     */
+    Serial.print(F("Ready to send IR signal (with repeats) at pin " STR(IR_SEND_PIN) " as long as button at pin "));
+    Serial.print(SEND_BUTTON_PIN);
+    Serial.println(F(" is pressed."));
 }
 
 void loop() {
@@ -169,6 +174,7 @@ void loop() {
         // Restart receiver
         Serial.println(F("Button released -> start receiving"));
         IrReceiver.start();
+        delay(100); // Button debouncing
 
     } else if (IrReceiver.decode()) {
         /*
@@ -179,15 +185,14 @@ void loop() {
     }
 
     sSendButtonWasActive = tSendButtonIsActive;
-    delay(100);
 }
 
 // Stores the code for later playback in sStoredIRData
 // Most of this code is just logging
 void storeCode() {
-    if (IrReceiver.decodedIRData.rawDataPtr->rawlen < 4) {
+    if (IrReceiver.irparams.rawlen < 4) {
         Serial.print(F("Ignore data with rawlen="));
-        Serial.println(IrReceiver.decodedIRData.rawDataPtr->rawlen);
+        Serial.println(IrReceiver.irparams.rawlen);
         return;
     }
     if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_IS_REPEAT) {
@@ -202,21 +207,31 @@ void storeCode() {
         Serial.println(F("Ignore parity error"));
         return;
     }
+    if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_WAS_OVERFLOW) {
+        Serial.println(F("Overflow occurred, raw data did not fit into " STR(RAW_BUFFER_LENGTH) " byte raw buffer"));
+        return;
+    }
     /*
      * Copy decoded data
      */
     sStoredIRData.receivedIRData = IrReceiver.decodedIRData;
 
-    if (sStoredIRData.receivedIRData.protocol == UNKNOWN) {
-        Serial.print(F("Received unknown code and store "));
-        Serial.print(IrReceiver.decodedIRData.rawDataPtr->rawlen - 1);
-        Serial.println(F(" timing entries as raw "));
-        IrReceiver.printIRResultRawFormatted(&Serial, true); // Output the results in RAW format
-        sStoredIRData.rawCodeLength = IrReceiver.decodedIRData.rawDataPtr->rawlen - 1;
+    auto tProtocol = sStoredIRData.receivedIRData.protocol;
+    if (tProtocol == UNKNOWN || tProtocol == PULSE_WIDTH || tProtocol == PULSE_DISTANCE) {
+        // TODO: support PULSE_WIDTH and PULSE_DISTANCE with IrSender.write
+        sStoredIRData.rawCodeLength = IrReceiver.irparams.rawlen - 1;
         /*
          * Store the current raw data in a dedicated array for later usage
          */
         IrReceiver.compensateAndStoreIRResultInArray(sStoredIRData.rawCode);
+        /*
+         * Print info
+         */
+        Serial.print(F("Received unknown or pulse width/distance code and store "));
+        Serial.print(IrReceiver.irparams.rawlen - 1);
+        Serial.println(F(" timing entries as raw in buffer of size " STR(RAW_BUFFER_LENGTH)));
+        IrReceiver.printIRResultRawFormatted(&Serial, true); // Output the results in RAW format
+
     } else {
         IrReceiver.printIRResultShort(&Serial);
         IrReceiver.printIRSendUsage(&Serial);
@@ -226,7 +241,8 @@ void storeCode() {
 }
 
 void sendCode(storedIRDataStruct *aIRDataToSend) {
-    if (aIRDataToSend->receivedIRData.protocol == UNKNOWN /* i.e. raw */) {
+    auto tProtocol = aIRDataToSend->receivedIRData.protocol;
+    if (tProtocol == UNKNOWN || tProtocol == PULSE_WIDTH || tProtocol == PULSE_DISTANCE /* i.e. raw */) {
         // Assume 38 KHz
         IrSender.sendRaw(aIRDataToSend->rawCode, aIRDataToSend->rawCodeLength, 38);
 
@@ -234,12 +250,11 @@ void sendCode(storedIRDataStruct *aIRDataToSend) {
         Serial.print(aIRDataToSend->rawCodeLength);
         Serial.println(F(" marks or spaces"));
     } else {
-
         /*
          * Use the write function, which does the switch for different protocols
          */
         IrSender.write(&aIRDataToSend->receivedIRData);
-        printIRResultShort(&Serial, &aIRDataToSend->receivedIRData, false);
+        printIRDataShort(&Serial, &aIRDataToSend->receivedIRData);
     }
 }
 

@@ -8,7 +8,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2017-2024 Darryl Smith, Armin Joachimsmeyer
+ * Copyright (c) 2017-2025 Darryl Smith, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@
 #ifndef _IR_LG_HPP
 #define _IR_LG_HPP
 
-#if defined(DEBUG) && !defined(LOCAL_DEBUG)
+#if defined(DEBUG)
 #define LOCAL_DEBUG
 #else
 //#define LOCAL_DEBUG // This enables debug output only for this file
@@ -114,11 +114,11 @@
 //#define LG_REPEAT_DURATION      (LG_HEADER_MARK  + LG_REPEAT_HEADER_SPACE + LG_BIT_MARK)
 //#define LG_REPEAT_DISTANCE      (LG_REPEAT_PERIOD - LG_AVERAGE_DURATION) // 52 ms
 
-struct PulseDistanceWidthProtocolConstants LGProtocolConstants = { LG, LG_KHZ, LG_HEADER_MARK, LG_HEADER_SPACE, LG_BIT_MARK,
-LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, PROTOCOL_IS_MSB_FIRST, (LG_REPEAT_PERIOD / MICROS_IN_ONE_MILLI), &sendNECSpecialRepeat };
+struct PulseDistanceWidthProtocolConstants const LGProtocolConstants PROGMEM= {LG, LG_KHZ, LG_HEADER_MARK, LG_HEADER_SPACE, LG_BIT_MARK,
+    LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, PROTOCOL_IS_MSB_FIRST | PROTOCOL_IS_PULSE_DISTANCE, (LG_REPEAT_PERIOD / MICROS_IN_ONE_MILLI), &sendNECSpecialRepeat};
 
-struct PulseDistanceWidthProtocolConstants LG2ProtocolConstants = { LG2, LG_KHZ, LG2_HEADER_MARK, LG2_HEADER_SPACE, LG_BIT_MARK,
-LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, PROTOCOL_IS_MSB_FIRST, (LG_REPEAT_PERIOD / MICROS_IN_ONE_MILLI), &sendLG2SpecialRepeat };
+struct PulseDistanceWidthProtocolConstants const LG2ProtocolConstants PROGMEM = {LG2, LG_KHZ, LG2_HEADER_MARK, LG2_HEADER_SPACE, LG_BIT_MARK,
+    LG_ONE_SPACE, LG_BIT_MARK, LG_ZERO_SPACE, PROTOCOL_IS_MSB_FIRST | PROTOCOL_IS_PULSE_DISTANCE, (LG_REPEAT_PERIOD / MICROS_IN_ONE_MILLI), &sendLG2SpecialRepeat};
 
 /************************************
  * Start of send and decode functions
@@ -163,14 +163,14 @@ uint32_t IRsend::computeLGRawDataAndChecksum(uint8_t aAddress, uint16_t aCommand
  * LG uses the NEC repeat.
  */
 void IRsend::sendLG(uint8_t aAddress, uint16_t aCommand, int_fast8_t aNumberOfRepeats) {
-    sendPulseDistanceWidth(&LGProtocolConstants, computeLGRawDataAndChecksum(aAddress, aCommand), LG_BITS, aNumberOfRepeats);
+    sendPulseDistanceWidth_P(&LGProtocolConstants, computeLGRawDataAndChecksum(aAddress, aCommand), LG_BITS, aNumberOfRepeats);
 }
 
 /**
  * LG2 uses a special repeat.
  */
 void IRsend::sendLG2(uint8_t aAddress, uint16_t aCommand, int_fast8_t aNumberOfRepeats) {
-    sendPulseDistanceWidth(&LG2ProtocolConstants, computeLGRawDataAndChecksum(aAddress, aCommand), LG_BITS, aNumberOfRepeats);
+    sendPulseDistanceWidth_P(&LG2ProtocolConstants, computeLGRawDataAndChecksum(aAddress, aCommand), LG_BITS, aNumberOfRepeats);
 }
 
 bool IRrecv::decodeLG() {
@@ -185,6 +185,7 @@ bool IRrecv::decodeLG() {
 
 // Check we have the right amount of data (60). The +4 is for initial gap, start bit mark and space + stop bit mark.
     if (decodedIRData.rawlen != ((2 * LG_BITS) + 4) && (decodedIRData.rawlen != 4)) {
+        // Is only printed, if LOCAL_DEBUG is defined globally
         IR_DEBUG_PRINT(F("LG: "));
         IR_DEBUG_PRINT(F("Data length="));
         IR_DEBUG_PRINT(decodedIRData.rawlen);
@@ -193,8 +194,8 @@ bool IRrecv::decodeLG() {
     }
 
 // Check header "mark" this must be done for repeat and data
-    if (!matchMark(decodedIRData.rawDataPtr->rawbuf[1], LG_HEADER_MARK)) {
-        if (matchMark(decodedIRData.rawDataPtr->rawbuf[1], LG2_HEADER_MARK)) {
+    if (!matchMark(irparams.rawbuf[1], LG_HEADER_MARK)) {
+        if (matchMark(irparams.rawbuf[1], LG2_HEADER_MARK)) {
             tProtocol = LG2;
             tHeaderSpace = LG2_HEADER_SPACE;
         } else {
@@ -208,8 +209,7 @@ bool IRrecv::decodeLG() {
 
 // Check for repeat - here we have another header space length
     if (decodedIRData.rawlen == 4) {
-        if (matchSpace(decodedIRData.rawDataPtr->rawbuf[2], LG_REPEAT_HEADER_SPACE)
-                && matchMark(decodedIRData.rawDataPtr->rawbuf[3], LG_BIT_MARK)) {
+        if (matchSpace(irparams.rawbuf[2], LG_REPEAT_HEADER_SPACE) && matchMark(irparams.rawbuf[3], LG_BIT_MARK)) {
             decodedIRData.flags = IRDATA_FLAGS_IS_REPEAT | IRDATA_FLAGS_IS_MSB_FIRST;
             decodedIRData.address = lastDecodedAddress;
             decodedIRData.command = lastDecodedCommand;
@@ -224,7 +224,7 @@ bool IRrecv::decodeLG() {
     }
 
 // Check command header space
-    if (!matchSpace(decodedIRData.rawDataPtr->rawbuf[2], tHeaderSpace)) {
+    if (!matchSpace(irparams.rawbuf[2], tHeaderSpace)) {
 #if defined(LOCAL_DEBUG)
         Serial.print(F("LG: "));
         Serial.println(F("Header space length is wrong"));
@@ -232,13 +232,7 @@ bool IRrecv::decodeLG() {
         return false;
     }
 
-    if (!decodePulseDistanceWidthData(&LGProtocolConstants, LG_BITS)) {
-#if defined(LOCAL_DEBUG)
-        Serial.print(F("LG: "));
-        Serial.println(F("Decode failed"));
-#endif
-        return false;
-    }
+    decodePulseDistanceWidthData_P(&LGProtocolConstants, LG_BITS);
 
 // Success
     decodedIRData.flags = IRDATA_FLAGS_IS_MSB_FIRST;
@@ -284,7 +278,7 @@ bool IRrecv::decodeLG() {
  * @param aNumberOfRepeats If < 0 then only a special repeat frame will be sent.
  */
 void IRsend::sendLGRaw(uint32_t aRawData, int_fast8_t aNumberOfRepeats) {
-    sendPulseDistanceWidth(&LGProtocolConstants, aRawData, LG_BITS, aNumberOfRepeats);
+    sendPulseDistanceWidth_P(&LGProtocolConstants, aRawData, LG_BITS, aNumberOfRepeats);
 }
 
 bool IRrecv::decodeLGMSB(decode_results *aResults) {
@@ -306,9 +300,8 @@ bool IRrecv::decodeLGMSB(decode_results *aResults) {
     }
     offset++;
 
-    if (!decodePulseDistanceWidthData(LG_BITS, offset, LG_BIT_MARK, LG_ONE_SPACE, 0, PROTOCOL_IS_MSB_FIRST)) {
-        return false;
-    }
+    decodePulseDistanceWidthData(LG_BITS, offset, LG_BIT_MARK, LG_ONE_SPACE, 0, PROTOCOL_IS_MSB_FIRST);
+
 // Stop bit
     if (!matchMark(aResults->rawbuf[offset + (2 * LG_BITS)], LG_BIT_MARK)) {
 #if defined(LOCAL_DEBUG)

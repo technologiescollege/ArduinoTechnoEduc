@@ -56,7 +56,7 @@ void setup()
 
     // setSyncProvider() causes the Time library to synchronize with the
     // external RTC by calling myRTC.get() every five minutes by default.
-    setSyncProvider(myRTC.get);
+    setSyncProvider([](){return myRTC.get();});
     Serial << "RTC Sync";
     if (timeStatus() != timeSet) {
         Serial << " FAIL!";

@@ -32,12 +32,18 @@
 
 #include <Arduino.h>
 
+#include "PinDefinitionsAndMore.h" // Define macros for input and output pin etc.
+
 /*
  * Specify which protocol(s) should be used for decoding.
  * This must be done before the #include <IRremote.hpp>
  */
 #define DECODE_HASH             // special decoder for all protocols
+#if !defined(RAW_BUFFER_LENGTH)
+#  if !((defined(RAMEND) && RAMEND <= 0x4FF) || (defined(RAMSIZE) && RAMSIZE < 0x4FF))
 #define RAW_BUFFER_LENGTH  1000 // Especially useful for unknown and probably long protocols
+#  endif
+#endif
 //#define DEBUG                 // Activate this for lots of lovely debug output from the decoders.
 
 /*
@@ -48,8 +54,6 @@
 
 void setup() {
     Serial.begin(115200);
-    while (!Serial)
-        ; // Wait for Serial to become available. Is optimized away for some cores.
 
     // Just to know which program is running on my Arduino
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
@@ -81,10 +85,17 @@ void loop() {
          * Finally, check the received data and perform actions according to the received command
          */
         auto tDecodedRawData = IrReceiver.decodedIRData.decodedRawData; // uint32_t on 8 and 16 bit CPUs and uint64_t on 32 and 64 bit CPUs
-        if (tDecodedRawData == 0x4F7BE2FB) {
-            // do something
-        } else if (tDecodedRawData == 0x97483BFB) {
-            // do something else
+        if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_IS_REPEAT) {
+            Serial.println(F("Repeat received. Here you can repeat the same action as before."));
+        } else {
+            Serial.print(F("Raw data received are 0x"));
+            Serial.println(tDecodedRawData);
+
+            if (IrReceiver.decodedIRData.command == 0x10) {
+                // do something
+            } else if (IrReceiver.decodedIRData.command == 0x11) {
+                // do something else
+            }
         }
     }
 }

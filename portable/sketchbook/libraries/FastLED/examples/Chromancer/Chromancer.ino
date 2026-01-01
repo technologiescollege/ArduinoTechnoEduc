@@ -1,3 +1,13 @@
+/// @file    Chromancer.ino
+/// @brief   Hexagonal LED display visualization
+/// @example Chromancer.ino
+///
+/// This sketch is fully compatible with the FastLED web compiler. To use it do the following:
+/// 1. Install Fastled: `pip install fastled`
+/// 2. cd into this examples page.
+/// 3. Run the FastLED web compiler at root: `fastled`
+/// 4. When the compiler is done a web page will open.
+
 /*
    Original Source: https://github.com/ZackFreedman/Chromance
    GaryWoo's Video: https://www.youtube.com/watch?v=-nSCtxa2Kp0
@@ -10,19 +20,43 @@
    (C) Voidstar Lab 2021
 */
 
-#include "mapping.h"
-#include "net.h"
-#include "ripple.h"
-#include <FastLED.h>
-#include "detail.h"
-#include "screenmap.h"
-#include "math_macros.h"
-#include "json.h"
-#include "ui.h"
-#include "fixed_map.h"
+#include "fl/sketch_macros.h"
+#include "fl/warn.h"
 
-#include "screenmap.json.h"
+#if !SKETCH_HAS_LOTS_OF_MEMORY
+// Platform does not have enough memory
+// Other platforms have weird issues. Will revisit this later.
+#include <Arduino.h>
+
+void setup() {
+    // Use Serial.println instead of FL_WARN to prevent optimization away
+    Serial.begin(115200);
+    Serial.println("Chromancer.ino: setup() - Platform has insufficient memory for full demo");
+}
+void loop() {
+    // Use Serial.println instead of FL_WARN to prevent optimization away
+    Serial.println("Chromancer.ino: loop() - Platform has insufficient memory for full demo");
+    delay(1000); // Prevent rapid printing
+}
+#else
+
+
+#include <FastLED.h>
+
+#include "fl/screenmap.h"
+#include "fl/math_macros.h"
+#include "fl/json.h"
+#include "fl/ui.h"
+#include "fl/map.h"
+
 #include "fl/str.h"
+
+#include "./screenmap.json.h"
+#include "./mapping.h"
+#include "./ripple.h"
+#include "./detail.h"
+
+using namespace fl;
 
 enum {
     BlackStrip = 0,
@@ -61,7 +95,7 @@ byte ledColors[40][14][3]; // LED buffer - each ripple writes to this, then we
 //float decay = 0.97; // Multiply all LED's by this amount each tick to create
                     // fancy fading tails
 
-Slider decay("decay", .97f, .8, 1.0, .01);
+UISlider sliderDecay("decay", .97f, .8, 1.0, .01);
 
 // These ripples are endlessly reused so we don't need to do any memory
 // management
@@ -104,8 +138,8 @@ float gyroX, gyroY, gyroZ;
 // We'll fire automatic pulses
 #define randomPulsesEnabled true // Fire random rainbow pulses from random nodes
 #define cubePulsesEnabled true   // Draw cubes at random nodes
-Checkbox starburstPulsesEnabled("Starburst Pulses", true);
-Checkbox simulatedBiometricsEnabled("Simulated Biometrics", true);
+UICheckbox starburstPulsesEnabled("Starburst Pulses", true);
+UICheckbox simulatedBiometricsEnabled("Simulated Biometrics", true);
 
 #define autoPulseTimeout                                                       \
     5000 // If no heartbeat is received in this many ms, begin firing
@@ -139,18 +173,25 @@ bool isNodeOnBorder(byte node) {
     return false;
 }
 
-Checkbox allWhite("All White", false);
+UITitle title("Chromancer");
+UIDescription description("Take 6 seconds to boot up. Chromancer is a wall-mounted hexagonal LED display that originally reacted to biometric data from an EmotiBit sensor. It visualizes your heartbeat, skin temperature, and movement in real-time. Chromancer also has a few built-in effects that can be triggered with the push of a button. Enjoy!");
+UICheckbox allWhite("All White", false);
 
-Button simulatedHeartbeat("Simulated Heartbeat");
-Button triggerStarburst("Trigger Starburst"); 
-Button triggerRainbowCube("Rainbow Cube");
-Button triggerBorderWave("Border Wave");
-Button triggerSpiral("Spiral Wave");
+UIButton simulatedHeartbeat("Simulated Heartbeat");
+UIButton triggerStarburst("Trigger Starburst"); 
+UIButton triggerRainbowCube("Rainbow Cube");
+UIButton triggerBorderWave("Border Wave");
+UIButton triggerSpiral("Spiral Wave");
 bool wasHeartbeatClicked = false;
 bool wasStarburstClicked = false;
 bool wasRainbowCubeClicked = false;
 bool wasBorderWaveClicked = false;
 bool wasSpiralClicked = false;
+
+// Group related UI elements using UIGroup template multi-argument constructor
+UIGroup effectTriggers("Effect Triggers", simulatedHeartbeat, triggerStarburst, triggerRainbowCube, triggerBorderWave, triggerSpiral);
+UIGroup automationControls("Automation", starburstPulsesEnabled, simulatedBiometricsEnabled);
+UIGroup displayControls("Display", sliderDecay, allWhite);
 
 void setup() {
     Serial.begin(115200);
@@ -160,12 +201,12 @@ void setup() {
     Serial.println("JSON SCREENMAP");
     Serial.println(JSON_SCREEN_MAP);
 
-    FixedMap<Str, ScreenMap, 16> segmentMaps;
+    fl::fl_map<fl::string, ScreenMap> segmentMaps;
     ScreenMap::ParseJson(JSON_SCREEN_MAP, &segmentMaps);
 
     printf("Parsed %d segment maps\n", int(segmentMaps.size()));
     for (auto kv : segmentMaps) {
-        Serial.print(kv.first);
+        Serial.print(kv.first.c_str());
         Serial.print(" ");
         Serial.println(kv.second.getLength());
     } 
@@ -174,10 +215,22 @@ void setup() {
     // ScreenMap screenmaps[4];
     ScreenMap red, black, green, blue;
     bool ok = true;
-    ok = segmentMaps.get("red_segment", &red) && ok;
-    ok = segmentMaps.get("back_segment", &black) && ok;
-    ok = segmentMaps.get("green_segment", &green) && ok;
-    ok = segmentMaps.get("blue_segment", &blue) && ok;
+    
+    auto red_it = segmentMaps.find("red_segment");
+    ok = (red_it != segmentMaps.end()) && ok;
+    if (red_it != segmentMaps.end()) red = red_it->second;
+    
+    auto black_it = segmentMaps.find("back_segment");
+    ok = (black_it != segmentMaps.end()) && ok;
+    if (black_it != segmentMaps.end()) black = black_it->second;
+    
+    auto green_it = segmentMaps.find("green_segment");
+    ok = (green_it != segmentMaps.end()) && ok;
+    if (green_it != segmentMaps.end()) green = green_it->second;
+    
+    auto blue_it = segmentMaps.find("blue_segment");
+    ok = (blue_it != segmentMaps.end()) && ok;
+    if (blue_it != segmentMaps.end()) blue = blue_it->second;
     if (!ok) {
         Serial.println("Failed to get all segment maps");
         return;
@@ -195,21 +248,18 @@ void setup() {
     FastLED.addLeds<WS2812, 4>(blue_leds, lengths[BlueStrip]).setScreenMap(blue);
 
     FastLED.show();
-    net_init();
 }
 
 
 void loop() {
     unsigned long benchmark = millis();
-    net_loop();
-
-
+    FL_UNUSED(benchmark);
 
     // Fade all dots to create trails
     for (int strip = 0; strip < 40; strip++) {
         for (int led = 0; led < 14; led++) {
             for (int i = 0; i < 3; i++) {
-                ledColors[strip][led][i] *= decay.value();
+                ledColors[strip][led][i] *= sliderDecay.value();
             }
         }
     }
@@ -553,3 +603,5 @@ void loop() {
     //  Serial.print("Benchmark: ");
     //  Serial.println(millis() - benchmark);
 }
+
+#endif  // __AVR__

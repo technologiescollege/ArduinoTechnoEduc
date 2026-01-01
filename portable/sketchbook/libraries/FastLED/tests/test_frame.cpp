@@ -1,14 +1,14 @@
 
 // g++ --std=c++11 test.cpp
 
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "test.h"
 
-#include "doctest.h"
+#include "test.h"
 #include "fx/frame.h"
 #include <cstdlib>
-#include "allocator.h"
+#include "fl/allocator.h"
 
-#include "namespace.h"
+#include "fl/namespace.h"
 FASTLED_USING_NAMESPACE
 
 namespace {
@@ -27,13 +27,26 @@ namespace {
 
 TEST_CASE("test frame custom allocator") {
     // Set our custom allocator
-    SetLargeBlockAllocator(custom_malloc, custom_free);
+    SetPSRamAllocator(custom_malloc, custom_free);
     
-    FrameRef frame = FrameRef::New(100, true);  // 100 pixels with alpha channel
-    CHECK(allocation_count == 2);  // One for RGB, one for alpha
+    FramePtr frame = fl::make_shared<Frame>(100);  // 100 pixels.
+    CHECK(allocation_count == 1);  // One for RGB.
     frame.reset();
 
     // Frame should be destroyed here
     CHECK(allocation_count == 0);
 }
 
+
+TEST_CASE("test blend by black") {
+    SetPSRamAllocator(custom_malloc, custom_free);
+    FramePtr frame = fl::make_shared<Frame>(1);  // 1 pixels.
+    frame->rgb()[0] = CRGB(255, 0, 0);  // Red
+    CRGB out;
+    frame->draw(&out, DRAW_MODE_BLEND_BY_MAX_BRIGHTNESS);
+    CHECK(out == CRGB(255, 0, 0));  // full red because max luma is 255
+    out = CRGB(0, 0, 0);
+    frame->rgb()[0] = CRGB(128, 0, 0);  // Red
+    frame->draw(&out, DRAW_MODE_BLEND_BY_MAX_BRIGHTNESS);
+    CHECK(out == CRGB(64, 0, 0));
+}

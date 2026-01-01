@@ -13,8 +13,18 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/gpl.html>
 
-## Important note: Library v2.0.0
+## Version 3.0.0 notes
+Version 3.0.0 adds the ability to address different I2C peripherals for microcontrollers that have more than one (e.g. `Wire`, `Wire1`, etc.) There is one situation that is not backwards compatible with earlier versions of the library. Code that calls `setSyncProvider()` in the [Time library](https://github.com/PaulStoffregen/Time), e.g.:
+```c++
+    setSyncProvider(myRTC.get);
+```
+Needs to change as follows:
+```c++
+    setSyncProvider([](){return myRTC.get();});
+```
+This uses a lambda to provide the Time library with a static function, which it requires. The `MCP79412::get()` function was static in previous versions of the library, but no longer is in v3.0.0. This allows the flexibility to operate with different I2C peripherals.
 
+## Version 2.0.0 notes
 The 2.0.0 version of the library has some significant changes and is not completely backwards compatible with earlier versions. These changes provide a more consistent API and reduce the possibility of name collisions. While sketches using this library will likely require changes as a result, these should be mostly straightforward.
 
  - The library no longer defines a `DS3232RTC` object, therefore each sketch needs to define  one. (Previous versions of the library defined a DS3232RTC object named `RTC`, although only for AVR architecture. Consider using a name other than `RTC` as this can cause a name collision on some architectures.)
@@ -41,6 +51,7 @@ The following example sketches are included with the **DS3232RTC** library:
 - **rtcTimeTemp:** Displays time and temperature.
 - **rtc_temperature:** Displays time and temperature but initiates a temperature conversion every 10 seconds in addition to the RTC's default conversion period of 64 seconds.
 - **rtc_interrupt:** Uses a 1Hz interrupt from the RTC to keep time.
+- **rtc_wire1:** Raspberry Pi Pico example using `Wire1`.
 - **mcu_clock_drift:** Demonstrates that MCU time as kept by the **Time** library will drift as compared to RTC time, and that MCU time may not increase by one second every second.
 - **tiny3232_KnockBang:** Demonstrates interfacing an ATtiny45/85 to a DS3231 or DS3232 RTC.
 - Several examples for using the RTC alarms. See the [alarm primer](https://github.com/JChristensen/DS3232RTC/blob/master/alarm-primer.md) for more information.
@@ -87,18 +98,20 @@ Symbolic names used with the squareWave() function (described below).
 - SQWAVE_8192_HZ
 
 ## Constructor
-### DS3232RTC()
+### DS3232RTC(TwoWire& wire)
 ##### Description
-Instantiates a DS3232RTC object.
+Instantiates a `DS3232RTC` object.
 ##### Syntax
-`DS3232RTC myRTC;`
+`DS3232RTC myRTC(wire);`
 ##### Parameters
-None.
+**wire:** An optional parameter to specify which I2C bus to use. If omitted, defaults to `Wire`. *(TwoWire&)*.
 ##### Returns
 None.
 ##### Example
 ```c++
-DS3232RTC myRTC;
+DS3232RTC myRTC;          // to use Wire
+// or
+DS3232RTC myRTC(Wire1);   // to use Wire1
 ```
 
 ## Initialization function
@@ -406,6 +419,21 @@ None.
 ```c++
 myRTC.squareWave(DS3232RTC::SQWAVE_1_HZ);   // 1 Hz square wave
 myRTC.squareWave(DS3232RTC::SQWAVE_NONE);   // no square wave
+```
+
+### enable32kHz(bool enable)
+##### Description
+Enables or disables the 32kHz square wave output.
+##### Syntax
+`myRTC.enable32kHz(enable);`
+##### Parameters
+**enable:** true, false, or boolean expression. *(bool)*  
+##### Returns
+None.
+##### Example
+```c++
+myRTC.enable32kHz(true);   // 32kHz output enabled
+myRTC.enable32kHz(false);  // 32kHz output disabled
 ```
 
 ### oscStopped(bool clearOSF)

@@ -77,8 +77,12 @@
 #include "renesas/ServoTimers.h"
 #elif defined(ARDUINO_ARCH_XMC)
 #include "xmc/ServoTimers.h"
+#elif defined(ARDUINO_ARCH_ESP32)
+#include "esp32/ServoTimers.h"
+#elif defined(ARDUINO_ARCH_ZEPHYR)
+#include "zephyr/ServoTimers.h"
 #else
-#error "This library only supports boards with an AVR, SAM, SAMD, NRF52, STM32F4, Renesas or XMC processor."
+#error "This library only supports boards with an AVR, SAM, SAMD, NRF52, STM32F4, Renesas, XMC, ESP32 or Zephyr core."
 #endif
 
 #define Servo_VERSION           2     // software version of this library

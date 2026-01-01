@@ -6,7 +6,7 @@ Hardware specific <a href="http://github.com/mathworks/thingspeak-arduino/tree/m
 
 ThingSpeak offers free data storage and analysis of time-stamped numeric or alphanumeric data. Users can access ThingSpeak by visiting http://thingspeak.com and creating a ThingSpeak user account.
 
-ThingSpeak stores data in channels. Channels support an unlimited number of timestamped observations (think of these as rows in a spreadsheet). Each channel has up to 8 fields (think of these as columns in a speadsheet). Check out this [video](http://www.mathworks.com/videos/introduction-to-thingspeak-107749.html) for an overview.
+ThingSpeak stores data in channels. Channels support an unlimited number of timestamped observations (think of these as rows in a spreadsheet). Each channel has up to 8 fields (think of these as columns in a speadsheet). Check out this [video](https://www.mathworks.com/videos/introduction-to-thingspeak-107749.html) for an overview.
 
 Channels may be public, where anyone can see the data, or private, where only the owner and select users can read the data. Each channel has an associated Write API Key that is used to control who can write to a channel. In addition, private channels have one or more Read API Keys to control who can read from private channel. An API Key is not required to read from public channels.  Each channel can have up to 8 fields. One field is created by default.
 
@@ -32,9 +32,11 @@ In the Arduino IDE, choose Sketch/Include Library/Manage Libraries.  Click the T
 * Arduino MKR1000 
 * Arduino MKR1010
 * Arduino VIDOR 4000
+* Arduino R4 Uno
 * Arduino GSM 14000
 * Arduino Uno WiFi Rev2
 * Arduino Yún (Rev1 and Rev2)
+* Raspberry Pi Pico (RP2040 and RP2350)
 * ESP8266 programming directly (tested with SparkFun ESP8266 Thing - Dev Board and NodeMCU 1.0 module)
 * ESP8266 via AT commands 
 * ESP32 (tested with SparkFun ESP32 Thing)
@@ -286,7 +288,7 @@ int setField (field, value)
 HTTP status code of 200 if successful. See Return Codes below for other possible return values.
 
 ## setStatus
-Set the status of a multi-field update. Use status to provide additonal details when writing a channel update. Additionally, status can be used by the ThingTweet App to send a message to Twitter.
+Set the status of a multi-field update. Use status to provide additonal details when writing a channel update.
 ```
 int setStatus (status)	
 ```
@@ -354,25 +356,6 @@ HTTP status code of 200 if successful. See Return Codes below for other possible
 
 ### Remarks
 Timezones can be set using the timezone hour offset parameter. For example, a timestamp for Eastern Standard Time is: "2017-01-12 13:22:54-05". If no timezone hour offset parameter is used, UTC time is assumed.
-
-## setTwitterTweet
-Set the Twitter account and message to use for an update to be tweeted.
-```
-int setTwitterTweet	(twitter, tweet)	
-```
-
-| Parameter | Type         | Description                                                                      |          
-|-----------|:-------------|:---------------------------------------------------------------------------------|
-| twitter   | String       | Twitter account name as a String.                                                |
-|           | const char * | Twitter account name as a character array (zero terminated).                     |
-| tweet     | String       | Twitter message as a String (UTF-8) limited to 140 character.                    |
-|           | const char * | Twitter message as a character array (zero terminated) limited to 140 character. |
-
-### Returns
-HTTP status code of 200 if successful. See Return Codes below for other possible return values.
-
-### Remarks
-Prior to using this feature, a twitter account must be linked to your ThingSpeak account. To link your twitter account. login to ThingSpeak and go to Apps -> ThingTweet and click Link Twitter Account.
 
 ## readStringField
 Read the latest string from a channel. Include the readAPIKey to read a private channel.

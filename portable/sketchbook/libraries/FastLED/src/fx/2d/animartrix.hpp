@@ -7,19 +7,22 @@
 // For details on the animartrix library and licensing information, see
 // fx/aninamtrix_detail.hpp
 
-
 #include "crgb.h"
+#include "fl/dbg.h"
+#include "fl/namespace.h"
+#include "fl/memory.h"
+#include "fl/unique_ptr.h"
+#include "fl/xymap.h"
 #include "fx/fx2d.h"
-#include "namespace.h"
-#include "ref.h"
-#include "xymap.h"
+#include "eorder.h"
+#include "pixel_controller.h"  // For RGB_BYTE_0, RGB_BYTE_1, RGB_BYTE_2
 
 #define ANIMARTRIX_INTERNAL
 #include "animartrix_detail.hpp"
 
-FASTLED_NAMESPACE_BEGIN
+namespace fl {
 
-FASTLED_SMART_REF(Animartrix);
+FASTLED_SMART_PTR(Animartrix);
 
 enum AnimartrixAnim {
     RGB_BLOBS5 = 0,
@@ -64,135 +67,60 @@ enum AnimartrixAnim {
     MODULE_EXPERIMENT8,
     MODULE_EXPERIMENT9,
     MODULE_EXPERIMENT10,
+    MODULE_EXPERIMENT_SM1,
+    MODULE_EXPERIMENT_SM2,
+    MODULE_EXPERIMENT_SM3,
+    MODULE_EXPERIMENT_SM4,
+    MODULE_EXPERIMENT_SM5,
+    MODULE_EXPERIMENT_SM6,
+    MODULE_EXPERIMENT_SM8,
+    MODULE_EXPERIMENT_SM9,
+    MODULE_EXPERIMENT_SM10,
     NUM_ANIMATIONS
 };
 
+fl::string getAnimartrixName(int animation);
+
 class FastLEDANIMartRIX;
-class Animartrix : public FxGrid {
+class Animartrix : public Fx2d {
   public:
-    Animartrix(XYMap xyMap, AnimartrixAnim which_animation) : FxGrid(xyMap) {
+    Animartrix(const XYMap& xyMap, AnimartrixAnim which_animation) : Fx2d(xyMap) {
         // Note: Swapping out height and width.
         this->current_animation = which_animation;
+        mXyMap.convertToLookUpTable();
     }
 
     Animartrix(const Animartrix &) = delete;
-    void lazyInit() override { this->mXyMap.convertToLookUpTable(); }
     void draw(DrawContext context) override;
-    int fxNum() const override { return NUM_ANIMATIONS; }
-    void fxSet(int fx) override;
-    int fxGet() const override { return static_cast<int>(current_animation); }
-    const char *fxName(int which) const override {
-        return getAnimationName(which != -1 ? static_cast<AnimartrixAnim>(which) : current_animation);
-    }
-    void fxNext(int fx = 1) override { fxSet(fxGet() + fx); }
+    int fxNum() const { return NUM_ANIMATIONS; }
+    void fxSet(int fx);
+    int fxGet() const { return static_cast<int>(current_animation); }
+    Str fxName() const override { return "Animartrix:"; }
+    void fxNext(int fx = 1) { fxSet(fxGet() + fx); }
+    void setColorOrder(EOrder order) { color_order = order; }
+    EOrder getColorOrder() const { return color_order; }
 
   private:
-    friend void AnimartrixLoop(Animartrix &self, uint32_t now);
+    friend void AnimartrixLoop(Animartrix &self, fl::u32 now);
     friend class FastLEDANIMartRIX;
-    static const char *getAnimationName(AnimartrixAnim animation);
+    static const char *getAnimartrixName(AnimartrixAnim animation);
     AnimartrixAnim prev_animation = NUM_ANIMATIONS;
-    scoped_ptr<FastLEDANIMartRIX> impl;
+    fl::unique_ptr<FastLEDANIMartRIX> impl;
     CRGB *leds = nullptr; // Only set during draw, then unset back to nullptr.
     AnimartrixAnim current_animation = RGB_BLOBS5;
+    EOrder color_order = RGB;
 };
 
-void AnimartrixLoop(Animartrix &self, uint32_t now);
+void AnimartrixLoop(Animartrix &self, fl::u32 now);
 
 /// ##################################################
 /// Details with the implementation of Animartrix
 
-const char *Animartrix::getAnimationName(AnimartrixAnim animation) {
-    switch (animation) {
-    case RGB_BLOBS5:
-        return "RGB_BLOBS5";
-    case RGB_BLOBS4:
-        return "RGB_BLOBS4";
-    case RGB_BLOBS3:
-        return "RGB_BLOBS3";
-    case RGB_BLOBS2:
-        return "RGB_BLOBS2";
-    case RGB_BLOBS:
-        return "RGB_BLOBS";
-    case POLAR_WAVES:
-        return "POLAR_WAVES";
-    case SLOW_FADE:
-        return "SLOW_FADE";
-    case ZOOM2:
-        return "ZOOM2";
-    case ZOOM:
-        return "ZOOM";
-    case HOT_BLOB:
-        return "HOT_BLOB";
-    case SPIRALUS2:
-        return "SPIRALUS2";
-    case SPIRALUS:
-        return "SPIRALUS";
-    case YVES:
-        return "YVES";
-    case SCALEDEMO1:
-        return "SCALEDEMO1";
-    case LAVA1:
-        return "LAVA1";
-    case CALEIDO3:
-        return "CALEIDO3";
-    case CALEIDO2:
-        return "CALEIDO2";
-    case CALEIDO1:
-        return "CALEIDO1";
-    case DISTANCE_EXPERIMENT:
-        return "DISTANCE_EXPERIMENT";
-    case CENTER_FIELD:
-        return "CENTER_FIELD";
-    case WAVES:
-        return "WAVES";
-    case CHASING_SPIRALS:
-        return "CHASING_SPIRALS";
-    case ROTATING_BLOB:
-        return "ROTATING_BLOB";
-    case RINGS:
-        return "RINGS";
-    case COMPLEX_KALEIDO:
-        return "COMPLEX_KALEIDO";
-    case COMPLEX_KALEIDO_2:
-        return "COMPLEX_KALEIDO_2";
-    case COMPLEX_KALEIDO_3:
-        return "COMPLEX_KALEIDO_3";
-    case COMPLEX_KALEIDO_4:
-        return "COMPLEX_KALEIDO_4";
-    case COMPLEX_KALEIDO_5:
-        return "COMPLEX_KALEIDO_5";
-    case COMPLEX_KALEIDO_6:
-        return "COMPLEX_KALEIDO_6";
-    case WATER:
-        return "WATER";
-    case PARAMETRIC_WATER:
-        return "PARAMETRIC_WATER";
-    case MODULE_EXPERIMENT1:
-        return "MODULE_EXPERIMENT1";
-    case MODULE_EXPERIMENT2:
-        return "MODULE_EXPERIMENT2";
-    case MODULE_EXPERIMENT3:
-        return "MODULE_EXPERIMENT3";
-    case MODULE_EXPERIMENT4:
-        return "MODULE_EXPERIMENT4";
-    case MODULE_EXPERIMENT5:
-        return "MODULE_EXPERIMENT5";
-    case MODULE_EXPERIMENT6:
-        return "MODULE_EXPERIMENT6";
-    case MODULE_EXPERIMENT7:
-        return "MODULE_EXPERIMENT7";
-    case MODULE_EXPERIMENT8:
-        return "MODULE_EXPERIMENT8";
-    case MODULE_EXPERIMENT9:
-        return "MODULE_EXPERIMENT9";
-    case MODULE_EXPERIMENT10:
-        return "MODULE_EXPERIMENT10";
-    case NUM_ANIMATIONS:
-        return "NUM_ANIMATIONS";
-    default:
-        return "UNKNOWN";
-    }
-}
+struct AnimartrixEntry {
+    AnimartrixAnim anim;
+    const char *name;
+    void (FastLEDANIMartRIX::*func)();
+};
 
 class FastLEDANIMartRIX : public animartrix_detail::ANIMartRIX {
     Animartrix *data = nullptr;
@@ -200,13 +128,14 @@ class FastLEDANIMartRIX : public animartrix_detail::ANIMartRIX {
   public:
     FastLEDANIMartRIX(Animartrix *_data) {
         this->data = _data;
-        this->init(data->getWidth(), data->getWidth());
+        this->init(data->getWidth(), data->getHeight());
     }
 
     void setPixelColor(int x, int y, CRGB pixel) {
         data->leds[xyMap(x, y)] = pixel;
     }
-    void setPixelColorInternal(int x, int y, animartrix_detail::rgb pixel) override {
+    void setPixelColorInternal(int x, int y,
+                               animartrix_detail::rgb pixel) override {
         setPixelColor(x, y, CRGB(pixel.red, pixel.green, pixel.blue));
     }
 
@@ -214,138 +143,7 @@ class FastLEDANIMartRIX : public animartrix_detail::ANIMartRIX {
         return data->xyMap(x, y);
     }
 
-    void loop() {
-        switch (data->current_animation) {
-        case RGB_BLOBS5:
-            RGB_Blobs5();
-            break;
-        case RGB_BLOBS4:
-            RGB_Blobs4();
-            break;
-        case RGB_BLOBS3:
-            RGB_Blobs3();
-            break;
-        case RGB_BLOBS2:
-            RGB_Blobs2();
-            break;
-        case RGB_BLOBS:
-            RGB_Blobs();
-            break;
-        case POLAR_WAVES:
-            Polar_Waves();
-            break;
-        case SLOW_FADE:
-            Slow_Fade();
-            break;
-        case ZOOM2:
-            Zoom2();
-            break;
-        case ZOOM:
-            Zoom();
-            break;
-        case HOT_BLOB:
-            Hot_Blob();
-            break;
-        case SPIRALUS2:
-            Spiralus2();
-            break;
-        case SPIRALUS:
-            Spiralus();
-            break;
-        case YVES:
-            Yves();
-            break;
-        case SCALEDEMO1:
-            Scaledemo1();
-            break;
-        case LAVA1:
-            Lava1();
-            break;
-        case CALEIDO3:
-            Caleido3();
-            break;
-        case CALEIDO2:
-            Caleido2();
-            break;
-        case CALEIDO1:
-            Caleido1();
-            break;
-        case DISTANCE_EXPERIMENT:
-            Distance_Experiment();
-            break;
-        case CENTER_FIELD:
-            Center_Field();
-            break;
-        case WAVES:
-            Waves();
-            break;
-        case CHASING_SPIRALS:
-            Chasing_Spirals();
-            break;
-        case ROTATING_BLOB:
-            Rotating_Blob();
-            break;
-        case RINGS:
-            Rings();
-            break;
-        case COMPLEX_KALEIDO:
-            Complex_Kaleido();
-            break;
-        case COMPLEX_KALEIDO_2:
-            Complex_Kaleido_2();
-            break;
-        case COMPLEX_KALEIDO_3:
-            Complex_Kaleido_3();
-            break;
-        case COMPLEX_KALEIDO_4:
-            Complex_Kaleido_4();
-            break;
-        case COMPLEX_KALEIDO_5:
-            Complex_Kaleido_5();
-            break;
-        case COMPLEX_KALEIDO_6:
-            Complex_Kaleido_6();
-            break;
-        case WATER:
-            Water();
-            break;
-        case PARAMETRIC_WATER:
-            Parametric_Water();
-            break;
-        case MODULE_EXPERIMENT1:
-            Module_Experiment1();
-            break;
-        case MODULE_EXPERIMENT2:
-            Module_Experiment2();
-            break;
-        case MODULE_EXPERIMENT3:
-            Module_Experiment3();
-            break;
-        case MODULE_EXPERIMENT4:
-            Module_Experiment4();
-            break;
-        case MODULE_EXPERIMENT5:
-            Module_Experiment5();
-            break;
-        case MODULE_EXPERIMENT6:
-            Module_Experiment6();
-            break;
-        case MODULE_EXPERIMENT7:
-            Module_Experiment7();
-            break;
-        case MODULE_EXPERIMENT8:
-            Module_Experiment8();
-            break;
-        case MODULE_EXPERIMENT9:
-            Module_Experiment9();
-            break;
-        case MODULE_EXPERIMENT10:
-            Module_Experiment10();
-            break;
-        case NUM_ANIMATIONS:
-            break;
-        }
-    }
+    void loop();
 };
 
 void Animartrix::fxSet(int fx) {
@@ -358,9 +156,10 @@ void Animartrix::fxSet(int fx) {
     }
     fx = fx % NUM_ANIMATIONS;
     current_animation = static_cast<AnimartrixAnim>(fx);
+    FASTLED_DBG("Setting animation to " << getAnimartrixName(current_animation));
 }
 
-void AnimartrixLoop(Animartrix &self, uint32_t now) {
+void AnimartrixLoop(Animartrix &self, fl::u32 now) {
     if (self.prev_animation != self.current_animation) {
         if (self.impl) {
             // Re-initialize object.
@@ -375,10 +174,121 @@ void AnimartrixLoop(Animartrix &self, uint32_t now) {
     self.impl->loop();
 }
 
+static const AnimartrixEntry ANIMATION_TABLE[] = {
+    {RGB_BLOBS5, "RGB_BLOBS5", &FastLEDANIMartRIX::RGB_Blobs5},
+    {RGB_BLOBS4, "RGB_BLOBS4", &FastLEDANIMartRIX::RGB_Blobs4},
+    {RGB_BLOBS3, "RGB_BLOBS3", &FastLEDANIMartRIX::RGB_Blobs3},
+    {RGB_BLOBS2, "RGB_BLOBS2", &FastLEDANIMartRIX::RGB_Blobs2},
+    {RGB_BLOBS, "RGB_BLOBS", &FastLEDANIMartRIX::RGB_Blobs},
+    {POLAR_WAVES, "POLAR_WAVES", &FastLEDANIMartRIX::Polar_Waves},
+    {SLOW_FADE, "SLOW_FADE", &FastLEDANIMartRIX::Slow_Fade},
+    {ZOOM2, "ZOOM2", &FastLEDANIMartRIX::Zoom2},
+    {ZOOM, "ZOOM", &FastLEDANIMartRIX::Zoom},
+    {HOT_BLOB, "HOT_BLOB", &FastLEDANIMartRIX::Hot_Blob},
+    {SPIRALUS2, "SPIRALUS2", &FastLEDANIMartRIX::Spiralus2},
+    {SPIRALUS, "SPIRALUS", &FastLEDANIMartRIX::Spiralus},
+    {YVES, "YVES", &FastLEDANIMartRIX::Yves},
+    {SCALEDEMO1, "SCALEDEMO1", &FastLEDANIMartRIX::Scaledemo1},
+    {LAVA1, "LAVA1", &FastLEDANIMartRIX::Lava1},
+    {CALEIDO3, "CALEIDO3", &FastLEDANIMartRIX::Caleido3},
+    {CALEIDO2, "CALEIDO2", &FastLEDANIMartRIX::Caleido2},
+    {CALEIDO1, "CALEIDO1", &FastLEDANIMartRIX::Caleido1},
+    {DISTANCE_EXPERIMENT, "DISTANCE_EXPERIMENT",
+     &FastLEDANIMartRIX::Distance_Experiment},
+    {CENTER_FIELD, "CENTER_FIELD", &FastLEDANIMartRIX::Center_Field},
+    {WAVES, "WAVES", &FastLEDANIMartRIX::Waves},
+    {CHASING_SPIRALS, "CHASING_SPIRALS", &FastLEDANIMartRIX::Chasing_Spirals},
+    {ROTATING_BLOB, "ROTATING_BLOB", &FastLEDANIMartRIX::Rotating_Blob},
+    {RINGS, "RINGS", &FastLEDANIMartRIX::Rings},
+    {COMPLEX_KALEIDO, "COMPLEX_KALEIDO", &FastLEDANIMartRIX::Complex_Kaleido},
+    {COMPLEX_KALEIDO_2, "COMPLEX_KALEIDO_2",
+     &FastLEDANIMartRIX::Complex_Kaleido_2},
+    {COMPLEX_KALEIDO_3, "COMPLEX_KALEIDO_3",
+     &FastLEDANIMartRIX::Complex_Kaleido_3},
+    {COMPLEX_KALEIDO_4, "COMPLEX_KALEIDO_4",
+     &FastLEDANIMartRIX::Complex_Kaleido_4},
+    {COMPLEX_KALEIDO_5, "COMPLEX_KALEIDO_5",
+     &FastLEDANIMartRIX::Complex_Kaleido_5},
+    {COMPLEX_KALEIDO_6, "COMPLEX_KALEIDO_6",
+     &FastLEDANIMartRIX::Complex_Kaleido_6},
+    {WATER, "WATER", &FastLEDANIMartRIX::Water},
+    {PARAMETRIC_WATER, "PARAMETRIC_WATER",
+     &FastLEDANIMartRIX::Parametric_Water},
+    {MODULE_EXPERIMENT1, "MODULE_EXPERIMENT1",
+     &FastLEDANIMartRIX::Module_Experiment1},
+    {MODULE_EXPERIMENT2, "MODULE_EXPERIMENT2",
+     &FastLEDANIMartRIX::Module_Experiment2},
+    {MODULE_EXPERIMENT3, "MODULE_EXPERIMENT3",
+     &FastLEDANIMartRIX::Module_Experiment3},
+    {MODULE_EXPERIMENT4, "MODULE_EXPERIMENT4",
+     &FastLEDANIMartRIX::Module_Experiment4},
+    {MODULE_EXPERIMENT5, "MODULE_EXPERIMENT5",
+     &FastLEDANIMartRIX::Module_Experiment5},
+    {MODULE_EXPERIMENT6, "MODULE_EXPERIMENT6",
+     &FastLEDANIMartRIX::Module_Experiment6},
+    {MODULE_EXPERIMENT7, "MODULE_EXPERIMENT7",
+     &FastLEDANIMartRIX::Module_Experiment7},
+    {MODULE_EXPERIMENT8, "MODULE_EXPERIMENT8",
+     &FastLEDANIMartRIX::Module_Experiment8},
+    {MODULE_EXPERIMENT9, "MODULE_EXPERIMENT9",
+     &FastLEDANIMartRIX::Module_Experiment9},
+    {MODULE_EXPERIMENT10, "MODULE_EXPERIMENT10",
+     &FastLEDANIMartRIX::Module_Experiment10},
+    {MODULE_EXPERIMENT_SM1, "MODULE_EXPERIMENT_SM1", &FastLEDANIMartRIX::SM1},
+    {MODULE_EXPERIMENT_SM2, "MODULE_EXPERIMENT_SM2", &FastLEDANIMartRIX::SM2},
+    {MODULE_EXPERIMENT_SM3, "MODULE_EXPERIMENT_SM3", &FastLEDANIMartRIX::SM3},
+    {MODULE_EXPERIMENT_SM4, "MODULE_EXPERIMENT_SM4", &FastLEDANIMartRIX::SM4},
+    {MODULE_EXPERIMENT_SM5, "MODULE_EXPERIMENT_SM5", &FastLEDANIMartRIX::SM5},
+    {MODULE_EXPERIMENT_SM6, "MODULE_EXPERIMENT_SM6", &FastLEDANIMartRIX::SM6},
+    {MODULE_EXPERIMENT_SM8, "MODULE_EXPERIMENT_SM8", &FastLEDANIMartRIX::SM8},
+    {MODULE_EXPERIMENT_SM9, "MODULE_EXPERIMENT_SM9", &FastLEDANIMartRIX::SM9},
+    {MODULE_EXPERIMENT_SM10, "MODULE_EXPERIMENT_SM10",
+     &FastLEDANIMartRIX::SM10},
+};
+
+fl::string getAnimartrixName(int animation) {
+    if (animation < 0 || animation >= NUM_ANIMATIONS) {
+        return "UNKNOWN";
+    }
+    return ANIMATION_TABLE[animation].name;
+}
+
+void FastLEDANIMartRIX::loop() {
+    for (const auto &entry : ANIMATION_TABLE) {
+        if (entry.anim == data->current_animation) {
+            (this->*entry.func)();
+            return;
+        }
+    }
+    // (this->*ANIMATION_TABLE[index].func)();
+    FASTLED_DBG("Animation not found for " << int(data->current_animation));
+}
+
+const char *Animartrix::getAnimartrixName(AnimartrixAnim animation) {
+    for (const auto &entry : ANIMATION_TABLE) {
+        if (entry.anim == animation) {
+            return entry.name;
+        }
+    }
+    FASTLED_DBG("Animation not found for " << int(animation));
+    return "UNKNOWN";
+}
+
 void Animartrix::draw(DrawContext ctx) {
     this->leds = ctx.leds;
     AnimartrixLoop(*this, ctx.now);
+    if (color_order != RGB) {
+        for (int i = 0; i < mXyMap.getTotal(); ++i) {
+            CRGB &pixel = ctx.leds[i];
+            const uint8_t b0_index = RGB_BYTE0(color_order);
+            const uint8_t b1_index = RGB_BYTE1(color_order);
+            const uint8_t b2_index = RGB_BYTE2(color_order);
+            pixel = CRGB(pixel.raw[b0_index], pixel.raw[b1_index],
+                         pixel.raw[b2_index]);
+        }
+
+    }
     this->leds = nullptr;
 }
 
-FASTLED_NAMESPACE_END
+} // namespace fl

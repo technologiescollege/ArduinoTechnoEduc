@@ -14,7 +14,7 @@ void setup()
 {
     Serial.begin(115200);
     myRTC.begin();
-    setSyncProvider(myRTC.get);   // the function to get the time from the RTC
+    setSyncProvider([](){return myRTC.get();}); // the function to get the time from the RTC
     if(timeStatus() != timeSet)
         Serial.println("Unable to sync with the RTC");
     else

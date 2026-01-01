@@ -1,14 +1,17 @@
 
 // g++ --std=c++11 test.cpp
 
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "test.h"
 
-#include "doctest.h"
+#include "test.h"
 #include "fl/str.h"
-#include "fixed_vector.h"
+#include "fl/vector.h"
+#include "crgb.h"
+#include <sstream>
 
-#include "namespace.h"
-FASTLED_USING_NAMESPACE
+#include "fl/namespace.h"
+
+using namespace fl;
 
 TEST_CASE("Str basic operations") {
     SUBCASE("Construction and assignment") {
@@ -52,6 +55,12 @@ TEST_CASE("Str basic operations") {
         CHECK(strcmp(s.c_str(), "hello world") == 0);
     }
 
+    SUBCASE("CRGB to Str") {
+        CRGB c(255, 0, 0);
+        Str s = c.toString();
+        CHECK_EQ(s, "CRGB(255,0,0)");
+    }
+
     SUBCASE("Copy-on-write behavior") {
         Str s1("hello");
         Str s2 = s1;
@@ -61,8 +70,28 @@ TEST_CASE("Str basic operations") {
     }
 }
 
-TEST_CASE("Str with FixedVector") {
-    FixedVector<Str, 10> vec;
+
+TEST_CASE("Str::reserve") {
+    Str s;
+    s.reserve(10);
+    CHECK(s.size() == 0);
+    CHECK(s.capacity() >= 10);
+
+    s.reserve(5);
+    CHECK(s.size() == 0);
+    CHECK(s.capacity() >= 10);
+
+    s.reserve(500);
+    CHECK(s.size() == 0);
+    CHECK(s.capacity() >= 500);
+    // s << "hello";
+    s.append("hello");
+    CHECK(s.size() == 5);
+    CHECK_EQ(s, "hello");
+}
+
+TEST_CASE("Str with fl::FixedVector") {
+    fl::FixedVector<Str, 10> vec;
     vec.push_back(Str("hello"));
     vec.push_back(Str("world"));
 
@@ -114,5 +143,56 @@ TEST_CASE("Str overflowing inline data") {
         CHECK(s2.size() == long_string.length() + 5);
         CHECK(strcmp(s1.c_str(), long_string.c_str()) == 0);
         CHECK(s2[s2.size() - 1] == 'a');
+    }
+}
+
+TEST_CASE("String concatenation operators") {
+    SUBCASE("String literal + fl::to_string") {
+        // Test the specific case mentioned in the user query
+        fl::string val = "string" + fl::to_string(5);
+        CHECK(strcmp(val.c_str(), "string5") == 0);
+    }
+
+    SUBCASE("fl::to_string + string literal") {
+        fl::string val = fl::to_string(10) + " is a number";
+        CHECK(strcmp(val.c_str(), "10 is a number") == 0);
+    }
+
+    SUBCASE("String literal + fl::string") {
+        fl::string str = "world";
+        fl::string result = "Hello " + str;
+        CHECK(strcmp(result.c_str(), "Hello world") == 0);
+    }
+
+    SUBCASE("fl::string + string literal") {
+        fl::string str = "Hello";
+        fl::string result = str + " world";
+        CHECK(strcmp(result.c_str(), "Hello world") == 0);
+    }
+
+    SUBCASE("fl::string + fl::string") {
+        fl::string str1 = "Hello";
+        fl::string str2 = "World";
+        fl::string result = str1 + " " + str2;
+        CHECK(strcmp(result.c_str(), "Hello World") == 0);
+    }
+
+    SUBCASE("Complex concatenation") {
+        fl::string result = "Value: " + fl::to_string(42) + " and " + fl::to_string(3.14f);
+        // Check that it contains the expected parts rather than exact match
+        CHECK(result.find("Value: ") != fl::string::npos);
+        CHECK(result.find("42") != fl::string::npos);
+        CHECK(result.find("and") != fl::string::npos);
+        CHECK(result.find("3.14") != fl::string::npos);
+    }
+
+    SUBCASE("Number + string literal") {
+        fl::string result = fl::to_string(100) + " percent";
+        CHECK(strcmp(result.c_str(), "100 percent") == 0);
+    }
+
+    SUBCASE("String literal + number") {
+        fl::string result = "Count: " + fl::to_string(7);
+        CHECK(strcmp(result.c_str(), "Count: 7") == 0);
     }
 }
