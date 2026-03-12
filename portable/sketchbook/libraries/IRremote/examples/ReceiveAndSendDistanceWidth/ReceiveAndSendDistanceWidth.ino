@@ -82,7 +82,7 @@
 #define DELAY_BETWEEN_REPEATS_MILLIS        70
 
 // Storage for the recorded code, pre-filled with NEC data
-IRRawDataType sDecodedRawDataArray[DECODED_RAW_DATA_ARRAY_SIZE] = { 0x7B34ED12 }; // Initialize with NEC address 0x12 and command 0x34
+IRDecodedRawDataType sDecodedRawDataArray[DECODED_RAW_DATA_ARRAY_SIZE] = { 0x7B34ED12 }; // Initialize with NEC address 0x12 and command 0x34
 DistanceWidthTimingInfoStruct sDistanceWidthTimingInfo  = { 9000, 4500, 560, 1690, 560, 560 }; // Initialize with NEC timing
 uint8_t sNumberOfBits = 32;
 
@@ -182,7 +182,12 @@ void loop() {
             if (sDecodedRawDataArray[0] != IrReceiver.decodedIRData.decodedRawDataArray[0]) {
                 *sDecodedRawDataArray = *IrReceiver.decodedIRData.decodedRawDataArray; // copy content here
                 Serial.print(F("Store new sDecodedRawDataArray[0]=0x"));
+#  if (__INT_WIDTH__ < 32)
                 Serial.println(IrReceiver.decodedIRData.decodedRawDataArray[0], HEX);
+#  else
+                PrintULL::print(&Serial, IrReceiver.decodedIRData.decodedRawDataArray[0], HEX);
+#  endif
+
             }
         }
         IrReceiver.resume(); // resume receiver

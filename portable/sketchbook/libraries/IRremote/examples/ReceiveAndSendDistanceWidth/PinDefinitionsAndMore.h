@@ -4,7 +4,7 @@
  *  Contains pin definitions for IRremote examples for various platforms
  *  as well as definitions for feedback LED and tone() and includes
  *
- *  Copyright (C) 2021-2023  Armin Joachimsmeyer
+ *  Copyright (C) 2021-2026  Armin Joachimsmeyer
  *  armin.joachimsmeyer@gmail.com
  *
  *  This file is part of IRremote https://github.com/Arduino-IRremote/Arduino-IRremote.
@@ -44,6 +44,7 @@
  * ESP8266      14|D5       12|D6       %
  * ESP32        15          4          27
  * ESP32-C3     2           3           4
+ * ESP32-S3     2           3           4
  * BluePill     PA6         PA7       PA3
  * APOLLO3      11          12          5
  * RP2040       3|GPIO15    4|GPIO16    5|GPIO17
@@ -111,20 +112,23 @@
 #undef LED_BUILTIN              // No LED available, take the one which is connected to the DAC output
 #define LED_BUILTIN     PIN_PB5 // 4
 
-#  elif defined(__AVR_ATtiny1614__) && defined(PIN_PA1) // For use with megaTinyCore
+#  elif defined(__AVR_ATtiny1604__) && defined(PIN_PA1) // For use with megaTinyCore
 #define IR_RECEIVE_PIN   PIN_PA1 // 8
-#define IR_SEND_PIN      PIN_PA3 // 10
-#define TONE_PIN         PIN_PA5 // 1
-#define APPLICATION_PIN  PIN_PA4 // 0
-
-#  elif defined(__AVR_ATtiny1604__) && defined(PIN_PA6) // For use with megaTinyCore
-#define IR_RECEIVE_PIN   PIN_PA6 // 2 - To be compatible with interrupt example, pin 2 is chosen here.
 #define IR_SEND_PIN      PIN_PA7 // 3
+#define TONE_PIN         PIN_PA3 // 1  TCA0-WO3
 #define APPLICATION_PIN  PIN_PB2 // 5
 
-#define tone(...) void()      // Define as void, since TCB0_INT_vect is also used by tone()
-#define noTone(a) void()
-#define TONE_PIN         42 // Dummy for examples using it
+#  elif defined(__AVR_ATtiny1614__) && defined(PIN_PA1) // For use with megaTinyCore
+#define IR_RECEIVE_PIN   PIN_PA1 // 8
+#define IR_SEND_PIN      PIN_PA5 // 10 TCA0-WO5
+#define TONE_PIN         PIN_PA3 // 1  TCA0-WO3
+#define APPLICATION_PIN  PIN_PA4 // 0
+
+#  elif  defined(__AVR_ATtiny1624__) && defined(PIN_PA6) // For use with megaTinyCore
+#define IR_RECEIVE_PIN   PIN_PA1 // 8
+#define IR_SEND_PIN      PIN_PA5 // 3  TCA0-WO5
+#define TONE_PIN         PIN_PA3 // 1  TCA0-WO3
+#define APPLICATION_PIN  PIN_PB1 // 6
 
 #  elif defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) \
 || defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) \
@@ -178,6 +182,7 @@
 #define TONE_PIN                42 // Dummy for examples using it#
 
 #elif defined(ARDUINO_NOLOGO_ESP32C3_SUPER_MINI)
+// ESP32 - C3 super mini
 #define FEEDBACK_LED_IS_ACTIVE_LOW // The LED on my board (D8) is active LOW
 #define IR_RECEIVE_PIN           2
 #define IR_SEND_PIN              3
@@ -185,11 +190,19 @@
 #define APPLICATION_PIN         10
 
 #elif defined(CONFIG_IDF_TARGET_ESP32C3) || defined(ARDUINO_ESP32C3_DEV)
+// ESP32 - C3 other
 #define NO_LED_FEEDBACK_CODE   // The  WS2812 on pin 8 of AI-C3 board crashes if used as receive feedback LED, other I/O pins are working...
 #define IR_RECEIVE_PIN           6
 #define IR_SEND_PIN              7
 #define TONE_PIN                 9
 #define APPLICATION_PIN         10
+
+#elif defined(CONFIG_IDF_TARGET_ESP32S3) || defined(ARDUINO_ESP32S3_DEV)
+// ESP32 - S3 - !!! NOT tested !!!
+#define IR_RECEIVE_PIN          15 // alternatively 13
+#define IR_SEND_PIN             16 // alternatively 14
+#define TONE_PIN                17
+#define APPLICATION_PIN         18
 
 #elif defined(ESP32)
 #include <Arduino.h>
@@ -328,7 +341,7 @@ void noTone(uint8_t aPinNumber){
 #define TONE_PIN           42 // Dummy for examples using it
 
 #else
-#warning Board and Core / CPU is not detected using pre-processor symbols -> using default values, which may not fit. Please extend PinDefinitionsAndMore.h.
+#warning Board and Core / CPU is not detected using pre-processor symbols -> using default values for IR_RECEIVE_PIN etc., which may not fit. Please extend PinDefinitionsAndMore.h.
 // Default valued for unidentified boards
 #define IR_RECEIVE_PIN      2
 #define IR_SEND_PIN         3
@@ -350,10 +363,6 @@ void noTone(uint8_t aPinNumber){
 #define FLASHEND 0xFFFF // Dummy value for platforms where FLASHEND is not defined
 #endif
 
-/*
- * Helper macro for getting a macro definition as string
- */
-#if !defined(STR_HELPER)
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
+#if !defined (RAMEND)
+#define RAMEND 0x0FFF // Dummy value for platforms where RAMEND is not defined
 #endif

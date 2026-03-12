@@ -8,7 +8,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2020-2025 Armin Joachimsmeyer
+ * Copyright (c) 2020-2026 Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,11 +32,12 @@
 #ifndef _IR_PROTOCOL_H
 #define _IR_PROTOCOL_H
 
+#include <stdint.h>
+
 /*
  * If activated, BANG_OLUFSEN, BOSEWAVE, MAGIQUEST, WHYNTER, FAST and LEGO_PF are excluded in decoding and in sending with IrSender.write
  */
 //#define EXCLUDE_EXOTIC_PROTOCOLS
-
 /*
  * Supported IR protocols
  * Each protocol you include costs memory and, during decode, costs time
@@ -49,7 +50,8 @@
 || defined(DECODE_PANASONIC) || defined(DECODE_LG) || defined(DECODE_NEC) || defined(DECODE_ONKYO) || defined(DECODE_SAMSUNG) \
 || defined(DECODE_SONY) || defined(DECODE_RC5) || defined(DECODE_RC6) \
 || defined(DECODE_DISTANCE_WIDTH) || defined(DECODE_HASH) || defined(DECODE_BOSEWAVE) \
-|| defined(DECODE_LEGO_PF) || defined(DECODE_MAGIQUEST) || defined(DECODE_FAST) || defined(DECODE_WHYNTER)))
+|| defined(DECODE_LEGO_PF) || defined(DECODE_MAGIQUEST) || defined(DECODE_WHYNTER) || defined(DECODE_MARANTZ) || defined(DECODE_FAST) \
+|| defined(DECODE_OPENLASIR)))
 /*
  * If no protocol is explicitly enabled, we enable all protocols
  */
@@ -69,7 +71,9 @@
 #define DECODE_LEGO_PF
 #define DECODE_MAGIQUEST
 #define DECODE_WHYNTER
+#define DECODE_MARANTZ
 #define DECODE_FAST
+#define DECODE_OPENLASIR    // Modified NEC with 8-bit validated address + 16-bit command
 #    endif
 
 #    if !defined(EXCLUDE_UNIVERSAL_PROTOCOLS)
@@ -88,42 +92,16 @@
 /**
  * An enum consisting of all supported formats.
  * You do NOT need to remove entries from this list when disabling protocols!
- * !!!Must be the same order as ProtocolNames in IRReceive.hpp!!!
+ * !!!Must be the same order as ProtocolNames in IRProtocol.hpp!!!
  */
 typedef enum {
-    UNKNOWN = 0,
-    PULSE_WIDTH,
-    PULSE_DISTANCE,
-    APPLE,
-    DENON,
-    JVC,
-    LG,
-    LG2,
-    NEC,
-    NEC2, /* 10 NEC with full frame as repeat */
-    ONKYO,
-    PANASONIC,
-    KASEIKYO,
-    KASEIKYO_DENON,
-    KASEIKYO_SHARP,
-    KASEIKYO_JVC,
-    KASEIKYO_MITSUBISHI,
-    RC5,
-    RC6,
-    RC6A, /*31 bit +  3 fixed 0b110 mode bits*/
-    SAMSUNG, /* 20*/
-    SAMSUNGLG,
-    SAMSUNG48,
-    SHARP,
-    SONY,
+    UNKNOWN = 0, PULSE_WIDTH, PULSE_DISTANCE, APPLE, DENON, JVC, LG, LG2, NEC, NEC2, /* 10 entries */
+    ONKYO, PANASONIC, KASEIKYO, KASEIKYO_DENON, KASEIKYO_SHARP, KASEIKYO_JVC, KASEIKYO_MITSUBISHI, RC5, RC6, RC6A, /*31 bit +  3 fixed 0b110 mode bits*/
+    SAMSUNG, /* 11 entries */
+    SAMSUNGLG, SAMSUNG48, SHARP, SONY,
     /* Now the exotic protocols */
-    BANG_OLUFSEN,
-    BOSEWAVE,
-    LEGO_PF,
-    MAGIQUEST,
-    WHYNTER, /* 30 */
-    FAST,
-    OTHER
+    BANG_OLUFSEN, BOSEWAVE, LEGO_PF, MAGIQUEST, WHYNTER, MARANTZ,/* 10 entries */
+    FAST, OPENLASIR, OTHER
 } decode_type_t;
 extern const char *const ProtocolNames[]; // The array of name strings for the decode_type_t enum
 
@@ -171,8 +149,8 @@ struct PulseDistanceWidthProtocolConstants {
  * Definitions for member PulseDistanceWidthProtocolConstants.Flags
  */
 #define PROTOCOL_IS_PULSE_DISTANCE      0x00
-#define PROTOCOL_IS_PULSE_DISTANCE_WIDTH 0x00 // can often successfully be decoded as pulse distance
-#define PROTOCOL_IS_PULSE_WIDTH         0x10
+#define PROTOCOL_IS_PULSE_DISTANCE_WIDTH 0x00 // Can often be decoded successfully as pulse distance
+#define PROTOCOL_IS_PULSE_WIDTH         0x10  // Currently only Sony protocol
 #define PROTOCOL_IS_PULSE_WIDTH_MASK    PROTOCOL_IS_PULSE_WIDTH
 #define SUPPRESS_STOP_BIT               0x20 // Stop bit is otherwise sent for all pulse distance protocols, i.e. aOneSpaceMicros != aZeroSpaceMicros.
 #define PROTOCOL_IS_MSB_FIRST           IRDATA_FLAGS_IS_MSB_FIRST
@@ -191,6 +169,7 @@ struct PulseDistanceWidthProtocolConstants {
 #define JVC_KHZ         38
 #define LG_KHZ          38
 #define NEC_KHZ         38
+#define OPENLASIR_KHZ   38
 #define SAMSUNG_KHZ     38
 #define KASEIKYO_KHZ    37
 #define RC5_RC6_KHZ     36

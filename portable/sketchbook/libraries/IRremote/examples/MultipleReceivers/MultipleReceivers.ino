@@ -60,7 +60,7 @@
 //#define DEBUG               // Activate this for lots of lovely debug output from the decoders.
 //#define RAW_BUFFER_LENGTH  750 // For air condition remotes it may require up to 750. Default is 200.
 #define SUPPORT_MULTIPLE_RECEIVER_INSTANCES
-void UserIRReceiveTimerInterruptHandler(); // must also be before line #include <IRremote.hpp>
+void UserIRReceiveTimerInterruptHandler(); // Is defined below and must be declared before line #include <IRremote.hpp>
 
 /*
  * This include defines the actual pin number for pins like IR_RECEIVE_PIN, IR_SEND_PIN for many different boards and architectures
@@ -143,6 +143,14 @@ void handleSuccessfulDecoding(IRrecv *aIRReceiverInstance) {
 
 }
 
+/*
+ * This handler is called in ISR context after IrReceiver.ReceiveInterruptHandler() if SUPPORT_MULTIPLE_RECEIVER_INSTANCES is active.
+ * Here we just call the standard ReceiveInterruptHandler for the second receiver.
+ * Doing it this way, we are able to modify the body of this function to support more than 2 IRrecv instances for receiving.
+ */
+#if defined(ESP8266) || defined(ESP32)
+IRAM_ATTR
+#endif
 void UserIRReceiveTimerInterruptHandler() {
     MySecondIrReceiver.ReceiveInterruptHandler();
 }

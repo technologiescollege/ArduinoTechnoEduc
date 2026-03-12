@@ -3922,6 +3922,95 @@
               "url": "https://spencekondetoolchains.s3.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino7b-i686-w64-mingw32.tar.bz2"
             }
           ]
+        },
+        {
+          "name": "avr-gcc",
+          "version": "7.3.0-atmel3.6.1-azduino8",
+          "systems": [
+            {
+              "size": "44784251",
+              "checksum": "SHA-256:52777b35ba0f7c9e23e7ff237ae1bb7f0aaf7652c03390c59e634f8078c3d7f7",
+              "host": "aarch64-pc-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-aarch64-pc-linux-gnu.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-aarch64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "41138786",
+              "checksum": "SHA-256:d166d9f9a69654bd626d8143f48bea0738d113fd2ba84775d5893089955963e0",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-arm-linux-gnueabihf.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-arm-linux-gnueabihf.tar.bz2"
+            },
+            {
+              "size": "44141029",
+              "checksum": "SHA-256:5444bc3c0aeeea945602007d5709790678261f234937e38a9611dfffc1cf1f96",
+              "host": "i686-pc-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-i686-pc-linux-gnu.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-i686-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "45170019",
+              "checksum": "SHA-256:f07190c6382b0211b662d4bddf1f3d41712f15e5281acbe6f094f2a2b6ed0e23",
+              "host": "x86_64-apple-darwin14",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-apple-darwin14.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-apple-darwin14.tar.bz2"
+            },
+            {
+              "size": "44804707",
+              "checksum": "SHA-256:ffce8ce1ef79bd6ec25a1a7154900966bcfdcd1731eb5d1e45c60e914a655e1d",
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "https://github.com/SpenceKonde/DxCore/blob/gh-pages/avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-pc-linux-gnu.tar.bz2"
+            }
+          ]
+        },
+        {
+          "name": "avr-gcc",
+          "version": "7.3.0-atmel3.6.1-azduino8a",
+          "systems": [
+            {
+              "size": "44784251",
+              "checksum": "SHA-256:52777b35ba0f7c9e23e7ff237ae1bb7f0aaf7652c03390c59e634f8078c3d7f7",
+              "host": "aarch64-pc-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-aarch64-pc-linux-gnu.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-aarch64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "41138786",
+              "checksum": "SHA-256:d166d9f9a69654bd626d8143f48bea0738d113fd2ba84775d5893089955963e0",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-arm-linux-gnueabihf.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-arm-linux-gnueabihf.tar.bz2"
+            },
+            {
+              "size": "44141029",
+              "checksum": "SHA-256:5444bc3c0aeeea945602007d5709790678261f234937e38a9611dfffc1cf1f96",
+              "host": "i686-pc-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-i686-pc-linux-gnu.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-i686-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "45170019",
+              "checksum": "SHA-256:f07190c6382b0211b662d4bddf1f3d41712f15e5281acbe6f094f2a2b6ed0e23",
+              "host": "x86_64-apple-darwin14",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-apple-darwin14.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-apple-darwin14.tar.bz2"
+            },
+            {
+              "size": "44804707",
+              "checksum": "SHA-256:ffce8ce1ef79bd6ec25a1a7154900966bcfdcd1731eb5d1e45c60e914a655e1d",
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8-x86_64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "44053393",
+              "checksum": "SHA-256:019ad5eecd79e2e673f07c10311399a570de565cc29389ee798b0539a418336b",
+              "host": "i686-w64-mingw32",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-azduino8a-i686-w64-mingw32.tar.bz2",
+              "url": "https://spencekondetoolchains.s3.us-east-1.amazonaws.com/avr-gcc-7.3.0-atmel3.6.1-azduino8a-i686-w64-mingw32.tar.bz2"
+            }
+          ]
         }
       ]
     },
@@ -6792,6 +6881,89 @@
               "packager": "DxCore",
               "name": "avr-gcc",
               "version": "7.3.0-atmel3.6.1-azduino7b1"
+            },
+            {
+              "packager": "DxCore",
+              "name": "avrdude",
+              "version": "6.3.0-arduino17or18"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            },
+            {
+              "packager": "megaTinyCore",
+              "version": "3.7.2-post1",
+              "name": "python3"
+            }
+          ]
+        },
+        {
+          "name": "megaTinyCore",
+          "architecture": "megaavr",
+          "version": "2.6.11",
+          "category": "Contributed",
+          "url": "https://SpenceKonde.github.io/megaTinyCore/megaTinyCore-2.6.11.tar.bz2",
+          "archiveFileName": "megaTinyCore-2.6.11.tar.bz2",
+          "checksum": "SHA-256:1a2b5827777aa4c61ac5d9e96cf4ad9ebb34a2171a97288349df8eb61636cfb1",
+          "size": "1396653",
+          "boards": [
+            {
+              "name": "Full Arduino support for the tinyAVR 0-series, 1-series, and the new 2-series!<br/> 24-pin parts: ATtiny3227/3217/1627/1617/1607/827/817/807/427<br/> 20-pin parts: ATtiny3226/3216/1626/1616/1606/826/816/806/426/416/406<br/> 14-pin parts: ATtiny3224/1624/1614/1604/824/814/804/424/414/404/214/204<br/> 8-pin parts: ATtiny412/402/212/202<br/> Microchip Boards: Curiosity Nano 3217/1627/1607 and Xplained Pro (3217/817), Mini (817) Nano (416). Direct USB uploads may not work on linux, but you can export hex and <br/> upload through the mass storage projection."
+            },
+            {
+              "name": "2.6.11 corrects several issues with PWM introduced during the 2.6 versions, and also switches to a new toolchain version. a 2.7.0 version is coming in the near future, following the next DxCore version"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "DxCore",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-azduino8"
+            },
+            {
+              "packager": "DxCore",
+              "name": "avrdude",
+              "version": "6.3.0-arduino17or18"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            },
+            {
+              "packager": "megaTinyCore",
+              "version": "3.7.2-post1",
+              "name": "python3"
+            }
+          ]
+        },
+        {
+          "name": "megaTinyCore",
+          "architecture": "megaavr",
+          "version": "2.6.12",
+          "category": "Contributed",
+          "url": "https://SpenceKonde.github.io/megaTinyCore/megaTinyCore-2.6.11.tar.bz2",
+          "archiveFileName": "megaTinyCore-2.6.11.tar.bz2",
+          "checksum": "SHA-256:1a2b5827777aa4c61ac5d9e96cf4ad9ebb34a2171a97288349df8eb61636cfb1",
+          "size": "1396653",
+          "boards": [
+            {
+              "name": "Full Arduino support for the tinyAVR 0-series, 1-series, and the new 2-series!<br/> 24-pin parts: ATtiny3227/3217/1627/1617/1607/827/817/807/427<br/> 20-pin parts: ATtiny3226/3216/1626/1616/1606/826/816/806/426/416/406<br/> 14-pin parts: ATtiny3224/1624/1614/1604/824/814/804/424/414/404/214/204<br/> 8-pin parts: ATtiny412/402/212/202<br/> Microchip Boards: Curiosity Nano 3217/1627/1607 and Xplained Pro (3217/817), Mini (817) Nano (416). Direct USB uploads may not work on linux, but you can export hex and <br/> upload through the mass storage projection."
+            },
+            {
+              "name": "2.6.12 corrects emergency issue with the windows toolchain. There is no change to the core code, only the bundled tools for windows platforms only. "
+            },
+            {
+              "name": "2.6.11 corrects several issues with PWM introduced during the 2.6 versions, and also switches to a new toolchain version. a 2.7.0 version is coming in the near future, following the next DxCore version"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "DxCore",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-azduino8a"
             },
             {
               "packager": "DxCore",

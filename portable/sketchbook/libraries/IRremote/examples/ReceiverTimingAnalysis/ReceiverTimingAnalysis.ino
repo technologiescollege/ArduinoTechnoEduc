@@ -36,11 +36,11 @@
 #define IR_RECEIVE_PIN    2
 //#define IR_RECEIVE_PIN    3
 
-/*
- * Helper macro for getting a macro definition as string
- */
+// Helper macro for getting a macro definition as string
+#if !defined(STR_HELPER) && !defined(STR)
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
+#endif
 
 #if !(defined(EICRA) && defined(EIFR) && defined(EIMSK))
 void measureTimingISR(void);
@@ -76,7 +76,7 @@ void setup() {
 #  if defined(ARDUINO_ARCH_SAMD) // see https://www.arduino.cc/reference/tr/language/functions/external-interrupts/attachinterrupt/ paragraph: Syntax
     attachInterrupt(IR_RECEIVE_PIN, measureTimingISR, CHANGE);
 #  else
-    attachInterrupt(digitalPinToInterrupt(IR_RECEIVE_PIN), measureTimingISR, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(IR_RECEIVE_PIN), measureTimingISR, CHANGE); // CHANGE can also be an enum :-(
 #  endif
 #endif
     Serial.println(F("Ready to analyze NEC IR signal at pin " STR(IR_RECEIVE_PIN)));

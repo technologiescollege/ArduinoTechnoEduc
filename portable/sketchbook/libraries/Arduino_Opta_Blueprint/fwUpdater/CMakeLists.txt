@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 2.9)
+project (OptaFwUpdater)
+add_subdirectory("./source")
+
+SET(LOCAL_INSTALLATION_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+if(EXISTS "${LOCAL_INSTALLATION_DIRECTORY}")
+   MESSAGE( STATUS ${LOCAL_INSTALLATION_DIRECTORY} "Exists... skipping creation" )  
+else()
+  file(MAKE_DIRECTORY ${LOCAL_INSTALLATION_DIRECTORY})
+endif() 

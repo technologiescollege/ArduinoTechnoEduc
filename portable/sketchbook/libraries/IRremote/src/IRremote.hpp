@@ -79,6 +79,12 @@
 
 //#define DEBUG // Activate this for lots of lovely debug output from the IRremote core.
 
+// Helper macro for getting a macro definition as string
+#if !defined(STR_HELPER) && !defined(STR)
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+#endif
+
 /****************************************************
  *                    RECEIVING
  ****************************************************/
@@ -107,16 +113,26 @@
 #endif
 
 /**
- * Minimum gap between IR transmissions, to detect the end of a protocol.
+ * Minimum gap between IR transmissions, only used to detect the end of a frame.
  * Must be greater than any space of a protocol e.g. the NEC header space of 4500 us.
- * Must be smaller than any gap between a command and a repeat; e.g. the retransmission gap for Sony is around 15 ms for Sony20 protocol.
- * Keep in mind, that this is the delay between the end of the received command and the start of decoding.
+ * Must be smaller than any gap between a frame and a repeat frame; e.g. the retransmission gap for Sony is around 12 ms for Sony20 protocol.
+ * Bear in mind, that this is the delay between the end of the received frame
+ * and the time at which the software detects the end of this frame and can start decoding!
  */
 #if !defined(RECORD_GAP_MICROS)
 // To change this value, you simply can add a line #define "RECORD_GAP_MICROS <My_new_value>" in your *.ino file before the line "#include <IRremote.hpp>"
 // Maximum value for RECORD_GAP_MICROS, which fit into 8 bit buffer, using 50 us as tick, is 12750
 #define RECORD_GAP_MICROS   8000 // RECS80 (https://www.mikrocontroller.net/articles/IRMP#RECS80) 1 bit space is 7500µs , NEC header space is 4500
 #endif
+#define RECORD_GAP_TICKS    (RECORD_GAP_MICROS / MICROS_PER_TICK) // 160 for RECORD_GAP_MICROS == 8000
+
+/**
+ * microseconds per clock interrupt tick
+ */
+#if !defined(MICROS_PER_TICK)
+#define MICROS_PER_TICK    50 // We do not need it to be 50L!!! It saves 90 bytes for UnitTest compared with 50L :-)
+#endif
+
 /**
  * Threshold for warnings at printIRResult*() to report about changing the RECORD_GAP_MICROS value to a higher value.
  */
@@ -124,9 +140,6 @@
 // To change this value, you simply can add a line #define "RECORD_GAP_MICROS_WARNING_THRESHOLD <My_new_value>" in your *.ino file before the line "#include <IRremote.hpp>"
 #define RECORD_GAP_MICROS_WARNING_THRESHOLD   15000
 #endif
-
-/** Minimum gap between IR transmissions, in MICROS_PER_TICK */
-#define RECORD_GAP_TICKS    (RECORD_GAP_MICROS / MICROS_PER_TICK)
 
 /*
  * Activate this line if your receiver has an external output driver transistor / "inverted" output
@@ -199,14 +212,6 @@
 #define IR_SEND_DUTY_CYCLE_PERCENT 30 // 30 saves power and is compatible to the old existing code
 #endif
 
-
-/**
- * microseconds per clock interrupt tick
- */
-#if ! defined(MICROS_PER_TICK)
-#define MICROS_PER_TICK    50L // must be with L to get 32 bit results if multiplied with rawbuf[] content.
-#endif
-
 #define MILLIS_IN_ONE_SECOND 1000L
 #define MICROS_IN_ONE_SECOND 1000000L
 #define MICROS_IN_ONE_MILLI 1000L
@@ -258,6 +263,10 @@ void disableLEDFeedback() {}; // dummy function for examples
 #if !defined(DISABLE_CODE_FOR_RECEIVER)
 #include "IRReceive.hpp"
 #endif
+// Get absolute value of difference of two unsigned values
+#if !defined(uintDifferenceAbs)
+#define uintDifferenceAbs(a, b) ((a >= b) ? a - b : b - a)
+#endif
 #include "IRSend.hpp"
 
 /*
@@ -272,6 +281,7 @@ void disableLEDFeedback() {}; // dummy function for examples
 #include "ir_LG.hpp"
 #include "ir_MagiQuest.hpp"
 #include "ir_NEC.hpp"
+#include "ir_OpenLASIR.hpp"
 #include "ir_RC5_RC6.hpp"
 #include "ir_Samsung.hpp"
 #include "ir_Sony.hpp"

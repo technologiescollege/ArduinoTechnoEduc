@@ -10,7 +10,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2020-2025 Armin Joachimsmeyer
+ * Copyright (c) 2020-2026 Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,11 +92,12 @@
 #  endif
 #endif
 
-//#define NO_LED_FEEDBACK_CODE // saves 92 bytes program memory
+//#define NO_LED_FEEDBACK_CODE        // saves 92 bytes program memory
 //#define EXCLUDE_UNIVERSAL_PROTOCOLS // Saves up to 1000 bytes program memory.
-//#define EXCLUDE_EXOTIC_PROTOCOLS // saves around 650 bytes program memory if all other protocols are active
-//#define USE_THRESHOLD_DECODER   // May give slightly better results especially for jittering signals and protocols with short 1 pulses / pauses. Requires additional 1 bytes program memory.
+//#define EXCLUDE_EXOTIC_PROTOCOLS    // saves around 650 bytes program memory if all other protocols are active
+//#define USE_THRESHOLD_DECODER       // May give slightly better results especially for jittering signals and protocols with short 1 pulses / pauses. Requires additional 1 bytes program memory.
 //#define IR_REMOTE_DISABLE_RECEIVE_COMPLETE_CALLBACK // saves 32 bytes program memory
+//#define USE_16_BIT_TIMING_BUFFER    // Use a 16-bit buffer to preserve values above 12750 us
 
 // MARK_EXCESS_MICROS is subtracted from all marks and added to all spaces before decoding,
 // to compensate for the signal forming of different IR receiver modules. See also IRremote.hpp line 135.
@@ -244,8 +245,12 @@ void loop() {
             }
             if (IrReceiver.decodedIRData.protocol == UNKNOWN) {
                 auto tDecodedRawData = IrReceiver.decodedIRData.decodedRawData; // uint32_t on 8 and 16 bit CPUs and uint64_t on 32 and 64 bit CPUs
-                Serial.print(F("Raw data received are 0x"));
+                Serial.print(F("Raw data from hash decoder is 0x"));
+#    if (__INT_WIDTH__ < 32)
                 Serial.println(tDecodedRawData);
+#    else
+                PrintULL::println(&Serial, tDecodedRawData, BIN);
+#    endif
 
             } else {
                 /*
@@ -303,7 +308,7 @@ void loop() {
  * Stop receiver, generate a single beep and start receiver again
  */
 void generateTone() {
-#  if !defined(ESP8266) && !defined(NRF5) // tone on esp8266 works only once, then it disables IrReceiver.restartTimer() / timerConfigForReceive().
+#  if !defined(ESP8266) && !defined(NRF5) && defined(TONE_PIN) // tone on esp8266 works only once, then it disables IrReceiver.restartTimer() / timerConfigForReceive().
 #    if defined(ESP32) // ESP32 uses another timer for tone(), maybe other platforms (not tested yet) too.
     tone(TONE_PIN, 2200, 8);
 #    else
@@ -321,7 +326,7 @@ void handleOverflow() {
     Serial.println(F("Try to increase the \"RAW_BUFFER_LENGTH\" value of " STR(RAW_BUFFER_LENGTH) " in " __FILE__));
     // see also https://github.com/Arduino-IRremote/Arduino-IRremote#compile-options--macros-for-this-library
 
-#if !defined(ESP8266) && !defined(NRF5) && FLASHEND >= 0x3FFF // tone on esp8266 works once, then it disables IrReceiver.restartTimer() / timerConfigForReceive().
+#if !defined(ESP8266) && !defined(NRF5) && FLASHEND >= 0x3FFF && defined(TONE_PIN) // tone on esp8266 works once, then it disables IrReceiver.restartTimer() / timerConfigForReceive().
     /*
      * Stop timer, generate a double beep and start timer again
      */

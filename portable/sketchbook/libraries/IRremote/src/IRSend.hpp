@@ -8,7 +8,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2009-2025 Ken Shirriff, Rafi Khan, Armin Joachimsmeyer
+ * Copyright (c) 2009-2026 Ken Shirriff, Rafi Khan, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,17 +32,10 @@
 #ifndef _IR_SEND_HPP
 #define _IR_SEND_HPP
 
-#if defined(DEBUG)
-#define LOCAL_DEBUG
-#else
-//#define LOCAL_DEBUG // This enables debug output only for this file
-#endif
-
-#if defined(TRACE) && !defined(LOCAL_TRACE)
-#define LOCAL_TRACE
-#else
-//#define LOCAL_TRACE // This enables debug output only for this file
-#endif
+// This block must be located after the includes of other *.hpp files
+//#define LOCAL_DEBUG // This enables debug output only for this file - only for development
+//#define LOCAL_TRACE // This enables trace output only for this file - only for development
+#include "LocalDebugLevelStart.h"
 
 /*
  * Low level hardware timing measurement
@@ -89,7 +82,7 @@ void IRsend::begin(){
 
 /**
  * Only required to set LED feedback pin
- * @param aFeedbackLEDPin       If USE_DEFAULT_FEEDBACK_LED_PIN / 0, then take board specific FEEDBACK_LED_ON() and FEEDBACK_LED_OFF() functions
+ * @param aFeedbackLEDPin       If USE_DEFAULT_FEEDBACK_LED_PIN / 0xFF, then take board specific LED_BUILTIN pin if it is defined as macro
  */
 void IRsend::begin(uint_fast8_t aFeedbackLEDPin) {
     setLEDFeedbackPin(aFeedbackLEDPin);
@@ -101,7 +94,7 @@ IRsend::IRsend(uint_fast8_t aSendPin) { // @suppress("Class members should be pr
 }
 
 /**
- * Initializes the send pin and enable LED feedback with board specific FEEDBACK_LED_ON() and FEEDBACK_LED_OFF() functions
+ * Initializes the send pin and enable LED feedback with board specific LED_BUILTIN pin if it is defined as macro
  * @param aSendPin The Arduino pin number, where a IR sender diode is connected.
  */
 void IRsend::begin(uint_fast8_t aSendPin) {
@@ -115,7 +108,7 @@ void IRsend::setSendPin(uint_fast8_t aSendPin) {
 /**
  * Initializes the send and feedback pin
  * @param aSendPin The Arduino pin number, where a IR sender diode is connected.
- * @param aFeedbackLEDPin       If 0 / USE_DEFAULT_FEEDBACK_LED_PIN, then take board specific FEEDBACK_LED_ON() and FEEDBACK_LED_OFF() functions
+ * @param aFeedbackLEDPin       If 0xFF, then take board specific LED_BUILTIN pin if it is defined as macro
  */
 void IRsend::begin(uint_fast8_t aSendPin, uint_fast8_t aFeedbackLEDPin) {
 #if defined(IR_SEND_PIN)
@@ -265,6 +258,9 @@ size_t IRsend::write(IRData *aIRSendData, int_fast8_t aNumberOfRepeats) {
 
     } else if (tProtocol == LEGO_PF) {
         sendLegoPowerFunctions(tAddress, tCommand, tCommand >> 4, tIsRepeat); // send 5 autorepeats
+
+    } else if (tProtocol == OPENLASIR) {
+        sendOpenLASIR(tAddress, tCommand, aNumberOfRepeats);
 #endif
 
     } else {
@@ -382,6 +378,9 @@ size_t IRsend::write(decode_type_t aProtocol, uint16_t aAddress, uint16_t aComma
 
     } else if (aProtocol == LEGO_PF) {
         sendLegoPowerFunctions(aAddress, aCommand, aCommand >> 4, (aNumberOfRepeats < 0)); // send 5 autorepeats, except for dedicated repeats
+
+    } else if (aProtocol == OPENLASIR) {
+        sendOpenLASIR(aAddress, aCommand, aNumberOfRepeats);
 #endif
 
     } else {
@@ -401,6 +400,12 @@ size_t IRsend::write(decode_type_t aProtocol, uint16_t aAddress, uint16_t aComma
 void IRsend::sendRaw(const uint16_t aBufferWithMicroseconds[], uint_fast16_t aLengthOfBuffer, uint_fast8_t aIRFrequencyKilohertz) {
 // Set IR carrier frequency
     enableIROut(aIRFrequencyKilohertz);
+
+    DEBUG_PRINT(F("aPGMBufferWithMicroseconds=0x"));
+    DEBUG_PRINT((uint32_t) aBufferWithMicroseconds, HEX);
+    DEBUG_PRINT(F(" [0]="));
+    DEBUG_PRINTLN(aBufferWithMicroseconds[0]);  // this crashes on ESP8266 if aBufferWithMicroseconds is PROGMEM
+    DEBUG_FLUSH();
 
     /*
      * Raw data starts with a mark.
@@ -495,11 +500,9 @@ void IRsend::sendRaw_P(const uint16_t aPGMBufferWithMicroseconds[], uint_fast16_
     /*
      * Raw data starts with a mark
      */
-#  if defined(LOCAL_DEBUG)
     // If the PROGMEM array is defined in the function, the C-compiler uses a wrong address :-(. sizeof() works.
-    Serial.print(F("aPGMBufferWithMicroseconds=0x"));
-    Serial.println((uint16_t)aPGMBufferWithMicroseconds,HEX);
-#endif
+    DEBUG_PRINT(F("aPGMBufferWithMicroseconds=0x"));
+    DEBUG_PRINTLN((uint16_t) aPGMBufferWithMicroseconds, HEX);
 
     for (uint_fast16_t i = 0; i < aLengthOfBuffer; i++) {
         uint16_t duration = pgm_read_word(&aPGMBufferWithMicroseconds[i]);
@@ -507,24 +510,24 @@ void IRsend::sendRaw_P(const uint16_t aPGMBufferWithMicroseconds[], uint_fast16_
         if (i & 1) {
             // Odd
             space(duration);
-#  if defined(LOCAL_DEBUG)
-            Serial.print(F("S="));
-#  endif
+            DEBUG_PRINT(F("S="));
         } else {
             mark(duration);
-#  if defined(LOCAL_DEBUG)
-            Serial.print(F("M="));
-#  endif
+            DEBUG_PRINT(F("M="));
         }
-#  if defined(LOCAL_DEBUG)
-        Serial.println(duration);
-#  endif
+        DEBUG_PRINTLN(duration);
     }
 #endif
 }
 
 void IRsend::sendRaw_P(const uint16_t aPGMBufferWithMicroseconds[], uint_fast16_t aLengthOfBuffer,
         uint_fast8_t aIRFrequencyKilohertz, uint_fast16_t aRepeatPeriodMillis, int_fast8_t aNumberOfRepeats) {
+
+    DEBUG_PRINT(F("aPGMBufferWithMicroseconds=0x"));
+    DEBUG_PRINT((uint32_t) aPGMBufferWithMicroseconds, HEX);
+    DEBUG_PRINT(F(" [0]="));
+    DEBUG_PRINTLN(aPGMBufferWithMicroseconds[0]); // this crashes on ESP8266
+    DEBUG_FLUSH();
 
     uint_fast8_t tNumberOfCommands = aNumberOfRepeats + 1;
     while (tNumberOfCommands > 0) {
@@ -558,22 +561,16 @@ void IRsend::sendRaw_P(const uint8_t aPGMBufferWithTicks[], uint_fast16_t aLengt
     enableIROut(aIRFrequencyKilohertz);
 
     for (uint_fast16_t i = 0; i < aLengthOfBuffer; i++) {
-        uint16_t duration = pgm_read_byte(&aPGMBufferWithTicks[i]) * (uint_fast16_t) MICROS_PER_TICK;
+        uint16_t duration = pgm_read_byte(&aPGMBufferWithTicks[i]) * MICROS_PER_TICK;
         if (i & 1) {
             // Odd
             space(duration);
-#  if defined(LOCAL_DEBUG)
-            Serial.print(F("S="));
-#  endif
+            DEBUG_PRINT(F("S="));
         } else {
             mark(duration);
-#  if defined(LOCAL_DEBUG)
-            Serial.print(F("M="));
-#  endif
+            DEBUG_PRINT(F("M="));
         }
-#  if defined(LOCAL_DEBUG)
-        Serial.println(duration);
-#  endif
+        DEBUG_PRINTLN(duration);
     }
 #endif
 }
@@ -612,28 +609,22 @@ void IRsend::sendRaw_P(const uint8_t aPGMBufferWithTicks[], uint_fast16_t aLengt
  * @param aFlags            Evaluated flags are PROTOCOL_IS_MSB_FIRST and SUPPRESS_STOP_BIT. Stop bit is otherwise sent for all pulse distance protocols.
  */
 void IRsend::sendPulseDistanceWidthData(uint16_t aOneMarkMicros, uint16_t aOneSpaceMicros, uint16_t aZeroMarkMicros,
-        uint16_t aZeroSpaceMicros, IRRawDataType aData, uint_fast8_t aNumberOfBits, uint8_t aFlags) {
+        uint16_t aZeroSpaceMicros, IRDecodedRawDataType aData, uint_fast8_t aNumberOfBits, uint8_t aFlags) {
 
-#if defined(LOCAL_DEBUG)
-    Serial.print(aData, HEX);
-    Serial.print('|');
-    Serial.println(aNumberOfBits);
-    Serial.flush();
-#endif
+    DEBUG_PRINT(aData, HEX);
+    DEBUG_PRINT('|');
+    DEBUG_PRINTLN(aNumberOfBits);
+    DEBUG_FLUSH();
 
     // For MSBFirst, send data from MSB to LSB until mask bit is shifted out
-    IRRawDataType tMask = 1ULL << (aNumberOfBits - 1);
+    IRDecodedRawDataType tMask = 1ULL << (aNumberOfBits - 1);
     for (uint_fast8_t i = aNumberOfBits; i > 0; i--) {
         if (((aFlags & PROTOCOL_IS_MSB_MASK) && (aData & tMask)) || (!(aFlags & PROTOCOL_IS_MSB_MASK) && (aData & 1))) {
-#if defined(LOCAL_TRACE)
-            Serial.print('1');
-#endif
+            TRACE_PRINT('1');
             mark(aOneMarkMicros);
             space(aOneSpaceMicros);
         } else {
-#if defined(LOCAL_TRACE)
-            Serial.print('0');
-#endif
+            TRACE_PRINT('0');
             mark(aZeroMarkMicros);
             space(aZeroSpaceMicros);
         }
@@ -648,16 +639,12 @@ void IRsend::sendPulseDistanceWidthData(uint16_t aOneMarkMicros, uint16_t aOneSp
      * Therefore it is not sent for Sony :-)
      * For sending from an array, no intermediate stop bit must be sent for all but last data chunk.
      */
-    if ((!(aFlags & SUPPRESS_STOP_BIT)) && (abs(aOneSpaceMicros - aZeroSpaceMicros) > (aOneSpaceMicros / 4))) {
+    if ((!(aFlags & SUPPRESS_STOP_BIT)) && (uintDifferenceAbs(aOneSpaceMicros, aZeroSpaceMicros) > (aOneSpaceMicros / 4))) {
         // Send stop bit here
-#if defined(LOCAL_TRACE)
-        Serial.print('S');
-#endif
+        TRACE_PRINT('S');
         mark(aOneMarkMicros); // Use aOneMarkMicros for stop bits. This seems to be correct for all protocols :-)
     }
-#if defined(LOCAL_TRACE)
-    Serial.println();
-#endif
+    TRACE_PRINTLN();
 }
 
 /**********************************************************************************************************************
@@ -672,7 +659,7 @@ void IRsend::sendPulseDistanceWidthData(uint16_t aOneMarkMicros, uint16_t aOneSp
  * @param aData                 uint32 or uint64 holding the bits to be sent.
  * @param aNumberOfBits         Number of bits from aData to be actually sent.
  */
-void IRsend::sendPulseDistanceWidthData(PulseDistanceWidthProtocolConstants *aProtocolConstants, IRRawDataType aData,
+void IRsend::sendPulseDistanceWidthData(PulseDistanceWidthProtocolConstants *aProtocolConstants, IRDecodedRawDataType aData,
         uint_fast8_t aNumberOfBits) {
 
     sendPulseDistanceWidthData(aProtocolConstants->DistanceWidthTimingInfo.OneMarkMicros,
@@ -680,7 +667,7 @@ void IRsend::sendPulseDistanceWidthData(PulseDistanceWidthProtocolConstants *aPr
             aProtocolConstants->DistanceWidthTimingInfo.ZeroSpaceMicros, aData, aNumberOfBits, aProtocolConstants->Flags);
 }
 
-void IRsend::sendPulseDistanceWidthData_P(PulseDistanceWidthProtocolConstants const *aProtocolConstantsPGM, IRRawDataType aData,
+void IRsend::sendPulseDistanceWidthData_P(PulseDistanceWidthProtocolConstants const *aProtocolConstantsPGM, IRDecodedRawDataType aData,
         uint_fast8_t aNumberOfBits) {
 
     PulseDistanceWidthProtocolConstants tTemporaryPulseDistanceWidthProtocolConstants;
@@ -704,7 +691,7 @@ void IRsend::sendPulseDistanceWidthData_P(PulseDistanceWidthProtocolConstants co
  * @param aSpecialSendRepeatFunction    If nullptr, the first frame is repeated completely, otherwise this function is used for sending the repeat frame.
  */
 void IRsend::sendPulseDistanceWidth(uint_fast8_t aFrequencyKHz, uint16_t aHeaderMarkMicros, uint16_t aHeaderSpaceMicros,
-        uint16_t aOneMarkMicros, uint16_t aOneSpaceMicros, uint16_t aZeroMarkMicros, uint16_t aZeroSpaceMicros, IRRawDataType aData,
+        uint16_t aOneMarkMicros, uint16_t aOneSpaceMicros, uint16_t aZeroMarkMicros, uint16_t aZeroSpaceMicros, IRDecodedRawDataType aData,
         uint_fast8_t aNumberOfBits, uint8_t aFlags, uint16_t aRepeatPeriodMillis, int_fast8_t aNumberOfRepeats,
         void (*aSpecialSendRepeatFunction)()) {
 
@@ -751,14 +738,14 @@ void IRsend::sendPulseDistanceWidth(uint_fast8_t aFrequencyKHz, uint16_t aHeader
 
 void IRsend::sendPulseDistanceWidthFromArray(uint_fast8_t aFrequencyKHz, uint16_t aHeaderMarkMicros, uint16_t aHeaderSpaceMicros,
         uint16_t aOneMarkMicros, uint16_t aOneSpaceMicros, uint16_t aZeroMarkMicros, uint16_t aZeroSpaceMicros,
-        IRRawDataType *aDecodedRawDataArray, uint16_t aNumberOfBits, uint8_t aFlags, uint16_t aRepeatPeriodMillis,
+        IRDecodedRawDataType *aDecodedRawDataArray, uint16_t aNumberOfBits, uint8_t aFlags, uint16_t aRepeatPeriodMillis,
         int_fast8_t aNumberOfRepeats) {
 
     // Set IR carrier frequency
     enableIROut(aFrequencyKHz);
 
     uint_fast8_t tNumberOfCommands = aNumberOfRepeats + 1;
-    uint_fast8_t tNumberOf32Or64BitChunks = ((aNumberOfBits - 1) / BITS_IN_RAW_DATA_TYPE) + 1;
+    uint_fast8_t tNumberOf32Or64BitChunks = ((aNumberOfBits - 1) / BITS_IN_DECODED_RAW_DATA_TYPE) + 1;
 
 #if defined(LOCAL_DEBUG)
     // fist data
@@ -791,13 +778,13 @@ void IRsend::sendPulseDistanceWidthFromArray(uint_fast8_t aFrequencyKHz, uint16_
                 tFlags = aFlags;
             } else {
                 // intermediate data
-                tNumberOfBitsForOneSend = BITS_IN_RAW_DATA_TYPE;
+                tNumberOfBitsForOneSend = BITS_IN_DECODED_RAW_DATA_TYPE;
                 tFlags = aFlags | SUPPRESS_STOP_BIT; // No stop bit for leading data
             }
 
             sendPulseDistanceWidthData(aOneMarkMicros, aOneSpaceMicros, aZeroMarkMicros, aZeroSpaceMicros, aDecodedRawDataArray[i],
                     tNumberOfBitsForOneSend, tFlags);
-            aNumberOfBits -= BITS_IN_RAW_DATA_TYPE;
+            aNumberOfBits -= BITS_IN_DECODED_RAW_DATA_TYPE;
         }
 
         tNumberOfCommands--;
@@ -816,14 +803,14 @@ void IRsend::sendPulseDistanceWidthFromArray(uint_fast8_t aFrequencyKHz, uint16_
 
 void IRsend::sendPulseDistanceWidthFromPGMArray(uint_fast8_t aFrequencyKHz, uint16_t aHeaderMarkMicros, uint16_t aHeaderSpaceMicros,
         uint16_t aOneMarkMicros, uint16_t aOneSpaceMicros, uint16_t aZeroMarkMicros, uint16_t aZeroSpaceMicros,
-        IRRawDataType const *aDecodedRawDataPGMArray, uint16_t aNumberOfBits, uint8_t aFlags, uint16_t aRepeatPeriodMillis,
+        IRDecodedRawDataType const *aDecodedRawDataPGMArray, uint16_t aNumberOfBits, uint8_t aFlags, uint16_t aRepeatPeriodMillis,
         int_fast8_t aNumberOfRepeats) {
 
     // Set IR carrier frequency
     enableIROut(aFrequencyKHz);
 
     uint_fast8_t tNumberOfCommands = aNumberOfRepeats + 1;
-    uint_fast8_t tNumberOf32Or64BitChunks = ((aNumberOfBits - 1) / BITS_IN_RAW_DATA_TYPE) + 1;
+    uint_fast8_t tNumberOf32Or64BitChunks = ((aNumberOfBits - 1) / BITS_IN_DECODED_RAW_DATA_TYPE) + 1;
 
 #if defined(LOCAL_DEBUG)
     // fist data
@@ -856,11 +843,11 @@ void IRsend::sendPulseDistanceWidthFromPGMArray(uint_fast8_t aFrequencyKHz, uint
                 tFlags = aFlags;
             } else {
                 // intermediate data
-                tNumberOfBitsForOneSend = BITS_IN_RAW_DATA_TYPE;
+                tNumberOfBitsForOneSend = BITS_IN_DECODED_RAW_DATA_TYPE;
                 tFlags = aFlags | SUPPRESS_STOP_BIT; // No stop bit for leading data
             }
 
-            IRRawDataType tDecodedRawData;
+            IRDecodedRawDataType tDecodedRawData;
 #if (__INT_WIDTH__ < 32)
             tDecodedRawData = pgm_read_dword(&aDecodedRawDataPGMArray[i]); // pgm_read_dword reads 32 bit on AVR
 #else
@@ -868,7 +855,7 @@ void IRsend::sendPulseDistanceWidthFromPGMArray(uint_fast8_t aFrequencyKHz, uint
 #endif
             sendPulseDistanceWidthData(aOneMarkMicros, aOneSpaceMicros, aZeroMarkMicros, aZeroSpaceMicros, tDecodedRawData,
                     tNumberOfBitsForOneSend, tFlags);
-            aNumberOfBits -= BITS_IN_RAW_DATA_TYPE;
+            aNumberOfBits -= BITS_IN_DECODED_RAW_DATA_TYPE;
         }
 
         tNumberOfCommands--;
@@ -897,7 +884,7 @@ void IRsend::sendPulseDistanceWidthFromPGMArray(uint_fast8_t aFrequencyKHz, uint
  * @param aFlags    Evaluated flags are PROTOCOL_IS_MSB_FIRST and SUPPRESS_STOP_BIT. Stop bit is otherwise sent for all pulse distance protocols.
  */
 void IRsend::sendPulseDistanceWidthFromArray(uint_fast8_t aFrequencyKHz, DistanceWidthTimingInfoStruct *aDistanceWidthTimingInfo,
-        IRRawDataType *aDecodedRawDataArray, uint16_t aNumberOfBits, uint8_t aFlags, uint16_t aRepeatPeriodMillis,
+        IRDecodedRawDataType *aDecodedRawDataArray, uint16_t aNumberOfBits, uint8_t aFlags, uint16_t aRepeatPeriodMillis,
         int_fast8_t aNumberOfRepeats) {
     sendPulseDistanceWidthFromArray(aFrequencyKHz, aDistanceWidthTimingInfo->HeaderMarkMicros,
             aDistanceWidthTimingInfo->HeaderSpaceMicros, aDistanceWidthTimingInfo->OneMarkMicros,
@@ -907,7 +894,7 @@ void IRsend::sendPulseDistanceWidthFromArray(uint_fast8_t aFrequencyKHz, Distanc
 }
 
 void IRsend::sendPulseDistanceWidthFromArray_P(uint_fast8_t aFrequencyKHz,
-        DistanceWidthTimingInfoStruct const *aDistanceWidthTimingInfoPGM, IRRawDataType *aDecodedRawDataArray,
+        DistanceWidthTimingInfoStruct const *aDistanceWidthTimingInfoPGM, IRDecodedRawDataType *aDecodedRawDataArray,
         uint16_t aNumberOfBits, uint8_t aFlags, uint16_t aRepeatPeriodMillis, int_fast8_t aNumberOfRepeats) {
 
     DistanceWidthTimingInfoStruct tTemporaryDistanceWidthTimingInfo;
@@ -927,16 +914,14 @@ void IRsend::sendPulseDistanceWidthFromArray_P(uint_fast8_t aFrequencyKHz,
  * @param aNumberOfRepeats  If < 0 and a aProtocolConstants->SpecialSendRepeatFunction() is specified
  *                          then it is called without leading and trailing space.
  */
-void IRsend::sendPulseDistanceWidth(PulseDistanceWidthProtocolConstants *aProtocolConstants, IRRawDataType aData,
+void IRsend::sendPulseDistanceWidth(PulseDistanceWidthProtocolConstants *aProtocolConstants, IRDecodedRawDataType aData,
         uint_fast8_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
 
-#if defined(LOCAL_DEBUG)
-    Serial.print(F("Data=0x"));
-    Serial.print(aData, HEX);
-    Serial.print(F(" #="));
-    Serial.println(aNumberOfBits);
-    Serial.flush();
-#endif
+    DEBUG_PRINT(F("Data=0x"));
+    DEBUG_PRINT(aData, HEX);
+    DEBUG_PRINT(F(" #="));
+    DEBUG_PRINTLN(aNumberOfBits);
+    DEBUG_FLUSH();
 
     if (aNumberOfRepeats < 0) {
         if (aProtocolConstants->SpecialSendRepeatFunction != nullptr) {
@@ -995,7 +980,7 @@ void IRsend::sendPulseDistanceWidth(PulseDistanceWidthProtocolConstants *aProtoc
  *                          then it is called without leading and trailing space.
  */
 void IRsend::sendPulseDistanceWidthFromArray(PulseDistanceWidthProtocolConstants *aProtocolConstants,
-        IRRawDataType *aDecodedRawDataArray, uint16_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
+        IRDecodedRawDataType *aDecodedRawDataArray, uint16_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
 
 // Calling sendPulseDistanceWidthFromArray() costs 68 bytes program memory compared to the implementation below
 //    sendPulseDistanceWidthFromArray(aProtocolConstants->FrequencyKHz, aProtocolConstants->DistanceWidthTimingInfo.HeaderMarkMicros,
@@ -1007,7 +992,7 @@ void IRsend::sendPulseDistanceWidthFromArray(PulseDistanceWidthProtocolConstants
     // Set IR carrier frequency
     enableIROut(aProtocolConstants->FrequencyKHz);
 
-    uint_fast8_t tNumberOf32Or64BitChunks = ((aNumberOfBits - 1) / BITS_IN_RAW_DATA_TYPE) + 1;
+    uint_fast8_t tNumberOf32Or64BitChunks = ((aNumberOfBits - 1) / BITS_IN_DECODED_RAW_DATA_TYPE) + 1;
 
 #if defined(LOCAL_DEBUG)
     // fist data
@@ -1042,7 +1027,7 @@ void IRsend::sendPulseDistanceWidthFromArray(PulseDistanceWidthProtocolConstants
                 tFlags = tOriginalFlags;
             } else {
                 // intermediate data
-                tNumberOfBitsForOneSend = BITS_IN_RAW_DATA_TYPE;
+                tNumberOfBitsForOneSend = BITS_IN_DECODED_RAW_DATA_TYPE;
                 tFlags = tOriginalFlags | SUPPRESS_STOP_BIT; // No stop bit for leading data
             }
 
@@ -1051,7 +1036,7 @@ void IRsend::sendPulseDistanceWidthFromArray(PulseDistanceWidthProtocolConstants
                     aProtocolConstants->DistanceWidthTimingInfo.ZeroMarkMicros,
                     aProtocolConstants->DistanceWidthTimingInfo.ZeroSpaceMicros, aDecodedRawDataArray[i], tNumberOfBitsForOneSend,
                     tFlags);
-            tNumberOfBits -= BITS_IN_RAW_DATA_TYPE;
+            tNumberOfBits -= BITS_IN_DECODED_RAW_DATA_TYPE;
         }
 
         tNumberOfCommands--;
@@ -1069,7 +1054,7 @@ void IRsend::sendPulseDistanceWidthFromArray(PulseDistanceWidthProtocolConstants
 }
 
 void IRsend::sendPulseDistanceWidthFromPGMArray(PulseDistanceWidthProtocolConstants *aProtocolConstants,
-        IRRawDataType const *aDecodedRawDataPGMArray, uint16_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
+        IRDecodedRawDataType const *aDecodedRawDataPGMArray, uint16_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
 
 // Calling sendPulseDistanceWidthFromArray() costs 68 bytes program memory compared to the implementation below
 //    sendPulseDistanceWidthFromArray(aProtocolConstants->FrequencyKHz, aProtocolConstants->DistanceWidthTimingInfo.HeaderMarkMicros,
@@ -1081,7 +1066,7 @@ void IRsend::sendPulseDistanceWidthFromPGMArray(PulseDistanceWidthProtocolConsta
     // Set IR carrier frequency
     enableIROut(aProtocolConstants->FrequencyKHz);
 
-    uint_fast8_t tNumberOf32Or64BitChunks = ((aNumberOfBits - 1) / BITS_IN_RAW_DATA_TYPE) + 1;
+    uint_fast8_t tNumberOf32Or64BitChunks = ((aNumberOfBits - 1) / BITS_IN_DECODED_RAW_DATA_TYPE) + 1;
 
 #if defined(LOCAL_DEBUG)
     // fist data
@@ -1116,11 +1101,11 @@ void IRsend::sendPulseDistanceWidthFromPGMArray(PulseDistanceWidthProtocolConsta
                 tFlags = tOriginalFlags;
             } else {
                 // intermediate data
-                tNumberOfBitsForOneSend = BITS_IN_RAW_DATA_TYPE;
+                tNumberOfBitsForOneSend = BITS_IN_DECODED_RAW_DATA_TYPE;
                 tFlags = tOriginalFlags | SUPPRESS_STOP_BIT; // No stop bit for leading data
             }
 
-            IRRawDataType tDecodedRawData;
+            IRDecodedRawDataType tDecodedRawData;
 #if (__INT_WIDTH__ < 32)
             tDecodedRawData = pgm_read_dword(&aDecodedRawDataPGMArray[i]); // pgm_read_dword reads 32 bit on AVR
 #else
@@ -1130,7 +1115,7 @@ void IRsend::sendPulseDistanceWidthFromPGMArray(PulseDistanceWidthProtocolConsta
                     aProtocolConstants->DistanceWidthTimingInfo.OneSpaceMicros,
                     aProtocolConstants->DistanceWidthTimingInfo.ZeroMarkMicros,
                     aProtocolConstants->DistanceWidthTimingInfo.ZeroSpaceMicros, tDecodedRawData, tNumberOfBitsForOneSend, tFlags);
-            tNumberOfBits -= BITS_IN_RAW_DATA_TYPE;
+            tNumberOfBits -= BITS_IN_DECODED_RAW_DATA_TYPE;
         }
 
         tNumberOfCommands--;
@@ -1152,7 +1137,7 @@ void IRsend::sendPulseDistanceWidthFromPGMArray(PulseDistanceWidthProtocolConsta
  **********************************************************************************************************************/
 
 void IRsend::sendPulseDistanceWidthFromArray_P(PulseDistanceWidthProtocolConstants const *aProtocolConstantsPGM,
-        IRRawDataType *aDecodedRawDataArray, uint16_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
+        IRDecodedRawDataType *aDecodedRawDataArray, uint16_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
 
     PulseDistanceWidthProtocolConstants tTemporaryPulseDistanceWidthProtocolConstants;
     memcpy_P(&tTemporaryPulseDistanceWidthProtocolConstants, aProtocolConstantsPGM,
@@ -1161,7 +1146,7 @@ void IRsend::sendPulseDistanceWidthFromArray_P(PulseDistanceWidthProtocolConstan
             aNumberOfRepeats);
 }
 void IRsend::sendPulseDistanceWidthFromPGMArray_P(PulseDistanceWidthProtocolConstants const *aProtocolConstantsPGM,
-        IRRawDataType const *aDecodedRawDataPGMArray, uint16_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
+        IRDecodedRawDataType const *aDecodedRawDataPGMArray, uint16_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
 
     PulseDistanceWidthProtocolConstants tTemporaryPulseDistanceWidthProtocolConstants;
     memcpy_P(&tTemporaryPulseDistanceWidthProtocolConstants, aProtocolConstantsPGM,
@@ -1170,7 +1155,7 @@ void IRsend::sendPulseDistanceWidthFromPGMArray_P(PulseDistanceWidthProtocolCons
             aNumberOfRepeats);
 }
 
-void IRsend::sendPulseDistanceWidth_P(PulseDistanceWidthProtocolConstants const *aProtocolConstantsPGM, IRRawDataType aData,
+void IRsend::sendPulseDistanceWidth_P(PulseDistanceWidthProtocolConstants const *aProtocolConstantsPGM, IRDecodedRawDataType aData,
         uint_fast8_t aNumberOfBits, int_fast8_t aNumberOfRepeats) {
     PulseDistanceWidthProtocolConstants tTemporaryPulseDistanceWidthProtocolConstants;
     memcpy_P(&tTemporaryPulseDistanceWidthProtocolConstants, aProtocolConstantsPGM,
@@ -1185,40 +1170,35 @@ void IRsend::sendPulseDistanceWidth_P(PulseDistanceWidthProtocolConstants const 
  * Send an additional start bit if specified
  * 0 -> mark+space
  * 1 -> space+mark
- * The output always ends with a space
- * @param aData             uint32 or uint64 holding the bits to be sent.
+ * The output always ends with a space / inactive level
+ * @param aData             uint32 holding the bits to be sent.
  * @param aNumberOfBits     Number of bits from aData to be actually sent.
  * @param aSendStartBit     if true sends an additional start bit with value 1 as MSB, if false no start bit is sent and data may start with 0 or 1.
  */
 void IRsend::sendBiphaseData(uint16_t aBiphaseTimeUnit, uint32_t aData, uint_fast8_t aNumberOfBits, bool aSendStartBit) {
 
-    IR_TRACE_PRINT(F("0x"));
-    IR_TRACE_PRINT(aData, HEX);
-
-#if defined(LOCAL_TRACE)
-    Serial.print('S');
-#endif
+    TRACE_PRINT(F("0x"));
+    TRACE_PRINT(aData, HEX);
+    TRACE_PRINT('S');
 
 // Data - Biphase code MSB first
-// prepare for start with sending the start bit, which is 1
-    uint32_t tMask;
-    uint_fast8_t tLastBitValue;
-    bool tNextBitIsOne;
-    uint8_t tBitsToSend; // total number of bits to send including start bit if specified
 
-    // Data - Biphase code MSB first
-    tMask = 1UL << aNumberOfBits; // mask is now set for the virtual start bit
+    uint8_t tBitsToSend = aNumberOfBits; // total number of bits to send including start bit if specified
     if (aSendStartBit) {
-        tBitsToSend = aNumberOfBits + 1; // +1 for additional start bit
+        tBitsToSend++; // +1 for additional start bit
+    }
+    uint32_t tMask = 1UL << (tBitsToSend - 1); // Mask is now set to the the MSB of data or the virtual start bit before the MSB of data
+
+    bool tLastBitWasOne;
+    bool tNextBitIsOne;
+    if (aSendStartBit) {
         // prepare for start with sending the start bit, which is 1
-        tNextBitIsOne = 1; // Start bit is a 1, value is copied to tCurrentBitIsOne
-        tLastBitValue = 0; // Force to send the mark if tNextBitIsOne is 0 (which it is not here). Does not increase code size :-).
+        tNextBitIsOne = true; // Start bit is a 1, value is copied to tCurrentBitIsOne
+        tLastBitWasOne = false; // Force to send the mark if tNextBitIsOne is 0 (which it is not the case here). Does not increase code size :-).
     } else {
         // prepare to send only the data which may start with a 0 or 1 (e.g. after a defined pause or header when no additional start bit is needed)
-        tMask = 1UL >> 1; // mask is now set for the MSB of data
-        tBitsToSend = aNumberOfBits;
         tNextBitIsOne = ((aData & tMask) != 0) ? 1 : 0; // Value is copied to tCurrentBitIsOne
-        tLastBitValue = 0; // Force to send the mark if tNextBitIsOne is 0
+        tLastBitWasOne = false; // Force to send the mark if tNextBitIsOne is 0
     }
 
     // now send all bits
@@ -1227,9 +1207,7 @@ void IRsend::sendBiphaseData(uint16_t aBiphaseTimeUnit, uint32_t aData, uint_fas
         tMask >>= 1;
         tNextBitIsOne = ((aData & tMask) != 0) || (i == 1); // true for last bit to avoid extension of mark
         if (tCurrentBitIsOne) {
-#if defined(LOCAL_TRACE)
-            Serial.print('1');
-#endif
+            TRACE_PRINT('1');
             space(aBiphaseTimeUnit);
             if (tNextBitIsOne) {
                 mark(aBiphaseTimeUnit); // if next bit is 1 send a single mark
@@ -1237,20 +1215,18 @@ void IRsend::sendBiphaseData(uint16_t aBiphaseTimeUnit, uint32_t aData, uint_fas
                 // if next bit is 0, extend the current mark in order to generate a continuous signal without short breaks
                 mark(2 * aBiphaseTimeUnit);
             }
-            tLastBitValue = 1;
+            tLastBitWasOne = true;
 
         } else {
-#if defined(LOCAL_TRACE)
-            Serial.print('0');
-#endif
-            if (tLastBitValue == 0) {
-                mark(aBiphaseTimeUnit); // if next bit is 1 send a single mark
+            TRACE_PRINT('0');
+            if (!tLastBitWasOne) {
+                mark(aBiphaseTimeUnit); // if last bit was 0 send a single mark
             }
             space(aBiphaseTimeUnit);
-            tLastBitValue = 0;
+            tLastBitWasOne = false;
         }
     }
-    IR_TRACE_PRINTLN();
+    TRACE_PRINTLN();
 }
 
 /**
@@ -1584,10 +1560,6 @@ uint16_t IRsend::getPulseCorrectionNanos() {
 #if defined(_IR_MEASURE_TIMING)
 #undef _IR_MEASURE_TIMING
 #endif
-#if defined(LOCAL_TRACE)
-#undef LOCAL_TRACE
-#endif
-#if defined(LOCAL_DEBUG)
-#undef LOCAL_DEBUG
-#endif
+#include "LocalDebugLevelEnd.h"
+
 #endif // _IR_SEND_HPP

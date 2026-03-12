@@ -8,7 +8,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2020-2025 Armin Joachimsmeyer
+ * Copyright (c) 2020-2026 Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,17 +55,20 @@
 #define DELAY_AFTER_LOOP 5000
 
 #if __INT_WIDTH__ < 32
-IRRawDataType const tRawDataPGM[] PROGMEM = { 0xB02002, 0xA010 }; // LSB of tRawData[0] is sent first
+IRDecodedRawDataType const tRawDataPGM[] PROGMEM = { 0xB02002, 0xA010 }; // LSB of tRawData[0] is sent first
 /*
  * Alternative definition of tRawDataPGM as byte array of same size with same content as { 0xB02002, 0xA010}
  * But be aware, that this requires a cast when using tRawDataPGM as parameter.
- * Like sendPulseDistanceWidthFromPGMArray_P(..., (IRRawDataType*) &tRawDataPGM[0], ...);
+ * Like sendPulseDistanceWidthFromPGMArray_P(..., (IRDecodedRawDataType*) &tRawDataPGM[0], ...);
  */
 //uint8_t const tRawDataPGM[] PROGMEM = { 0x02, 0x20, 0xB0, 0x00, /*0xB02002*/
 //0x10, 0xA0, 0x0, 0x0, /*0xA010*/};
 #endif
 
-const uint16_t rawIRTimingsNEC[] PROGMEM
+const uint16_t rawIRTimingsNEC[]
+#if defined(__AVR__)
+PROGMEM // this crashes on ESP8266
+#endif
 = { 9000, 4500/*Start bit*/, 560, 560, 560, 560, 560, 1690, 560, 560/*0010 0x4 of 16 bit address LSB first*/, 560, 560, 560, 560,
         560, 560, 560, 560/*0000*/, 560, 1690, 560, 1690, 560, 560, 560, 1690/*1101 0xB*/, 560, 1690, 560, 1690, 560, 1690, 560,
         1690/*1111*/, 560, 560, 560, 560, 560, 560, 560, 1690/*0001 0x08 of command LSB first*/, 560, 560, 560, 560, 560, 560, 560,
@@ -172,8 +175,9 @@ void loop() {
     delay(DELAY_AFTER_SEND);
 
     if (sRepeats == 0) {
-#if FLASHEND >= 0x3FFF && ((!defined(RAMEND) && !defined(RAMSIZE)) || (defined(RAMEND) && RAMEND > 0x6FF) || (defined(RAMSIZE) && RAMSIZE > 0x6FF)) // For 16k flash or more, like ATtiny1604. Code does not fit in program memory of ATtiny85 etc.
+#if FLASHEND >= 0x3FFF && ((!defined(RAMEND) && !defined(RAMSIZE)) || (defined(RAMEND) && RAMEND > 0x6FF) || (defined(RAMSIZE) && RAMSIZE > 0x6FF))
         /*
+         * For 16k flash or more, like ATtiny1604. Code does not fit in program memory of ATtiny85 etc.
          * Send constant values only once in this demo
          */
 
@@ -230,7 +234,7 @@ void loop() {
         Serial.println(F("Send Panasonic 0xB, 0x10 as 48 bit PulseDistance PGM using ProtocolConstants 1=432|1296, 0=432|432"));
         Serial.flush();
 #  if __INT_WIDTH__ < 32
-        IrSender.sendPulseDistanceWidthFromPGMArray_P(&KaseikyoProtocolConstants, (IRRawDataType*) &tRawDataPGM[0], 48, NO_REPEATS); // Panasonic is a Kaseikyo variant
+        IrSender.sendPulseDistanceWidthFromPGMArray_P(&KaseikyoProtocolConstants, (IRDecodedRawDataType*) &tRawDataPGM[0], 48, NO_REPEATS); // Panasonic is a Kaseikyo variant
 #  else
         IrSender.sendPulseDistanceWidth_P(&KaseikyoProtocolConstants, 0xA010B02002, 48, NO_REPEATS); // Panasonic is a Kaseikyo variant
 #  endif
@@ -244,7 +248,7 @@ void loop() {
         Serial.println(F(" LSB first"));
         Serial.flush();
 #  if __INT_WIDTH__ < 32
-        IrSender.sendPulseDistanceWidthFromPGMArray(38, 3450, 1700, 450, 1250, 450, 400, (IRRawDataType*) tRawDataPGM, 48,
+        IrSender.sendPulseDistanceWidthFromPGMArray(38, 3450, 1700, 450, 1250, 450, 400, (IRDecodedRawDataType*) tRawDataPGM, 48,
         PROTOCOL_IS_LSB_FIRST, 0, NO_REPEATS);
 #  else
         IrSender.sendPulseDistanceWidth(38, 3450, 1700, 450, 1250, 450, 400, 0xA010B02002, 48, PROTOCOL_IS_LSB_FIRST, 0,
@@ -254,7 +258,7 @@ void loop() {
 
         // The same with MSB first. Use bit reversed raw data of LSB first part
         Serial.println(F(" MSB first"));
-        IRRawDataType tRawData[4];
+        IRDecodedRawDataType tRawData[4];
 #  if __INT_WIDTH__ < 32
         tRawData[0] = 0x40040D00;  // MSB of tRawData[0] is sent first
         tRawData[1] = 0x805;
@@ -380,10 +384,14 @@ void loop() {
     IrSender.sendSamsung(sAddress, sCommand, sRepeats);
     delay(DELAY_AFTER_SEND);
 
-    Serial.println(F("Send Samsung 16 bit command"));
+    Serial.println(F("Send Samsung 8 bit command and 16 bit address"));
     Serial.flush();
-    IrSender.sendSamsung(sAddress, s16BitCommand, sRepeats);
+    IrSender.sendSamsung16BitAddressAnd8BitCommand(sAddress, sCommand, sRepeats);
     delay(DELAY_AFTER_SEND);
+
+    Serial.println(F("Send Samsung 16 bit command and address"));
+    Serial.flush();
+    IrSender.sendSamsung16BitAddressAndCommand(sAddress, s16BitCommand, sRepeats);
 
     Serial.println(F("Send Samsung48 16 bit command"));
     Serial.flush();
@@ -402,7 +410,7 @@ void loop() {
 
     Serial.println(F("Send Marantz variant of RC5x with 6 command bits and additional command extension"));
     Serial.flush();
-    IrSender.sendRC5Marantz(sAddress & 0x1F, sCommand, sCommandExtension, sRepeats);
+    IrSender.sendRC5Marantz(sAddress & 0x1F, sCommand & 0x3F, sCommandExtension, sRepeats);
     delay(DELAY_AFTER_SEND);
 
     Serial.println(F("Send Marantz variant of RC5x with 7 command bits and additional command extension"));
@@ -425,6 +433,11 @@ void loop() {
     Serial.println(F("Send MagiQuest"));
     Serial.flush();
     IrSender.sendMagiQuest(0x6BCD0000 | (uint32_t) sAddress, s16BitCommand); // we have 31 bit address
+    delay(DELAY_AFTER_SEND);
+
+    Serial.println(F("Send OpenLASIR"));
+    Serial.flush();
+    IrSender.sendOpenLASIR(sAddress & 0xFF, sCommand, OPENLASIR_MODE_LASER_TAG_FIRE, OPENLASIR_COLOR_ORANGE, sRepeats);
     delay(DELAY_AFTER_SEND);
 
     // Bang&Olufsen must be sent with 455 kHz

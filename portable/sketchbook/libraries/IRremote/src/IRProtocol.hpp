@@ -9,7 +9,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2009-2023 Ken Shirriff, Rafi Khan, Armin Joachimsmeyer
+ * Copyright (c) 2009-2026 Ken Shirriff, Rafi Khan, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,12 +32,6 @@
  */
 #ifndef _IR_PROTOCOL_HPP
 #define _IR_PROTOCOL_HPP
-
-#if defined(DEBUG)
-#define LOCAL_DEBUG
-#else
-//#define LOCAL_DEBUG // This enables debug output only for this file
-#endif
 
 /** \addtogroup Receiving Receiving IR data for multiple protocols
  * @{
@@ -73,7 +67,9 @@ const char string_BoseWave[] PROGMEM = "BoseWave";
 const char string_Lego[] PROGMEM = "Lego";
 const char string_MagiQuest[] PROGMEM = "MagiQuest";
 const char string_Whynter[] PROGMEM = "Whynter";
+const char string_Marantz[] PROGMEM = "Marantz";
 const char string_FAST[] PROGMEM = "FAST";
+const char string_OpenLASIR[] PROGMEM = "OpenLASIR";
 const char string_Other[] PROGMEM = "OTHER";
 
 /*
@@ -85,7 +81,8 @@ PROGMEM = { string_Unknown, string_PulseWidth, string_PulseDistance, string_Appl
         string_Kaseikyo_JVC, string_Kaseikyo_Mitsubishi, string_RC5, string_RC6, string_RC6A, string_Samsung, string_SamsungLG,
         string_Samsung48, string_Sharp, string_Sony
 #if !defined(EXCLUDE_EXOTIC_PROTOCOLS)
-        , string_BangOlufsen, string_BoseWave, string_Lego, string_MagiQuest, string_Whynter, string_FAST, string_Other
+        , string_BangOlufsen, string_BoseWave, string_Lego, string_MagiQuest, string_Whynter, string_Marantz, string_FAST,
+        string_OpenLASIR, string_Other
 #endif
         };
 
@@ -135,10 +132,20 @@ size_t print(PrintImplType *p, unsigned long long value, int base) {
     tLength += p->print(static_cast<uint32_t>(value), base);
     return tLength;
 }
+template<typename PrintImplType, typename std::enable_if<!has_ull_print<PrintImplType>::value, bool>::type = true>
+size_t println(PrintImplType *p, unsigned long long value, int base) {
+    size_t tLength = p->print(static_cast<uint32_t>(value >> 32), base);
+    tLength += p->println(static_cast<uint32_t>(value), base);
+    return tLength;
+}
 
 template<typename PrintImplType, typename std::enable_if<has_ull_print<PrintImplType>::value, bool>::type = true>
 size_t print(PrintImplType *p, unsigned long long value, int base) {
     return p->print(value, base);
+}
+template<typename PrintImplType, typename std::enable_if<has_ull_print<PrintImplType>::value, bool>::type = true>
+size_t println(PrintImplType *p, unsigned long long value, int base) {
+    return p->println(value, base);
 }
 }
 ;
@@ -146,6 +153,9 @@ size_t print(PrintImplType *p, unsigned long long value, int base) {
 namespace PrintULL {
     size_t print(Print *aSerial, unsigned long long n, int base) {
         return aSerial->print(n, base);
+    }
+    size_t println(Print *aSerial, unsigned long long n, int base) {
+        return aSerial->println(n, base);
     }
 };
 #  endif
@@ -183,7 +193,4 @@ uint32_t bitreverse32Bit(uint32_t aInput) {
 
 /** @}*/
 
-#if defined(LOCAL_DEBUG)
-#undef LOCAL_DEBUG
-#endif
 #endif // _IR_PROTOCOL_HPP

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulseSensor WebSerial</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: #111; 
+      color: white; 
+      padding: 15px; 
+    }
+    
+    .connection-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 15px;
+      background: #1a1a1a;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .status-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #444;
+      margin-right: 8px;
+      transition: background 0.3s;
+    }
+    
+    .status-dot.connected { background: #51cf66; }
+    
+    button {
+      padding: 8px 16px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    button:hover { background: #ff5252; }
+    
+    .panel {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 15px;
+    }
+    
+    .panel h2 {
+      font-size: 1em;
+      color: #ff6b6b;
+      margin-bottom: 12px;
+    }
+    
+    canvas {
+      width: 100%;
+      height: 150px;
+      background: #111;
+      border-radius: 6px;
+      display: block;
+    }
+    
+    .variables {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .var-box {
+      background: #111;
+      padding: 10px;
+      border-radius: 6px;
+      border-left: 3px solid;
+    }
+    
+    .var-box .label { font-size: 0.75em; color: #888; }
+    .var-box .value { font-size: 1.4em; font-weight: bold; margin: 4px 0; }
+    .var-box .unit { font-size: 0.7em; color: #555; }
+    
+    .var-box.signal { border-color: #ff6b6b; }
+    .var-box.signal .value { color: #ff6b6b; }
+    .var-box.bpm { border-color: #44ff44; }
+    .var-box.bpm .value { color: #44ff44; }
+    .var-box.ibi { border-color: #ffaa44; }
+    .var-box.ibi .value { color: #ffaa44; }
+    .var-box.beat { border-color: #64c8ff; }
+    .var-box.beat .value { color: #64c8ff; }
+    
+    .heart {
+      display: inline-block;
+      font-size: 1.2em;
+      color: #ff6b6b;
+      transition: transform 0.1s;
+    }
+    
+    .heart.pulse { transform: scale(1.4); }
+    
+    .raw-serial {
+      margin-top: 12px;
+      padding: 10px;
+      background: #0a0a0a;
+      border-radius: 6px;
+      font-family: 'Monaco', 'Consolas', monospace;
+    }
+    
+    .raw-serial .label { font-size: 0.7em; color: #666; margin-bottom: 4px; }
+    .raw-serial .data { font-size: 0.85em; color: #44ff44; }
+    
+    .methods {
+      margin-top: 12px;
+      padding: 10px;
+      background: #0a0a0a;
+      border-radius: 6px;
+      border-left: 3px solid #ffaa44;
+    }
+    
+    .methods .label { font-size: 0.7em; color: #666; margin-bottom: 6px; }
+    .methods .method { font-size: 0.8em; color: #ccc; margin: 3px 0; }
+    .methods .func { color: #ffaa44; font-family: 'Monaco', 'Consolas', monospace; }
+    .methods .live { color: #44ff44; font-family: 'Monaco', 'Consolas', monospace; font-weight: bold; }
+    .methods .desc { color: #666; font-size: 0.85em; }
+    
+    .error-message {
+      background: #3a1a1a;
+      border-left: 3px solid #ff6b6b;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: none;
+      font-size: 0.85em;
+    }
+    
+    .error-message.show { display: block; }
+    
+    @media (max-width: 500px) {
+      .variables { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="connection-bar">
+    <div>
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Disconnected</span>
+    </div>
+    <button id="connectBtn">Connect</button>
+  </div>
+  
+  <div class="error-message" id="errorMessage"></div>
+  
+  <div class="panel">
+    <h2>Signal Waveform</h2>
+    <canvas id="waveformCanvas"></canvas>
+    
+    <div class="variables">
+      <div class="var-box signal">
+        <div class="label">Signal</div>
+        <div class="value" id="liveSignal">—</div>
+        <div class="unit">0–4095</div>
+      </div>
+      <div class="var-box bpm">
+        <div class="label">BPM</div>
+        <div class="value" id="liveBpm">—</div>
+        <div class="unit">beats/min</div>
+      </div>
+      <div class="var-box ibi">
+        <div class="label">IBI</div>
+        <div class="value" id="liveIbi">—</div>
+        <div class="unit">ms</div>
+      </div>
+      <div class="var-box beat">
+        <div class="label">Beat</div>
+        <div class="value"><span id="liveBeat">—</span> <span class="heart" id="heart">♥</span></div>
+        <div class="unit">detected</div>
+      </div>
+    </div>
+    
+    <div class="raw-serial">
+      <div class="label">Raw Serial @ 115200 baud</div>
+      <div class="data" id="rawSerial">waiting for data...</div>
+    </div>
+    
+    <div class="methods">
+      <div class="label">Key Methods (PulseSensorPlayground Library)</div>
+      <div class="method"><span class="func">getLatestSample()</span> → <span class="live" id="methodSignal">—</span> <span class="desc">raw ADC (0–4095)</span></div>
+      <div class="method"><span class="func">getBeatsPerMinute()</span> → <span class="live" id="methodBpm">—</span> <span class="desc">calculated BPM</span></div>
+      <div class="method"><span class="func">getInterBeatIntervalMs()</span> → <span class="live" id="methodIbi">—</span> <span class="desc">ms between beats</span></div>
+      <div class="method"><span class="func">sawStartOfBeat()</span> → <span class="live" id="methodBeat">—</span> <span class="desc">true when beat detected</span></div>
+      <div class="method"><span class="func">setThreshold(550)</span> <span class="desc">← sensitivity setting</span></div>
+    </div>
+  </div>
+
+  <script>
+    class PulseSensorSerial {
+      constructor(options = {}) {
+        this.port = null;
+        this.reader = null;
+        this.isConnected = false;
+        this.baudRate = options.baudRate || 115200;
+        this.onData = options.onData || (() => {});
+        this.onConnect = options.onConnect || (() => {});
+        this.onDisconnect = options.onDisconnect || (() => {});
+        this.onError = options.onError || (() => {});
+      }
+
+      static isSupported() { return 'serial' in navigator; }
+
+      async connect() {
+        if (!PulseSensorSerial.isSupported()) {
+          this.onError('WebSerial not supported. Use Chrome, Edge, or Brave.');
+          return false;
+        }
+        try {
+          this.port = await navigator.serial.requestPort();
+          await this.port.open({ baudRate: this.baudRate });
+          this.isConnected = true;
+          this.onConnect();
+          this.readLoop();
+          return true;
+        } catch (error) {
+          this.onError(`Connection failed: ${error.message}`);
+          return false;
+        }
+      }
+
+      async disconnect() {
+        this.isConnected = false;
+        try {
+          if (this.reader) { await this.reader.cancel(); this.reader = null; }
+          if (this.port) { await this.port.close(); this.port = null; }
+          this.onDisconnect();
+        } catch (error) {
+          this.onError(`Disconnect error: ${error.message}`);
+        }
+      }
+
+      async readLoop() {
+        try {
+          const textDecoder = new TextDecoderStream();
+          this.port.readable.pipeTo(textDecoder.writable);
+          this.reader = textDecoder.readable.getReader();
+          let buffer = '';
+          while (this.isConnected) {
+            const { value, done } = await this.reader.read();
+            if (done) break;
+            buffer += value;
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (trimmed.length > 0) this.onData(trimmed);
+            }
+          }
+        } catch (error) {
+          if (this.isConnected) this.onError(`Read error: ${error.message}`);
+        } finally {
+          this.isConnected = false;
+          this.onDisconnect();
+        }
+      }
+    }
+
+    const HISTORY_LENGTH = 600;
+    let waveformHistory = new Array(HISTORY_LENGTH).fill(2048);
+    let minSignal = 2048, maxSignal = 2048;
+
+    const connectBtn = document.getElementById('connectBtn');
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const errorMessage = document.getElementById('errorMessage');
+    const liveSignal = document.getElementById('liveSignal');
+    const liveBpm = document.getElementById('liveBpm');
+    const liveIbi = document.getElementById('liveIbi');
+    const liveBeat = document.getElementById('liveBeat');
+    const heart = document.getElementById('heart');
+    const rawSerial = document.getElementById('rawSerial');
+    const methodSignal = document.getElementById('methodSignal');
+    const methodBpm = document.getElementById('methodBpm');
+    const methodIbi = document.getElementById('methodIbi');
+    const methodBeat = document.getElementById('methodBeat');
+    const canvas = document.getElementById('waveformCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const dpr = window.devicePixelRatio || 1;
+    let rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+
+    const sensor = new PulseSensorSerial({
+      baudRate: 115200,
+      onData: (line) => {
+        rawSerial.textContent = line;
+        const parts = line.split(',');
+        if (parts.length < 4) return;
+
+        try {
+          const signal = parseInt(parts[0]);
+          const bpm = parseInt(parts[1]);
+          const ibi = parseInt(parts[2]);
+          const beat = parseInt(parts[3]);
+
+          liveSignal.textContent = signal;
+          liveBpm.textContent = bpm > 0 ? bpm : '—';
+          liveIbi.textContent = bpm > 0 && ibi > 0 ? ibi : '—';
+          liveBeat.textContent = beat ? '1' : '0';
+
+          methodSignal.textContent = signal;
+          methodBpm.textContent = bpm > 0 ? bpm : '0';
+          methodIbi.textContent = ibi;
+          methodBeat.textContent = beat ? 'true' : 'false';
+
+          if (beat) {
+            heart.classList.add('pulse');
+            setTimeout(() => heart.classList.remove('pulse'), 150);
+          }
+
+          waveformHistory.shift();
+          waveformHistory.push(signal);
+          minSignal = Math.min(...waveformHistory);
+          maxSignal = Math.max(...waveformHistory);
+          draw();
+        } catch (e) {
+          console.error('Parse error:', e);
+        }
+      },
+      onConnect: () => {
+        connectBtn.textContent = 'Disconnect';
+        statusDot.classList.add('connected');
+        statusText.textContent = 'Connected';
+        errorMessage.classList.remove('show');
+        liveSignal.textContent = '—';
+        liveBpm.textContent = '—';
+        liveIbi.textContent = '—';
+        liveBeat.textContent = '—';
+        rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+      },
+      onDisconnect: () => {
+        connectBtn.textContent = 'Connect';
+        statusDot.classList.remove('connected');
+        statusText.textContent = 'Disconnected';
+        liveSignal.textContent = '—';
+        liveBpm.textContent = '—';
+        liveIbi.textContent = '—';
+        liveBeat.textContent = '—';
+      },
+      onError: (err) => {
+        errorMessage.textContent = err;
+        errorMessage.classList.add('show');
+      }
+    });
+
+    connectBtn.addEventListener('click', () => {
+      sensor.isConnected ? sensor.disconnect() : sensor.connect();
+    });
+
+    function draw() {
+      const width = canvas.width / dpr;
+      const height = canvas.height / dpr;
+
+      ctx.fillStyle = 'rgba(17, 17, 17, 0.9)';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = (height / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      const range = Math.max(maxSignal - minSignal, 1);
+      const center = height / 2;
+      const scale = height / 2 / range;
+
+      ctx.strokeStyle = '#ff6b6b';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      ctx.beginPath();
+      for (let i = 0; i < HISTORY_LENGTH; i++) {
+        const x = (i / HISTORY_LENGTH) * width;
+        const normalized = (waveformHistory[i] - minSignal) * scale;
+        const y = center - (normalized - range / 2 * scale);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    draw();
+  </script>
+</body>
+</html>

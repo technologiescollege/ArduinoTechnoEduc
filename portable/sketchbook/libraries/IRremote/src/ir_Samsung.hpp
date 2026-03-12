@@ -32,11 +32,7 @@
 #ifndef _IR_SAMSUNG_HPP
 #define _IR_SAMSUNG_HPP
 
-#if defined(DEBUG)
-#define LOCAL_DEBUG
-#else
-//#define LOCAL_DEBUG // This enables debug output only for this file
-#endif
+#include "LocalDebugLevelStart.h"
 
 /** \addtogroup Decoder Decoders and encoders for different protocols
  * @{
@@ -61,6 +57,7 @@
  + 600,- 550 + 600,- 550 + 550,- 550 + 600,-1650
  + 550
  Sum: 68750
+ * Values are like NEC except SAMSUNG_HEADER_MARK (4500 instead of 9000)
  */
 /*
  * Samsung repeat frame can be the original frame again or a special short repeat frame,
@@ -88,7 +85,7 @@
 #define SAMSUNG_BITS                (SAMSUNG_ADDRESS_BITS + SAMSUNG_COMMAND16_BITS)
 #define SAMSUNG48_BITS              (SAMSUNG_ADDRESS_BITS + SAMSUNG_COMMAND32_BITS)
 
-// except SAMSUNG_HEADER_MARK, values are like NEC
+// Values are like NEC except SAMSUNG_HEADER_MARK (4500 instead of 9000)
 #define SAMSUNG_UNIT                560             // 21.28 periods of 38 kHz, 11.2 ticks TICKS_LOW = 8.358 TICKS_HIGH = 15.0
 #define SAMSUNG_HEADER_MARK         (8 * SAMSUNG_UNIT) // 4500 | 180 periods
 #define SAMSUNG_HEADER_SPACE        (8 * SAMSUNG_UNIT) // 4500
@@ -275,10 +272,9 @@ bool IRrecv::decodeSamsung() {
     // Check we have enough data (68). The +4 is for initial gap, start bit mark and space + stop bit mark
     if (decodedIRData.rawlen != ((2 * SAMSUNG_BITS) + 4) && decodedIRData.rawlen != ((2 * SAMSUNG48_BITS) + 4)
             && (decodedIRData.rawlen != 6)) {
-        IR_DEBUG_PRINT(F("Samsung: "));
-        IR_DEBUG_PRINT(F("Data length="));
-        IR_DEBUG_PRINT(decodedIRData.rawlen);
-        IR_DEBUG_PRINTLN(F(" is not 6 or 68 or 100"));
+        DEBUG_PRINT(F("Samsung: Data length="));
+        DEBUG_PRINT(decodedIRData.rawlen);
+        DEBUG_PRINTLN(F(" is not 6 or 68 or 100"));
         return false;
     }
 
@@ -337,17 +333,18 @@ bool IRrecv::decodeSamsung() {
     } else {
         /*
          * Samsung32
+         * check if we have 8 bit command and / or 8 bit address
          */
         if (tValue.UByte.MidHighByte == (uint8_t)(~tValue.UByte.HighByte)) {
-            // 8 bit command protocol -> assume 8 bit address
+            // 8 bit command
             decodedIRData.command = tValue.UByte.MidHighByte; // first 8 bit
+        } else {
+            // 16 bit command
+            decodedIRData.command = tValue.UWord.HighWord;
         }
 
         if (tValue.UByte.MidLowByte == tValue.UByte.LowByte) {
-            decodedIRData.address = tValue.UByte.LowByte; // assume LowByte == MidLowByte as seen for a LG HX906 A/V Receive E8172C2C
-        } else {
-            // 16 bit command protocol, address is filled above with the 16 bit value
-            decodedIRData.command = tValue.UWord.HighWord; // first 16 bit
+            decodedIRData.address = tValue.UByte.LowByte; // 8 bit address as seen for a LG HX906 A/V Receive E8172C2C
         }
 
         decodedIRData.numberOfBits = SAMSUNG_BITS;
@@ -416,7 +413,6 @@ void IRsend::sendSAMSUNG(unsigned long data, int nbits) {
 }
 
 /** @}*/
-#if defined(LOCAL_DEBUG)
-#undef LOCAL_DEBUG
-#endif
+#include "LocalDebugLevelEnd.h"
+
 #endif // _IR_SAMSUNG_HPP

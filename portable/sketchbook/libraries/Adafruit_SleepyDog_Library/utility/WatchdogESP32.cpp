@@ -17,14 +17,17 @@ int WatchdogESP32::enable(int maxPeriodMS) {
     return 0;
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 1, 1)
-  // Initialize the wdt configuration for ESP-IDF v5.x and above
+// Initialize the wdt configuration for ESP-IDF v5.x and above
+#include "soc/soc_caps.h"
   esp_task_wdt_config_t wdt_config = {
       .timeout_ms = (uint32_t)maxPeriodMS,
       .idle_core_mask = 0, // Subscribe to the idle task on the APP CPU
       .trigger_panic = true,
   };
-  // TWDT already initialized by the RTOS, reconfigure it
-  esp_err_t err = esp_task_wdt_reconfigure(&wdt_config);
+  esp_err_t err = esp_task_wdt_init(&wdt_config);
+  // Reconfigure in case TWDT was already initialized
+  if (err == ESP_ERR_INVALID_STATE)
+    err = esp_task_wdt_reconfigure(&wdt_config);
 #else
   // IDF V4.x and below expect TWDT in seconds
   uint32_t maxPeriod = maxPeriodMS / 1000;
@@ -38,7 +41,7 @@ int WatchdogESP32::enable(int maxPeriodMS) {
   // NULL to subscribe the current running task to the TWDT
   err = esp_task_wdt_add(NULL);
   if (err != ESP_OK)
-    return 0;
+    return 0; // Failed to subscribe to TWDT, may be already subscribed
 
   _wdto = maxPeriodMS;
   return maxPeriodMS;
@@ -57,11 +60,17 @@ void WatchdogESP32::reset() {
 
 /**************************************************************************/
 /*!
-    @brief  Disables the TWDT by unsubscribing the currently running task
-            from the TWDT.
+    @brief  Unsubscribes the currently running task from the the TWDT,
+            unsubscribes idle tasks from the TWDT, and deinitializes
+            the TWDT.
 */
 /**************************************************************************/
-void WatchdogESP32::disable() { esp_task_wdt_delete(NULL); }
+void WatchdogESP32::disable() {
+  esp_task_wdt_delete(NULL); // Unsubscribe from the task we created
+  esp_task_wdt_deinit(); // Deinitialize the TWDT and unsubscribe from any idle
+                         // tasks
+  _wdto = 0;             // Reset the timeout value
+}
 
 /**************************************************************************/
 /*!

@@ -30,7 +30,8 @@
 #define ADC_UTILS_ARE_AVAILABLE
 
 // External Reference Current is 150 uA for 5 V and 100 uA for 3.5 V
-#define READING_FOR_AREF 1024L // Datasheet 24.2: The minimum value represents GND and the maximum value represents the voltage on the AREF pin minus 1 LSB
+#define READING_FOR_AREF 1024 // Datasheet 24.2: The minimum value represents GND and the maximum value represents the voltage on the AREF pin minus 1 LSB
+#define MAX_ADC_VALUE    1023
 
 // PRESCALE4 => 13 * 4 = 52 microseconds per ADC conversion at 1 MHz Clock => 19,2 kHz
 #define ADC_PRESCALE2    1 // 26 microseconds per ADC conversion at 1 MHz
@@ -172,8 +173,10 @@
 extern long sLastVCCCheckMillis;
 extern uint8_t sVCCTooLowCounter;
 
+uint16_t readADCChannel();
 uint16_t readADCChannel(uint8_t aADCChannelNumber);
 uint16_t readADCChannelWithReference(uint8_t aADCChannelNumber, uint8_t aReference);
+uint16_t readADCChannelWithReferenceUsingInternalReference(uint8_t aADCChannelNumber);
 uint16_t waitAndReadADCChannelWithReference(uint8_t aADCChannelNumber, uint8_t aReference);
 uint16_t waitAndReadADCChannelWithReferenceAndRestoreADMUXAndReference(uint8_t aADCChannelNumber, uint8_t aReference);
 uint16_t readADCChannelWithOversample(uint8_t aADCChannelNumber, uint8_t aOversampleExponent);
@@ -188,6 +191,8 @@ uint16_t readADCChannelWithReferenceMaxMicros(uint8_t aADCChannelNumber, uint8_t
 uint16_t readUntil4ConsecutiveValuesAreEqual(uint8_t aADCChannelNumber, uint8_t aReference, uint8_t aDelay,
         uint8_t aAllowedDifference, uint8_t aMaxRetries);
 
+void setADCChannelForNextConversionAndWaitUsingInternalReference(uint8_t aADCChannelNumber);
+void setADCChannelForNextConversionAndWaitUsingDefaultReference(uint8_t aADCChannelNumber);
 uint8_t checkAndWaitForReferenceAndChannelToSwitch(uint8_t aADCChannelNumber, uint8_t aReference);
 
 /*
@@ -223,7 +228,7 @@ bool isVCCTooHighSimple();      // Version not using readVCCVoltageMillivoltSimp
 #endif //  defined(__AVR__) ...
 
 /*
- * Variables and functions defined as dummies to allow for seamless compiling on non AVR platforms
+ * The next variables and functions are defined as stubs on non-AVR platforms to allow for seamless compiling
  */
 extern float sVCCVoltage;
 extern uint16_t sVCCVoltageMillivolt;

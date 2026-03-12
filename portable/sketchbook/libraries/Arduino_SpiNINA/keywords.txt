@@ -1,0 +1,44 @@
+#######################################
+# Syntax Coloring Map For Arduino_SpiNINA
+#######################################
+
+#######################################
+# Library (KEYWORD1)
+#######################################
+
+spiDrv	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+end	KEYWORD2
+spiDriverInit	KEYWORD2
+spiSlaveSelect	KEYWORD2
+spiSlaveDeselect	KEYWORD2
+spiTransfer	KEYWORD2
+waitForSlaveReady	KEYWORD2
+waitSpiChar	KEYWORD2
+readAndCheckChar	KEYWORD2
+readChar	KEYWORD2
+waitResponseParams	KEYWORD2
+waitResponseCmd	KEYWORD2
+waitResponseData8	KEYWORD2
+waitResponseData16	KEYWORD2
+waitResponse	KEYWORD2
+sendParam	KEYWORD2
+sendParamNoLen	KEYWORD2
+sendParamLen8		KEYWORD2
+sendParamLen16	KEYWORD2
+readParamLen8	KEYWORD2
+readParamLen16	KEYWORD2
+sendBuffer	KEYWORD2
+sendParam	KEYWORD2
+sendCmd	KEYWORD2
+available	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

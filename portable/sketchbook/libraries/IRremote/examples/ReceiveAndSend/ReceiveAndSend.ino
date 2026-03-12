@@ -23,7 +23,7 @@
  ************************************************************************************
  * MIT License
  *
- * Copyright (c) 2009-2025 Ken Shirriff, Armin Joachimsmeyer
+ * Copyright (c) 2009-2026 Ken Shirriff, Armin Joachimsmeyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,7 +74,12 @@
 #if !defined(RAW_BUFFER_LENGTH)
 // For air condition remotes it may require up to 750. Default is 200.
 #  if !((defined(RAMEND) && RAMEND <= 0x4FF) || (defined(RAMSIZE) && RAMSIZE < 0x4FF))
+// Here we most likely have 2 k RAM or more
 #define RAW_BUFFER_LENGTH  700 // we require 2 buffer of this size for this example
+#  endif
+#  if !((defined(RAMEND) && RAMEND <= 0x8FF) || (defined(RAMSIZE) && RAMSIZE < 0x8FF))
+// Here we most likely have 4 k RAM or more
+#define USE_16_BIT_TIMING_BUFFER    // Use a 16-bit buffer to preserve values above 12750 us
 #  endif
 #endif
 
@@ -104,7 +109,7 @@ struct storedIRDataStruct {
     IRData receivedIRData;
     // extensions for sendRaw
     uint8_t rawCode[RAW_BUFFER_LENGTH]; // The durations if raw
-    uint8_t rawCodeLength; // The length of the code
+    uint16_t rawCodeLength; // The length of the code
 } sStoredIRData;
 
 bool sSendButtonWasActive;
