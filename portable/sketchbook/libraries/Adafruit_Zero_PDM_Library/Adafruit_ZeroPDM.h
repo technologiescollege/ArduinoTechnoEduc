@@ -13,7 +13,7 @@
 // Uncomment to enable debug message output.
 #define DEBUG //!< Enables or disables debug
 
-#define DEBUG_PRINTER                                                          \
+#define DEBUG_PRINTER \
   Serial //!< Define where debug output is printed (the native USB port on the
          //!< Zero).
 
@@ -21,7 +21,7 @@
  * ZeroPDM driver
  */
 class Adafruit_ZeroPDM {
-public:
+ public:
   /*!
    * @brief Create a new instance of an I2S audio transmitter.
    * Can specify the pins to use and the generic clock ID to use for driving the
@@ -61,7 +61,9 @@ public:
    * @brief Gets the I2S serializer
    * @return Returns the I2S serializer
    */
-  uint8_t getSerializer(void) { return _i2sserializer; };
+  uint8_t getSerializer(void) {
+    return _i2sserializer;
+  };
 
   /*!
    * @brief Reads data from I2S buffer
@@ -69,16 +71,16 @@ public:
    * @param bufsiz Size of buffer
    * @return Returns the data read over I2S
    */
-  bool read(uint32_t *buffer, int bufsiz);
+  bool read(uint32_t* buffer, int bufsiz);
 
-private:
+ private:
   uint8_t _gclk;
   int _clk, _data;
   uint32_t _clk_pin, _clk_mux, _data_pin, _data_mux;
   uint8_t _i2sserializer;
   uint8_t _i2sclock;
 
-  I2s *_hw;
+  I2s* _hw;
 };
 
 #ifndef I2S_H_INCLUDED

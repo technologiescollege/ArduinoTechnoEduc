@@ -15,12 +15,12 @@
  * ZeroPDM SPI driver
  */
 class Adafruit_ZeroPDMSPI {
-public:
+ public:
   /*!
    * @brief Create a new instance of an PDM audio transmitter over SPI
    * @param theSPI SPI to use
    */
-  Adafruit_ZeroPDMSPI(SPIClass *theSPI);
+  Adafruit_ZeroPDMSPI(SPIClass* theSPI);
 
   /*!
    * @brief Initialize the SPI audio receiver.
@@ -35,7 +35,7 @@ public:
    * @param removeDC Whether or not to remove the DC offset
    * @return Returns if the word is even or not
    */
-  bool decimateFilterWord(uint16_t *value, bool removeDC = true);
+  bool decimateFilterWord(uint16_t* value, bool removeDC = true);
 
   /*!
    * @brief Sets the mic gain
@@ -48,11 +48,11 @@ public:
    */
   float sampleRate;
 
-private:
-  SPIClass *_spi = NULL;
-  Sercom *_sercom = NULL;
+ private:
+  SPIClass* _spi = NULL;
+  Sercom* _sercom = NULL;
   IRQn_Type _irq;
-  volatile uint32_t *_dataReg;
+  volatile uint32_t* _dataReg;
 
   uint16_t dcCounter = 0;         // Rolls over every DC_PERIOD samples
   uint32_t dcSum = 0;             // Accumulates DC_PERIOD samples

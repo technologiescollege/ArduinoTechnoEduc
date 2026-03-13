@@ -19,7 +19,7 @@ static uint16_t const sincfilter[64] = {
 // DC_PERIOD does NOT need to be a power of 2, but might save a few cycles.
 // PDM rate is 46875, so 4096 = 11.44 times/sec
 
-static Sercom *const sercomList[] = {
+static Sercom* const sercomList[] = {
     SERCOM0, SERCOM1, SERCOM2, SERCOM3,
 #if defined(SERCOM4)
     SERCOM4,
@@ -35,23 +35,25 @@ static Sercom *const sercomList[] = {
 #endif
 };
 
-static IRQn_Type const sercomIRQList[] {
-  SERCOM0_0_IRQn, SERCOM1_0_IRQn, SERCOM2_0_IRQn, SERCOM3_0_IRQn,
+static IRQn_Type const sercomIRQList[]{
+    SERCOM0_0_IRQn, SERCOM1_0_IRQn, SERCOM2_0_IRQn, SERCOM3_0_IRQn,
 #if defined(SERCOM4)
-      SERCOM4_0_IRQn,
+    SERCOM4_0_IRQn,
 #endif
 #if defined(SERCOM5)
-      SERCOM5_0_IRQn,
+    SERCOM5_0_IRQn,
 #endif
 #if defined(SERCOM6)
-      SERCOM6_0_IRQn,
+    SERCOM6_0_IRQn,
 #endif
 #if defined(SERCOM7)
-      SERCOM7_0_IRQn,
+    SERCOM7_0_IRQn,
 #endif
 };
 
-Adafruit_ZeroPDMSPI::Adafruit_ZeroPDMSPI(SPIClass *theSPI) { _spi = theSPI; }
+Adafruit_ZeroPDMSPI::Adafruit_ZeroPDMSPI(SPIClass* theSPI) {
+  _spi = theSPI;
+}
 
 bool Adafruit_ZeroPDMSPI::begin(uint32_t freq) {
   freq *= 64;
@@ -91,7 +93,7 @@ bool Adafruit_ZeroPDMSPI::begin(uint32_t freq) {
   return true; // Success
 }
 
-bool Adafruit_ZeroPDMSPI::decimateFilterWord(uint16_t *value, bool removeDC) {
+bool Adafruit_ZeroPDMSPI::decimateFilterWord(uint16_t* value, bool removeDC) {
   static bool evenWord = true; // Alternates 0/1 with each interrupt call
   static uint32_t sumTemp = 0; // Temp. value used across 2 interrupt calls
   // Shenanigans: SPI data read/write are shadowed...even though it appears

@@ -36,6 +36,7 @@
  * SOFTWARE.
  */
 #include "Adafruit_ZeroPDM.h"
+
 #include "WVariant.h"       // EPioType defined here
 #include "wiring_private.h" // pinPeripheral() function
 
@@ -45,9 +46,9 @@
 
 // Define macros for debug output that optimize out when debug mode is disabled.
 #ifdef DEBUG
-#define DEBUG_PRINT(...)                                                       \
+#define DEBUG_PRINT(...) \
   DEBUG_PRINTER.print(__VA_ARGS__) //!< Turns debug print on
-#define DEBUG_PRINTLN(...)                                                     \
+#define DEBUG_PRINTLN(...) \
   DEBUG_PRINTER.println(__VA_ARGS__) //!< Turns debug printline on
 #else
 #define DEBUG_PRINT(...)
@@ -228,8 +229,8 @@ bool Adafruit_ZeroPDM::configure(uint32_t sampleRateHz, boolean stereo) {
     noInterrupts(); // cpu_irq_enter_critical();
 
     while (GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY)
-      ;                                      // Wait for synchronization
-    *((uint8_t *)&GCLK->GENDIV.reg) = _gclk; /* Select the correct generator */
+      ;                                     // Wait for synchronization
+    *((uint8_t*)&GCLK->GENDIV.reg) = _gclk; /* Select the correct generator */
 
     while (GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY)
       ; // Wait for synchronization
@@ -245,7 +246,7 @@ bool Adafruit_ZeroPDM::configure(uint32_t sampleRateHz, boolean stereo) {
 
     while (GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY)
       ; // Wait for synchronization
-    *((uint8_t *)&GCLK->GENCTRL.reg) =
+    *((uint8_t*)&GCLK->GENCTRL.reg) =
         _gclk; /* Select the requested generator */
 
     while (GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY)
@@ -268,7 +269,6 @@ bool Adafruit_ZeroPDM::configure(uint32_t sampleRateHz, boolean stereo) {
     }
     /* Already enabled ? */
     if (_hw->CTRLA.reg & (I2S_CTRLA_CKEN0 << _i2sclock)) {
-
       return false; // return STATUS_ERR_DENIED;
     }
 
@@ -313,7 +313,7 @@ bool Adafruit_ZeroPDM::configure(uint32_t sampleRateHz, boolean stereo) {
     noInterrupts();
 
     /* Select the requested generator channel */
-    *((uint8_t *)&GCLK->CLKCTRL.reg) = i2s_gclk_ids[_i2sclock];
+    *((uint8_t*)&GCLK->CLKCTRL.reg) = i2s_gclk_ids[_i2sclock];
 
     /* Switch to known-working source so that the channel can be disabled */
     uint32_t prev_gen_id = GCLK->CLKCTRL.bit.GEN;
@@ -331,7 +331,7 @@ bool Adafruit_ZeroPDM::configure(uint32_t sampleRateHz, boolean stereo) {
     GCLK->CLKCTRL.reg = new_clkctrl_config;
 
     // enable it
-    *((uint8_t *)&GCLK->CLKCTRL.reg) =
+    *((uint8_t*)&GCLK->CLKCTRL.reg) =
         i2s_gclk_ids[_i2sclock]; /* Select the requested generator channel */
     GCLK->CLKCTRL.reg |= GCLK_CLKCTRL_CLKEN; /* Enable the generic clock */
 
@@ -340,7 +340,7 @@ bool Adafruit_ZeroPDM::configure(uint32_t sampleRateHz, boolean stereo) {
     /* Initialize pins */
     pinPeripheral(_clk, (EPioType)_clk_mux);
 #else
-    (void)stereo;       // Prevent compiler warning
+    (void)stereo; // Prevent compiler warning
 #endif
   }
 
